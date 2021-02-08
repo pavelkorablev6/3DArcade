@@ -20,46 +20,64 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using UnityEngine;
+using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable]
-    public sealed class ModelConfiguration : Configuration
+    public sealed class ModelConfiguration : XMLDatabaseEntry
     {
-        public string Model;
-        [JsonConverter(typeof(StringEnumConverter))]
+        [XmlElement("interaction_type")]
         public InteractionType InteractionType;
+
+        [XmlElement("platform")]
+        public string Platform;
+
+        [XmlElement("emulator")]
         public string Emulator;
-        public string[] MarqueeImageDirectories;
-        public string[] MarqueeVideoDirectories;
-        public string[] ScreenImageDirectories;
-        public string[] ScreenVideoDirectories;
-        public string[] TitleImageDirectories;
-        public string[] GenericImageDirectories;
-        public string[] GenericVideoDirectories;
-        public string[] InfoDirectories;
+
+        [XmlElement("model")]
+        public string Model;
+
+        [XmlElement("grabbable")]
         public bool Grabbable;
+
+        [XmlElement("movecab_movable")]
         public bool MoveCabMovable;
+
+        [XmlElement("movecab_grabbable")]
         public bool MoveCabGrabbable;
 
-        public string CloneOf;
-        public string RomOf;
-        public string Genre;
-        public string Year;
-        public string Manufacturer;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public GameScreenType ScreenType;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public GameScreenOrientation ScreenOrientation;
-        public bool Mature;
-        public bool Available;
-        public bool Runnable;
+        [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
+        public string[] MarqueeImageDirectories;
 
-        public Vector3 Position;
-        public Vector3 Rotation;
-        public Vector3 Scale;
+        [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
+        public string[] MarqueeVideoDirectories;
+
+        [XmlArray("screen_image_directories"), XmlArrayItem("directory")]
+        public string[] ScreenImageDirectories;
+
+        [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
+        public string[] ScreenVideoDirectories;
+
+        [XmlArray("title_image_directories"), XmlArrayItem("directory")]
+        public string[] TitleImageDirectories;
+
+        [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
+        public string[] GenericImageDirectories;
+
+        [XmlArray("generic_video_directories"), XmlArrayItem("directory")]
+        public string[] GenericVideoDirectories;
+
+        [XmlArray("info_directories"), XmlArrayItem("directory")]
+        public string[] InfoDirectories;
+
+        [XmlElement("position")]
+        public XMLVector3 Position;
+
+        [XmlElement("rotation")]
+        public XMLVector3 Rotation;
+
+        [XmlElement("scale")]
+        public XMLVector3 Scale;
     }
 }

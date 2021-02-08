@@ -20,14 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Xml.Serialization;
+
 namespace Arcade
 {
     [System.Serializable]
     public sealed class RenderSettings
     {
+        [XmlElement("marquee_intensity")]
         public float MarqueeIntensity;
+
+        [XmlElement("screen_raster_intensity")]
         public float ScreenRasterIntensity;
+
+        [XmlElement("screen_vector_intenstity")]
         public float ScreenVectorIntenstity;
+
+        [XmlElement("screen_pinball_intensity")]
         public float ScreenPinballIntensity;
     }
 }

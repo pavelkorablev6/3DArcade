@@ -105,7 +105,7 @@ namespace Arcade
                 SystemUtils.ToggleMouseCursor();
                 if (_context.PlayerCylControls.MouseLookEnabled)
                 {
-                    if (!Cursor.visible)
+                    if (Cursor.lockState == CursorLockMode.Locked)
                         _context.PlayerCylControls.CylArcadeActions.Look.Enable();
                     else
                         _context.PlayerCylControls.CylArcadeActions.Look.Disable();
@@ -117,7 +117,7 @@ namespace Arcade
             if (_context.CurrentModelConfiguration != _context.ArcadeController.CurrentGame)
                 UpdateCurrentInteractable();
 
-            if (!Cursor.visible && _context.PlayerCylControls.CylArcadeActions.Interact.triggered)
+            if (Cursor.lockState == CursorLockMode.Locked && _context.PlayerCylControls.CylArcadeActions.Interact.triggered)
             {
                 VideoPlayerController.StopVideo(_context.CurrentModelConfiguration);
                 HandleInteraction();

@@ -60,8 +60,11 @@ namespace Arcade
         private static Scene _loadedScene;
         private static bool _sceneLoaded;
 
-        private readonly Database<EmulatorConfiguration> _emulatorDatabase;
+        private readonly XMLDatabase<EmulatorConfiguration> _emulatorDatabase;
+        private readonly XMLDatabase<PlatformConfiguration> _platformDatabase;
         private readonly AssetCache<GameObject> _gameObjectCache;
+
+        private readonly ModelMatcher _modelMatcher;
 
         private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
         private readonly NodeController<ScreenNodeTag> _screenNodeController;
@@ -74,7 +77,8 @@ namespace Arcade
         public ArcadeController(ArcadeHierarchy arcadeHierarchy,
                                 PlayerFpsControls playerFpsControls,
                                 PlayerCylControls playerCylControls,
-                                Database<EmulatorConfiguration> emulatorDatabase,
+                                XMLDatabase<EmulatorConfiguration> emulatorDatabase,
+                                XMLDatabase<PlatformConfiguration> platformDatabase,
                                 AssetCache<GameObject> gameObjectCache,
                                 NodeController<MarqueeNodeTag> marqueeNodeController,
                                 NodeController<ScreenNodeTag> screenNodeController,
@@ -85,11 +89,14 @@ namespace Arcade
             _playerCylControls = playerCylControls != null ? playerCylControls : throw new System.ArgumentNullException(nameof(playerCylControls));
             _allGames          = new List<Transform>();
             _emulatorDatabase  = emulatorDatabase ?? throw new System.ArgumentNullException(nameof(emulatorDatabase));
+            _platformDatabase  = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
             _gameObjectCache   = gameObjectCache ?? throw new System.ArgumentNullException(nameof(gameObjectCache));
 
             _marqueeNodeController = marqueeNodeController;
             _screenNodeController  = screenNodeController;
             _genericNodeController = genericNodeController;
+
+            _modelMatcher = new ModelMatcher(_emulatorDatabase, _platformDatabase);
 
             _coroutineHelper = Object.FindObjectOfType<CoroutineHelper>();
             Assert.IsNotNull(_coroutineHelper);
@@ -158,7 +165,7 @@ namespace Arcade
             yield break;
         }
 
-        protected IEnumerator AddModelsToWorld(bool gameModels, ModelConfiguration[] modelConfigurations, Transform parent, RenderSettings renderSettings, string resourceDirectory, ContentMatcher.GetNamesToTryDelegate getNamesToTry)
+        protected IEnumerator AddModelsToWorld(bool gameModels, ModelConfiguration[] modelConfigurations, Transform parent, RenderSettings renderSettings, string resourceDirectory, ModelMatcher.GetNamesToTryDelegate getNamesToTry)
         {
             if (modelConfigurations == null)
                 yield break;
@@ -171,8 +178,7 @@ namespace Arcade
 
             foreach (ModelConfiguration modelConfiguration in modelConfigurations)
             {
-                EmulatorConfiguration emulator = ContentMatcher.GetEmulatorForConfiguration(_emulatorDatabase, modelConfiguration);
-                List<string> namesToTry        = getNamesToTry(modelConfiguration, emulator);
+                List<string> namesToTry = getNamesToTry(modelConfiguration);
 
                 GameObject prefab = _gameObjectCache.Load(resourceDirectory, namesToTry);
                 if (prefab == null)
@@ -183,9 +189,23 @@ namespace Arcade
                 // Look for artworks only in play mode / runtime
                 if (Application.isPlaying)
                 {
-                    _marqueeNodeController?.Setup(this, instantiatedModel, modelConfiguration, emulator, renderSettings.MarqueeIntensity);
-                    _screenNodeController?.Setup(this, instantiatedModel, modelConfiguration, emulator, GetScreenIntensity(modelConfiguration, renderSettings));
-                    _genericNodeController?.Setup(this, instantiatedModel, modelConfiguration, emulator, 1f);
+
+                    PlatformConfiguration platform = null;
+                    //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
+                    //    platform = _platformDatabase.Get(modelConfiguration.Platform);
+
+                    GameConfiguration game = null;
+                    if (platform != null && platform.MasterList != null)
+                    {
+                        //game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
+                        if (game != null)
+                        {
+                        }
+                    }
+
+                    _marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
+                    _screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
+                    _genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
                 }
 
                 if (gameModels)
@@ -207,7 +227,7 @@ namespace Arcade
 
         protected static GameObject InstantiatePrefab(GameObject prefab, Transform parent, ModelConfiguration modelConfiguration, bool useModelTransforms)
         {
-            Vector3 position    = useModelTransforms ? modelConfiguration.Position : Vector3.zero;
+            Vector3 position    = useModelTransforms ? modelConfiguration.Position : XMLVector3.zero;
             Quaternion rotation = useModelTransforms ? Quaternion.Euler(modelConfiguration.Rotation) : Quaternion.identity;
 
             GameObject model           = Object.Instantiate(prefab, position, rotation, parent);
@@ -219,13 +239,19 @@ namespace Arcade
             return model;
         }
 
-        protected static float GetScreenIntensity(ModelConfiguration modelConfiguration, RenderSettings renderSettings) => modelConfiguration.ScreenType switch
+        protected static float GetScreenIntensity(GameConfiguration gameConfiguration, RenderSettings renderSettings)
         {
-            GameScreenType.Raster => renderSettings.ScreenRasterIntensity,
-            GameScreenType.Vector => renderSettings.ScreenVectorIntenstity,
-            GameScreenType.Pinball => renderSettings.ScreenPinballIntensity,
-            _ => 1.4f,
-        };
+            if (gameConfiguration == null)
+                return 1.4f;
+
+            return gameConfiguration.ScreenType switch
+            {
+                GameScreenType.Raster  => renderSettings.ScreenRasterIntensity,
+                GameScreenType.Vector  => renderSettings.ScreenVectorIntenstity,
+                GameScreenType.Pinball => renderSettings.ScreenPinballIntensity,
+                _                      => 1.4f,
+            };
+        }
 
         private IEnumerator CoUnloadArcadeScene()
         {
@@ -250,9 +276,9 @@ namespace Arcade
         {
             _sceneLoaded = false;
 
-            string sceneName;
-            if (!string.IsNullOrEmpty(_arcadeConfiguration.ArcadeScene))
-                sceneName = _arcadeConfiguration.ArcadeScene;
+            string sceneName = null;
+            if (!string.IsNullOrEmpty(_arcadeConfiguration.Scene))
+                sceneName = _arcadeConfiguration.Scene;
             else
                 sceneName = _arcadeConfiguration.Id;
 
@@ -279,14 +305,14 @@ namespace Arcade
             while (!asyncOperation.isDone)
                 yield return null;
 #endif
-            _loadedScene = SceneManager.GetSceneByName(_arcadeConfiguration.ArcadeScene);
+            _loadedScene = SceneManager.GetSceneByName(_arcadeConfiguration.Scene);
 
             PostLoadScene();
 
             RenderSettings renderSettings = _arcadeConfiguration.RenderSettings;
 
-            _ = _coroutineHelper.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.PropModelList, _arcadeHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ContentMatcher.GetNamesToTryForProp));
-            _ = _coroutineHelper.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.GameModelList, _arcadeHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, ContentMatcher.GetNamesToTryForGame));
+            _ = _coroutineHelper.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.Props, _arcadeHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ModelMatcher.GetNamesToTryForProp));
+            _ = _coroutineHelper.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.Games, _arcadeHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, _modelMatcher.GetNamesToTryForGame));
             while (!_gameModelsLoaded)
                 yield return null;
 

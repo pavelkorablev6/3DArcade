@@ -20,18 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class GenericNodeController : NodeController<GenericNodeTag>
     {
+        public GenericNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        : base(emulatorDatabase, platformDatabase)
+        {
+        }
+
         protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/Generics" };
+
         protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/GenericsVideo" };
 
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.GenericImageDirectories;
 
         protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.GenericVideoDirectories;
+
+        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.GenericImagesDirectories;
+
+        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.GenericVideosDirectories;
 
         protected override string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator) => emulator?.GenericImagesDirectories;
 

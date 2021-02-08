@@ -24,8 +24,8 @@ namespace Arcade
 {
     public interface IVirtualFileSystem
     {
-        void MountDirectory(string alias, string path);
-        void MountFile(string alias, string path);
+        IVirtualFileSystem MountDirectory(string alias, string path);
+        IVirtualFileSystem MountFile(string alias, string path);
         string GetDirectory(string alias);
         string GetFile(string alias);
         string[] GetFiles(string alias, string searchPattern, bool searchAllDirectories);

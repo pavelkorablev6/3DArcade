@@ -44,17 +44,9 @@ namespace Arcade
                 HideMouseCursor();
         }
 
-        public static void ShowMouseCursor()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible   = true;
-        }
+        public static void ShowMouseCursor() => Cursor.lockState = CursorLockMode.None;
 
-        public static void HideMouseCursor()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible   = false;
-        }
+        public static void HideMouseCursor() => Cursor.lockState = CursorLockMode.Locked;
 
         public static void ExitApp() =>
 #if UNITY_EDITOR

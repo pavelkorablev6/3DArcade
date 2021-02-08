@@ -38,10 +38,8 @@ namespace Arcade
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
             _context.PlayerFpsControls.FpsArcadeActions.Enable();
-            if (Cursor.visible)
-            {
+            if (Cursor.lockState != CursorLockMode.Locked)
                 _context.PlayerFpsControls.FpsArcadeActions.Look.Disable();
-            }
 
             _context.CurrentModelConfiguration = null;
 
@@ -69,7 +67,7 @@ namespace Arcade
             if (_context.PlayerFpsControls.GlobalActions.ToggleCursor.triggered)
             {
                 SystemUtils.ToggleMouseCursor();
-                if (!Cursor.visible)
+                if (Cursor.lockState == CursorLockMode.Locked)
                     _context.PlayerFpsControls.FpsArcadeActions.Look.Enable();
                 else
                     _context.PlayerFpsControls.FpsArcadeActions.Look.Disable();
@@ -82,7 +80,7 @@ namespace Arcade
 
             _context.VideoPlayerController.UpdateVideosState();
 
-            if (!Cursor.visible && _context.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
+            if (Cursor.lockState == CursorLockMode.Locked && _context.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
                 HandleInteraction();
 
             if (_context.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)

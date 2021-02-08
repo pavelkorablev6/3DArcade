@@ -53,7 +53,7 @@ namespace Arcade
 
         public override void Update(float dt)
         {
-            bool useMousePosition = Mouse.current != null && Cursor.visible;
+            bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
             Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : _data.ScreenPoint;
             Ray ray               = _context.PlayerFpsControls.Camera.ScreenPointToRay(rayPosition);
             MoveCabController.AutoMoveAndRotate(_data, ray, _context.PlayerFpsControls.transform.forward, RAYCAST_MAX_DISTANCE, _context.RaycastLayers);

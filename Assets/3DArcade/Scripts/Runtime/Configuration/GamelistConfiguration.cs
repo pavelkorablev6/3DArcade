@@ -23,7 +23,7 @@
 namespace Arcade
 {
     [System.Serializable]
-    public sealed class GamelistConfiguration : Configuration
+    public sealed class GamelistConfiguration : XMLDatabaseEntry
     {
         public GameConfiguration[] Games;
     }

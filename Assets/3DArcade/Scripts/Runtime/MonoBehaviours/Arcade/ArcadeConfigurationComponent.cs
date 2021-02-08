@@ -35,28 +35,28 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class ArcadeConfigurationComponent : MonoBehaviour
     {
-        public string DescriptiveName                  = default;
         public string Id                               = default;
+        public string Description                      = default;
         public string ArcadeScene                      = default;
         public RenderSettings RenderSettings           = default;
         public AudioSettings AudioSettings             = default;
         public FpsArcadeProperties FpsArcadeProperties = default;
         public CylArcadeProperties CylArcadeProperties = default;
 
-        public bool Save(Database<ArcadeConfiguration> arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
+        public bool Save(ArcadeDatabase arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
         {
             GetChildNodes(out Transform tGames, out Transform tProps);
 
             ArcadeConfiguration cfg = new ArcadeConfiguration
             {
-                DescriptiveName     = DescriptiveName,
                 Id                  = Id,
-                ArcadeScene         = ArcadeScene,
+                Description         = Description,
+                Scene         = ArcadeScene,
                 RenderSettings      = RenderSettings,
                 FpsArcadeProperties = FpsArcadeProperties ?? Defaults.FpsArcadeProperties,
                 CylArcadeProperties = CylArcadeProperties ?? Defaults.CylArcadeProperties,
-                GameModelList       = saveGameTransforms ? GetModelConfigurations(tGames) : arcadeDatabase.Get(Id).GameModelList,
-                PropModelList       = GetModelConfigurations(tProps)
+                Games       = saveGameTransforms ? GetModelConfigurations(tGames) : arcadeDatabase.Get(Id).Games,
+                Props       = GetModelConfigurations(tProps)
             };
 
             if (fpsCameraSettings != null)
@@ -68,23 +68,23 @@ namespace Arcade
             return arcadeDatabase.Save(cfg);
         }
 
-        public bool SaveModelsOnly(Database<ArcadeConfiguration> arcadeDatabase, ArcadeConfiguration cfg)
+        public bool SaveModelsOnly(ArcadeDatabase arcadeDatabase, ArcadeConfiguration cfg)
         {
-            GetGamesAndProps(out cfg.GameModelList, out cfg.PropModelList);
+            GetGamesAndProps(out cfg.Games, out cfg.Props);
             return arcadeDatabase.Save(cfg);
         }
 
         public void Restore(ArcadeConfiguration cfg)
         {
-            DescriptiveName     = cfg.DescriptiveName;
+            Description     = cfg.Description;
             Id                  = cfg.Id;
-            ArcadeScene         = cfg.ArcadeScene;
+            ArcadeScene         = cfg.Scene;
             RenderSettings      = cfg.RenderSettings;
             FpsArcadeProperties = cfg.FpsArcadeProperties ?? Defaults.FpsArcadeProperties;
             CylArcadeProperties = cfg.CylArcadeProperties ?? Defaults.CylArcadeProperties;
         }
 
-        public void SetGamesAndPropsTransforms(ArcadeConfiguration cfg) => SetGamesAndPropsTransforms(cfg.GameModelList, cfg.PropModelList);
+        public void SetGamesAndPropsTransforms(ArcadeConfiguration cfg) => SetGamesAndPropsTransforms(cfg.Games, cfg.Props);
 
         public void SetGamesAndPropsTransforms(ModelConfiguration[] games, ModelConfiguration[] props)
         {

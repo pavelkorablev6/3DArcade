@@ -63,7 +63,7 @@ namespace Arcade
 
             OSUtils.ProcessCommand command = new OSUtils.ProcessCommand
             {
-                Name             = emulator.DescriptiveName,
+                Name             = emulator.Description,
                 Id               = emulator.Id,
                 Path             = System.IO.Path.Combine(emulator.Directory, emulator.Executable),
                 WorkingDirectory = emulator.WorkingDirectory,

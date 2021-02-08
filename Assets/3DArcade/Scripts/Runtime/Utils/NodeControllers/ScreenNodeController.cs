@@ -21,13 +21,18 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Arcade
 {
     public sealed class ScreenNodeController : NodeController<ScreenNodeTag>
     {
+        public ScreenNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        : base(emulatorDatabase, platformDatabase)
+        {
+        }
+
         protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/Screens", $"{_defaultMediaDirectory}/Titles" };
+
         protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/ScreensVideo" };
 
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
@@ -65,5 +70,9 @@ namespace Arcade
         }
 
         protected override string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator) => emulator?.ScreenVideosDirectories;
+
+        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.ScreenVideosDirectories;
+
+        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.ScreenVideosDirectories;
     }
 }

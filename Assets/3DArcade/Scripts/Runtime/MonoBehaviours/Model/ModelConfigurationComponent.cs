@@ -27,11 +27,12 @@ namespace Arcade
     [DisallowMultipleComponent, SelectionBase]
     public sealed class ModelConfigurationComponent : MonoBehaviour
     {
-        public string DescriptiveName           = default;
         public string Id                        = default;
-        public string Model                     = default;
+        public string Description               = default;
         public InteractionType InteractionType  = default;
+        public string Platform                  = default;
         public string Emulator                  = default;
+        public string Model                     = default;
         public string[] MarqueeImageDirectories = default;
         public string[] MarqueeVideoDirectories = default;
         public string[] ScreenImageDirectories  = default;
@@ -57,11 +58,12 @@ namespace Arcade
 
         public void FromModelConfiguration(ModelConfiguration modelConfiguration)
         {
-            DescriptiveName         = modelConfiguration.DescriptiveName;
             Id                      = modelConfiguration.Id;
-            Model                   = modelConfiguration.Model;
+            Description             = modelConfiguration.Description;
             InteractionType         = modelConfiguration.InteractionType;
+            Platform                = modelConfiguration.Platform;
             Emulator                = modelConfiguration.Emulator;
+            Model                   = modelConfiguration.Model;
             MarqueeImageDirectories = modelConfiguration.MarqueeImageDirectories;
             MarqueeVideoDirectories = modelConfiguration.MarqueeVideoDirectories;
             ScreenImageDirectories  = modelConfiguration.ScreenImageDirectories;
@@ -73,26 +75,16 @@ namespace Arcade
             Grabbable               = modelConfiguration.Grabbable;
             MoveCabMovable          = modelConfiguration.MoveCabMovable;
             MoveCabGrabbable        = modelConfiguration.MoveCabGrabbable;
-
-            CloneOf           = modelConfiguration.CloneOf;
-            RomOf             = modelConfiguration.RomOf;
-            Genre             = modelConfiguration.Genre;
-            Year              = modelConfiguration.Year;
-            Manufacturer      = modelConfiguration.Manufacturer;
-            ScreenType        = modelConfiguration.ScreenType;
-            ScreenOrientation = modelConfiguration.ScreenOrientation;
-            Mature            = modelConfiguration.Mature;
-            Available         = modelConfiguration.Available;
-            Runnable          = modelConfiguration.Runnable;
         }
 
         public ModelConfiguration ToModelConfiguration() => new ModelConfiguration
         {
-            DescriptiveName         = DescriptiveName,
             Id                      = Id,
-            Model                   = Model,
+            Description             = Description,
             InteractionType         = InteractionType,
+            Platform                = Platform,
             Emulator                = Emulator,
+            Model                   = Model,
             MarqueeImageDirectories = MarqueeImageDirectories,
             MarqueeVideoDirectories = MarqueeVideoDirectories,
             ScreenImageDirectories  = ScreenImageDirectories,
@@ -104,17 +96,6 @@ namespace Arcade
             Grabbable               = Grabbable,
             MoveCabMovable          = MoveCabMovable,
             MoveCabGrabbable        = MoveCabGrabbable,
-
-            CloneOf           = CloneOf,
-            RomOf             = RomOf,
-            Genre             = Genre,
-            Year              = Year,
-            Manufacturer      = Manufacturer,
-            ScreenType        = ScreenType,
-            ScreenOrientation = ScreenOrientation,
-            Mature            = Mature,
-            Available         = Available,
-            Runnable          = Runnable,
 
             Position = transform.localPosition,
             Rotation = MathUtils.CorrectEulerAngles(transform.localEulerAngles),

@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using System.IO;
 
 namespace Arcade
 {
@@ -35,16 +36,18 @@ namespace Arcade
             _mountedFiles       = new Dictionary<string, string>();
         }
 
-        public void MountDirectory(string alias, string path)
+        public IVirtualFileSystem MountDirectory(string alias, string path)
         {
-            if (!_mountedDirectories.ContainsKey(alias) && FileSystem.DirectoryExists(path))
+            if (!_mountedDirectories.ContainsKey(alias))
                 _mountedDirectories.Add(alias, path);
+            return this;
         }
 
-        public void MountFile(string alias, string path)
+        public IVirtualFileSystem MountFile(string alias, string path)
         {
-            if (!_mountedFiles.ContainsKey(alias) && FileSystem.FileExists(path))
+            if (!_mountedFiles.ContainsKey(alias))
                 _mountedFiles.Add(alias, path);
+            return this;
         }
 
         public string GetDirectory(string alias)

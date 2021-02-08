@@ -20,21 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+using System.Xml.Serialization;
 
 namespace Arcade
 {
     [System.Serializable]
     public sealed class CameraSettings
     {
-        public Vector3 Position;
-        public Vector3 Rotation;
+        [XmlElement("position")]
+        public XMLVector3 Position;
+
+        [XmlElement("rotation")]
+        public XMLVector3 Rotation;
+
+        [XmlElement("height")]
         public float Height;
+
+        [XmlAttribute("orthographic")]
         public bool Orthographic;
+
+        [XmlElement("field_of_view")]
         public float FieldOfView;
+
+        [XmlElement("aspect_ratio")]
         public float AspectRatio;
+
+        [XmlElement("near_clip")]
         public float NearClipPlane;
+
+        [XmlElement("far_clip")]
         public float FarClipPlane;
-        public Rect ViewportRect;
+
+        [XmlElement("viewport_rect")]
+        public XMLRect ViewportRect;
     }
 }

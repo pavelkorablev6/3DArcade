@@ -32,7 +32,22 @@ namespace Arcade
         protected abstract string[] DefaultImageDirectories { get; }
         protected abstract string[] DefaultVideoDirectories { get; }
 
-        public void Setup(ArcadeController arcadeController, GameObject model, ModelConfiguration modelConfiguration, EmulatorConfiguration emulator, float emissionIntensity)
+        private static EmulatorDatabase _emulatorDatabase;
+        private static PlatformDatabase _platformDatabase;
+
+        private readonly ArtworkMatcher _artworkMatcher;
+
+        public NodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        {
+            if (_emulatorDatabase == null)
+            {
+                _emulatorDatabase = emulatorDatabase;
+                _platformDatabase = platformDatabase;
+            }
+            _artworkMatcher = new ArtworkMatcher(emulatorDatabase, platformDatabase);
+        }
+
+        public void Setup(ArcadeController arcadeController, GameObject model, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
             Renderer[] renderers = GetNodeRenderers(model);
             if (renderers == null)
@@ -46,12 +61,17 @@ namespace Arcade
                 renderer.material.SetEmissionColor(Color.white * emissionIntensity);
             }
 
-            List<string> namesToTry = ArtworkMatcher.GetNamesToTry(modelConfiguration, emulator);
+            List<string> namesToTry = _artworkMatcher.GetNamesToTry(modelConfiguration);
 
-            List<string> directories = ArtworkMatcher.GetDirectoriesToTry(GetModelImageDirectories(modelConfiguration), GetEmulatorImageDirectories(emulator), DefaultImageDirectories);
+            EmulatorConfiguration emulator = !string.IsNullOrEmpty(modelConfiguration.Emulator) ? _emulatorDatabase.Get(modelConfiguration.Emulator) : null;
+            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _platformDatabase.Get(modelConfiguration.Platform) : null;
+            if (platform != null)
+                emulator ??= platform != null ? _emulatorDatabase.Get(platform.Emulator) : null;
+
+            List<string> directories = _artworkMatcher.GetDirectoriesToTry(GetModelImageDirectories(modelConfiguration), GetEmulatorImageDirectories(emulator), GetPlatformImageDirectories(platform), DefaultImageDirectories);
             ArtworkUtils.SetupImages(directories, namesToTry, renderers, this as MarqueeNodeController != null);
 
-            directories = ArtworkMatcher.GetDirectoriesToTry(GetModelVideoDirectories(modelConfiguration), GetEmulatorVideoDirectories(emulator), DefaultVideoDirectories);
+            directories = _artworkMatcher.GetDirectoriesToTry(GetModelVideoDirectories(modelConfiguration), GetEmulatorVideoDirectories(emulator), GetPlatformVideoDirectories(platform), DefaultVideoDirectories);
             ArtworkUtils.SetupVideos(directories, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
         }
 
@@ -62,6 +82,10 @@ namespace Arcade
         protected abstract string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator);
 
         protected abstract string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator);
+
+        protected abstract string[] GetPlatformImageDirectories(PlatformConfiguration platform);
+
+        protected abstract string[] GetPlatformVideoDirectories(PlatformConfiguration platform);
 
         private static Renderer[] GetNodeRenderers(GameObject model)
         {

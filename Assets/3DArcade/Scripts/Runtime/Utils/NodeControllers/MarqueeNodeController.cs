@@ -20,13 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class MarqueeNodeController : NodeController<MarqueeNodeTag>
     {
+        public MarqueeNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        : base(emulatorDatabase, platformDatabase)
+        {
+        }
+
         protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/Marquees" };
+
         protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/MarqueesVideo" };
 
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.MarqueeImageDirectories;
@@ -36,5 +40,9 @@ namespace Arcade
         protected override string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator) => emulator?.MarqueeImagesDirectories;
 
         protected override string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator) => emulator?.MarqueeVideosDirectories;
+
+        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.MarqueeVideosDirectories;
+
+        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.MarqueeVideosDirectories;
     }
 }

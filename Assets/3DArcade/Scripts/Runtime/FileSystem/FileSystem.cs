@@ -20,13 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEngine;
 
 namespace Arcade
 {
@@ -75,85 +69,6 @@ namespace Arcade
                 files[i] = Path.GetFullPath(files[i]);
 
             return files.Length > 0 ? files : null;
-        }
-
-        public static void JsonSerialize<T>(string filePath, T configuration)
-            where T : class
-        {
-            try
-            {
-                JsonSerializer serializer = new JsonSerializer
-                {
-                    ContractResolver = BaseFirstContractResolver.Instance
-                };
-
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Geometry.RectConverter());
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector2Converter());
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector3Converter());
-
-                using StreamWriter sw    = new StreamWriter(filePath);
-                using JsonTextWriter jtw = new JsonTextWriter(sw)
-                {
-                    Formatting  = Formatting.Indented,
-                    IndentChar  = ' ',
-                    Indentation = 4
-                };
-
-                serializer.Serialize(jtw, configuration);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
-        public static T JsonDeserialize<T>(string path)
-            where T : class
-        {
-            try
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Geometry.RectConverter());
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector2Converter());
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector3Converter());
-
-                using StreamReader sr    = new StreamReader(path);
-                using JsonTextReader jtr = new JsonTextReader(sr);
-                return serializer.Deserialize<T>(jtr);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            return null;
-        }
-    }
-
-    public class BaseFirstContractResolver : DefaultContractResolver
-    {
-        static BaseFirstContractResolver() => Instance = new BaseFirstContractResolver();
-
-        public static readonly BaseFirstContractResolver Instance;
-
-        protected override IList<JsonProperty> CreateProperties(System.Type type, MemberSerialization memberSerialization)
-        {
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            if (properties != null)
-                return properties.OrderBy(p => p.DeclaringType.BaseTypesAndSelf().Count()).ToList();
-            return properties;
-        }
-    }
-
-    public static class TypeExtensions
-    {
-        public static IEnumerable<System.Type> BaseTypesAndSelf(this System.Type type)
-        {
-            while (type != null)
-            {
-                yield return type;
-                type = type.BaseType;
-            }
         }
     }
 }

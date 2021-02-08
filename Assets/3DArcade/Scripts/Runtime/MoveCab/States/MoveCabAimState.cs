@@ -43,7 +43,7 @@ namespace Arcade
         public override void Update(float dt)
         {
             Vector2 rayPosition;
-            if (Cursor.visible && Mouse.current != null)
+            if (Cursor.lockState != CursorLockMode.Locked && Mouse.current != null)
                 rayPosition = Mouse.current.position.ReadValue();
             else
                 rayPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);

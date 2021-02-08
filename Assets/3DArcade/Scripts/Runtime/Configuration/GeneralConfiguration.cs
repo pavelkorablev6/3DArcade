@@ -20,28 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace Arcade
 {
-    [System.Serializable]
+    [XmlRoot("general")]
     public sealed class GeneralConfiguration
     {
+        [XmlElement("starting_arcade")]
         public string StartingArcade;
-        [JsonConverter(typeof(StringEnumConverter))]
+
+        [XmlElement("starting_arcade_type")]
         public ArcadeType StartingArcadeType;
 
         private readonly IVirtualFileSystem _virtualFileSystem;
+        private readonly string _filePath;
 
-        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem) => _virtualFileSystem = virtualFileSystem;
+        public GeneralConfiguration()
+        {
+        }
+
+        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem)
+        {
+            _virtualFileSystem = virtualFileSystem;
+            _filePath          = virtualFileSystem.GetFile("general_cfg");
+        }
 
         public bool Load()
         {
             try
             {
-                GeneralConfiguration cfg = FileSystem.JsonDeserialize<GeneralConfiguration>(_virtualFileSystem.GetFile("general_cfg"));
+                GeneralConfiguration cfg = XMLUtils.Deserialize<GeneralConfiguration>(_filePath);
+                cfg ??= new GeneralConfiguration(_virtualFileSystem) { StartingArcade = "empty", StartingArcadeType = ArcadeType.Cyl };
                 Debug.Log($"[{GetType().Name}] Loaded general configuration.");
                 StartingArcade     = cfg.StartingArcade;
                 StartingArcadeType = cfg.StartingArcadeType;
@@ -50,25 +61,23 @@ namespace Arcade
             catch (System.Exception e)
             {
                 Debug.LogException(e);
+                return false;
             }
-
-            return false;
         }
 
         public bool Save()
         {
             try
             {
-                FileSystem.JsonSerialize(_virtualFileSystem.GetFile("general_cfg"), this);
+                XMLUtils.Serialize(_filePath, this);
                 Debug.Log($"[{GetType().Name}] Saved general configuration.");
                 return true;
             }
             catch (System.Exception e)
             {
                 Debug.LogException(e);
+                return false;
             }
-
-            return false;
         }
     }
 }

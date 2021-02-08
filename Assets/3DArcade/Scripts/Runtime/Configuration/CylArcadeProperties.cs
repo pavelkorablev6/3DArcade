@@ -20,9 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using UnityEngine;
+using System.Xml.Serialization;
 
 namespace Arcade
 {
@@ -40,25 +38,46 @@ namespace Arcade
     [System.Serializable]
     public sealed class CylArcadeProperties
     {
+        [XmlElement("camera_settings")]
         public CameraSettings CameraSettings;
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [XmlElement("wheel_variant")]
         public WheelVariant WheelVariant;
 
+        [XmlAttribute("inverse_navigation")]
         public bool InverseNavigation;
+
+        [XmlAttribute("inverse_list")]
         public bool InverseList;
+
+        [XmlElement("wheel_radius")]
         public float WheelRadius;
+
+        [XmlElement("sprockets")]
         public int Sprockets;
+
+        [XmlElement("selected_sprocket")]
         public int SelectedSprocket;
+
+        [XmlElement("selected_position_z")]
         public float SelectedPositionZ;
+
+        [XmlElement("model_spacing")]
         public float ModelSpacing;
 
+        [XmlAttribute("mouse_look")]
         public bool MouseLook;
+
+        [XmlAttribute("mouselook_reverse")]
         public bool MouseLookReverse;
 
-        public Vector3 SprocketRotation;
+        [XmlElement("sprocket_rotation")]
+        public XMLVector3 SprocketRotation;
 
+        [XmlElement("line_angle")]
         public float LineAngle;
+
+        [XmlAttribute("horizontal_navigation")]
         public bool HorizontalNavigation;
     }
 }

@@ -20,11 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Xml.Serialization;
+
 namespace Arcade
 {
     [System.Serializable]
     public sealed class FpsArcadeProperties
     {
+        [XmlElement("camera_settings")]
         public CameraSettings CameraSettings;
     }
 }

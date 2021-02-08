@@ -33,12 +33,13 @@ namespace Arcade
         public CylArcadeControllerWheel3D(ArcadeHierarchy arcadeHierarchy,
                                           PlayerFpsControls playerFpsControls,
                                           PlayerCylControls playerCylControls,
-                                          Database<EmulatorConfiguration> emulatorDatabase,
+                                          XMLDatabase<EmulatorConfiguration> emulatorDatabase,
+                                          XMLDatabase<PlatformConfiguration> platformDatabase,
                                           AssetCache<GameObject> gameObjectCache,
                                           NodeController<MarqueeNodeTag> marqueeNodeController,
                                           NodeController<ScreenNodeTag> screenNodeController,
                                           NodeController<GenericNodeTag> genericNodeController)
-        : base(arcadeHierarchy, playerFpsControls, playerCylControls, emulatorDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        : base(arcadeHierarchy, playerFpsControls, playerCylControls, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
             => _pivotPoint = new GameObject(CYLARCADE_PIVOT_POINT_GAMEOBJECT_NAME).transform;
 
         protected sealed override void AdjustWheelForward(float dt) => _pivotPoint.Rotate(-TransformVector * 20f * dt, Space.Self);

@@ -31,12 +31,13 @@ namespace Arcade
         public CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeHierarchy arcadeHierarchy,
                                                                  PlayerFpsControls playerFpsControls,
                                                                  PlayerCylControls playerCylControls,
-                                                                 Database<EmulatorConfiguration> emulatorDatabase,
+                                                                 XMLDatabase<EmulatorConfiguration> emulatorDatabase,
+                                                                 XMLDatabase<PlatformConfiguration> platformDatabase,
                                                                  AssetCache<GameObject> gameObjectCache,
                                                                  NodeController<MarqueeNodeTag> marqueeNodeController,
                                                                  NodeController<ScreenNodeTag> screenNodeController,
                                                                  NodeController<GenericNodeTag> genericNodeController)
-        : base(arcadeHierarchy, playerFpsControls, playerCylControls, emulatorDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        : base(arcadeHierarchy, playerFpsControls, playerCylControls, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
         {
         }
 

@@ -38,7 +38,7 @@ namespace Arcade
             _context.VideoPlayerController.StopAllVideos();
 
             _context.PlayerFpsControls.FpsArcadeActions.Enable();
-            if (Cursor.visible)
+            if (Cursor.lockState != CursorLockMode.Locked)
                 _context.PlayerFpsControls.FpsArcadeActions.Look.Disable();
             _context.PlayerFpsControls.FpsArcadeActions.Interact.Disable();
 
@@ -80,7 +80,7 @@ namespace Arcade
             if (_context.PlayerFpsControls.GlobalActions.ToggleCursor.triggered)
             {
                 SystemUtils.ToggleMouseCursor();
-                if (!Cursor.visible)
+                if (Cursor.lockState == CursorLockMode.Locked)
                     _context.PlayerFpsControls.FpsArcadeActions.Look.Enable();
                 else
                     _context.PlayerFpsControls.FpsArcadeActions.Look.Disable();
