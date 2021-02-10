@@ -51,12 +51,12 @@ namespace Arcade
             {
                 Id                  = Id,
                 Description         = Description,
-                Scene         = ArcadeScene,
+                Scene               = ArcadeScene,
                 RenderSettings      = RenderSettings,
                 FpsArcadeProperties = FpsArcadeProperties ?? Defaults.FpsArcadeProperties,
                 CylArcadeProperties = CylArcadeProperties ?? Defaults.CylArcadeProperties,
-                Games       = saveGameTransforms ? GetModelConfigurations(tGames) : arcadeDatabase.Get(Id).Games,
-                Props       = GetModelConfigurations(tProps)
+                Games               = saveGameTransforms ? GetModelConfigurations(tGames) : arcadeDatabase.Get(Id).Games,
+                Props               = GetModelConfigurations(tProps)
             };
 
             if (fpsCameraSettings != null)
@@ -104,8 +104,8 @@ namespace Arcade
         {
             Assert.IsTrue(transform.childCount >= 2);
 
-            tGames   = transform.GetChild(0);
-            tProps   = transform.GetChild(1);
+            tGames = transform.GetChild(0);
+            tProps = transform.GetChild(1);
 
             Assert.IsTrue(tGames.name == "GameModels");
             Assert.IsTrue(tProps.name == "PropModels");

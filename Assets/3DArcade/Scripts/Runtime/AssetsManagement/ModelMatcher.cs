@@ -94,14 +94,10 @@ namespace Arcade
             }
 
             // From model's emulator's model and id
-            if (!string.IsNullOrEmpty(cfg.Emulator))
+            if (!string.IsNullOrEmpty(cfg.Emulator) && _emulatorDatabase.Get(cfg.Emulator, out EmulatorConfiguration emulator))
             {
-                EmulatorConfiguration emulator = _emulatorDatabase.Get(cfg.Emulator);
-                if (emulator != null)
-                {
-                    result.AddStringIfNotNullOrEmpty(emulator.Model);
-                    result.AddStringIfNotNullOrEmpty(emulator.Id);
-                }
+                result.AddStringIfNotNullOrEmpty(emulator.Model);
+                result.AddStringIfNotNullOrEmpty(emulator.Id);
             }
 
             if (platform != null)
@@ -111,8 +107,7 @@ namespace Arcade
                 result.AddStringIfNotNullOrEmpty(platform.Id);
 
                 // From platform's emulator's model and id
-                EmulatorConfiguration emulator = _emulatorDatabase.Get(platform.Emulator);
-                if (emulator != null)
+                if (!string.IsNullOrEmpty(platform.Emulator) && _emulatorDatabase.Get(platform.Emulator, out emulator))
                 {
                     result.AddStringIfNotNullOrEmpty(emulator.Model);
                     result.AddStringIfNotNullOrEmpty(emulator.Id);

@@ -90,17 +90,14 @@ namespace Arcade
             }
 
             // From model's emulator override
-            if (!string.IsNullOrEmpty(model.Emulator))
-            {
-                EmulatorConfiguration emulator = _emulatorDatabase.Get(model.Emulator);
-                AddPossibleVariants(result, emulator?.Id);
-            }
+            if (!string.IsNullOrEmpty(model.Emulator) && _emulatorDatabase.Get(model.Emulator, out EmulatorConfiguration emulator))
+                AddPossibleVariants(result, emulator.Id);
 
             // From platform's emulator
             if (platform != null)
             {
-                EmulatorConfiguration emulator = _emulatorDatabase.Get(platform.Emulator);
-                AddPossibleVariants(result, emulator?.Id);
+                if (!string.IsNullOrEmpty(platform.Emulator) && _emulatorDatabase.Get(platform.Emulator, out emulator))
+                    AddPossibleVariants(result, emulator.Id);
 
                 // From platform's id
                 AddPossibleVariants(result, platform.Id);

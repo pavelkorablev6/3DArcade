@@ -105,13 +105,13 @@ namespace Arcade
 
         public bool SetCurrentArcadeConfiguration(string id, ArcadeType type)
         {
-            ArcadeConfiguration arcadeConfiguration = _arcadeDatabase.Get(id);
-            if (arcadeConfiguration != null)
+            if (_arcadeDatabase.Get(id, out ArcadeConfiguration arcadeConfiguration))
             {
                 CurrentArcadeConfiguration = arcadeConfiguration;
                 CurrentArcadeType          = type;
+                return true;
             }
-            return arcadeConfiguration != null;
+            return false;
         }
 
         public void SetAndStartCurrentArcadeConfiguration(string id, ArcadeType type)

@@ -79,8 +79,7 @@ namespace Arcade.UnityEditor
 
         public void LoadAndStartArcade(string name)
         {
-            ArcadeConfiguration arcadeConfiguration = ArcadeDatabase.Get(name);
-            if (arcadeConfiguration == null)
+            if (!ArcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
             ArcadeHierarchy.RootNode.gameObject.AddComponentIfNotFound<ArcadeConfigurationComponent>()

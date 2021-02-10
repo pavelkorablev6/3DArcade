@@ -48,30 +48,50 @@ namespace Arcade
         {
             if (string.IsNullOrEmpty(id))
             {
-                Debug.LogWarning($"[{GetType().Name}] Passed null for configuration ID");
+                Debug.LogWarning($"[{GetType().Name}.Get] Passed null for configuration ID");
                 return null;
             }
 
             if (!_entries.ContainsKey(id))
             {
-                Debug.LogWarning($"[{GetType().Name}] Configuration not found: {id}");
+                Debug.LogWarning($"[{GetType().Name}.Get] Configuration not found: {id}");
                 return null;
             }
 
             return _entries[id];
         }
 
+        public bool Get(string id, out T outResult)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                Debug.LogWarning($"[{GetType().Name}.Get] Passed null for configuration ID");
+                outResult = null;
+                return false;
+            }
+
+            if (!_entries.ContainsKey(id))
+            {
+                Debug.LogWarning($"[{GetType().Name}.Get] Configuration not found: {id}");
+                outResult = null;
+                return false;
+            }
+
+            outResult = _entries[id];
+            return true;
+        }
+
         public T Add(T entry)
         {
             if (entry == null)
             {
-                Debug.LogWarning($"[{GetType().Name}] Passed null entry");
+                Debug.LogWarning($"[{GetType().Name}.Add] Passed null entry");
                 return null;
             }
 
             if (Contains(entry.Id))
             {
-                Debug.LogWarning($"[{GetType().Name}] Entry already exists: {entry.Id}");
+                Debug.LogWarning($"[{GetType().Name}.Add] Entry already exists: {entry.Id}");
                 return null;
             }
 
@@ -86,19 +106,19 @@ namespace Arcade
         {
             if (string.IsNullOrEmpty(name))
             {
-                Debug.LogWarning($"[{GetType().Name}] Passed null or empty entry ID");
+                Debug.LogWarning($"[{GetType().Name}.Delete] Passed null or empty entry ID");
                 return false;
             }
 
             if (!Contains(name))
             {
-                Debug.LogWarning($"[{GetType().Name}] Entry not found: {name}");
+                Debug.LogWarning($"[{GetType().Name}.Delete] Entry not found: {name}");
                 return false;
             }
 
             if (!_entries.Remove(name))
             {
-                Debug.LogWarning($"[{GetType().Name}] Dictionary error");
+                Debug.LogWarning($"[{GetType().Name}.Delete] Dictionary error");
                 return false;
             }
 
@@ -111,7 +131,7 @@ namespace Arcade
         {
             if (!Directory.Exists(_directory))
             {
-                Debug.LogWarning($"[{GetType().Name}] Directory doesn't exists: {_directory}");
+                Debug.LogWarning($"[{GetType().Name}.LoadAll] Directory doesn't exists: {_directory}");
                 return false;
             }
 
@@ -123,7 +143,7 @@ namespace Arcade
         {
             if (_entries.Count == 0)
             {
-                Debug.LogWarning($"[{GetType().Name}] Empty database");
+                Debug.LogWarning($"[{GetType().Name}.SaveAll] Empty database");
                 return false;
             }
 
