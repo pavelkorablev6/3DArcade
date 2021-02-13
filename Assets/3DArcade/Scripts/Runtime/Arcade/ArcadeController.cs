@@ -24,6 +24,7 @@ using Cinemachine;
 using SK.Utilities.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -39,6 +40,7 @@ namespace Arcade
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
 
+        protected abstract string SceneName { get; }
         protected abstract bool UseModelTransforms { get; }
         protected abstract PlayerControls PlayerControls { get; }
         protected abstract CameraSettings CameraSettings { get; }
@@ -276,11 +278,14 @@ namespace Arcade
         {
             _sceneLoaded = false;
 
-            string sceneName = null;
-            if (!string.IsNullOrEmpty(_arcadeConfiguration.Scene))
-                sceneName = _arcadeConfiguration.Scene;
-            else
-                sceneName = _arcadeConfiguration.Id;
+            string sceneName = SceneName ?? _arcadeConfiguration.Id;
+
+            List<string> scenes = new List<string>();
+            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; ++i)
+                scenes.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
+
+            if (!scenes.Contains(sceneName))
+                sceneName = "empty";
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -305,7 +310,7 @@ namespace Arcade
             while (!asyncOperation.isDone)
                 yield return null;
 #endif
-            _loadedScene = SceneManager.GetSceneByName(_arcadeConfiguration.Scene);
+            _loadedScene = SceneManager.GetSceneByName(sceneName);
 
             PostLoadScene();
 
@@ -328,16 +333,13 @@ namespace Arcade
         {
             PreSetupPlayer();
 
-            PlayerControls.Camera.orthographic = CameraSettings.Orthographic;
-            PlayerControls.Camera.rect         = CameraSettings.ViewportRect;
-
-            PlayerControls.Camera.transform.position    = CameraSettings.Position;
-            PlayerControls.Camera.transform.eulerAngles = new Vector3(0f, CameraSettings.Rotation.y, 0f);
-
             PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
 
+            PlayerControls.Camera.rect = CameraSettings.ViewportRect;
+
             CinemachineVirtualCamera vCam = PlayerControls.VirtualCamera;
-            vCam.transform.eulerAngles    = PlayerControls.Camera.transform.eulerAngles;
+            vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
+            vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
             vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;
             vCam.m_Lens.OrthographicSize  = CameraSettings.AspectRatio;
             vCam.m_Lens.NearClipPlane     = CameraSettings.NearClipPlane;

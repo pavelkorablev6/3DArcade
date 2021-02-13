@@ -35,7 +35,7 @@ namespace Arcade
             if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layers))
             {
                 ModelConfigurationComponent hitModelConfigurationComponent = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
-                if (hitModelConfigurationComponent != null && hitModelConfigurationComponent.InteractionType != InteractionType.None)
+                if (hitModelConfigurationComponent != null)
                 {
                     if (hitModelConfigurationComponent != modelConfigurationComponent)
                     {

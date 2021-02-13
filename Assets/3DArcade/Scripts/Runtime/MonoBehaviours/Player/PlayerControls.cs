@@ -29,8 +29,8 @@ namespace Arcade
     [RequireComponent(typeof(CharacterController))]
     public abstract class PlayerControls : MonoBehaviour
     {
-        [SerializeField] protected Camera _camera = default;
-        [SerializeField] protected CinemachineVirtualCamera _virtualCamera = default;
+        [SerializeField] protected Camera _camera;
+        [SerializeField] protected CinemachineVirtualCamera _virtualCamera;
 
         [SerializeField] protected float _walkSpeed = 3f;
 
@@ -68,7 +68,14 @@ namespace Arcade
             _maxVerticalLookAngle = Mathf.Clamp(max, 0f, 89f);
         }
 
-        private void OnEnable() => GlobalActions.Enable();
+        private void OnEnable()
+        {
+            _lookInputValue = Vector2.zero;
+            _moveVelocity   = Vector3.zero;
+            _lookHorizontal = 0f;
+            _lookVertical   = 0f;
+            GlobalActions.Enable();
+        }
 
         private void OnDisable() => GlobalActions.Disable();
 

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
 
 namespace Arcade
@@ -92,33 +93,63 @@ namespace Arcade
             if (_context.CurrentModelConfiguration == null)
                 return;
 
-            //if (_context.CurrentModelConfiguration.Grabbable)
-            //{
-            //    _context.TransitionTo<ArcadeGrabState>();
-            //}
-            //else
+            switch (_context.CurrentModelConfiguration.InteractionType)
             {
-                switch (_context.CurrentModelConfiguration.InteractionType)
+                case InteractionType.Undefined:
+                case InteractionType.Inherited:
                 {
-                    case InteractionType.GameInternal:
-                        _context.TransitionTo<ArcadeInternalGameState>();
-                        break;
-                    case InteractionType.GameExternal:
-                        _context.TransitionTo<ArcadeExternalGameState>();
-                        break;
-                    case InteractionType.FpsArcadeConfiguration:
-                        _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Fps);
-                        break;
-                    case InteractionType.CylArcadeConfiguration:
-                        _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Cyl);
-                        break;
-                    case InteractionType.FpsMenuConfiguration:
-                    case InteractionType.CylMenuConfiguration:
-                    case InteractionType.URL:
-                    case InteractionType.None:
-                    default:
-                        break;
+                    if (!string.IsNullOrEmpty(_context.CurrentModelConfiguration.Emulator)
+                     && _context.EmulatorDatabase.Get(_context.CurrentModelConfiguration.Emulator, out EmulatorConfiguration emulator))
+                        HandleEmulatorInteraction(emulator.InteractionType);
+                    else if (!string.IsNullOrEmpty(_context.CurrentModelConfiguration.Platform)
+                          && _context.PlatformDatabase.Get(_context.CurrentModelConfiguration.Platform, out PlatformConfiguration platform)
+                          && _context.EmulatorDatabase.Get(platform.Emulator, out emulator))
+                        HandleEmulatorInteraction(emulator.InteractionType);
                 }
+                break;
+                case InteractionType.GameInternal:
+                    _context.TransitionTo<ArcadeInternalGameState>();
+                    break;
+                case InteractionType.GameExternal:
+                    _context.TransitionTo<ArcadeExternalGameState>();
+                    break;
+                case InteractionType.FpsArcadeConfiguration:
+                    _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Fps);
+                    break;
+                case InteractionType.CylArcadeConfiguration:
+                    _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Cyl);
+                    break;
+                case InteractionType.FpsMenuConfiguration:
+                case InteractionType.CylMenuConfiguration:
+                case InteractionType.URL:
+                default:
+                    break;
+            }
+        }
+
+        private void HandleEmulatorInteraction(InteractionType interactionType)
+        {
+            switch (interactionType)
+            {
+                case InteractionType.GameInternal:
+                    _context.TransitionTo<ArcadeInternalGameState>();
+                    break;
+                case InteractionType.GameExternal:
+                    _context.TransitionTo<ArcadeExternalGameState>();
+                    break;
+                case InteractionType.FpsArcadeConfiguration:
+                    _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Fps);
+                    break;
+                case InteractionType.CylArcadeConfiguration:
+                    _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Cyl);
+                    break;
+                case InteractionType.Undefined:
+                case InteractionType.Inherited:
+                case InteractionType.URL:
+                case InteractionType.FpsMenuConfiguration:
+                case InteractionType.CylMenuConfiguration:
+                default:
+                    break;
             }
         }
     }

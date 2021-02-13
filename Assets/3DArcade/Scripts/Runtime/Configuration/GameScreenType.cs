@@ -24,7 +24,8 @@ namespace Arcade
 {
     public enum GameScreenType
     {
-        Unspecified,
+        Undefined,
+        Inherited,
         Raster,
         Vector,
         Pinball

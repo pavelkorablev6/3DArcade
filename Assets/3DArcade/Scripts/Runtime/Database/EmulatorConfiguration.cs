@@ -27,8 +27,11 @@ namespace Arcade
     [XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : XMLDatabaseEntry
     {
-        [XmlElement("model")]
-        public string Model;
+        [XmlAttribute("description")]
+        public string Description;
+
+        [XmlElement("interaction_type")]
+        public InteractionType InteractionType;
 
         [XmlElement("directory")]
         public string Directory;
@@ -47,29 +50,5 @@ namespace Arcade
 
         [XmlArray("games_directories"), XmlArrayItem("directory")]
         public string[] GamesDirectories;
-
-        [XmlArray("marquee_images_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeImagesDirectories;
-
-        [XmlArray("marquee_videos_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeVideosDirectories;
-
-        [XmlArray("screen_images_directories"), XmlArrayItem("directory")]
-        public string[] ScreenImagesDirectories;
-
-        [XmlArray("screen_videos_directories"), XmlArrayItem("directory")]
-        public string[] ScreenVideosDirectories;
-
-        [XmlArray("title_images_directories"), XmlArrayItem("directory")]
-        public string[] TitleImagesDirectories;
-
-        [XmlArray("generic_images_directories"), XmlArrayItem("directory")]
-        public string[] GenericImagesDirectories;
-
-        [XmlArray("generic_videos_directories"), XmlArrayItem("directory")]
-        public string[] GenericVideosDirectories;
-
-        [XmlArray("info_directories"), XmlArrayItem("directory")]
-        public string[] InfoDirectories;
     }
 }

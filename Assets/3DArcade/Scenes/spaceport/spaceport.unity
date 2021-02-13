@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 947.24805, g: 1240.8906, b: 2147.4062, a: 1}
+  m_IndirectSpecularColor: {r: 947.21875, g: 1240.8711, b: 2147.3672, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -100,7 +100,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 1d8b05738134de942846f8ad8163204f,
     type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: d62d700e46718aa439d80bf0d3273dea,
+  m_LightingSettings: {fileID: 4890085278179872738, guid: af234c944bb2d7a46b1fe710830b5e32,
     type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1271,7 +1271,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5500
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: -320.92188, z: 4.5905e-41, w: 255.48718}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -49.16992}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

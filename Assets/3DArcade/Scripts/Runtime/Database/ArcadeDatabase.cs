@@ -26,8 +26,6 @@ namespace Arcade
     {
         public ArcadeDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "arcade_cfgs")
-        {
-            _ = LoadAll();
-        }
+            => _ = LoadAll();
     }
 }

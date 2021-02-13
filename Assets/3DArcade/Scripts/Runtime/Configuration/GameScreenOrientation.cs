@@ -24,7 +24,8 @@ namespace Arcade
 {
     public enum GameScreenOrientation
     {
-        Unspecified,
+        Undefined,
+        Inherited,
         Horizontal,
         Vertical
     }

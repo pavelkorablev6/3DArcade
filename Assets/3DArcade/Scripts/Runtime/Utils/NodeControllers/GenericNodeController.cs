@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class GenericNodeController : NodeController<GenericNodeTag>
     {
-        public GenericNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        public GenericNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
         : base(emulatorDatabase, platformDatabase)
         {
         }
@@ -40,9 +40,5 @@ namespace Arcade
         protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.GenericImagesDirectories;
 
         protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.GenericVideosDirectories;
-
-        protected override string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator) => emulator?.GenericImagesDirectories;
-
-        protected override string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator) => emulator?.GenericVideosDirectories;
     }
 }

@@ -210,7 +210,8 @@ namespace Arcade
                     case InteractionType.FpsMenuConfiguration:
                     case InteractionType.CylMenuConfiguration:
                     case InteractionType.URL:
-                    case InteractionType.None:
+                    case InteractionType.Undefined:
+                    case InteractionType.Inherited:
                     default:
                         break;
                 }

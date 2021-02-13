@@ -28,25 +28,21 @@ namespace Arcade
     {
         private const int NUM_MAX_VARIANTS = 20;
 
-        private readonly EmulatorDatabase _emulatorDatabase;
-        private readonly PlatformDatabase _platformDatabase;
+        private readonly XMLDatabaseMultiFile<EmulatorConfiguration> _emulatorDatabase;
+        private readonly XMLDatabaseMultiFile<PlatformConfiguration> _platformDatabase;
 
-        public ArtworkMatcher(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        public ArtworkMatcher(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
         {
             _emulatorDatabase = emulatorDatabase;
             _platformDatabase = platformDatabase;
         }
 
-        public List<string> GetDirectoriesToTry(string[] gameArtworkDirectories, string[] emulatorArtworkDirectories, string[] platformArtworkDirectories, string[] defaultArtworkDirectories)
+        public List<string> GetDirectoriesToTry(string[] gameArtworkDirectories, string[] platformArtworkDirectories, string[] defaultArtworkDirectories)
         {
             List<string> result = new List<string>();
 
             if (gameArtworkDirectories != null)
                 foreach (string directory in gameArtworkDirectories)
-                    result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
-
-            if (emulatorArtworkDirectories != null)
-                foreach (string directory in emulatorArtworkDirectories)
                     result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
 
             if (platformArtworkDirectories != null)

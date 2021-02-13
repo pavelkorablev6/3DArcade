@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using System.Collections.Generic;
 
 namespace Arcade
@@ -42,12 +43,13 @@ namespace Arcade
             _platformDatabase = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
         }
 
-        public EmulatorConfiguration GetEmulatorForConfiguration(ModelConfiguration modelConfiguration)
-            => modelConfiguration.InteractionType switch
+        public EmulatorConfiguration GetEmulatorForConfiguration(ModelConfiguration cfg)
+            => cfg.InteractionType switch
             {
-                InteractionType.GameInternal           => _emulatorDatabase.Get(modelConfiguration.Emulator),
-                InteractionType.GameExternal           => _emulatorDatabase.Get(modelConfiguration.Emulator),
-                InteractionType.URL                    => _emulatorDatabase.Get(modelConfiguration.Emulator),
+                InteractionType it when it == InteractionType.GameInternal
+                                     || it == InteractionType.GameExternal
+                                     || it == InteractionType.URL
+                    => _emulatorDatabase.Get(cfg.Emulator),
                 InteractionType.FpsArcadeConfiguration => EmulatorDatabase.FpsArcadeLauncher,
                 InteractionType.CylArcadeConfiguration => EmulatorDatabase.CylArcadeLauncher,
                 InteractionType.FpsMenuConfiguration   => EmulatorDatabase.FpsMenuLauncher,
@@ -63,6 +65,8 @@ namespace Arcade
                 DEFAULT_ARCADE_MODEL
             };
 
+        private PlatformConfiguration GetPlatformForConfiguration(ModelConfiguration cfg) => !string.IsNullOrEmpty(cfg.Platform) ? _platformDatabase.Get(cfg.Platform) : null;
+
         public List<string> GetNamesToTryForGame(ModelConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
@@ -70,19 +74,16 @@ namespace Arcade
 
             List<string> result = new List<string>();
 
-            // From model's model override
+            // From cfg model override
             result.AddStringIfNotNullOrEmpty(cfg.Model);
 
-            // From model's id
+            // From cfg id
             result.Add(cfg.Id);
 
-            PlatformConfiguration platform = null;
-            GameConfiguration game         = null;
+            PlatformConfiguration platform = GetPlatformForConfiguration(cfg);
 
-            if (!string.IsNullOrEmpty(cfg.Platform))
-                platform = _platformDatabase.Get(cfg.Platform);
-
-            // TODO: From game's CloneOf and RomOf in platform's masterlist
+            // TODO: From game CloneOf and RomOf in platform's masterlist
+            GameConfiguration game = null;
             if (platform != null && !string.IsNullOrEmpty(platform.MasterList))
             {
                 //game = _gameDatabase.Get(platform.MasterList, game.Id);
@@ -93,56 +94,81 @@ namespace Arcade
                 }
             }
 
-            // From model's emulator's model and id
-            if (!string.IsNullOrEmpty(cfg.Emulator) && _emulatorDatabase.Get(cfg.Emulator, out EmulatorConfiguration emulator))
-            {
-                result.AddStringIfNotNullOrEmpty(emulator.Model);
-                result.AddStringIfNotNullOrEmpty(emulator.Id);
-            }
+            // From platform model
+            result.AddStringIfNotNullOrEmpty(platform?.Model);
 
-            if (platform != null)
+            // Generic model from cfg orientation/year
+            if (!string.IsNullOrEmpty(cfg.Year))
             {
-                // From platform's model and id
-                result.AddStringIfNotNullOrEmpty(platform.Model);
-                result.AddStringIfNotNullOrEmpty(platform.Id);
-
-                // From platform's emulator's model and id
-                if (!string.IsNullOrEmpty(platform.Emulator) && _emulatorDatabase.Get(platform.Emulator, out emulator))
+                switch (cfg.ScreenOrientation)
                 {
-                    result.AddStringIfNotNullOrEmpty(emulator.Model);
-                    result.AddStringIfNotNullOrEmpty(emulator.Id);
+                    case GameScreenOrientation.Undefined:
+                    case GameScreenOrientation.Inherited:
+                        if (!string.IsNullOrEmpty(GetModelNameForGame(game)))
+                            return result;
+                        break;
+                    case GameScreenOrientation.Horizontal:
+                        result.AddStringIfNotNullOrEmpty(GetHorizontalModelNameForYear(cfg.Year));
+                        return result;
+                    case GameScreenOrientation.Vertical:
+                        result.AddStringIfNotNullOrEmpty(GetVerticalModelNameForYear(cfg.Year));
+                        return result;
+                    default:
+                        throw new Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
                 }
             }
 
-            // Generic model from orientation/year
-            if (game != null)
+            // Generic model from game orientation/year
+            string modelName = GetModelNameForGame(game);
+            if (!string.IsNullOrEmpty(modelName))
             {
-                bool isVertical = game.ScreenOrientation == GameScreenOrientation.Vertical;
-                string prefabName;
-                if (int.TryParse(game.Year, out int year))
-                {
-                    if (year >= 1970 && year < 1980)
-                        prefabName = isVertical ? "default70vert" : "default70hor";
-                    else if (year < 1990)
-                        prefabName = isVertical ? "default80vert" : "default80hor";
-                    else if (year < 2000)
-                        prefabName = isVertical ? "default90vert" : "default90hor";
-                    else
-                        prefabName = isVertical ? DEFAULT_GAME_VERT_MODEL : DEFAULT_GAME_HOR_MODEL;
-                }
-                else
-                    prefabName = isVertical ? DEFAULT_GAME_VERT_MODEL : DEFAULT_GAME_HOR_MODEL;
-
-                result.Add(prefabName);
+                result.Add(modelName);
+                return result;
             }
 
             // Default horizontal model
             result.Add(DEFAULT_GAME_HOR_MODEL);
-
             return result;
         }
 
         public static List<string> GetNamesToTryForProp(ModelConfiguration cfg)
             => new List<string> { cfg.Model, cfg.Id, DEFAULT_PROP_MODEL };
+
+        private static string GetModelNameForGame(GameConfiguration game)
+        {
+            if (game == null)
+                return null;
+            return game.ScreenOrientation == GameScreenOrientation.Vertical
+                   ? GetVerticalModelNameForYear(game.Year)
+                   : GetHorizontalModelNameForYear(game.Year);
+        }
+
+        private static string GetHorizontalModelNameForYear(string yearString)
+        {
+            if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
+            {
+                if (year >= 1970 && year < 1980)
+                    return "default70hor";
+                else if (year < 1990)
+                    return "default80hor";
+                else if (year < 2000)
+                    return "default90hor";
+            }
+            return DEFAULT_GAME_HOR_MODEL;
+        }
+
+        private static string GetVerticalModelNameForYear(string yearString)
+        {
+            if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
+            {
+                if (year >= 1970 && year < 1980)
+                    return "default70vert";
+                else if (year < 1990)
+                    return "default80vert";
+                else if (year < 2000)
+                    return "default90vert";
+            }
+            return DEFAULT_GAME_VERT_MODEL;
+        }
     }
 }

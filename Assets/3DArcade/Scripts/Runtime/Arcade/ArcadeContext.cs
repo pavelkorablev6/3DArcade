@@ -40,6 +40,9 @@ namespace Arcade
         public readonly PlayerFpsControls PlayerFpsControls;
         public readonly PlayerCylControls PlayerCylControls;
 
+        public readonly XMLDatabaseMultiFile<EmulatorConfiguration> EmulatorDatabase;
+        public readonly XMLDatabaseMultiFile<PlatformConfiguration> PlatformDatabase;
+
         public readonly UIController UIController;
 
         private readonly OS _currentOS;
@@ -48,10 +51,7 @@ namespace Arcade
 
         private readonly GeneralConfiguration _generalConfiguration;
 
-        private readonly ArcadeDatabase _arcadeDatabase;
-        private readonly EmulatorDatabase _emulatorDatabase;
-        private readonly PlatformDatabase _platformDatabase;
-
+        private readonly XMLDatabaseMultiFile<ArcadeConfiguration> _arcadeDatabase;
         private readonly AssetCache<GameObject> _gameObjectCache;
 
         private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
@@ -90,15 +90,15 @@ namespace Arcade
                 return;
             }
 
-            _arcadeDatabase   = new ArcadeDatabase(_virtualFileSystem);
-            _emulatorDatabase = new EmulatorDatabase(_virtualFileSystem);
-            _platformDatabase = new PlatformDatabase(_virtualFileSystem);
+            _arcadeDatabase  = new ArcadeDatabase(_virtualFileSystem);
+            EmulatorDatabase = new EmulatorDatabase(_virtualFileSystem);
+            PlatformDatabase = new PlatformDatabase(_virtualFileSystem);
 
             _gameObjectCache = new GameObjectCache();
 
-            _marqueeNodeController = new MarqueeNodeController(_emulatorDatabase, _platformDatabase);
-            _screenNodeController  = new ScreenNodeController(_emulatorDatabase, _platformDatabase);
-            _genericNodeController = new GenericNodeController(_emulatorDatabase, _platformDatabase);
+            _marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
+            _screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
+            _genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
 
             _ = SetCurrentArcadeConfiguration(_generalConfiguration.StartingArcade, _generalConfiguration.StartingArcadeType);
         }
@@ -135,7 +135,7 @@ namespace Arcade
                 case ArcadeType.Fps:
                 {
                     VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
-                    ArcadeController      = new FpsArcadeController(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                    ArcadeController      = new FpsArcadeController(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                 }
                 break;
                 case ArcadeType.Cyl:
@@ -145,25 +145,25 @@ namespace Arcade
                     switch (CurrentArcadeConfiguration.CylArcadeProperties.WheelVariant)
                     {
                         case WheelVariant.CameraInsideHorizontal:
-                            ArcadeController = new CylArcadeControllerWheel3DCameraInsideHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerWheel3DCameraInsideHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.CameraOutsideHorizontal:
-                            ArcadeController = new CylArcadeControllerWheel3DCameraOutsideHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerWheel3DCameraOutsideHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.LineHorizontal:
-                            ArcadeController = new CylArcadeControllerLineHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerLineHorizontal(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.CameraInsideVertical:
-                            ArcadeController = new CylArcadeControllerWheel3DCameraInsideVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerWheel3DCameraInsideVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.CameraOutsideVertical:
-                            ArcadeController = new CylArcadeControllerWheel3DCameraOutsideVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerWheel3DCameraOutsideVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.LineVertical:
-                            ArcadeController = new CylArcadeControllerLineVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerLineVertical(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                         case WheelVariant.LineCustom:
-                            ArcadeController = new CylArcadeControllerLine(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, _emulatorDatabase, _platformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
+                            ArcadeController = new CylArcadeControllerLine(_arcadeHierarchy, PlayerFpsControls, PlayerCylControls, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                             break;
                     }
                 }
@@ -225,10 +225,27 @@ namespace Arcade
                 cfgComponent.SetGamesAndPropsTransforms(CurrentArcadeConfiguration);
         }
 
-        public EmulatorConfiguration GetEmulatorForCurrentModelConfiguration() => _emulatorDatabase.Get(CurrentModelConfiguration.Emulator);
+        public EmulatorConfiguration GetEmulatorForCurrentModelConfiguration()
+        {
+            if (CurrentModelConfiguration == null)
+                return null;
+
+            if (!string.IsNullOrEmpty(CurrentModelConfiguration.Emulator))
+                return EmulatorDatabase.Get(CurrentModelConfiguration.Emulator);
+
+            if (!string.IsNullOrEmpty(CurrentModelConfiguration.Platform)
+             && PlatformDatabase.Get(CurrentModelConfiguration.Platform, out PlatformConfiguration platformConfiguration))
+            {
+                if (!string.IsNullOrEmpty(platformConfiguration.Emulator))
+                    return EmulatorDatabase.Get(platformConfiguration.Emulator);
+            }
+
+            return null;
+        }
 
         private static IVirtualFileSystem InitVFS(string rootDirectory) => new VirtualFileSystem()
-            .MountDirectory("configuration", $"{rootDirectory}/3darcade~/Configuration")
+            .MountDirectory("emulator_cfgs", $"{rootDirectory}/3darcade~/Configuration/Emulators")
+            .MountDirectory("platform_cfgs", $"{rootDirectory}/3darcade~/Configuration/Platforms")
             .MountDirectory("arcade_cfgs", $"{rootDirectory}/3darcade~/Configuration/Arcades")
             .MountDirectory("gamelist_cfgs", $"{rootDirectory}/3darcade~/Configuration/Gamelists")
             .MountDirectory("medias", $"{rootDirectory}/3darcade~/Media")

@@ -27,8 +27,8 @@ namespace Arcade
     [XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : XMLDatabaseEntry
     {
-        [XmlElement("scene_override")]
-        public string Scene;
+        [XmlAttribute("description")]
+        public string Description;
 
         [XmlElement("render_settings")]
         public RenderSettings RenderSettings;

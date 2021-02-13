@@ -26,7 +26,7 @@ namespace Arcade
 {
     public sealed class ScreenNodeController : NodeController<ScreenNodeTag>
     {
-        public ScreenNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        public ScreenNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
         : base(emulatorDatabase, platformDatabase)
         {
         }
@@ -42,34 +42,16 @@ namespace Arcade
 
             List<string> result = new List<string>();
 
-            if (modelConfiguration.ScreenImageDirectories != null)
-                result.AddRange(modelConfiguration.ScreenImageDirectories);
+            if (modelConfiguration.ScreenSnapDirectories != null)
+                result.AddRange(modelConfiguration.ScreenSnapDirectories);
 
-            if (modelConfiguration.TitleImageDirectories != null)
-                result.AddRange(modelConfiguration.TitleImageDirectories);
+            if (modelConfiguration.ScreenTitleDirectories != null)
+                result.AddRange(modelConfiguration.ScreenTitleDirectories);
 
             return result.Count > 0 ? result.ToArray() : null;
         }
 
         protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.ScreenVideoDirectories;
-
-        protected override string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator)
-        {
-            if (emulator == null)
-                return null;
-
-            List<string> result = new List<string>();
-
-            if (emulator.ScreenImagesDirectories != null)
-                result.AddRange(emulator.ScreenImagesDirectories);
-
-            if (emulator.TitleImagesDirectories != null)
-                result.AddRange(emulator.TitleImagesDirectories);
-
-            return result.Count > 0 ? result.ToArray() : null;
-        }
-
-        protected override string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator) => emulator?.ScreenVideosDirectories;
 
         protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.ScreenVideosDirectories;
 

@@ -27,14 +27,14 @@ namespace Arcade
     [XmlRoot("platform")]
     public sealed class PlatformConfiguration : XMLDatabaseEntry
     {
-        [XmlElement("model")]
-        public string Model;
-
         [XmlElement("master_list")]
         public string MasterList;
 
         [XmlElement("emulator")]
         public string Emulator;
+
+        [XmlElement("model")]
+        public string Model;
 
         [XmlArray("marquee_images_directories"), XmlArrayItem("directory")]
         public string[] MarqueeImagesDirectories;
@@ -42,14 +42,14 @@ namespace Arcade
         [XmlArray("marquee_videos_directories"), XmlArrayItem("directory")]
         public string[] MarqueeVideosDirectories;
 
-        [XmlArray("screen_images_directories"), XmlArrayItem("directory")]
-        public string[] ScreenImagesDirectories;
+        [XmlArray("screen_snaps_directories"), XmlArrayItem("directory")]
+        public string[] ScreenSnapsDirectories;
+
+        [XmlArray("screen_titles_directories"), XmlArrayItem("directory")]
+        public string[] ScreenTitlesDirectories;
 
         [XmlArray("screen_videos_directories"), XmlArrayItem("directory")]
         public string[] ScreenVideosDirectories;
-
-        [XmlArray("title_images_directories"), XmlArrayItem("directory")]
-        public string[] TitleImagesDirectories;
 
         [XmlArray("generic_images_directories"), XmlArrayItem("directory")]
         public string[] GenericImagesDirectories;

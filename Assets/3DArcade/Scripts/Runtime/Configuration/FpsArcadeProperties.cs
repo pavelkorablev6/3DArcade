@@ -27,6 +27,9 @@ namespace Arcade
     [System.Serializable]
     public sealed class FpsArcadeProperties
     {
+        [XmlElement("scene")]
+        public string Scene;
+
         [XmlElement("camera_settings")]
         public CameraSettings CameraSettings;
     }

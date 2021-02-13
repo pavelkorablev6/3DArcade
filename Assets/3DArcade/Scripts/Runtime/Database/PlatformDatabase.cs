@@ -22,10 +22,10 @@
 
 namespace Arcade
 {
-    public sealed class PlatformDatabase : XMLDatabaseSingleFile<PlatformConfiguration, PlatformConfigurationList>
+    public sealed class PlatformDatabase : XMLDatabaseMultiFile<PlatformConfiguration>
     {
         public PlatformDatabase(IVirtualFileSystem virtualFileSystem)
-        : base(virtualFileSystem, "configuration", "Platforms")
+        : base(virtualFileSystem, "platform_cfgs")
             => LoadAll();
     }
 }

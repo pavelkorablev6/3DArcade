@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class MarqueeNodeController : NodeController<MarqueeNodeTag>
     {
-        public MarqueeNodeController(EmulatorDatabase emulatorDatabase, PlatformDatabase platformDatabase)
+        public MarqueeNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
         : base(emulatorDatabase, platformDatabase)
         {
         }
@@ -36,10 +36,6 @@ namespace Arcade
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.MarqueeImageDirectories;
 
         protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.MarqueeVideoDirectories;
-
-        protected override string[] GetEmulatorImageDirectories(EmulatorConfiguration emulator) => emulator?.MarqueeImagesDirectories;
-
-        protected override string[] GetEmulatorVideoDirectories(EmulatorConfiguration emulator) => emulator?.MarqueeVideosDirectories;
 
         protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.MarqueeVideosDirectories;
 

@@ -36,6 +36,7 @@ namespace Arcade
         protected abstract Transform TransformAnchor { get; }
         protected abstract Vector3 TransformVector { get; }
 
+        protected sealed override string SceneName => !string.IsNullOrEmpty(_arcadeConfiguration.FpsArcadeProperties.Scene) ? _arcadeConfiguration.FpsArcadeProperties.Scene : null;
         protected sealed override bool UseModelTransforms => false;
         protected sealed override PlayerControls PlayerControls => _playerCylControls;
         protected sealed override CameraSettings CameraSettings => _cylArcadeProperties.CameraSettings;

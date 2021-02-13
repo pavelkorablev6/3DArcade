@@ -37,13 +37,12 @@ namespace Arcade
     {
         public string Id                               = default;
         public string Description                      = default;
-        public string ArcadeScene                      = default;
         public RenderSettings RenderSettings           = default;
         public AudioSettings AudioSettings             = default;
         public FpsArcadeProperties FpsArcadeProperties = default;
         public CylArcadeProperties CylArcadeProperties = default;
 
-        public bool Save(ArcadeDatabase arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
+        public bool Save(XMLDatabaseMultiFile<ArcadeConfiguration> arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
         {
             GetChildNodes(out Transform tGames, out Transform tProps);
 
@@ -51,7 +50,6 @@ namespace Arcade
             {
                 Id                  = Id,
                 Description         = Description,
-                Scene               = ArcadeScene,
                 RenderSettings      = RenderSettings,
                 FpsArcadeProperties = FpsArcadeProperties ?? Defaults.FpsArcadeProperties,
                 CylArcadeProperties = CylArcadeProperties ?? Defaults.CylArcadeProperties,
@@ -68,7 +66,7 @@ namespace Arcade
             return arcadeDatabase.Save(cfg);
         }
 
-        public bool SaveModelsOnly(ArcadeDatabase arcadeDatabase, ArcadeConfiguration cfg)
+        public bool SaveModelsOnly(XMLDatabaseMultiFile<ArcadeConfiguration> arcadeDatabase, ArcadeConfiguration cfg)
         {
             GetGamesAndProps(out cfg.Games, out cfg.Props);
             return arcadeDatabase.Save(cfg);
@@ -76,9 +74,8 @@ namespace Arcade
 
         public void Restore(ArcadeConfiguration cfg)
         {
-            Description     = cfg.Description;
             Id                  = cfg.Id;
-            ArcadeScene         = cfg.Scene;
+            Description         = cfg.Description;
             RenderSettings      = cfg.RenderSettings;
             FpsArcadeProperties = cfg.FpsArcadeProperties ?? Defaults.FpsArcadeProperties;
             CylArcadeProperties = cfg.CylArcadeProperties ?? Defaults.CylArcadeProperties;

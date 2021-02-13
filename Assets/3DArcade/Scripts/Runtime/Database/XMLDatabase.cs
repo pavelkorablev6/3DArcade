@@ -63,22 +63,8 @@ namespace Arcade
 
         public bool Get(string id, out T outResult)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                Debug.LogWarning($"[{GetType().Name}.Get] Passed null for configuration ID");
-                outResult = null;
-                return false;
-            }
-
-            if (!_entries.ContainsKey(id))
-            {
-                Debug.LogWarning($"[{GetType().Name}.Get] Configuration not found: {id}");
-                outResult = null;
-                return false;
-            }
-
-            outResult = _entries[id];
-            return true;
+            outResult = Get(id);
+            return outResult != null;
         }
 
         public T Add(T entry)

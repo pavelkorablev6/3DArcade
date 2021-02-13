@@ -30,6 +30,7 @@ namespace Arcade
         public override float AudioMaxDistance { get; protected set; }
         public override AnimationCurve VolumeCurve { get; protected set; }
 
+        protected override string SceneName => !string.IsNullOrEmpty(_arcadeConfiguration.FpsArcadeProperties.Scene) ? _arcadeConfiguration.FpsArcadeProperties.Scene : null;
         protected override bool UseModelTransforms => true;
         protected override PlayerControls PlayerControls => _playerFpsControls;
         protected override CameraSettings CameraSettings => _arcadeConfiguration.FpsArcadeProperties.CameraSettings;

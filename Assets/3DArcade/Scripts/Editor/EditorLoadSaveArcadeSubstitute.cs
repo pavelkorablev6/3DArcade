@@ -34,8 +34,8 @@ namespace Arcade.UnityEditor
 
         private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly AssetCache<GameObject> _gameObjectCache;
-        private readonly EmulatorDatabase _emulatorDatabase;
-        private readonly PlatformDatabase _platformDatabase;
+        private readonly XMLDatabaseMultiFile<EmulatorConfiguration> _emulatorDatabase;
+        private readonly XMLDatabaseMultiFile<PlatformConfiguration> _platformDatabase;
         private readonly PlayerFpsControls _playerFpsControls;
         private readonly PlayerCylControls _playerCylControls;
         private ArcadeController _arcadeController;
@@ -46,8 +46,9 @@ namespace Arcade.UnityEditor
 
             string dataPath    = SystemUtils.GetDataPath();
             _virtualFileSystem = new VirtualFileSystem()
-                .MountDirectory("configuration", $"{dataPath}/3darcade~/Configuration")
                 .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
                 .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
                 .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
                 .MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml");

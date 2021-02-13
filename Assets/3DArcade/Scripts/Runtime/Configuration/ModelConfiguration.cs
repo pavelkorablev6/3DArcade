@@ -26,17 +26,8 @@ namespace Arcade
 {
     public sealed class ModelConfiguration : XMLDatabaseEntry
     {
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType;
-
-        [XmlElement("platform")]
+        [XmlAttribute("platform")]
         public string Platform;
-
-        [XmlElement("emulator")]
-        public string Emulator;
-
-        [XmlElement("model")]
-        public string Model;
 
         [XmlElement("grabbable")]
         public bool Grabbable;
@@ -47,20 +38,32 @@ namespace Arcade
         [XmlElement("movecab_grabbable")]
         public bool MoveCabGrabbable;
 
+        [XmlElement("description")]
+        public string Description;
+
+        [XmlElement("model")]
+        public string Model;
+
+        [XmlElement("interaction_type")]
+        public InteractionType InteractionType;
+
+        [XmlElement("emulator")]
+        public string Emulator;
+
         [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
         public string[] MarqueeImageDirectories;
 
         [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
         public string[] MarqueeVideoDirectories;
 
-        [XmlArray("screen_image_directories"), XmlArrayItem("directory")]
-        public string[] ScreenImageDirectories;
+        [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]
+        public string[] ScreenSnapDirectories;
+
+        [XmlArray("screen_title_directories"), XmlArrayItem("directory")]
+        public string[] ScreenTitleDirectories;
 
         [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
         public string[] ScreenVideoDirectories;
-
-        [XmlArray("title_image_directories"), XmlArrayItem("directory")]
-        public string[] TitleImageDirectories;
 
         [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
         public string[] GenericImageDirectories;
@@ -70,6 +73,30 @@ namespace Arcade
 
         [XmlArray("info_directories"), XmlArrayItem("directory")]
         public string[] InfoDirectories;
+
+        [XmlElement("cloneof")]
+        public string CloneOf;
+
+        [XmlElement("romof")]
+        public string RomOf;
+
+        [XmlElement("genre")]
+        public string Genre;
+
+        [XmlElement("year")]
+        public string Year;
+
+        [XmlElement("manufacturer")]
+        public string Manufacturer;
+
+        [XmlElement("screen_type")]
+        public GameScreenType ScreenType;
+
+        [XmlElement("screen_orientation")]
+        public GameScreenOrientation ScreenOrientation;
+
+        [XmlElement("mature")]
+        public bool Mature;
 
         [XmlElement("position")]
         public XMLVector3 Position;

@@ -30,7 +30,8 @@ namespace Arcade
 
     public enum InteractionType
     {
-        None,
+        Undefined,
+        Inherited,
         GameInternal,
         GameExternal,
         URL,

@@ -1,0 +1,11 @@
+<emulator id="mame_0221" description="M.A.M.E. 0.221">
+  <interaction_type>GameExternal</interaction_type>
+  <directory>D:/__Emulators/mame</directory>
+  <working_directory></working_directory>
+  <executable>mame64.exe</executable>
+  <arguments></arguments>
+  <supported_extensions />
+  <games_directories>
+    <directory>W:/complete/roms/MAME 0.227 ROMs (merged)</directory>
+  </games_directories>
+</emulator>

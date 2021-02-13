@@ -33,21 +33,21 @@ namespace Arcade
         {
         }
 
-        public bool Save(T cfg)
+        public bool Save(T item)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id) || string.IsNullOrEmpty(cfg.Description))
+            if (item == null || string.IsNullOrEmpty(item.Id))
             {
                 Debug.LogWarning($"[{GetType().Name}] Failed to save configuration, data is null or invalid");
                 return false;
             }
 
-            string filePath = Path.Combine(_directory, $"{cfg.Id}.xml");
-            return Serialize(filePath, cfg);
+            string filePath = Path.Combine(_directory, $"{item.Id}.xml");
+            return Serialize(filePath, item);
         }
 
-        protected sealed override void PostAdd(T entry)
+        protected sealed override void PostAdd(T item)
         {
-            if (entry == null || string.IsNullOrEmpty(entry.Description) || string.IsNullOrEmpty(entry.Id))
+            if (item == null || string.IsNullOrEmpty(item.Id))
             {
                 Debug.LogWarning($"[{GetType().Name}] Entry is null or invalid");
                 return;
@@ -55,8 +55,8 @@ namespace Arcade
 
             try
             {
-                string filePath = Path.Combine(_directory, $"{entry.Id}.xml");
-                _ = Serialize(filePath, entry);
+                string filePath = Path.Combine(_directory, $"{item.Id}.xml");
+                _ = Serialize(filePath, item);
             }
             catch (System.Exception e)
             {

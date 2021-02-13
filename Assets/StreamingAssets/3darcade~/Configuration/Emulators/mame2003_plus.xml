@@ -1,0 +1,11 @@
+<emulator id="mame2003_plus" description="Libretro: M.A.M.E. 2003+">
+  <interaction_type>GameInternal</interaction_type>
+  <directory></directory>
+  <working_directory></working_directory>
+  <executable>mame2003_plus</executable>
+  <arguments></arguments>
+  <supported_extensions />
+  <games_directories>
+    <directory>D:/__Roms/mame2003-plus</directory>
+  </games_directories>
+</emulator>

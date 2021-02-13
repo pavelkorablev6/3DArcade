@@ -38,8 +38,14 @@ namespace Arcade
     [System.Serializable]
     public sealed class CylArcadeProperties
     {
+        [XmlElement("scene")]
+        public string Scene;
+
         [XmlElement("camera_settings")]
         public CameraSettings CameraSettings;
+
+        [XmlElement("model")]
+        public string Model;
 
         [XmlElement("wheel_variant")]
         public WheelVariant WheelVariant;

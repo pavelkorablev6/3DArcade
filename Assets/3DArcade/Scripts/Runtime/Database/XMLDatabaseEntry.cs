@@ -28,8 +28,5 @@ namespace Arcade
     {
         [XmlAttribute("id")]
         public string Id;
-
-        [XmlAttribute("description")]
-        public string Description;
     }
 }
