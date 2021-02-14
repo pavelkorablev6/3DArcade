@@ -12,7 +12,7 @@
       <height>0.6</height>
       <field_of_view>60</field_of_view>
       <aspect_ratio>1</aspect_ratio>
-      <near_clip>0.001</near_clip>
+      <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
@@ -24,7 +24,7 @@
       <height>0.6</height>
       <field_of_view>60</field_of_view>
       <aspect_ratio>2</aspect_ratio>
-      <near_clip>0.001</near_clip>
+      <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
