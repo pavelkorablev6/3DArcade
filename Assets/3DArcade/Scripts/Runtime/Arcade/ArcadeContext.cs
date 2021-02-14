@@ -41,7 +41,7 @@ namespace Arcade
         public readonly PlayerCylControls PlayerCylControls;
 
         public readonly XMLDatabaseMultiFile<EmulatorConfiguration> EmulatorDatabase;
-        public readonly XMLDatabaseMultiFile<PlatformConfiguration> PlatformDatabase;
+        public readonly PlatformDatabase PlatformDatabase;
 
         public readonly UIController UIController;
 

@@ -35,7 +35,7 @@ namespace Arcade.UnityEditor
         private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly AssetCache<GameObject> _gameObjectCache;
         private readonly XMLDatabaseMultiFile<EmulatorConfiguration> _emulatorDatabase;
-        private readonly XMLDatabaseMultiFile<PlatformConfiguration> _platformDatabase;
+        private readonly PlatformDatabase _platformDatabase;
         private readonly PlayerFpsControls _playerFpsControls;
         private readonly PlayerCylControls _playerCylControls;
         private ArcadeController _arcadeController;

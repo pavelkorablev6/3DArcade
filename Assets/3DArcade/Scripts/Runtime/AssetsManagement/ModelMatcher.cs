@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using System.Collections.Generic;
 
 namespace Arcade
@@ -34,28 +33,10 @@ namespace Arcade
         private const string DEFAULT_GAME_VERT_MODEL = "default80vert";
         private const string DEFAULT_PROP_MODEL      = "penguin";
 
-        private readonly XMLDatabase<EmulatorConfiguration> _emulatorDatabase;
-        private readonly XMLDatabase<PlatformConfiguration> _platformDatabase;
+        private readonly PlatformDatabase _platformDatabase;
 
-        public ModelMatcher(XMLDatabase<EmulatorConfiguration> emulatorDatabase, XMLDatabase<PlatformConfiguration> platformDatabase)
-        {
-            _emulatorDatabase = emulatorDatabase ?? throw new System.ArgumentNullException(nameof(emulatorDatabase));
-            _platformDatabase = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
-        }
-
-        public EmulatorConfiguration GetEmulatorForConfiguration(ModelConfiguration cfg)
-            => cfg.InteractionType switch
-            {
-                InteractionType it when it == InteractionType.GameInternal
-                                     || it == InteractionType.GameExternal
-                                     || it == InteractionType.URL
-                    => _emulatorDatabase.Get(cfg.Emulator),
-                InteractionType.FpsArcadeConfiguration => EmulatorDatabase.FpsArcadeLauncher,
-                InteractionType.CylArcadeConfiguration => EmulatorDatabase.CylArcadeLauncher,
-                InteractionType.FpsMenuConfiguration   => EmulatorDatabase.FpsMenuLauncher,
-                InteractionType.CylMenuConfiguration   => EmulatorDatabase.CylMenuLauncher,
-                _                                      => null,
-            };
+        public ModelMatcher(PlatformDatabase platformDatabase)
+            => _platformDatabase = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
 
         public static List<string> GetNamesToTryForArcade(ModelConfiguration cfg)
             => new List<string>
@@ -64,8 +45,6 @@ namespace Arcade
                 cfg.Id,
                 DEFAULT_ARCADE_MODEL
             };
-
-        private PlatformConfiguration GetPlatformForConfiguration(ModelConfiguration cfg) => !string.IsNullOrEmpty(cfg.Platform) ? _platformDatabase.Get(cfg.Platform) : null;
 
         public List<string> GetNamesToTryForGame(ModelConfiguration cfg)
         {
@@ -80,18 +59,18 @@ namespace Arcade
             // From cfg id
             result.Add(cfg.Id);
 
-            PlatformConfiguration platform = GetPlatformForConfiguration(cfg);
+            PlatformConfiguration platform = _platformDatabase.GetPlatformForConfiguration(cfg);
 
             // TODO: From game CloneOf and RomOf in platform's masterlist
             GameConfiguration game = null;
             if (platform != null && !string.IsNullOrEmpty(platform.MasterList))
             {
                 //game = _gameDatabase.Get(platform.MasterList, game.Id);
-                if (game != null)
-                {
-                    //result.AddStringIfNotNullOrEmpty(game.CloneOf);
-                    //result.AddStringIfNotNullOrEmpty(game.RomOf);
-                }
+                //if (game != null)
+                //{
+                //    result.AddStringIfNotNullOrEmpty(game.CloneOf);
+                //    result.AddStringIfNotNullOrEmpty(game.RomOf);
+                //}
             }
 
             // From platform model
@@ -114,7 +93,7 @@ namespace Arcade
                         result.AddStringIfNotNullOrEmpty(GetVerticalModelNameForYear(cfg.Year));
                         return result;
                     default:
-                        throw new Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
+                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
                 }
             }
 

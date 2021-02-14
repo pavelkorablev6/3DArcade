@@ -32,7 +32,7 @@ namespace Arcade
                                                                 PlayerFpsControls playerFpsControls,
                                                                 PlayerCylControls playerCylControls,
                                                                 XMLDatabase<EmulatorConfiguration> emulatorDatabase,
-                                                                XMLDatabase<PlatformConfiguration> platformDatabase,
+                                                                PlatformDatabase platformDatabase,
                                                                 AssetCache<GameObject> gameObjectCache,
                                                                 NodeController<MarqueeNodeTag> marqueeNodeController,
                                                                 NodeController<ScreenNodeTag> screenNodeController,

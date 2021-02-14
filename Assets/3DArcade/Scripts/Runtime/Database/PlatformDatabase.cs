@@ -27,5 +27,8 @@ namespace Arcade
         public PlatformDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "platform_cfgs")
             => LoadAll();
+
+        public PlatformConfiguration GetPlatformForConfiguration(ModelConfiguration cfg)
+            => !string.IsNullOrEmpty(cfg.Platform) ? Get(cfg.Platform) : null;
     }
 }

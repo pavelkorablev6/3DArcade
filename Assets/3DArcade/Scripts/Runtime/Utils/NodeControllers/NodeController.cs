@@ -32,19 +32,14 @@ namespace Arcade
         protected abstract string[] DefaultImageDirectories { get; }
         protected abstract string[] DefaultVideoDirectories { get; }
 
-        private static XMLDatabaseMultiFile<EmulatorConfiguration> _emulatorDatabase;
-        private static XMLDatabaseMultiFile<PlatformConfiguration> _platformDatabase;
+        protected readonly PlatformDatabase _platformDatabase;
 
-        private readonly ArtworkMatcher _artworkMatcher;
+        private static ArtworkMatcher _artworkMatcher;
 
-        public NodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
+        public NodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, PlatformDatabase platformDatabase)
         {
-            if (_emulatorDatabase == null)
-            {
-                _emulatorDatabase = emulatorDatabase;
-                _platformDatabase = platformDatabase;
-            }
-            _artworkMatcher = new ArtworkMatcher(emulatorDatabase, platformDatabase);
+            _artworkMatcher ??= new ArtworkMatcher(emulatorDatabase, platformDatabase);
+            _platformDatabase = platformDatabase;
         }
 
         public void Setup(ArcadeController arcadeController, GameObject model, ModelConfiguration modelConfiguration, float emissionIntensity)
@@ -66,7 +61,7 @@ namespace Arcade
             PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _platformDatabase.Get(modelConfiguration.Platform) : null;
 
             List<string> directories = _artworkMatcher.GetDirectoriesToTry(GetModelImageDirectories(modelConfiguration), GetPlatformImageDirectories(platform), DefaultImageDirectories);
-            ArtworkUtils.SetupImages(directories, namesToTry, renderers, this as MarqueeNodeController != null);
+            ArtworkUtils.SetupImages(directories, namesToTry, renderers, this is MarqueeNodeController);
 
             directories = _artworkMatcher.GetDirectoriesToTry(GetModelVideoDirectories(modelConfiguration), GetPlatformVideoDirectories(platform), DefaultVideoDirectories);
             ArtworkUtils.SetupVideos(directories, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
@@ -79,6 +74,37 @@ namespace Arcade
         protected abstract string[] GetPlatformImageDirectories(PlatformConfiguration platform);
 
         protected abstract string[] GetPlatformVideoDirectories(PlatformConfiguration platform);
+
+        protected static string[] GetDirectories(string[] array)
+        {
+            if (array == null)
+                return null;
+
+            List<string> result = new List<string>();
+            AddPossibleDirectories(result, array);
+            return result.Count > 0 ? result.ToArray() : null;
+        }
+
+        protected static string[] GetDirectories(string[] array1, string[] array2)
+        {
+            if (array1 == null)
+                return null;
+
+            List<string> result = new List<string>();
+            AddPossibleDirectories(result, array1);
+
+            if (array2 == null)
+                return result.Count > 0 ? result.ToArray() : null;
+
+            AddPossibleDirectories(result, array2);
+            return result.Count > 0 ? result.ToArray() : null;
+        }
+
+        protected static void AddPossibleDirectories(List<string> list, string[] directories)
+        {
+            if (directories != null && directories.Length > 0)
+                list.AddRange(FileSystem.CorrectPaths(directories));
+        }
 
         private static Renderer[] GetNodeRenderers(GameObject model)
         {

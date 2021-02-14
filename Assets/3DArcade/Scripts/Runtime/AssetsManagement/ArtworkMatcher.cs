@@ -29,9 +29,9 @@ namespace Arcade
         private const int NUM_MAX_VARIANTS = 20;
 
         private readonly XMLDatabaseMultiFile<EmulatorConfiguration> _emulatorDatabase;
-        private readonly XMLDatabaseMultiFile<PlatformConfiguration> _platformDatabase;
+        private readonly PlatformDatabase _platformDatabase;
 
-        public ArtworkMatcher(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
+        public ArtworkMatcher(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, PlatformDatabase platformDatabase)
         {
             _emulatorDatabase = emulatorDatabase;
             _platformDatabase = platformDatabase;
@@ -40,39 +40,33 @@ namespace Arcade
         public List<string> GetDirectoriesToTry(string[] gameArtworkDirectories, string[] platformArtworkDirectories, string[] defaultArtworkDirectories)
         {
             List<string> result = new List<string>();
-
-            if (gameArtworkDirectories != null)
-                foreach (string directory in gameArtworkDirectories)
-                    result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
-
-            if (platformArtworkDirectories != null)
-                foreach (string directory in platformArtworkDirectories)
-                    result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
-
-            if (defaultArtworkDirectories != null)
-                foreach (string directory in defaultArtworkDirectories)
-                    result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
-
+            AddPossibleDirectories(gameArtworkDirectories);
+            AddPossibleDirectories(platformArtworkDirectories);
+            AddPossibleDirectories(defaultArtworkDirectories);
             return result;
+
+            void AddPossibleDirectories(string[] directories)
+            {
+                if (directories != null)
+                    foreach (string directory in directories)
+                        result.AddStringIfNotNullOrEmpty(FileSystem.CorrectPath(directory));
+            }
         }
 
-        public List<string> GetNamesToTry(ModelConfiguration model)
+        public List<string> GetNamesToTry(ModelConfiguration cfg)
         {
-            if (model == null || string.IsNullOrEmpty(model.Id))
+            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
             List<string> result = new List<string>();
 
-            // From model's id
-            AddPossibleVariants(result, model.Id);
+            // From id
+            AddPossibleVariants(cfg.Id);
 
-            PlatformConfiguration platform = null;
+            PlatformConfiguration platform = _platformDatabase.GetPlatformForConfiguration(cfg);
 
-            if (!string.IsNullOrEmpty(model.Platform))
-                platform = _platformDatabase.Get(model.Platform);
-
-            // TODO: From game's CloneOf and RomOf in platform's masterlist
-            if (!string.IsNullOrEmpty(model.Platform))
+            // TODO: From game CloneOf and RomOf in platform's masterlist
+            if (!string.IsNullOrEmpty(cfg.Platform))
             {
                 if (platform != null && !string.IsNullOrEmpty(platform.MasterList))
                 {
@@ -85,32 +79,32 @@ namespace Arcade
                 }
             }
 
-            // From model's emulator override
-            if (!string.IsNullOrEmpty(model.Emulator) && _emulatorDatabase.Get(model.Emulator, out EmulatorConfiguration emulator))
-                AddPossibleVariants(result, emulator.Id);
+            // From emulator override
+            if (!string.IsNullOrEmpty(cfg.Emulator) && _emulatorDatabase.Get(cfg.Emulator, out EmulatorConfiguration emulator))
+                AddPossibleVariants(emulator.Id);
 
-            // From platform's emulator
+            // From platform emulator
             if (platform != null)
             {
                 if (!string.IsNullOrEmpty(platform.Emulator) && _emulatorDatabase.Get(platform.Emulator, out emulator))
-                    AddPossibleVariants(result, emulator.Id);
+                    AddPossibleVariants(emulator.Id);
 
-                // From platform's id
-                AddPossibleVariants(result, platform.Id);
+                // From platform id
+                AddPossibleVariants(platform.Id);
             }
 
             return result;
-        }
 
-        private static void AddPossibleVariants(List<string> list, string name, int numVariants = NUM_MAX_VARIANTS)
-        {
-            if (list == null || string.IsNullOrEmpty(name))
-                return;
+            void AddPossibleVariants(string name)
+            {
+                if (string.IsNullOrEmpty(name))
+                    return;
 
-            list.Add(name);
+                result.Add(name);
 
-            for (int i = 0; i < numVariants; ++i)
-                list.Add($"{name}_{i}");
+                for (int i = 0; i < NUM_MAX_VARIANTS; ++i)
+                    result.Add($"{name}_{i}");
+            }
         }
     }
 }

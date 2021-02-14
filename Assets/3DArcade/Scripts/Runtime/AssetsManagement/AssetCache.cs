@@ -126,7 +126,8 @@ namespace Arcade
             return result.Count > 0 ? result.ToArray() : null;
         }
 
-        public T[] LoadMultiple(IEnumerable<string> directories, IEnumerable<string> namesToTry) => LoadMultiple(directories, namesToTry.ToArray());
+        public T[] LoadMultiple(IEnumerable<string> directories, IEnumerable<string> namesToTry)
+            => LoadMultiple(directories, namesToTry.ToArray());
 
         public void Unload(string filePathNoExt)
         {

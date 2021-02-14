@@ -63,7 +63,7 @@ namespace Arcade
         private static bool _sceneLoaded;
 
         private readonly XMLDatabase<EmulatorConfiguration> _emulatorDatabase;
-        private readonly XMLDatabase<PlatformConfiguration> _platformDatabase;
+        private readonly PlatformDatabase _platformDatabase;
         private readonly AssetCache<GameObject> _gameObjectCache;
 
         private readonly ModelMatcher _modelMatcher;
@@ -80,7 +80,7 @@ namespace Arcade
                                 PlayerFpsControls playerFpsControls,
                                 PlayerCylControls playerCylControls,
                                 XMLDatabase<EmulatorConfiguration> emulatorDatabase,
-                                XMLDatabase<PlatformConfiguration> platformDatabase,
+                                PlatformDatabase platformDatabase,
                                 AssetCache<GameObject> gameObjectCache,
                                 NodeController<MarqueeNodeTag> marqueeNodeController,
                                 NodeController<ScreenNodeTag> screenNodeController,
@@ -98,7 +98,7 @@ namespace Arcade
             _screenNodeController  = screenNodeController;
             _genericNodeController = genericNodeController;
 
-            _modelMatcher = new ModelMatcher(_emulatorDatabase, _platformDatabase);
+            _modelMatcher = new ModelMatcher(_platformDatabase);
 
             _coroutineHelper = Object.FindObjectOfType<CoroutineHelper>();
             Assert.IsNotNull(_coroutineHelper);

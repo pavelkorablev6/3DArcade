@@ -33,6 +33,17 @@ namespace Arcade
             return path;
         }
 
+        public static string[] CorrectPaths(string[] paths)
+        {
+            if (paths == null || paths.Length == 0)
+                return null;
+
+            for (int i = 0; i < paths.Length; ++i)
+                if (!string.IsNullOrEmpty(paths[i]) && paths[i].StartsWith("@"))
+                    paths[i] = PathCombine(SystemUtils.GetDataPath(), paths[i].TrimStart('@'));
+            return paths;
+        }
+
         public static string PathCombine(string path1, string path2)
         {
             if (Path.IsPathRooted(path2))

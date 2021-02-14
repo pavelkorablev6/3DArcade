@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class GenericNodeController : NodeController<GenericNodeTag>
     {
-        public GenericNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
+        public GenericNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, PlatformDatabase platformDatabase)
         : base(emulatorDatabase, platformDatabase)
         {
         }
@@ -33,12 +33,16 @@ namespace Arcade
 
         protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/GenericsVideo" };
 
-        protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.GenericImageDirectories;
+        protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
+            => GetDirectories(modelConfiguration.GenericImageDirectories);
 
-        protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.GenericVideoDirectories;
+        protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
+            => GetDirectories(modelConfiguration.GenericVideoDirectories);
 
-        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.GenericImagesDirectories;
+        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
+            => GetDirectories(platform?.GenericImagesDirectories);
 
-        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.GenericVideosDirectories;
+        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
+            => GetDirectories(platform?.GenericVideosDirectories);
     }
 }

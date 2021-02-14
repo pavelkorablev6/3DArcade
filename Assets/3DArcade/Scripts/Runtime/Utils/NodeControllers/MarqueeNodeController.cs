@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class MarqueeNodeController : NodeController<MarqueeNodeTag>
     {
-        public MarqueeNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, XMLDatabaseMultiFile<PlatformConfiguration> platformDatabase)
+        public MarqueeNodeController(XMLDatabaseMultiFile<EmulatorConfiguration> emulatorDatabase, PlatformDatabase platformDatabase)
         : base(emulatorDatabase, platformDatabase)
         {
         }
@@ -33,12 +33,16 @@ namespace Arcade
 
         protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/MarqueesVideo" };
 
-        protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.MarqueeImageDirectories;
+        protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
+            => GetDirectories(modelConfiguration.MarqueeImageDirectories);
 
-        protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration) => modelConfiguration?.MarqueeVideoDirectories;
+        protected override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
+            => GetDirectories(modelConfiguration.MarqueeVideoDirectories);
 
-        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform) => platform?.MarqueeVideosDirectories;
+        protected override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
+            => GetDirectories(platform?.MarqueeImagesDirectories);
 
-        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform) => platform?.MarqueeVideosDirectories;
+        protected override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
+            => GetDirectories(platform?.MarqueeVideosDirectories);
     }
 }
