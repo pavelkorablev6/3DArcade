@@ -26,7 +26,7 @@ namespace Arcade
 {
     public static class GameObjectUtils
     {
-        public static GameObject GameObjectCreateIfNotFound(string name, int layer = 0)
+        public static GameObject GameObjectGetOrCreateIfNotFound(string name, int layer = 0)
         {
             GameObject result = GameObject.Find(name);
             if (result == null)

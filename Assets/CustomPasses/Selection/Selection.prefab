@@ -69,7 +69,7 @@ MonoBehaviour:
         renderQueueType: 10
         layerMask:
           serializedVersion: 2
-          m_Bits: 1073741824
+          m_Bits: 132096
         sortingCriteria: 59
         overrideMaterial: {fileID: 2100000, guid: 3d1a1d2c1850b074399eb05a2009d138,
           type: 2}
@@ -111,7 +111,7 @@ MonoBehaviour:
         renderQueueType: 2
         layerMask:
           serializedVersion: 2
-          m_Bits: 1073741824
+          m_Bits: 132096
         sortingCriteria: 59
         overrideMaterial: {fileID: 0}
         overrideMaterialPassIndex: 0

@@ -3,32 +3,27 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - interactive
-  - gamemodel
-  - arcademodel
-  - propmodel
-  - transparencyfix
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PostProcessing
   - Water
   - UI
-  - 
-  - 
-  - Render Canvas
   - Arcade
-  - Menu
-  - ArcadeCamera
-  - MenuCamera
   - Arcade/ArcadeModels
   - Arcade/GameModels
   - Arcade/PropModels
+  - Arcade/Selection
+  - ArcadeCamera
+  - 
+  - Menu
   - Menu/ArcadeModels
   - Menu/GameModels
   - Menu/PropModels
+  - Menu/Selection
+  - MenuCamera
   - 
   - 
   - 
@@ -40,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - Selection
-  - PostProcessing
+  - 
+  - Render Canvas
   m_SortingLayers:
   - name: Default
     uniqueID: 0

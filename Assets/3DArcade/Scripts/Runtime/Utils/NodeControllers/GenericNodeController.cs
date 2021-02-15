@@ -29,9 +29,9 @@ namespace Arcade
         {
         }
 
-        protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/Generics" };
+        protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/GenericsImages" };
 
-        protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/GenericsVideo" };
+        protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/GenericsVideos" };
 
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
             => GetDirectories(modelConfiguration.GenericImageDirectories);

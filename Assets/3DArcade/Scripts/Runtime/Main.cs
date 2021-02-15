@@ -62,7 +62,7 @@ namespace Arcade
 
         private void Update()
         {
- #if !UNITY_EDITOR
+#if !UNITY_EDITOR
             if (!_focused)
             {
                 System.Threading.Thread.Sleep(200);

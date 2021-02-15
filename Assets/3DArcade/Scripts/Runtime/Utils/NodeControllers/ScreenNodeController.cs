@@ -29,9 +29,9 @@ namespace Arcade
         {
         }
 
-        protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/Screens", $"{_defaultMediaDirectory}/Titles" };
+        protected override string[] DefaultImageDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/ScreensImages", $"{_defaultMediaDirectory}/TitlesImages" };
 
-        protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/ScreensVideo" };
+        protected override string[] DefaultVideoDirectories { get; } = new string[] { $"{_defaultMediaDirectory}/ScreensVideos" };
 
         protected override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
             => GetDirectories(modelConfiguration.ScreenSnapDirectories, modelConfiguration.ScreenTitleDirectories);

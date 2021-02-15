@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -21,26 +21,16 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Arcade
 {
-    public sealed class MoveCabContext : FSM.Context<MoveCabState>
+    public sealed class PlatformDatabaseEditor : DatabaseEditorBase<PlatformConfiguration>
     {
-        public readonly PlayerFpsControls PlayerFpsControls;
+        protected override string VFSAlias => "platform_cfgs";
+        protected override string VFSPath => $"{Application.streamingAssetsPath}/3darcade~/Configuration/Platforms";
+        protected override XMLDatabaseMultiFile<PlatformConfiguration> DerivedDatabase => new PlatformDatabase(_vfs);
 
-        public readonly MoveCabData Data;
-        public readonly LayerMask RaycastLayers;
-
-        public MoveCabContext(PlayerFpsControls playerFpsControls)
-        {
-            Assert.IsNotNull(playerFpsControls);
-            PlayerFpsControls = playerFpsControls;
-
-            Data          = new MoveCabData();
-            RaycastLayers = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection");
-
-            TransitionTo<MoveCabNullState>();
-        }
+        [ContextMenu("Save")]
+        private void SaveChanges() => Save();
     }
 }

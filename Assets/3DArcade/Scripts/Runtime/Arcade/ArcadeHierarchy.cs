@@ -35,22 +35,22 @@ namespace Arcade
 
         public ArcadeHierarchy()
         {
-            GameObject rootNode = GameObjectUtils.GameObjectCreateIfNotFound("Arcade", LayerMask.NameToLayer("Arcade"));
+            GameObject rootNode = GameObjectUtils.GameObjectGetOrCreateIfNotFound("Arcade", LayerMask.NameToLayer("Arcade"));
             Assert.IsNotNull(rootNode);
 
             GameObject[] childNodes = new GameObject[_childNames.Length];
             for (int i = 0; i < _childNames.Length; ++i)
             {
                 string childName       = _childNames[i];
-                GameObject childObject = GameObjectUtils.GameObjectCreateIfNotFound(childName, LayerMask.NameToLayer($"Arcade/{childName}"));
+                GameObject childObject = GameObjectUtils.GameObjectGetOrCreateIfNotFound(childName, LayerMask.NameToLayer($"Arcade/{childName}"));
                 Assert.IsNotNull(childObject);
                 childObject.transform.SetParent(rootNode.transform);
                 childNodes[i] = childObject;
             }
 
-            RootNode    = rootNode.transform;
-            GamesNode   = childNodes[0].transform;
-            PropsNode   = childNodes[1].transform;
+            RootNode  = rootNode.transform;
+            GamesNode = childNodes[0].transform;
+            PropsNode = childNodes[1].transform;
 
             RootNode.position  = Vector3.zero;
             GamesNode.position = Vector3.zero;

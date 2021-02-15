@@ -24,6 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
+    [System.Serializable]
     [XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : XMLDatabaseEntry
     {

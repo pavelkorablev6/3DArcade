@@ -44,6 +44,8 @@ namespace Arcade
 
         public string[] GetNames() => _entries.Keys.ToArray();
 
+        public T[] GetValues() => _entries.Values.ToArray();
+
         public T Get(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -113,6 +115,12 @@ namespace Arcade
             return true;
         }
 
+        public void DeleteAll()
+        {
+            DeleteAllFromDisk();
+            _entries.Clear();
+        }
+
         public bool LoadAll()
         {
             if (!Directory.Exists(_directory))
@@ -145,5 +153,7 @@ namespace Arcade
         protected abstract bool LoadAllFromDisk();
 
         protected abstract bool SaveAllToDisk();
+
+        protected abstract void DeleteAllFromDisk();
     }
 }

@@ -21,26 +21,49 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Arcade
 {
-    public sealed class MoveCabContext : FSM.Context<MoveCabState>
+    [ExecuteAlways]
+    public abstract class DatabaseEditorBase<T> : MonoBehaviour
+        where T : XMLDatabaseEntry
     {
-        public readonly PlayerFpsControls PlayerFpsControls;
+        public T[] Entries;
 
-        public readonly MoveCabData Data;
-        public readonly LayerMask RaycastLayers;
+        protected static IVirtualFileSystem _vfs;
+        protected XMLDatabaseMultiFile<T> _database;
 
-        public MoveCabContext(PlayerFpsControls playerFpsControls)
+        protected abstract string VFSAlias { get; }
+        protected abstract string VFSPath { get; }
+        protected abstract XMLDatabaseMultiFile<T> DerivedDatabase { get; }
+
+        private void OnEnable() => Load();
+
+        public void Save()
         {
-            Assert.IsNotNull(playerFpsControls);
-            PlayerFpsControls = playerFpsControls;
+            if (_database == null)
+                return;
 
-            Data          = new MoveCabData();
-            RaycastLayers = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection");
+            _database.DeleteAll();
 
-            TransitionTo<MoveCabNullState>();
+            foreach (T entry in Entries)
+                if (!string.IsNullOrEmpty(entry.Id))
+                    _ = _database.Add(entry);
+        }
+
+        public void Load()
+        {
+            if (_vfs == null)
+                _vfs = new VirtualFileSystem().MountDirectory(VFSAlias, VFSPath);
+            else
+                _ = _vfs.MountDirectory(VFSAlias, VFSPath);
+
+            if (_database == null)
+                _database = DerivedDatabase;
+            else
+                _ = _database.LoadAll();
+
+            Entries = _database.GetValues();
         }
     }
 }

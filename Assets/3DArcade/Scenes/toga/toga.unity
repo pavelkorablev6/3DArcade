@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 272005057}
   - component: {fileID: 272005056}
   - component: {fileID: 272005055}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-rib3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3084,7 +3084,7 @@ GameObject:
   - component: {fileID: 2011711839}
   - component: {fileID: 2011711838}
   - component: {fileID: 2011711837}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-rib4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3211,7 +3211,7 @@ GameObject:
   - component: {fileID: 2094805867}
   - component: {fileID: 2094805866}
   - component: {fileID: 2094805865}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-rib1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3553,7 +3553,7 @@ GameObject:
   - component: {fileID: 1390877256213967418}
   - component: {fileID: 8113619769666395056}
   - component: {fileID: 1396757628816212026}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-lucky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3571,7 +3571,7 @@ GameObject:
   - component: {fileID: 4237036124055174170}
   - component: {fileID: 422615049112769394}
   - component: {fileID: 3105849821949942401}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-magazinedoors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3639,7 +3639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1023231660269834420}
   - component: {fileID: 394328208287287823}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3850,7 +3850,7 @@ GameObject:
   - component: {fileID: 3312361084978685623}
   - component: {fileID: 5879620758056338943}
   - component: {fileID: 347547980685972632}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-molding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3995,7 +3995,7 @@ GameObject:
   - component: {fileID: 2813212207692070778}
   - component: {fileID: 7342755306931277576}
   - component: {fileID: 7123055089436803183}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-outerdoorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4013,7 +4013,7 @@ GameObject:
   - component: {fileID: 8664674699676455210}
   - component: {fileID: 1693518867000121851}
   - component: {fileID: 1127051010894225117}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-socket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4039,7 +4039,7 @@ GameObject:
   - component: {fileID: 9171578046730953786}
   - component: {fileID: 4862769186780409834}
   - component: {fileID: 879893686018114199}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-recessedlights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4267,7 +4267,7 @@ GameObject:
   - component: {fileID: 6599592500951737050}
   - component: {fileID: 462810568997001667}
   - component: {fileID: 969414425123249387}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-rib2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4468,7 +4468,7 @@ GameObject:
   - component: {fileID: 3627278535518017807}
   - component: {fileID: 5775818984115133070}
   - component: {fileID: 1695138544327380740}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-houserules
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4812,7 +4812,7 @@ GameObject:
   - component: {fileID: 7178089444731652336}
   - component: {fileID: 5052809104486459165}
   - component: {fileID: 8251022521058426298}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-topper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5202,7 +5202,7 @@ GameObject:
   - component: {fileID: 68417020931912574}
   - component: {fileID: 7855376713841778105}
   - component: {fileID: 2860327322700698168}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5332,7 +5332,7 @@ GameObject:
   - component: {fileID: 100259104310856529}
   - component: {fileID: 4595574502447925733}
   - component: {fileID: 5645659350608218394}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chinesesign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5511,7 +5511,7 @@ GameObject:
   - component: {fileID: 5147251651871601226}
   - component: {fileID: 6615155347486192117}
   - component: {fileID: 5976083579741264000}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-insidetile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5703,7 +5703,7 @@ GameObject:
   - component: {fileID: 8483011572385291324}
   - component: {fileID: 1639881394649589483}
   - component: {fileID: 740177307603237461}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-directory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5791,7 +5791,7 @@ GameObject:
   - component: {fileID: 803193577568674978}
   - component: {fileID: 8042628224044403489}
   - component: {fileID: 5133084062727782142}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-planterdirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5900,7 +5900,7 @@ GameObject:
   - component: {fileID: 2088385260805536293}
   - component: {fileID: 1329486117991335222}
   - component: {fileID: 6346299131332824346}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-halldoorchrome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5933,7 +5933,7 @@ GameObject:
   - component: {fileID: 103385985754286969}
   - component: {fileID: 2220122366814893036}
   - component: {fileID: 6401120722337046610}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-sidewalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6007,7 +6007,7 @@ GameObject:
   - component: {fileID: 639673152855178883}
   - component: {fileID: 1540363115806013755}
   - component: {fileID: 7188758721003332945}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonebase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6167,7 +6167,7 @@ GameObject:
   - component: {fileID: 1232030497166254850}
   - component: {fileID: 3936814977410827664}
   - component: {fileID: 3471814609251704207}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6200,7 +6200,7 @@ GameObject:
   - component: {fileID: 5886731064236205157}
   - component: {fileID: 692803959234108846}
   - component: {fileID: 6649212220579252765}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-outsideborder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6259,7 +6259,7 @@ GameObject:
   - component: {fileID: 3234475599036785479}
   - component: {fileID: 2225858790999418320}
   - component: {fileID: 2180998389419495785}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-gnclogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6286,7 +6286,7 @@ GameObject:
   - component: {fileID: 5422818287439694318}
   - component: {fileID: 3458247624065577869}
   - component: {fileID: 5716087829469024767}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-backwall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6304,7 +6304,7 @@ GameObject:
   - component: {fileID: 6220470744049777836}
   - component: {fileID: 5111454704368602848}
   - component: {fileID: 1422250973846183551}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chinesedoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6377,7 +6377,7 @@ GameObject:
   - component: {fileID: 8818541723407402844}
   - component: {fileID: 2497450519206119354}
   - component: {fileID: 1466244350385086552}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-woodwalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6840,7 +6840,7 @@ GameObject:
   - component: {fileID: 5783072041382134032}
   - component: {fileID: 683950482647109057}
   - component: {fileID: 91370517311163208}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-outsidetile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7021,7 +7021,7 @@ GameObject:
   - component: {fileID: 3932542988007091182}
   - component: {fileID: 6294808373730744075}
   - component: {fileID: 4566333720286981379}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chrome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7129,7 +7129,7 @@ GameObject:
   - component: {fileID: 6389447761786599654}
   - component: {fileID: 4619328586869930740}
   - component: {fileID: 2055131694923020177}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-magazines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7187,7 +7187,7 @@ GameObject:
   - component: {fileID: 5846714655127461473}
   - component: {fileID: 738901117394281076}
   - component: {fileID: 2504460753786846880}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonepanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7219,7 +7219,7 @@ GameObject:
   - component: {fileID: 2177427089643133871}
   - component: {fileID: 2109843013337983387}
   - component: {fileID: 1272589326112743163}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-nathanstile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7338,7 +7338,7 @@ GameObject:
   - component: {fileID: 4346019543170218468}
   - component: {fileID: 2184830998446687806}
   - component: {fileID: 362395860678738073}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-frontwalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7357,7 +7357,7 @@ GameObject:
   - component: {fileID: 8155894684169508904}
   - component: {fileID: 4710393305590946455}
   - component: {fileID: 2670564533724119196}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-ceilingtile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7473,7 +7473,7 @@ GameObject:
   - component: {fileID: 7112921535797256927}
   - component: {fileID: 6789575249283437994}
   - component: {fileID: 8197199253258179970}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-carpetedge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7622,7 +7622,7 @@ GameObject:
   - component: {fileID: 6026110368835439760}
   - component: {fileID: 7255591277345966823}
   - component: {fileID: 5348601097985397080}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-receiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8191,7 +8191,7 @@ GameObject:
   - component: {fileID: 8282479937278098896}
   - component: {fileID: 8492169867904461385}
   - component: {fileID: 2669028404366266932}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-attwalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8250,7 +8250,7 @@ GameObject:
   - component: {fileID: 8966529582471326651}
   - component: {fileID: 6302576645897790140}
   - component: {fileID: 1551183873954947907}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-bulbs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8341,7 +8341,7 @@ GameObject:
   - component: {fileID: 356312126621371473}
   - component: {fileID: 3186373775183764721}
   - component: {fileID: 4362980913188210381}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-doorknobs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8753,7 +8753,7 @@ GameObject:
   - component: {fileID: 3507131775679107584}
   - component: {fileID: 4029662932141329890}
   - component: {fileID: 7974243694999229028}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-heineken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8772,7 +8772,7 @@ GameObject:
   - component: {fileID: 7705815929514552420}
   - component: {fileID: 8823505832631623979}
   - component: {fileID: 6670277630529035843}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-ceilingrails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8974,7 +8974,7 @@ GameObject:
   - component: {fileID: 4254607453126824609}
   - component: {fileID: 3694376942886337024}
   - component: {fileID: 7604482236257204354}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonepedestal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9034,7 +9034,7 @@ GameObject:
   - component: {fileID: 1115575027078093473}
   - component: {fileID: 2725235351486732401}
   - component: {fileID: 8112001425837337734}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chesskingsign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9052,7 +9052,7 @@ GameObject:
   - component: {fileID: 1792475868987981013}
   - component: {fileID: 4699869835863556321}
   - component: {fileID: 4309782337495295465}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-at&tlogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9232,7 +9232,7 @@ GameObject:
   - component: {fileID: 708563042857381680}
   - component: {fileID: 1944164577567211070}
   - component: {fileID: 2731997601079398973}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-hallceiling2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9251,7 +9251,7 @@ GameObject:
   - component: {fileID: 3511099542620193938}
   - component: {fileID: 168761057126159059}
   - component: {fileID: 2420177668774228488}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-mallmap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9354,7 +9354,7 @@ GameObject:
   - component: {fileID: 3950244118418395169}
   - component: {fileID: 7294662115529191460}
   - component: {fileID: 9097384076850540968}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-sprinkler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9372,7 +9372,7 @@ GameObject:
   - component: {fileID: 5590552683675271826}
   - component: {fileID: 5372283003234630639}
   - component: {fileID: 4920708352850649305}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-inviswall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9420,7 +9420,7 @@ GameObject:
   - component: {fileID: 1988465379567941522}
   - component: {fileID: 7803621844805250723}
   - component: {fileID: 837351947355428325}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-riblegs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9921,7 +9921,7 @@ GameObject:
   - component: {fileID: 8120387871184315676}
   - component: {fileID: 5525452894931099060}
   - component: {fileID: 8397513599015490964}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-orangejulius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9940,7 +9940,7 @@ GameObject:
   - component: {fileID: 7548024681731712979}
   - component: {fileID: 4323687529821506616}
   - component: {fileID: 7768310737703272973}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-nathans
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10033,7 +10033,7 @@ GameObject:
   - component: {fileID: 8437538312477893501}
   - component: {fileID: 306221319098210301}
   - component: {fileID: 5858629271865499438}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10052,7 +10052,7 @@ GameObject:
   - component: {fileID: 897265549516501386}
   - component: {fileID: 7413657447806735137}
   - component: {fileID: 8200423073909537730}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-redrug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10071,7 +10071,7 @@ GameObject:
   - component: {fileID: 7515037427430625826}
   - component: {fileID: 3722478458434784458}
   - component: {fileID: 550592806700765573}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-doorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10105,7 +10105,7 @@ GameObject:
   - component: {fileID: 1090828773649623308}
   - component: {fileID: 7463312438362139635}
   - component: {fileID: 2879099998725686969}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonecord
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10154,7 +10154,7 @@ GameObject:
   - component: {fileID: 5349251266008637776}
   - component: {fileID: 873368330100897769}
   - component: {fileID: 2305134125813428207}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-facboards
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10214,7 +10214,7 @@ GameObject:
   - component: {fileID: 7405958703685998777}
   - component: {fileID: 129191351454762125}
   - component: {fileID: 6037651759329406517}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chinesebracket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10276,7 +10276,7 @@ GameObject:
   - component: {fileID: 138104678964886915}
   - component: {fileID: 3669531711296151618}
   - component: {fileID: 29270820595957669}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-logoshadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10309,7 +10309,7 @@ GameObject:
   - component: {fileID: 4999731327356443117}
   - component: {fileID: 9178453117303682601}
   - component: {fileID: 4581866292958629322}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-garbagecan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10927,7 +10927,7 @@ GameObject:
   - component: {fileID: 3003951970404789210}
   - component: {fileID: 4843075218625840826}
   - component: {fileID: 3612274929251134607}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-windows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10995,7 +10995,7 @@ GameObject:
   - component: {fileID: 948076564726085867}
   - component: {fileID: 8013868639082573355}
   - component: {fileID: 5072860154307638799}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonecradle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11037,7 +11037,7 @@ GameObject:
   - component: {fileID: 490866040503485010}
   - component: {fileID: 1302081631170815915}
   - component: {fileID: 3310998581443675895}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11273,7 +11273,7 @@ GameObject:
   - component: {fileID: 7640871265829560689}
   - component: {fileID: 6197770756698100576}
   - component: {fileID: 7757792580808453646}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-hallway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11473,7 +11473,7 @@ GameObject:
   - component: {fileID: 5238395369907592184}
   - component: {fileID: 5490793091248801850}
   - component: {fileID: 2510278396369293367}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-hallceiling1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11533,7 +11533,7 @@ GameObject:
   - component: {fileID: 7948770317211135916}
   - component: {fileID: 7815841526177010431}
   - component: {fileID: 624411265861222290}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-planter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11551,7 +11551,7 @@ GameObject:
   - component: {fileID: 3234762600384939841}
   - component: {fileID: 5533813409503520875}
   - component: {fileID: 2358204992208086183}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-minorsign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11640,7 +11640,7 @@ GameObject:
   - component: {fileID: 7175322470124677247}
   - component: {fileID: 9051639987363122989}
   - component: {fileID: 5501898489335593768}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-gncovallogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11658,7 +11658,7 @@ GameObject:
   - component: {fileID: 7042077938066156192}
   - component: {fileID: 930736120536051766}
   - component: {fileID: 6584504527005472686}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-giftcoupons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11790,7 +11790,7 @@ GameObject:
   - component: {fileID: 5846506143503415062}
   - component: {fileID: 6686972370879517974}
   - component: {fileID: 2234989800432679623}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-doorframechrome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11892,7 +11892,7 @@ GameObject:
   - component: {fileID: 5603953745316511246}
   - component: {fileID: 3697147978287701937}
   - component: {fileID: 8373087707240210492}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-coinreturn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12037,7 +12037,7 @@ GameObject:
   - component: {fileID: 9199735648003556623}
   - component: {fileID: 643355979929412012}
   - component: {fileID: 2595686251147010053}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-phonecube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12083,7 +12083,7 @@ GameObject:
   - component: {fileID: 1049037154663607081}
   - component: {fileID: 3855754025742892981}
   - component: {fileID: 4775326402846936721}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-chesskingwalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12189,7 +12189,7 @@ GameObject:
   - component: {fileID: 1643836833131484045}
   - component: {fileID: 1401240595433771910}
   - component: {fileID: 7395819947654808425}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-gncdoorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12222,7 +12222,7 @@ GameObject:
   - component: {fileID: 1685980771475827007}
   - component: {fileID: 4439728520208574559}
   - component: {fileID: 448528344309856722}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-exitsign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12289,7 +12289,7 @@ GameObject:
   - component: {fileID: 8429277793085776288}
   - component: {fileID: 6174831924613649164}
   - component: {fileID: 5262351488301444865}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: toga-vent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -31,6 +31,9 @@ namespace Arcade
     {
         public static event Action<ModelConfigurationComponent> OnCurrentModelChanged;
 
+        private static readonly int _arcadeModelsLayer     = LayerMask.NameToLayer("Arcade/ArcadeModels");
+        private static readonly int _arcadeSelectionLayer = LayerMask.NameToLayer("Arcade/Selection");
+
         public static void FindModelSetup(in MoveCabData data, in Ray ray, in float maxDistance, in LayerMask layerMask)
         {
             Assert.IsNotNull(data);
@@ -40,17 +43,15 @@ namespace Arcade
                 ModelConfigurationComponent targetModel = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
                 if (targetModel != null && targetModel != data.ModelSetup)
                 {
-                    int arcadeModelsLayer = LayerMask.NameToLayer("Arcade/ArcadeModels");
-
-                    if (data.ModelSetup != null && data.ModelSetup.gameObject.layer != arcadeModelsLayer)
+                    if (data.ModelSetup != null && data.ModelSetup.gameObject.layer != _arcadeModelsLayer)
                         data.ModelSetup.transform.SetLayersRecursively(data.SavedLayer);
 
                     data.Set(targetModel, hitInfo.collider, hitInfo.rigidbody);
 
-                    if (data.ModelSetup.gameObject.layer != arcadeModelsLayer)
+                    if (data.ModelSetup.gameObject.layer != _arcadeModelsLayer)
                     {
                         data.SavedLayer = data.ModelSetup.gameObject.layer;
-                        data.ModelSetup.transform.SetLayersRecursively(LayerMask.NameToLayer("Selection"));
+                        data.ModelSetup.transform.SetLayersRecursively(_arcadeSelectionLayer);
 
                         OnCurrentModelChanged?.Invoke(data.ModelSetup);
                     }

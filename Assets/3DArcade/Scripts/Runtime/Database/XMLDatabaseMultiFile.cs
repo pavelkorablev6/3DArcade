@@ -108,6 +108,15 @@ namespace Arcade
             }
         }
 
+        protected sealed override void DeleteAllFromDisk()
+        {
+            if (Directory.Exists(_directory))
+            {
+                Directory.Delete(_directory, true);
+                _ = Directory.CreateDirectory(_directory);
+            }
+        }
+
         private static bool Serialize(string filePath, T entry) => XMLUtils.Serialize(filePath, entry);
 
         private static T Deserialize(string filePath) => XMLUtils.Deserialize<T>(filePath);

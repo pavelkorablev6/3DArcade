@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -46,39 +45,8 @@ namespace Arcade.UnityEditor
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
-            EditorApplication.hierarchyChanged -= OnHierarchyChanged;
-            EditorApplication.hierarchyChanged += OnHierarchyChanged;
-
             if (!EditorApplication.isPlayingOrWillChangePlaymode)
                 ReloadCurrentArcade();
-        }
-
-        private static void OnHierarchyChanged()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-
-            GameObject activeObj = Selection.activeGameObject;
-            if (activeObj == null)
-                return;
-
-            Transform parentTransform = activeObj.transform.parent;
-            if (parentTransform == null)
-                return;
-
-            switch (parentTransform.name)
-            {
-                case "GameModels":
-                    activeObj.layer = LayerMask.NameToLayer("Arcade/GameModels");
-                    _ = activeObj.AddComponentIfNotFound<ModelConfigurationComponent>();
-                    break;
-                case "PropModels":
-                    activeObj.layer = LayerMask.NameToLayer("Arcade/PropModels");
-                    _ = activeObj.AddComponentIfNotFound<ModelConfigurationComponent>();
-                    break;
-                default:
-                    break;
-            }
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
@@ -87,7 +55,7 @@ namespace Arcade.UnityEditor
                 ReloadCurrentArcade();
 
             if (state == PlayModeStateChange.ExitingEditMode)
-                for (int i = 1; i < EditorSceneManager.loadedSceneCount; i++)
+                for (int i = 1; i < EditorSceneManager.loadedSceneCount; ++i)
                     _ = EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
         }
 
@@ -97,7 +65,7 @@ namespace Arcade.UnityEditor
             if (arcadeRootNode == null)
                 return;
 
-            for (int i = 1; i < EditorSceneManager.loadedSceneCount; i++)
+            for (int i = 1; i < EditorSceneManager.loadedSceneCount; ++i)
                 _ = EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
 
             EditorLoadSaveArcadeSubstitute loadSaveSubstitute = new EditorLoadSaveArcadeSubstitute();

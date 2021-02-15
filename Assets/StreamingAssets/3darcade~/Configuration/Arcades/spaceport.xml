@@ -62,8 +62,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.23010254" y="-0.0134168863" z="0.748096645" />
-      <rotation x="-0.0003928637" y="129.20018" z="0.0002862131" />
+      <position x="-4.23010254" y="-0.0134164691" z="0.748097837" />
+      <rotation x="-0.000374074472" y="129.2002" z="0.0002911764" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="tutankst" platform="arcade">
@@ -90,8 +90,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-0.894724548" y="-4.58955765E-06" z="-4.43362331" />
-      <rotation x="-0.000271316472" y="0.000316893682" z="0.000759195245" />
+      <position x="-0.8947258" y="-4.351139E-06" z="-4.43362236" />
+      <rotation x="-0.0003484324" y="0.000383848528" z="0.0007504085" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="tron" platform="arcade">
@@ -118,8 +118,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="3.898823" y="-0.0294008851" z="1.31315875" />
-      <rotation x="-0.00320792943" y="178.583084" z="0.1665653" />
+      <position x="3.898862" y="-0.0291766524" z="1.31314421" />
+      <rotation x="0.00206199358" y="178.581635" z="0.00136121141" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="smashtv" platform="arcade">
@@ -146,8 +146,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.4858613" y="-0.0264976025" z="-1.20999575" />
-      <rotation x="-5.01104623E-05" y="90.00004" z="-1.22805022E-05" />
+      <position x="-4.4858613" y="-0.0264974833" z="-1.2099961" />
+      <rotation x="-8.927328E-05" y="90.00004" z="-1.13223477E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="scramble" platform="arcade">
@@ -174,8 +174,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.55318975" y="-3.516674E-06" z="-2.120446" />
-      <rotation x="-0.000238805093" y="90.00004" z="0.000432575034" />
+      <position x="-4.55319" y="-3.33786E-06" z="-2.12044549" />
+      <rotation x="-0.000193790547" y="90.00006" z="0.000454563764" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="rtype" platform="arcade">
@@ -202,8 +202,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="7.716891" y="-0.00505656" z="1.3183465" />
-      <rotation x="-1.643921E-05" y="180" z="-1.03547654E-06" />
+      <position x="7.71689129" y="-0.005056381" z="1.31834674" />
+      <rotation x="-4.795396E-05" y="180" z="0.000158930823" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="pooyan" platform="arcade">
@@ -230,8 +230,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="8.519925" y="-5.42402267E-06" z="-2.95451951" />
-      <rotation x="-0.000252426078" y="-90" z="0.0008224003" />
+      <position x="8.519926" y="-5.78165054E-06" z="-2.95452046" />
+      <rotation x="-0.0002016498" y="-90.00003" z="0.0008157971" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="polepos" platform="arcade">
@@ -258,8 +258,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="4.72853851" y="-0.0115062" z="-4.39992332" />
-      <rotation x="-0.000351325347" y="0.000274741149" z="0.00021869372" />
+      <position x="4.72853756" y="-0.0115066767" z="-4.399923" />
+      <rotation x="-0.000318014936" y="0.000298595231" z="0.00021021346" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="pacman" platform="arcade">
@@ -286,8 +286,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="8.57709" y="-2.56299973E-06" z="1.1289115" />
-      <rotation x="-3.2684613E-05" y="-177.439941" z="-1.0622608E-05" />
+      <position x="8.57709" y="-2.2649765E-06" z="1.1289115" />
+      <rotation x="-1.06493111E-07" y="-177.439941" z="-7.8652185E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="marble" platform="arcade">
@@ -314,8 +314,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="8.110512" y="-3.93390656E-06" z="-3.88522768" />
-      <rotation x="-0.000223429161" y="-44.95981" z="8.194425E-05" />
+      <position x="8.110512" y="-3.4570694E-06" z="-3.8852284" />
+      <rotation x="-0.000221211842" y="-44.95981" z="9.95842056E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mappy" platform="arcade">
@@ -342,8 +342,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="6.48701143" y="-6.31809235E-06" z="-4.417317" />
-      <rotation x="-0.000402913429" y="0.0007524181" z="0.00114771863" />
+      <position x="6.48700953" y="-7.27176666E-06" z="-4.41731453" />
+      <rotation x="-0.000376893557" y="0.000849350065" z="0.001148045" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="dotron" platform="arcade">
@@ -370,8 +370,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="5.642172" y="-3.09944153E-06" z="-4.347541" />
-      <rotation x="-0.000166706144" y="0.000172829823" z="0.000194729248" />
+      <position x="5.642172" y="-3.15904617E-06" z="-4.347541" />
+      <rotation x="-0.000158269308" y="0.000179438779" z="0.000208253929" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="commando" platform="arcade">
@@ -398,8 +398,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="7.23047447" y="0.00098598" z="-4.47781754" />
-      <rotation x="-0.000587482529" y="0.0005581435" z="0.000543056463" />
+      <position x="7.23047352" y="0.000985682" z="-4.47781658" />
+      <rotation x="-0.0005974657" y="0.0006203675" z="0.000536218169" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="ccastles" platform="arcade">
@@ -426,8 +426,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="4.66338539" y="-3.21865082E-06" z="1.36337268" />
-      <rotation x="-0.0005153553" y="-179.999756" z="0.000363148429" />
+      <position x="4.66338634" y="-3.75509262E-06" z="1.363372" />
+      <rotation x="-0.000467817415" y="-179.999725" z="0.0003884209" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="arkanoid" platform="arcade">
@@ -454,8 +454,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="6.99110746" y="-0.0137430429" z="1.35789633" />
-      <rotation x="-0.000383841165" y="-179.999878" z="0.000289638236" />
+      <position x="6.99110842" y="-0.0137429237" z="1.357896" />
+      <rotation x="-0.0003891469" y="-179.999863" z="0.000298012" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="tempest" platform="arcade">
@@ -482,8 +482,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="6.23409557" y="-0.00221210718" z="1.32975781" />
-      <rotation x="-0.000279540982" y="-179.999878" z="0.00023567873" />
+      <position x="6.23409653" y="-0.00221210718" z="1.32975745" />
+      <rotation x="-0.000289798627" y="-179.999847" z="0.000290395779" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="starwarsc" platform="arcade">
@@ -510,8 +510,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-0.7181886" y="-0.043549" z="-1.13218248" />
-      <rotation x="-2.576864E-05" y="53.3601379" z="-0.000403625716" />
+      <position x="-0.7181876" y="-0.0435495973" z="-1.13218164" />
+      <rotation x="-4.19277567E-05" y="53.36012" z="-0.000395527" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="robotron" platform="arcade">
@@ -538,8 +538,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="3.99769115" y="-3.695488E-06" z="-4.48295164" />
-      <rotation x="-0.000595645863" y="0.0008329043" z="0.000593730365" />
+      <position x="3.99769" y="-3.75509262E-06" z="-4.48295069" />
+      <rotation x="-0.0006324288" y="0.000909647031" z="0.0005867366" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="qbert" platform="arcade">
@@ -566,8 +566,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="1.970795" y="-0.00723207" z="1.36508572" />
-      <rotation x="0.00100937311" y="178.615646" z="-0.173583984" />
+      <position x="1.97076607" y="-0.008183658" z="1.36508417" />
+      <rotation x="-0.000630519644" y="178.615555" z="0.000511625432" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="pengo" platform="arcade">
@@ -594,8 +594,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="1.62440515" y="-5.543232E-06" z="-4.48696947" />
-      <rotation x="-0.0006500452" y="0.00111618917" z="0.0008459831" />
+      <position x="1.6244036" y="-4.94718552E-06" z="-4.48696756" />
+      <rotation x="-0.000649110239" y="0.00122363062" z="0.000862533867" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mspacman" platform="arcade">
@@ -622,8 +622,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="2.59720016" y="-0.00717198849" z="1.32454932" />
-      <rotation x="-0.03842163" y="178.664337" z="-0.21383667" />
+      <position x="2.597164" y="-0.00730961561" z="1.3245542" />
+      <rotation x="-0.000440630363" y="178.6641" z="0.0007614699" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mrdo" platform="arcade">
@@ -650,8 +650,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="0.8557331" y="-2.74181366E-06" z="-4.44254875" />
-      <rotation x="-0.000361047278" y="0.0001722763" z="0.000155291928" />
+      <position x="0.8557326" y="-2.8014183E-06" z="-4.44254875" />
+      <rotation x="-0.000367895846" y="0.000197544665" z="0.000152960347" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mpatrol" platform="arcade">
@@ -678,8 +678,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="1.26546121" y="-0.0190858841" z="1.44156349" />
-      <rotation x="0.0002205039" y="178.476349" z="-0.00140370766" />
+      <position x="1.26546192" y="-0.0190920234" z="1.441562" />
+      <rotation x="-0.0006329109" y="178.47644" z="0.0006070944" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="Space Invaders - The Original Game (J).smc" platform="arcade">
@@ -706,8 +706,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.633107" y="0.0009871125" z="-0.14359048" />
-      <rotation x="-0.000548152835" y="90.0001144" z="0.0005585678" />
+      <position x="-4.633108" y="0.0009874702" z="-0.143590331" />
+      <rotation x="-0.000527396158" y="90.000145" z="0.0006046618" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="galaga" platform="arcade">
@@ -734,8 +734,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="3.23654723" y="-0.00693905354" z="1.337071" />
-      <rotation x="0.0307777" y="178.862823" z="0.0192104541" />
+      <position x="3.236551" y="-0.00730854273" z="1.33706546" />
+      <rotation x="-0.000326125242" y="178.862839" z="0.000243950053" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="frogger" platform="arcade">
@@ -762,8 +762,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="0.09174132" y="-0.0148941875" z="-4.44207573" />
-      <rotation x="-0.0004314963" y="0.000297315128" z="0.0003136102" />
+      <position x="0.09174048" y="-0.0148943067" z="-4.44207525" />
+      <rotation x="-0.000423690566" y="0.000333518256" z="0.000319165672" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="digdug" platform="arcade">
@@ -790,8 +790,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-1.748627" y="-2.682209E-06" z="-4.44425058" />
-      <rotation x="-0.000457627582" y="0.0001820316" z="0.000231738974" />
+      <position x="-1.74862766" y="-3.39746475E-06" z="-4.44425" />
+      <rotation x="-0.000466676924" y="0.000231063575" z="0.0002873821" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="defender" platform="arcade">
@@ -818,8 +818,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-2.58096242" y="-3.33786E-06" z="-4.456501" />
-      <rotation x="-0.0004905218" y="0.000201436662" z="0.000424039667" />
+      <position x="-2.58096337" y="-3.39746475E-06" z="-4.45650053" />
+      <rotation x="-0.0005237322" y="0.0002569684" z="0.0004493248" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="centiped" platform="arcade">
@@ -846,8 +846,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-3.4488647" y="-0.01214838" z="-4.4442544" />
-      <rotation x="-0.000336145022" y="2.165757E-05" z="-0.000242015158" />
+      <position x="-3.44886446" y="-0.0121481419" z="-4.4442544" />
+      <rotation x="-0.000347351161" y="2.55824525E-05" z="-0.0002937972" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="bzone" platform="arcade">
@@ -874,8 +874,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.32725573" y="-6.07967377E-06" z="-3.98477054" />
-      <rotation x="-0.0004495233" y="51.13992" z="0.00114120066" />
+      <position x="-4.32725763" y="-5.96046448E-06" z="-3.98477077" />
+      <rotation x="-0.000450850115" y="51.13999" z="0.00113762054" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="bombjack" platform="arcade">
@@ -902,8 +902,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-1.08132589" y="-0.0134166479" z="1.35822392" />
-      <rotation x="-0.000401477359" y="-179.999817" z="0.000267315685" />
+      <position x="-1.08132517" y="-0.0134167075" z="1.35822344" />
+      <rotation x="-0.000436773174" y="-179.999771" z="0.00030480104" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="berzerk" platform="arcade">
@@ -930,8 +930,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-3.24459314" y="-0.000872015953" z="1.32361448" />
-      <rotation x="-0.000312297372" y="-179.999908" z="0.000192752734" />
+      <position x="-3.24459267" y="-0.0008725524" z="1.32361424" />
+      <rotation x="-0.00028926396" y="-179.999878" z="0.000194200213" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="asteroid" platform="arcade">
@@ -958,8 +958,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="0.4697528" y="-5.24520874E-06" z="1.37120676" />
-      <rotation x="-0.000469909864" y="168.7612" z="0.000951555034" />
+      <position x="0.4697534" y="-4.172325E-06" z="1.371206" />
+      <rotation x="-0.0004157692" y="168.761276" z="0.00056171685" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="gyruss" platform="arcade">
@@ -986,8 +986,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="3.20728421" y="-0.0121482015" z="-4.468311" />
-      <rotation x="-0.000555620238" y="0.0001529174" z="0.0003294239" />
+      <position x="3.2072835" y="-0.0121489763" z="-4.46831" />
+      <rotation x="-0.000544684648" y="0.000194578985" z="0.000309228984" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="missile" platform="arcade">
@@ -1014,8 +1014,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="2.18363714" y="-2.32458115E-06" z="-1.98795581" />
-      <rotation x="-0.000140364689" y="74.9932" z="6.957264E-05" />
+      <position x="2.183637" y="-2.44379044E-06" z="-1.98795617" />
+      <rotation x="-0.00016355027" y="74.9932" z="-9.678683E-06" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="szaxxon" platform="arcade">
@@ -1042,8 +1042,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="2.436389" y="0.006602645" z="-4.437343" />
-      <rotation x="-0.000403336016" y="0.000295069534" z="0.000305806432" />
+      <position x="2.43638825" y="0.006602764" z="-4.43734264" />
+      <rotation x="-0.000459162169" y="0.0003351615" z="0.00032003806" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="timeplt" platform="arcade">
@@ -1070,8 +1070,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-2.16649532" y="-0.0134167671" z="1.35693741" />
-      <rotation x="-0.000441504118" y="-179.9998" z="0.0003389026" />
+      <position x="-2.16649461" y="-0.0134171247" z="1.35693693" />
+      <rotation x="-0.000422398443" y="-179.999756" z="0.0002954013" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="zookeep" platform="arcade">
@@ -1098,8 +1098,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="5.5371666" y="-3.27825546E-06" z="1.3829397" />
-      <rotation x="-0.000461904361" y="-179.999863" z="0.000415688643" />
+      <position x="5.53716755" y="-3.516674E-06" z="1.38293922" />
+      <rotation x="-0.0004913019" y="-179.999817" z="0.000398274016" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="joust" platform="arcade">
@@ -1126,8 +1126,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="-4.63860369" y="-0.019092083" z="-3.03230047" />
-      <rotation x="-0.000506985642" y="90.00011" z="0.0006418086" />
+      <position x="-4.638604" y="-0.0190913677" z="-3.03230023" />
+      <rotation x="-0.000497823639" y="90.00013" z="0.000637791934" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mach3" platform="arcade">
@@ -1154,8 +1154,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="10.0240068" y="8.940697E-07" z="-2.57519269" />
-      <rotation x="-9.567168E-06" y="-29.2798767" z="-7.36959328E-06" />
+      <position x="10.0240068" y="1.54972076E-06" z="-2.57519054" />
+      <rotation x="1.74852157E-05" y="-29.2798157" z="0.00143308681" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="ssf2" platform="arcade">
@@ -1182,8 +1182,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="11.7193232" y="0.0009899139" z="-3.043355" />
-      <rotation x="-0.000642385858" y="0.8005325" z="0.0005747649" />
+      <position x="11.7193193" y="0.0009896159" z="-3.04335141" />
+      <rotation x="-0.0006193224" y="0.8007703" z="0.0005083821" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="ssf2" platform="arcade">
@@ -1193,7 +1193,7 @@
       <description />
       <model />
       <interaction_type>Inherited</interaction_type>
-      <emulator>mame_0221</emulator>
+      <emulator>mame_0228</emulator>
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1210,8 +1210,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="12.5792971" y="0.0009897947" z="-3.03314638" />
-      <rotation x="-0.000603952" y="2.08025479" z="0.0005029442" />
+      <position x="12.5792942" y="0.0009897351" z="-3.033144" />
+      <rotation x="-0.00058632117" y="2.080391" z="0.000546268537" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="1942" platform="arcade">
@@ -1238,8 +1238,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="10.5483932" y="-0.0134918094" z="1.05118787" />
-      <rotation x="0.0003059693" y="112.879959" z="-0.000630145369" />
+      <position x="10.5483923" y="-0.0134921074" z="1.051185" />
+      <rotation x="0.000306872185" y="112.879845" z="-0.0006624696" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>
@@ -1268,8 +1268,8 @@
       <screen_type>Inherited</screen_type>
       <screen_orientation>Inherited</screen_orientation>
       <mature>false</mature>
-      <position x="19.3653679" y="-0.0009882748" z="-0.447871864" />
-      <rotation x="1.14906479E-05" y="-1.76004028" z="-1.32655159E-05" />
+      <position x="19.3653679" y="-0.0009883344" z="-0.447871834" />
+      <rotation x="-3.41035229E-06" y="-1.76004028" z="5.503029E-05" />
       <scale x="0.1" y="0.1" z="0.1" />
     </prop>
   </props>

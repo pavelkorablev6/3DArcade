@@ -77,6 +77,12 @@ namespace Arcade
             }
         }
 
+        protected sealed override void DeleteAllFromDisk()
+        {
+            if (File.Exists(_filePath))
+                File.Delete(_filePath);
+        }
+
         private void Serialize(U entry) => XMLUtils.Serialize(_filePath, entry);
 
         private U Deserialize() => XMLUtils.Deserialize<U>(_filePath);

@@ -24,9 +24,13 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
+    [System.Serializable]
     [XmlRoot("platform")]
     public sealed class PlatformConfiguration : XMLDatabaseEntry
     {
+        [XmlAttribute("description")]
+        public string Description;
+
         [XmlElement("master_list")]
         public string MasterList;
 
