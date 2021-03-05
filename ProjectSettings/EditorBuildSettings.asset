@@ -21,9 +21,13 @@ EditorBuildSettings:
     path: Assets/3DArcade/Scenes/toga/toga.unity
     guid: 82b0417b8ea424146a2c6eb7c0a3f816
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 35d7de0c1ee5b8448b55cc9eb98c1525,
+      type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: cd8f565997f10ac479e29d20f7c54114,
       type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 3541b741c48cc7b4ab46f22f97d21cbb,
       type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 46be3648c9e9a4f4e928db046351a66d,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 56f6c5337014743409b7497505cf42b6,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: b1b2877e2600ef24cae297eadedf2d25,
       type: 2}
