@@ -98,7 +98,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: a6726b99e9128b64eb6f00b401aa801c,
+    type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 7f47f1f79fcc9374f8b54ccef78e5964,
     type: 2}
 --- !u!196 &4
@@ -153,7 +154,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 2
+  m_RefreshMode: 0
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -1242,13 +1243,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951447232418754155}
-  m_LocalRotation: {x: 0.3167042, y: -0.3260159, z: 0.10417334, w: 0.88462424}
+  m_LocalRotation: {x: 0.2033683, y: 0.2033683, z: -0.043227267, w: 0.95677274}
   m_LocalPosition: {x: 0, y: 10, z: 0}
-  m_LocalScale: {x: 0.3937, y: 0.3937, z: 0.3937}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 38.921, y: -41.039, z: -1.6350001}
+  m_LocalEulerAnglesHint: {x: 24, y: 24, z: 0}
 --- !u!108 &1951447232418754157
 Light:
   m_ObjectHideFlags: 0
@@ -1261,13 +1262,13 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 90000
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1306,7 +1307,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5500
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: -3.1269608, z: 9.49e-43, w: -2.671486}
+  m_BoundingSphereOverride: {x: 9.1858e-41, y: 4.959117e-39, z: 1.5078841e-19, w: 9.1858e-41}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
