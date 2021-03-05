@@ -1,5 +1,4 @@
 <arcade id="mainmenu" description="Main Menu">
-  <scene_override>empty</scene_override>
   <render_settings>
     <marquee_intensity>4</marquee_intensity>
     <screen_raster_intensity>4</screen_raster_intensity>
@@ -7,6 +6,7 @@
     <screen_pinball_intensity>1</screen_pinball_intensity>
   </render_settings>
   <fpsarcade_properties>
+    <scene>internal_cylinder</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0.89" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -19,6 +19,7 @@
     </camera_settings>
   </fpsarcade_properties>
   <cylarcade_properties inverse_navigation="false" inverse_list="false" mouse_look="false" mouselook_reverse="true" horizontal_navigation="true">
+    <scene>empty</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -39,7 +40,7 @@
     <line_angle>-5</line_angle>
   </cylarcade_properties>
   <games>
-    <game id="spaceport" platform="">
+    <game id="demo" platform="">
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
