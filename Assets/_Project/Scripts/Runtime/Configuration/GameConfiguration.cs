@@ -23,7 +23,7 @@
 namespace Arcade
 {
     [System.Serializable]
-    public sealed class GameConfiguration : XMLDatabaseEntry
+    public sealed class GameConfiguration : DatabaseEntry
     {
         public string CloneOf;
         public string RomOf;

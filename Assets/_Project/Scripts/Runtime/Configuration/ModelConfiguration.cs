@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    public sealed class ModelConfiguration : XMLDatabaseEntry
+    public sealed class ModelConfiguration : DatabaseEntry
     {
         [XmlAttribute("platform")]
         public string Platform;
@@ -99,12 +99,12 @@ namespace Arcade
         public bool Mature;
 
         [XmlElement("position")]
-        public XMLVector3 Position;
+        public DatabaseVector3 Position;
 
         [XmlElement("rotation")]
-        public XMLVector3 Rotation;
+        public DatabaseVector3 Rotation;
 
         [XmlElement("scale")]
-        public XMLVector3 Scale;
+        public DatabaseVector3 Scale;
     }
 }

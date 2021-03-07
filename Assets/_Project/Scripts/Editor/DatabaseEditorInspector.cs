@@ -43,7 +43,7 @@ namespace Arcade.UnityEditor
     {
         public static void OnInspectorGUI<T, U>(Editor editor)
             where T : DatabaseEditorBase<U>
-            where U : XMLDatabaseEntry
+            where U : DatabaseEntry
         {
             GUILayout.Space(8f);
             using (new GUILayout.HorizontalScope())

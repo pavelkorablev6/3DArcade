@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class EmulatorDatabase : XMLDatabaseMultiFile<EmulatorConfiguration>
+    public sealed class EmulatorDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
         public static EmulatorConfiguration FpsArcadeLauncher { get; private set; }
         public static EmulatorConfiguration CylArcadeLauncher { get; private set; }

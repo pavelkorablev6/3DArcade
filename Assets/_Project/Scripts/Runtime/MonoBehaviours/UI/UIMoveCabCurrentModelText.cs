@@ -34,16 +34,22 @@ namespace Arcade
 
         private void OnEnable()
         {
-            _text.text = string.Empty;
-            MoveCabController.OnCurrentModelChanged += OnTargetChange;
+            _text.Clear();
+            SceneEditModeController.OnCurrentModelChanged += OnTargetChange;
         }
 
         private void OnDisable()
         {
-            _text.text = string.Empty;
-            MoveCabController.OnCurrentModelChanged -= OnTargetChange;
+            _text.Clear();
+            SceneEditModeController.OnCurrentModelChanged -= OnTargetChange;
         }
 
-        private void OnTargetChange(ModelConfigurationComponent modelConfiguration) => _text.text = modelConfiguration != null ? modelConfiguration.Description : string.Empty;
+        private void OnTargetChange(ModelConfigurationComponent modelConfiguration)
+        {
+            if (modelConfiguration != null)
+                _text.SetText(modelConfiguration.Description);
+            else
+                _text.Clear();
+        }
     }
 }

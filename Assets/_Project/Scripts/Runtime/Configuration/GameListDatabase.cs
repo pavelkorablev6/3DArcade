@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class GameListDatabase : XMLDatabaseMultiFile<GamelistConfiguration>
+    public sealed class GameListDatabase : MultiFileDatabase<GamelistConfiguration>
     {
         public GameListDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "gamelist_cfgs")

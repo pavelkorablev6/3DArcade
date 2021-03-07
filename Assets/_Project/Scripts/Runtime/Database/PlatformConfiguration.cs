@@ -26,7 +26,7 @@ namespace Arcade
 {
     [System.Serializable]
     [XmlRoot("platform")]
-    public sealed class PlatformConfiguration : XMLDatabaseEntry
+    public sealed class PlatformConfiguration : DatabaseEntry
     {
         [XmlAttribute("description")]
         public string Description;

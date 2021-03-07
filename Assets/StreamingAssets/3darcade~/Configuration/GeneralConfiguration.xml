@@ -1,4 +1,5 @@
 <general>
   <starting_arcade>mainmenu</starting_arcade>
-  <starting_arcade_type>Cyl</starting_arcade_type>
+  <starting_arcade_type>Fps</starting_arcade_type>
+  <enable_vr>true</enable_vr>
 </general>

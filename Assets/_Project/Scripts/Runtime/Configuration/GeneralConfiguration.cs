@@ -34,6 +34,9 @@ namespace Arcade
         [XmlElement("starting_arcade_type")]
         public ArcadeType StartingArcadeType;
 
+        [XmlElement("enable_vr")]
+        public bool EnableVR;
+
         private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly string _filePath;
 
@@ -56,6 +59,7 @@ namespace Arcade
                 Debug.Log($"[{GetType().Name}] Loaded general configuration.");
                 StartingArcade     = cfg.StartingArcade;
                 StartingArcadeType = cfg.StartingArcadeType;
+                EnableVR           = cfg.EnableVR;
                 return true;
             }
             catch (System.Exception e)
@@ -69,9 +73,12 @@ namespace Arcade
         {
             try
             {
-                XMLUtils.Serialize(_filePath, this);
-                Debug.Log($"[{GetType().Name}] Saved general configuration.");
-                return true;
+                if (XMLUtils.Serialize(_filePath, this))
+                {
+                    Debug.Log($"[{GetType().Name}] Saved general configuration.");
+                    return true;
+                }
+                return false;
             }
             catch (System.Exception e)
             {

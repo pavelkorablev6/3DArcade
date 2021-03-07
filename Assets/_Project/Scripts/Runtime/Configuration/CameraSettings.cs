@@ -28,10 +28,10 @@ namespace Arcade
     public sealed class CameraSettings
     {
         [XmlElement("position")]
-        public XMLVector3 Position;
+        public DatabaseVector3 Position;
 
         [XmlElement("rotation")]
-        public XMLVector3 Rotation;
+        public DatabaseVector3 Rotation;
 
         [XmlElement("height")]
         public float Height;
@@ -52,6 +52,6 @@ namespace Arcade
         public float FarClipPlane;
 
         [XmlElement("viewport_rect")]
-        public XMLRect ViewportRect;
+        public DatabaseRect ViewportRect;
     }
 }

@@ -20,71 +20,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Arcade
 {
-    [RequireComponent(typeof(CharacterController))]
-    public abstract class PlayerControls : MonoBehaviour
+    public sealed class PlayerControls : MonoBehaviour
     {
-        [SerializeField] protected Camera _camera;
-        [SerializeField] protected CinemachineVirtualCamera _virtualCamera;
-
-        [SerializeField] protected float _walkSpeed = 3f;
-
-        [SerializeField] protected float _minVerticalLookAngle = -89f;
-        [SerializeField] protected float _maxVerticalLookAngle = 89f;
-
-        public Camera Camera => _camera;
-        public CinemachineVirtualCamera VirtualCamera => _virtualCamera;
-
-        public InputSettingsActions.GlobalActions GlobalActions { get; private set; }
-
-        protected CharacterController _characterController;
-        protected InputSettingsActions _inputActions;
-
-        protected Vector2 _lookInputValue;
-
-        protected Vector3 _moveVelocity;
-        protected float _lookHorizontal;
-        protected float _lookVertical;
-
-        protected void Construct()
+        public enum State
         {
-            _characterController = GetComponent<CharacterController>();
-            Assert.IsNotNull(_characterController);
-            Assert.IsNotNull(_camera);
-            Assert.IsNotNull(_virtualCamera);
-
-            _inputActions = new InputSettingsActions();
-            GlobalActions = _inputActions.Global;
+            Disabled,
+            FPS,
+            CYL
         }
 
-        public void SetVerticalLookLimits(float min, float max)
+        [SerializeField] private GameObject _fpsController;
+        [SerializeField] private GameObject _cylController;
+
+        public void SetState(State state)
         {
-            _minVerticalLookAngle = Mathf.Clamp(min, -89f, 0f);
-            _maxVerticalLookAngle = Mathf.Clamp(max, 0f, 89f);
+            switch (state)
+            {
+                case State.FPS:
+                    EnableFpsController();
+                    break;
+                case State.CYL:
+                    EnableCylController();
+                    break;
+                case State.Disabled:
+                default:
+                    Disable();
+                    break;
+            }
         }
 
-        private void OnEnable()
+        private void EnableFpsController()
         {
-            _lookInputValue = Vector2.zero;
-            _moveVelocity   = Vector3.zero;
-            _lookHorizontal = 0f;
-            _lookVertical   = 0f;
-            GlobalActions.Enable();
+            _cylController.SetActive(false);
+            _fpsController.SetActive(true);
         }
 
-        private void OnDisable() => GlobalActions.Disable();
+        private void EnableCylController()
+        {
+            _fpsController.SetActive(false);
+            _cylController.SetActive(true);
+        }
 
-        protected abstract void GatherMovementInputValues();
-
-        protected abstract void GatherLookInputValues();
-
-        protected abstract void HandleMovement(float dt);
-
-        protected abstract void HandleLook();
+        private void Disable()
+        {
+            _fpsController.SetActive(false);
+            _cylController.SetActive(false);
+        }
     }
 }

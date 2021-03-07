@@ -78,7 +78,7 @@ namespace Arcade
         public bool MouseLookReverse;
 
         [XmlElement("sprocket_rotation")]
-        public XMLVector3 SprocketRotation;
+        public DatabaseVector3 SprocketRotation;
 
         [XmlElement("line_angle")]
         public float LineAngle;

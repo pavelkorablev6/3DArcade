@@ -19,7 +19,7 @@
     </camera_settings>
   </fpsarcade_properties>
   <cylarcade_properties inverse_navigation="false" inverse_list="false" mouse_look="false" mouselook_reverse="true" horizontal_navigation="true">
-    <scene>empty</scene>
+    <scene>internal_cylinder</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
