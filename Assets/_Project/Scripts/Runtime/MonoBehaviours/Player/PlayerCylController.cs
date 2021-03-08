@@ -31,41 +31,12 @@ namespace Arcade
         [SerializeField] private float _minHorizontalLookAngle = -40f;
         [SerializeField] private float _maxHorizontalLookAngle = 40f;
 
-        public bool MouseLookEnabled;
+        private InputAction _movementAction;
+        private float _movementInputValue;
 
-        private InputAction _navigationUpDownAction;
-        private InputAction _navigationLeftRightAction;
+        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylArcade.NavigationUpDown;
 
-        private float _navigationInputValue;
-
-        private void Awake()
-        {
-            Construct();
-
-            InputActionMap actionMap   = _inputActionAsset.FindActionMap("CylArcade");
-            _navigationUpDownAction    = actionMap.FindAction("NavigationUpDown");
-            _navigationLeftRightAction = actionMap.FindAction("NavigationLeftRight");
-            _lookAction                = actionMap.FindAction("Look");
-
-            // TEMP
-            SetupForHorizontalWheel();
-            actionMap.Enable();
-        }
-
-        private void Update()
-        {
-            if (_movementAction != null && _movementAction.enabled)
-                GatherMovementInputValues();
-            HandleMovement(Time.deltaTime);
-
-            if (MouseLookEnabled)
-                GatherLookInputValues();
-            HandleLook();
-        }
-
-        public void SetupForHorizontalWheel() => _movementAction = _navigationUpDownAction;
-
-        public void SetupForVerticalWheel() => _movementAction = _navigationLeftRightAction;
+        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylArcade.NavigationLeftRight;
 
         public void SetHorizontalLookLimits(float min, float max)
         {
@@ -73,13 +44,25 @@ namespace Arcade
             _maxHorizontalLookAngle = Mathf.Clamp(max, 0f, 90f);
         }
 
-        protected override void GatherMovementInputValues() => _navigationInputValue = _movementAction.ReadValue<float>();
+        protected override void GatherMovementInputValues()
+        {
+            if (_movementAction != null && _movementAction.enabled)
+                _movementInputValue = _movementAction.ReadValue<float>();
+            else
+                _movementInputValue = 0f;
+        }
 
-        protected override void GatherLookInputValues() => _lookInputValue = _lookAction.ReadValue<Vector2>();
+        protected override void GatherLookInputValues()
+        {
+            if (_inputActions.CylArcade.Look.enabled)
+                _lookInputValue = _inputActions.CylArcade.Look.ReadValue<Vector2>();
+            else
+                _lookInputValue = Vector2.zero;
+        }
 
         protected override void HandleMovement(float dt)
         {
-            _ = _characterController.Move(new Vector3(0f, 0f, _navigationInputValue) * _walkSpeed * dt);
+            _ = _characterController.Move(new Vector3(0f, 0f, _movementInputValue) * _walkSpeed * dt);
 
             if (transform.localPosition.z < 0f)
                 transform.localPosition = new Vector3(0f, transform.localPosition.y, 0f);
@@ -89,8 +72,8 @@ namespace Arcade
         {
             _lookHorizontal += _lookInputValue.x;
             _lookVertical   += _lookInputValue.y;
-            _lookHorizontal = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);
-            _lookVertical   = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);
+            _lookHorizontal  = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);
+            _lookVertical    = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);
             if (_virtualCamera != null)
                 _virtualCamera.transform.localEulerAngles = new Vector3(-_lookVertical, 0f, 0f);
             transform.localEulerAngles = new Vector3(0f, _lookHorizontal, 0f);

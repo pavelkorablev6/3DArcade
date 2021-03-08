@@ -22,7 +22,6 @@
 
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
@@ -31,9 +30,7 @@ namespace Arcade
     {
         [SerializeField] protected Camera _camera;
         [SerializeField] protected CinemachineVirtualCamera _virtualCamera;
-
         [SerializeField] protected float _walkSpeed = 3f;
-
         [SerializeField] protected float _minVerticalLookAngle = -89f;
         [SerializeField] protected float _maxVerticalLookAngle = 89f;
 
@@ -41,20 +38,15 @@ namespace Arcade
         public CinemachineVirtualCamera VirtualCamera => _virtualCamera;
 
         protected CharacterController _characterController;
-        protected InputActionAsset _inputActionAsset;
-        protected InputAction _movementAction;
-        protected InputAction _lookAction;
-
+        protected InputActions _inputActions;
         protected Vector2 _lookInputValue;
         protected Vector3 _moveVelocity;
         protected float _lookHorizontal;
         protected float _lookVertical;
 
-        protected void Construct()
-        {
-            _characterController = GetComponent<CharacterController>();
-            _inputActionAsset    = FindObjectOfType<Main>().InputActionAsset;
-        }
+        private void Awake() => _characterController = GetComponent<CharacterController>();
+
+        private void Start() => _inputActions = FindObjectOfType<Main>().InputActions;
 
         public void SetVerticalLookLimits(float min, float max)
         {
@@ -70,12 +62,29 @@ namespace Arcade
             _lookVertical   = 0f;
         }
 
-        protected abstract void GatherMovementInputValues();
+        private void Update()
+        {
+            GatherMovementInputValues();
+            HandleMovement(Time.deltaTime);
 
-        protected abstract void GatherLookInputValues();
+            GatherLookInputValues();
+            HandleLook();
+        }
 
-        protected abstract void HandleMovement(float dt);
+        protected virtual void GatherMovementInputValues()
+        {
+        }
 
-        protected abstract void HandleLook();
+        protected virtual void GatherLookInputValues()
+        {
+        }
+
+        protected virtual void HandleMovement(float dt)
+        {
+        }
+
+        protected virtual void HandleLook()
+        {
+        }
     }
 }

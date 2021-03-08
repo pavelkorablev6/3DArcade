@@ -37,29 +37,27 @@ namespace Arcade
         [XmlElement("enable_vr")]
         public bool EnableVR;
 
-        private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly string _filePath;
 
         public GeneralConfiguration()
         {
         }
 
-        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem)
-        {
-            _virtualFileSystem = virtualFileSystem;
-            _filePath          = virtualFileSystem.GetFile("general_cfg");
-        }
+        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem) => _filePath = virtualFileSystem.GetFile("general_cfg");
 
         public bool Load()
         {
             try
             {
+                if (!FileSystem.FileExists(_filePath))
+                    return CreateDefaultConfiguration();
+
                 GeneralConfiguration cfg = XMLUtils.Deserialize<GeneralConfiguration>(_filePath);
-                cfg ??= new GeneralConfiguration(_virtualFileSystem) { StartingArcade = "empty", StartingArcadeType = ArcadeType.Cyl };
+                if (cfg == null)
+                    return CreateDefaultConfiguration();
+
                 Debug.Log($"[{GetType().Name}] Loaded general configuration.");
-                StartingArcade     = cfg.StartingArcade;
-                StartingArcadeType = cfg.StartingArcadeType;
-                EnableVR           = cfg.EnableVR;
+                Initialize(cfg);
                 return true;
             }
             catch (System.Exception e)
@@ -73,17 +71,37 @@ namespace Arcade
         {
             try
             {
-                if (XMLUtils.Serialize(_filePath, this))
-                {
-                    Debug.Log($"[{GetType().Name}] Saved general configuration.");
-                    return true;
-                }
-                return false;
+                return XMLUtils.Serialize(_filePath, this);
             }
             catch (System.Exception e)
             {
                 Debug.LogException(e);
                 return false;
+            }
+        }
+
+        private bool CreateDefaultConfiguration()
+        {
+            Initialize();
+            bool result = Save();
+            if (result)
+                Debug.Log($"[{GetType().Name}] Created default general configuration.");
+            return result;
+        }
+
+        private void Initialize(GeneralConfiguration cfg = null)
+        {
+            if (cfg != null)
+            {
+                StartingArcade     = cfg.StartingArcade;
+                StartingArcadeType = cfg.StartingArcadeType;
+                EnableVR           = cfg.EnableVR;
+            }
+            else
+            {
+                StartingArcade     = "internal_default";
+                StartingArcadeType = ArcadeType.Fps;
+                EnableVR           = false;
             }
         }
     }

@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using UnityEngine;
 
 namespace Arcade
@@ -38,13 +37,13 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            //_context.Main.PlayerFpsControls.FpsArcadeActions.Enable();
-            //if (Cursor.lockState != CursorLockMode.Locked)
-            //    _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Disable();
+            _context.Data.InputActions.FpsArcade.Enable();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                _context.Data.InputActions.FpsArcade.Look.Disable();
 
             //_context.CurrentModelConfiguration = null;
 
-            //_context.UIController.EnableNormalUI();
+            _context.Data.UIController.SetState(UIState.SceneNormal);
 
             //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
 
@@ -55,38 +54,38 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            //_context.Main.PlayerFpsControls.FpsArcadeActions.Disable();
+            _context.Data.InputActions.FpsArcade.Disable();
 
-            //_context.UIController.DisableNormalUI();
+            _context.Data.UIController.SetState(UIState.None);
         }
 
-        //public override void Update(float dt)
-        //{
-        //    if (_context.Main.PlayerFpsControls.GlobalActions.Quit.triggered)
-        //        SystemUtils.ExitApp();
+        public override void Update(float dt)
+        {
+            if (_context.Data.InputActions.Global.Quit.triggered)
+                SystemUtils.ExitApp();
 
-        //    if (_context.Main.PlayerFpsControls.GlobalActions.ToggleCursor.triggered)
-        //    {
-        //        SystemUtils.ToggleMouseCursor();
-        //        if (Cursor.lockState == CursorLockMode.Locked)
-        //            _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Enable();
-        //        else
-        //            _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Disable();
-        //    }
+            if (_context.Data.InputActions.Global.ToggleCursor.triggered)
+            {
+                SystemUtils.ToggleMouseCursor();
+                if (Cursor.lockState == CursorLockMode.Locked)
+                    _context.Data.InputActions.FpsArcade.Look.Enable();
+                else
+                    _context.Data.InputActions.FpsArcade.Look.Disable();
+            }
 
-        //    InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,
-        //                                           _context.Main.PlayerFpsControls.Camera,
-        //                                           INTERACT_MAX_DISTANCE,
-        //                                           _context.RaycastLayers);
+            //    InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,
+            //                                           _context.Main.PlayerFpsControls.Camera,
+            //                                           INTERACT_MAX_DISTANCE,
+            //                                           _context.RaycastLayers);
 
-        //    _context.VideoPlayerController.UpdateVideosState();
+            //    _context.VideoPlayerController.UpdateVideosState();
 
-        //    if (Cursor.lockState == CursorLockMode.Locked && _context.Main.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
-        //        HandleInteraction();
+            //    if (Cursor.lockState == CursorLockMode.Locked && _context.Main.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
+            //        HandleInteraction();
 
-        //    if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
-        //        _context.TransitionTo<FpsMoveCabState>();
-        //}
+            //    if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
+            //        _context.TransitionTo<FpsMoveCabState>();
+        }
 
         //private void HandleInteraction()
         //{

@@ -37,7 +37,7 @@ namespace Arcade
 
             SystemUtils.HideMouseCursor();
 
-            _context.UIController.SetState(UIState.SceneLoading);
+            _context.Data.UIController.SetState(UIState.SceneLoading);
 
             _ = _context.StartCurrentArcade();
         }
@@ -46,12 +46,12 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.UIController.SetState(UIState.None);
+            _context.Data.UIController.SetState(UIState.None);
         }
 
         public override void Update(float dt)
         {
-            if (!_context.ArcadeController.ArcadeLoaded)
+            if (_context.ArcadeController == null || !_context.ArcadeController.ArcadeLoaded)
                 return;
 
             switch (_context.CurrentArcadeType)

@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
@@ -33,48 +32,19 @@ namespace Arcade
 
         [SerializeField] private float _extraGravity = 40f;
 
-        private InputAction _sprintAction;
-        private InputAction _jumpAction;
-
         private Vector2 _movementInputValue;
         private bool _sprinting;
         private bool _performJump;
 
-        private void Awake()
-        {
-            Construct();
-
-            InputActionMap actionMap = _inputActionAsset.FindActionMap("FpsArcade");
-            _movementAction          = actionMap.FindAction("Movement");
-            _lookAction              = actionMap.FindAction("Look");
-            _sprintAction            = actionMap.FindAction("Sprint");
-            _jumpAction              = actionMap.FindAction("Jump");
-
-            // TEMP
-            actionMap.Enable();
-        }
-
-        private void Update()
-        {
-            if (_movementAction.enabled)
-                GatherMovementInputValues();
-            HandleMovement(Time.deltaTime);
-
-            if (_lookAction.enabled)
-            {
-                GatherLookInputValues();
-                HandleLook();
-            }
-        }
-
         protected override void GatherMovementInputValues()
         {
-            _movementInputValue = _movementAction.ReadValue<Vector2>();
-            _sprinting          = _sprintAction.ReadValue<float>() > 0f;
-            _performJump        = _jumpAction.triggered;
+            _movementInputValue = _inputActions.FpsArcade.Movement.enabled ? _inputActions.FpsArcade.Movement.ReadValue<Vector2>() : Vector2.zero;
+            _sprinting          = _inputActions.FpsArcade.Sprint.enabled && _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
+            _performJump        = _inputActions.FpsArcade.Jump.enabled && _inputActions.FpsArcade.Jump.triggered;
         }
 
-        protected override void GatherLookInputValues() => _lookInputValue = _lookAction.ReadValue<Vector2>();
+        protected override void GatherLookInputValues()
+            => _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() : Vector2.zero;
 
         protected override void HandleMovement(float dt)
         {

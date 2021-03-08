@@ -20,11 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
-using SK.Utilities.Unity;
-using UnityEngine;
-using UnityEngine.InputSystem;
-
 namespace Arcade
 {
     public sealed class SceneContext : FSM.Context<SceneState>
@@ -32,79 +27,39 @@ namespace Arcade
         //public PlayerControls CurrentPlayerControls;
         //public ModelConfigurationComponent CurrentModelConfiguration;
 
-        public readonly Player Player;
-        public readonly IUIController UIController;
-        public readonly InputAction InputActionQuit;
-        public readonly InputAction InputActionToggleCursor;
-
         public ArcadeController ArcadeController { get; private set; }
         public ArcadeConfiguration CurrentArcadeConfiguration { get; private set; }
         public ArcadeType CurrentArcadeType { get; private set; }
         public ArcadeMode CurrentArcadeMode { get; private set; }
 
+        public readonly SceneContextData Data;
+
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
-        public MultiFileDatabase<EmulatorConfiguration> EmulatorDatabase { get; private set; }
-        public PlatformDatabase PlatformDatabase { get; private set; }
 
-        private readonly OS _currentOS;
-        private readonly IVirtualFileSystem _virtualFileSystem;
         //private readonly ObjectsHierarchy _objectsHierarchy;
-        private readonly GeneralConfiguration _generalConfiguration;
-        private readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
-        //private readonly AssetCache<GameObject> _gameObjectCache;
         //private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
-        public SceneContext(Player player, IUIController uiController, InputActionMap globalInputActions)
+        public SceneContext(SceneContextData data)
         {
-            Player                  = player;
-            UIController            = uiController;
-            InputActionQuit         = globalInputActions.FindAction("Quit");
-            InputActionToggleCursor = globalInputActions.FindAction("ToggleCursor");
-
-            try
-            {
-                _currentOS = SystemUtils.GetCurrentOS();
-                Debug.Log($"Current OS: {_currentOS}");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);
-                SystemUtils.ExitApp();
-                return;
-            }
-
-            string vfsRootDirectory = SystemUtils.GetDataPath();
-            Debug.Log($"Data path: {vfsRootDirectory}");
-            _virtualFileSystem = InitVFS(vfsRootDirectory);
-
-            _generalConfiguration = new GeneralConfiguration(_virtualFileSystem);
-            if (!_generalConfiguration.Load())
-            {
-                SystemUtils.ExitApp();
-                return;
-            }
-
-            _arcadeDatabase  = new ArcadeDatabase(_virtualFileSystem);
-            EmulatorDatabase = new EmulatorDatabase(_virtualFileSystem);
-            PlatformDatabase = new PlatformDatabase(_virtualFileSystem);
-
-            //_gameObjectCache = new GameObjectCache();
+            Data = data;
 
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
             //_genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
 
-            _ = SetCurrentArcadeConfiguration(_generalConfiguration.StartingArcade, _generalConfiguration.StartingArcadeType, ArcadeMode.Normal);
+            _ = SetCurrentArcadeConfiguration(data.GeneralConfiguration.StartingArcade,
+                                              data.GeneralConfiguration.StartingArcadeType,
+                                              ArcadeMode.Normal);
 
             //_objectsHierarchy = new NormalHierarchy();
         }
 
         public bool SetCurrentArcadeConfiguration(string id, ArcadeType type, ArcadeMode mode)
         {
-            if (_arcadeDatabase.Get(id, out ArcadeConfiguration configuration))
+            if (Data.ArcadeDatabase.Get(id, out ArcadeConfiguration configuration))
             {
                 CurrentArcadeConfiguration = configuration;
                 CurrentArcadeType          = type;
@@ -134,7 +89,7 @@ namespace Arcade
             {
                 case ArcadeType.Fps:
                 {
-                    Player.SetState(_generalConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
+                    Data.Player.SetState(Data.GeneralConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
                     //VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
                     ArcadeController = new FpsArcadeController(/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
                 }
@@ -143,7 +98,7 @@ namespace Arcade
                 {
                     //VideoPlayerController = null;
 
-                    Player.SetState(_generalConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
+                    Data.Player.SetState(Data.GeneralConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
 
                     switch (CurrentArcadeConfiguration.CylArcadeProperties.WheelVariant)
                     {
@@ -247,12 +202,5 @@ namespace Arcade
             return null;
         }
         */
-        private static IVirtualFileSystem InitVFS(string rootDirectory) => new VirtualFileSystem()
-            .MountDirectory("emulator_cfgs", $"{rootDirectory}/3darcade~/Configuration/Emulators")
-            .MountDirectory("platform_cfgs", $"{rootDirectory}/3darcade~/Configuration/Platforms")
-            .MountDirectory("arcade_cfgs", $"{rootDirectory}/3darcade~/Configuration/Arcades")
-            .MountDirectory("gamelist_cfgs", $"{rootDirectory}/3darcade~/Configuration/Gamelists")
-            .MountDirectory("medias", $"{rootDirectory}/3darcade~/Media")
-            .MountFile("general_cfg", $"{rootDirectory}/3darcade~/Configuration/GeneralConfiguration.xml");
     }
 }

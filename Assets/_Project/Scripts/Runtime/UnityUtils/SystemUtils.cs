@@ -48,12 +48,15 @@ namespace Arcade
 
         public static void HideMouseCursor() => Cursor.lockState = CursorLockMode.Locked;
 
-        public static void ExitApp() =>
+        public static void ExitApp(string errorMessage = null)
+        {
+            if (errorMessage != null)
+                Debug.LogError(errorMessage);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit(0);
 #endif
+            Application.Quit(errorMessage == null ? 0 : 1);
+        }
 
         public static OS GetCurrentOS()
         {

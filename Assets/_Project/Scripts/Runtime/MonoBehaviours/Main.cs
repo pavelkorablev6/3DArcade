@@ -20,45 +20,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
+        public InputActions InputActions { get; private set; }
+
         [SerializeField] private Player _player;
-        [SerializeField] private InputActionAsset _inputActionAsset;
 
-        public InputActionAsset InputActionAsset => _inputActionAsset;
+        private IVirtualFileSystem _virtualFileSystem;
+        private GeneralConfiguration _generalConfiguration;
 
-        private InputActionMap _globalInputActions;
-        private UIController _uiController;
+        private MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
+        private MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        private MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
+
+        private IUIController _uiController;
 
         private SceneContext _sceneContext;
 
         private void Awake()
         {
-            QualitySettings.vSyncCount  = 0;
-            Application.targetFrameRate = -1;
-            Time.timeScale              = 1f;
+            SetGlobalApplicationSettings();
 
-            _globalInputActions = _inputActionAsset.FindActionMap("Global");
-            _uiController       = new UIController();
+            CheckCurrentOS();
+
+            InitVFS();
+
+            InitInputActions();
+
+            LoadGeneralConfiguration();
+
+            LoadDatabases();
+
+            InitUIController();
         }
 
         private void Start()
         {
             SystemUtils.HideMouseCursor();
 
-            _sceneContext = new SceneContext(_player, _uiController, _globalInputActions);
+            InitSceneContext();
+
             _sceneContext.TransitionTo<SceneLoadState>();
         }
 
-        private void OnEnable() => _globalInputActions.Enable();
+        private void OnEnable() => InputActions.Global.Enable();
 
-        private void OnDisable() => _globalInputActions.Disable();
+        private void OnDisable() => InputActions.Global.Disable();
 
 #if !UNITY_EDITOR
         private const bool SLEEP_TIME = 200;
@@ -77,5 +90,81 @@ namespace Arcade
         private void Update() => _sceneContext.Update(Time.deltaTime);
 #endif
         private void FixedUpdate() => _sceneContext.FixedUpdate(Time.fixedDeltaTime);
+
+        private static void SetGlobalApplicationSettings()
+        {
+            QualitySettings.vSyncCount  = 0;
+            Application.targetFrameRate = -1;
+            Time.timeScale              = 1f;
+        }
+
+        private void CheckCurrentOS()
+        {
+            try
+            {
+                OS currentOS = SystemUtils.GetCurrentOS();
+                Debug.Log($"Current OS: {currentOS}");
+            }
+            catch (System.Exception e)
+            {
+                SystemUtils.ExitApp(e.Message);
+            }
+        }
+
+        private void InitVFS()
+        {
+            string dataPath = SystemUtils.GetDataPath();
+            Debug.Log($"Data path: {dataPath}");
+
+            _virtualFileSystem = new VirtualFileSystem()
+                .MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
+                .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
+                .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
+                .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
+        }
+
+        private void InitInputActions() => InputActions = new InputActions();
+
+        private void LoadGeneralConfiguration()
+        {
+            if (_virtualFileSystem == null)
+            {
+                SystemUtils.ExitApp("Virtual File System not initialized");
+                return;
+            }
+
+            _generalConfiguration = new GeneralConfiguration(_virtualFileSystem);
+            if (!_generalConfiguration.Load())
+                SystemUtils.ExitApp("Failed to load general configuration");
+        }
+
+        private void LoadDatabases()
+        {
+            if (_virtualFileSystem == null)
+            {
+                SystemUtils.ExitApp("Virtual File System not initialized");
+                return;
+            }
+
+            _emulatorDatabase = new EmulatorDatabase(_virtualFileSystem);
+            _platformDatabase = new PlatformDatabase(_virtualFileSystem);
+            _arcadeDatabase   = new ArcadeDatabase(_virtualFileSystem);
+        }
+
+        private void InitUIController() => _uiController = new UIController();
+
+        private void InitSceneContext()
+        {
+            SceneContextData sceneContextData = new SceneContextData(_player,
+                                                                     InputActions,
+                                                                     _uiController,
+                                                                     _generalConfiguration,
+                                                                     _emulatorDatabase,
+                                                                     _platformDatabase,
+                                                                     _arcadeDatabase);
+            _sceneContext = new SceneContext(sceneContextData);
+        }
     }
 }

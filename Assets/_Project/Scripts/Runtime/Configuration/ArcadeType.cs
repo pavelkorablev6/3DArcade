@@ -22,12 +22,6 @@
 
 namespace Arcade
 {
-    public enum ArcadeMode
-    {
-        Normal,
-        RenderTexture
-    }
-
     public enum ArcadeType
     {
         Fps,

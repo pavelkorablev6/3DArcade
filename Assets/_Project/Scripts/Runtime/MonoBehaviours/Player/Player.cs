@@ -38,7 +38,7 @@ namespace Arcade
         [SerializeField] private PlayerControls _playerControls;
         [SerializeField] private PlayerControls _playerControlsVR;
 
-        //private void Start() => SetState(State.Disabled);
+        private void Awake() => SetState(State.Disabled);
 
         public void SetState(State state)
         {

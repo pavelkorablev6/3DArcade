@@ -21,14 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     public sealed class SceneCylNormalState : SceneState
     {
-        //private InputAction _navigationInput;
-
         //private float _timer        = 0f;
         //private float _acceleration = 1f;
 
@@ -41,9 +38,9 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.UIController.SetState(UIState.SceneNormal);
+            _context.Data.UIController.SetState(UIState.SceneNormal);
 
-            //_context.Main.PlayerCylControls.CylArcadeActions.Enable();
+            _context.Data.InputActions.CylArcade.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)
             //    _context.Main.PlayerCylControls.CylArcadeActions.Look.Disable();
 
@@ -90,17 +87,17 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.UIController.SetState(UIState.None);
+            _context.Data.InputActions.CylArcade.Disable();
 
-            //_context.Main.PlayerCylControls.CylArcadeActions.Disable();
+            _context.Data.UIController.SetState(UIState.None);
         }
 
         public override void Update(float dt)
         {
-            if (_context.InputActionQuit.triggered)
+            if (_context.Data.InputActions.Global.Quit.triggered)
                 SystemUtils.ExitApp();
 
-            if (_context.InputActionToggleCursor.triggered)
+            if (_context.Data.InputActions.Global.ToggleCursor.triggered)
             {
                 SystemUtils.ToggleMouseCursor();
                 //if (_context.Main.PlayerCylControls.MouseLookEnabled)
