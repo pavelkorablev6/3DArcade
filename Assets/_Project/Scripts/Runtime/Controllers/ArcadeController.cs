@@ -20,15 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
-using SK.Utilities.Unity;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Assertions;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -38,10 +32,8 @@ namespace Arcade
 {
     public abstract class ArcadeController
     {
-        public event Action<Scene> OnSceneLoaded;
-        public event Action OnSceneUnLoaded;
-
         public bool ArcadeLoaded { get; protected set; }
+
         //public ModelConfigurationComponent CurrentGame { get; protected set; }
 
         //public abstract float AudioMinDistance { get; protected set; }
@@ -62,10 +54,12 @@ namespace Arcade
         //protected readonly List<Transform> _allGames;
 
         protected ArcadeConfiguration _currentArcadeConfiguration;
+
         //protected bool _animating;
 
         //private readonly Database<EmulatorConfiguration> _emulatorDatabase;
         //private readonly PlatformDatabase _platformDatabase;
+        //private readonly AssetCache<SceneInstance> _sceneCache;
         //private readonly AssetCache<GameObject> _gameObjectCache;
         //private readonly ModelMatcher _modelMatcher;
 
@@ -75,10 +69,13 @@ namespace Arcade
 
         //private bool _gameModelsLoaded;
 
+        private AsyncOperationHandle<SceneInstance> _loadSceneHandle;
         private SceneInstance _sceneInstance;
         private string _sceneName;
-        private bool _sceneLoaded;
         private bool _triggerSceneReload;
+
+        private readonly RectTransform _statusBarProgressBarTransform;
+        private Vector3 _statusBarProgressBarScale;
 
         public ArcadeController(/*ObjectsHierarchy normalHierarchy,
                                 Database<EmulatorConfiguration> emulatorDatabase,
@@ -88,13 +85,17 @@ namespace Arcade
                                 NodeController<ScreenNodeTag> screenNodeController,
                                 NodeController<GenericNodeTag> genericNodeController*/)
         {
+            _statusBarProgressBarTransform = GameObject.Find("Bar").GetComponent<RectTransform>();
+            _statusBarProgressBarScale = Vector3.one;
+            //_sceneCache      = sceneCache ?? throw new System.ArgumentNullException(nameof(sceneCache));
+            //_gameObjectCache = gameObjectCache ?? throw new System.ArgumentNullException(nameof(gameObjectCache));
+
             //_main = Object.FindObjectOfType<Main>();
 
 //          _normalHierarchy   = normalHierarchy ?? throw new System.ArgumentNullException(nameof(normalHierarchy));
 //          _allGames          = new List<Transform>();
 //          _emulatorDatabase  = emulatorDatabase ?? throw new System.ArgumentNullException(nameof(emulatorDatabase));
 //          _platformDatabase  = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
-//          _gameObjectCache   = gameObjectCache ?? throw new System.ArgumentNullException(nameof(gameObjectCache));
 
 //          _marqueeNodeController = marqueeNodeController;
 //          _screenNodeController  = screenNodeController;
@@ -113,57 +114,55 @@ namespace Arcade
 //          }
         }
 
+        public void DebugLogProgress()
+        {
+            if (_loadSceneHandle.IsValid() && !_loadSceneHandle.IsDone)
+            {
+                _statusBarProgressBarScale.x = _loadSceneHandle.PercentComplete;
+                _statusBarProgressBarTransform.localScale = _statusBarProgressBarScale;
+            }
+        }
+
         public void StartArcade(ArcadeConfiguration arcadeConfiguration)
         {
             ArcadeLoaded = false;
 
             _currentArcadeConfiguration = arcadeConfiguration;
-            _sceneName = ArcadeName ?? arcadeConfiguration.Id;
+            _sceneName                  = ArcadeName ?? arcadeConfiguration.Id;
 
-            //List<string> scenes = new List<string>();
-            //for (int i = 0; i < SceneManager.sceneCountInBuildSettings; ++i)
-            //    scenes.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
-            //if (!scenes.Contains(_sceneName))
-            //    sceneName = "internal_empty";
-
-            //if (_sceneLoaded)
-            //    _ = _main.StartCoroutine(CoUnloadArcadeScene());
-            //else
-            //    _ = _main.StartCoroutine(CoSetupWorld());
-
-            Addressables.LoadResourceLocationsAsync($"Arcades/{_sceneName}", typeof(SceneInstance)).Completed += ResourceLocationsLoadedCallback;
+            Addressables.LoadResourceLocationsAsync($"Arcades/{_sceneName}", typeof(SceneInstance)).Completed += ResourceLocationsRetrievedCallback;
         }
 
-        private void ResourceLocationsLoadedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
+        public void StopArcade() => Unload();
+
+        private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
             if (aoHandle.Status != AsyncOperationStatus.Succeeded)
                 _sceneName = "internal_empty";
 
             Addressables.Release(aoHandle);
 
-            Load(_sceneName);
+            Load();
         }
 
-        private void Load(string name)
+        private void Load()
         {
-            if (string.IsNullOrEmpty(name))
-                return;
-
-            _sceneName = name;
-
-            if (_sceneLoaded)
+            if (_sceneInstance.Scene.isLoaded)
             {
                 _triggerSceneReload = true;
                 Unload();
             }
             else
-                Addressables.LoadSceneAsync($"Arcades/{_sceneName}", LoadSceneMode.Additive, true).Completed += SceneLoadedCallback;
+            {
+                _loadSceneHandle = Addressables.LoadSceneAsync($"Arcades/{_sceneName}", LoadSceneMode.Additive);
+                _loadSceneHandle.Completed += SceneLoadedCallback;
+            }
         }
 
         private void Unload()
         {
-            if (_sceneLoaded)
-                Addressables.UnloadSceneAsync(_sceneInstance, true).Completed += SceneUnloadedCallback;
+            if (_sceneInstance.Scene.isLoaded)
+                Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
         }
 
         private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
@@ -172,31 +171,45 @@ namespace Arcade
                 return;
 
             _sceneInstance = aoHandle.Result;
-            _sceneLoaded = true;
 
-            // TEMP
+            _sceneInstance.ActivateAsync().completed += SceneActivatedCallback;
+        }
+
+        private void SceneActivatedCallback(AsyncOperation ao)
+        {
+            //RenderSettings renderSettings = _currentArcadeConfiguration.RenderSettings;
+
+            //_ = _main.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.Props, _normalHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ModelMatcher.GetNamesToTryForProp));
+            //_ = _main.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.Games, _normalHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, _modelMatcher.GetNamesToTryForGame));
+            //while (!_gameModelsLoaded)
+            //    return null;
+
+            //LateSetupWorld();
+
+            //SetupPlayer();
+
             ArcadeLoaded = true;
 
-            if (SceneManager.SetActiveScene(_sceneInstance.Scene))
-                OnSceneLoaded?.Invoke(_sceneInstance.Scene);
+            OnSceneActivated();
         }
 
         private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
         {
             ArcadeLoaded = false;
-            _sceneLoaded = false;
 
             if (aoHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                OnSceneUnLoaded?.Invoke();
-
                 if (_triggerSceneReload)
-                    Load(_sceneName);
+                    Load();
                 else
                     _sceneName = null;
             }
 
             _triggerSceneReload = false;
+        }
+
+        protected virtual void OnSceneActivated()
+        {
         }
 
         /*
@@ -213,10 +226,6 @@ namespace Arcade
         }
 
         protected abstract void PreSetupPlayer();
-
-        protected virtual void PostLoadScene()
-        {
-        }
 
         protected virtual void AddModelsToWorldAdditionalLoopStepsForGames(GameObject instantiatedModel)
         {
@@ -326,80 +335,6 @@ namespace Arcade
                 GameScreenType.Pinball => renderSettings.ScreenPinballIntensity,
                 _                      => 1.4f,
             };
-        }
-
-        private IEnumerator CoUnloadArcadeScene()
-        {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-                UnityEditor.SceneManagement.EditorSceneManager.CloseScene(_loadedScene, true);
-            else
-            {
-                AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(_loadedScene);
-                while (!asyncOperation.isDone)
-                    yield return null;
-            }
-#else
-            AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(_loadedScene);
-            while (!asyncOperation.isDone)
-                yield return null;
-#endif
-           _ = _main.StartCoroutine(CoSetupWorld());
-        }
-
-        private IEnumerator CoSetupWorld()
-        {
-            _sceneLoaded = false;
-
-            string sceneName = SceneName ?? _arcadeConfiguration.Id;
-
-            List<string> scenes = new List<string>();
-            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; ++i)
-                scenes.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
-
-            if (!scenes.Contains(sceneName))
-                sceneName = "internal_empty";
-
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                try
-                {
-                    UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/_Project/Scenes/{sceneName}/{sceneName}.unity", UnityEditor.SceneManagement.OpenSceneMode.Additive);
-                }
-                catch (System.Exception)
-                {
-                    UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/_Project/Scenes/internal_empty/internal_empty.unity", UnityEditor.SceneManagement.OpenSceneMode.Additive);
-                }
-            }
-            else
-            {
-                AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-                while (!asyncOperation.isDone)
-                    yield return null;
-            }
-#else
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            while (!asyncOperation.isDone)
-                yield return null;
-#endif
-            _loadedScene = SceneManager.GetSceneByName(sceneName);
-
-            PostLoadScene();
-
-            RenderSettings renderSettings = _arcadeConfiguration.RenderSettings;
-
-            _ = _main.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.Props, _normalHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ModelMatcher.GetNamesToTryForProp));
-            _ = _main.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.Games, _normalHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, _modelMatcher.GetNamesToTryForGame));
-            while (!_gameModelsLoaded)
-                yield return null;
-
-            LateSetupWorld();
-
-            SetupPlayer();
-
-            _sceneLoaded = true;
-            ArcadeLoaded = true;
         }
 
         private void SetupPlayer()

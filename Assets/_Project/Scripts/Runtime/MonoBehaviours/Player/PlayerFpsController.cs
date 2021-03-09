@@ -32,22 +32,49 @@ namespace Arcade
 
         [SerializeField] private float _extraGravity = 40f;
 
+        public override bool MovementEnabled
+        {
+            get => _inputActions.FpsArcade.Movement.enabled;
+            set
+            {
+                if (value)
+                    _inputActions.FpsArcade.Movement.Enable();
+                else
+                    _inputActions.FpsArcade.Movement.Disable();
+            }
+        }
+
+        public override bool LookEnabled
+        {
+            get => _inputActions.FpsArcade.Look.enabled;
+            set
+            {
+                if (value)
+                    _inputActions.FpsArcade.Look.Enable();
+                else
+                    _inputActions.FpsArcade.Look.Disable();
+            }
+        }
+
         private Vector2 _movementInputValue;
         private bool _sprinting;
         private bool _performJump;
 
-        protected override void GatherMovementInputValues()
-        {
-            _movementInputValue = _inputActions.FpsArcade.Movement.enabled ? _inputActions.FpsArcade.Movement.ReadValue<Vector2>() : Vector2.zero;
-            _sprinting          = _inputActions.FpsArcade.Sprint.enabled && _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
-            _performJump        = _inputActions.FpsArcade.Jump.enabled && _inputActions.FpsArcade.Jump.triggered;
-        }
-
-        protected override void GatherLookInputValues()
-            => _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() : Vector2.zero;
-
         protected override void HandleMovement(float dt)
         {
+            if (_inputActions.FpsArcade.Movement.enabled)
+            {
+                _movementInputValue = _inputActions.FpsArcade.Movement.ReadValue<Vector2>();
+                _sprinting          = _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
+                _performJump        = _inputActions.FpsArcade.Jump.triggered;
+            }
+            else
+            {
+                _movementInputValue = Vector2.zero;
+                _sprinting          = false;
+                _performJump        = false;
+            }
+
             if (_characterController.isGrounded)
             {
                 _moveVelocity = new Vector3(_movementInputValue.x, -0.1f, _movementInputValue.y);
@@ -69,6 +96,8 @@ namespace Arcade
 
         protected override void HandleLook()
         {
+            _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() : Vector2.zero;
+
             _lookHorizontal = _lookInputValue.x;
             _lookVertical  += _lookInputValue.y;
             _lookVertical   = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);

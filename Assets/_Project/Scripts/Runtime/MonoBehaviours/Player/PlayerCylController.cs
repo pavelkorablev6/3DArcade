@@ -31,6 +31,30 @@ namespace Arcade
         [SerializeField] private float _minHorizontalLookAngle = -40f;
         [SerializeField] private float _maxHorizontalLookAngle = 40f;
 
+        public override bool MovementEnabled
+        {
+            get => _movementAction != null && _movementAction.enabled;
+            set
+            {
+                if (value)
+                    _movementAction.Enable();
+                else
+                    _movementAction.Disable();
+            }
+        }
+
+        public override bool LookEnabled
+        {
+            get => _inputActions.CylArcade.Look.enabled;
+            set
+            {
+                if (value)
+                    _inputActions.CylArcade.Look.Enable();
+                else
+                    _inputActions.CylArcade.Look.Disable();
+            }
+        }
+
         private InputAction _movementAction;
         private float _movementInputValue;
 
@@ -44,24 +68,10 @@ namespace Arcade
             _maxHorizontalLookAngle = Mathf.Clamp(max, 0f, 90f);
         }
 
-        protected override void GatherMovementInputValues()
-        {
-            if (_movementAction != null && _movementAction.enabled)
-                _movementInputValue = _movementAction.ReadValue<float>();
-            else
-                _movementInputValue = 0f;
-        }
-
-        protected override void GatherLookInputValues()
-        {
-            if (_inputActions.CylArcade.Look.enabled)
-                _lookInputValue = _inputActions.CylArcade.Look.ReadValue<Vector2>();
-            else
-                _lookInputValue = Vector2.zero;
-        }
-
         protected override void HandleMovement(float dt)
         {
+            _movementInputValue = _movementAction != null && _movementAction.enabled ? _movementAction.ReadValue<float>() : 0f;
+
             _ = _characterController.Move(new Vector3(0f, 0f, _movementInputValue) * _walkSpeed * dt);
 
             if (transform.localPosition.z < 0f)
@@ -70,6 +80,8 @@ namespace Arcade
 
         protected override void HandleLook()
         {
+            _lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>(): Vector2.zero;
+
             _lookHorizontal += _lookInputValue.x;
             _lookVertical   += _lookInputValue.y;
             _lookHorizontal  = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);

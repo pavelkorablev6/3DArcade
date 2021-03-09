@@ -37,13 +37,13 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.Data.InputActions.FpsArcade.Enable();
+            _context.InputActions.FpsArcade.Enable();
             if (Cursor.lockState != CursorLockMode.Locked)
-                _context.Data.InputActions.FpsArcade.Look.Disable();
+                _context.InputActions.FpsArcade.Look.Disable();
 
             //_context.CurrentModelConfiguration = null;
 
-            _context.Data.UIController.SetState(UIState.SceneNormal);
+            _context.UIController.SetState(UIState.SceneNormal);
 
             //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
 
@@ -54,23 +54,23 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.Data.InputActions.FpsArcade.Disable();
+            _context.InputActions.FpsArcade.Disable();
 
-            _context.Data.UIController.SetState(UIState.None);
+            _context.UIController.SetState(UIState.None);
         }
 
         public override void Update(float dt)
         {
-            if (_context.Data.InputActions.Global.Quit.triggered)
+            if (_context.InputActions.Global.Quit.triggered)
                 SystemUtils.ExitApp();
 
-            if (_context.Data.InputActions.Global.ToggleCursor.triggered)
+            if (_context.InputActions.Global.ToggleCursor.triggered)
             {
                 SystemUtils.ToggleMouseCursor();
                 if (Cursor.lockState == CursorLockMode.Locked)
-                    _context.Data.InputActions.FpsArcade.Look.Enable();
+                    _context.InputActions.FpsArcade.Look.Enable();
                 else
-                    _context.Data.InputActions.FpsArcade.Look.Disable();
+                    _context.InputActions.FpsArcade.Look.Disable();
             }
 
             //    InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,

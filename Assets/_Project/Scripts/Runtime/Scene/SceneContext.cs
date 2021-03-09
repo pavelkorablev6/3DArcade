@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
     public sealed class SceneContext : FSM.Context<SceneState>
@@ -27,12 +29,15 @@ namespace Arcade
         //public PlayerControls CurrentPlayerControls;
         //public ModelConfigurationComponent CurrentModelConfiguration;
 
+        public readonly InputActions InputActions;
+        public readonly Player Player;
+        public readonly IUIController UIController;
+
+        public GeneralConfiguration GeneralConfiguration { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
         public ArcadeConfiguration CurrentArcadeConfiguration { get; private set; }
         public ArcadeType CurrentArcadeType { get; private set; }
         public ArcadeMode CurrentArcadeMode { get; private set; }
-
-        public readonly SceneContextData Data;
 
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
@@ -42,24 +47,38 @@ namespace Arcade
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
-        public SceneContext(SceneContextData data)
+        private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
+        private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        private readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
+
+        public SceneContext(InputActions inputActions,
+                            Player player,
+                            IUIController uiController,
+                            GeneralConfiguration generalConfiguration,
+                            MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
+                            MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                            MultiFileDatabase<ArcadeConfiguration> arcadeDatabase)
         {
-            Data = data;
+            InputActions          = inputActions;
+            Player                = player;
+            UIController          = uiController;
+            GeneralConfiguration  = generalConfiguration;
+            _emulatorDatabase     = emulatorDatabase;
+            _platformDatabase     = platformDatabase;
+            _arcadeDatabase       = arcadeDatabase;
+
+            if (!GeneralConfiguration.Load())
+                SystemUtils.ExitApp("Failed to load general configuration");
 
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
             //_genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
-
-            _ = SetCurrentArcadeConfiguration(data.GeneralConfiguration.StartingArcade,
-                                              data.GeneralConfiguration.StartingArcadeType,
-                                              ArcadeMode.Normal);
-
             //_objectsHierarchy = new NormalHierarchy();
         }
 
         public bool SetCurrentArcadeConfiguration(string id, ArcadeType type, ArcadeMode mode)
         {
-            if (Data.ArcadeDatabase.Get(id, out ArcadeConfiguration configuration))
+            if (_arcadeDatabase.Get(id, out ArcadeConfiguration configuration))
             {
                 CurrentArcadeConfiguration = configuration;
                 CurrentArcadeType          = type;
@@ -68,6 +87,9 @@ namespace Arcade
             }
             return false;
         }
+
+        public bool SetCurrentArcadeConfiguration(GeneralConfiguration generalConfiguration)
+            => SetCurrentArcadeConfiguration(generalConfiguration.StartingArcade, generalConfiguration.StartingArcadeType, ArcadeMode.Normal);
 
         //public void SetAndStartCurrentArcadeConfiguration(string id, SceneType type)
         //{
@@ -85,11 +107,13 @@ namespace Arcade
 
             //_objectsHierarchy.Reset();
 
+            ArcadeController?.StopArcade();
+
             switch (CurrentArcadeType)
             {
                 case ArcadeType.Fps:
                 {
-                    Data.Player.SetState(Data.GeneralConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
+                    Player.SetState(GeneralConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
                     //VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
                     ArcadeController = new FpsArcadeController(/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
                 }
@@ -98,7 +122,7 @@ namespace Arcade
                 {
                     //VideoPlayerController = null;
 
-                    Data.Player.SetState(Data.GeneralConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
+                    Player.SetState(GeneralConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
 
                     switch (CurrentArcadeConfiguration.CylArcadeProperties.WheelVariant)
                     {
@@ -130,6 +154,14 @@ namespace Arcade
 
             ArcadeController.StartArcade(CurrentArcadeConfiguration);
             return true;
+        }
+
+        protected override void OnUpdate(float dt)
+        {
+            ArcadeController?.DebugLogProgress();
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                TransitionTo<SceneLoadState>();
         }
 
         /*

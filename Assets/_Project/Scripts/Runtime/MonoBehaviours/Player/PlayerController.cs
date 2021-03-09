@@ -21,7 +21,9 @@
  * SOFTWARE. */
 
 using Cinemachine;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
@@ -37,22 +39,20 @@ namespace Arcade
         public Camera Camera => _camera;
         public CinemachineVirtualCamera VirtualCamera => _virtualCamera;
 
-        protected CharacterController _characterController;
+        public abstract bool MovementEnabled { get; set; }
+        public abstract bool LookEnabled { get; set; }
+
         protected InputActions _inputActions;
+        protected CharacterController _characterController;
         protected Vector2 _lookInputValue;
         protected Vector3 _moveVelocity;
         protected float _lookHorizontal;
         protected float _lookVertical;
 
+        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
+        private void Construct(InputActions inputActions) => _inputActions = inputActions;
+
         private void Awake() => _characterController = GetComponent<CharacterController>();
-
-        private void Start() => _inputActions = FindObjectOfType<Main>().InputActions;
-
-        public void SetVerticalLookLimits(float min, float max)
-        {
-            _minVerticalLookAngle = Mathf.Clamp(min, -89f, 0f);
-            _maxVerticalLookAngle = Mathf.Clamp(max, 0f, 89f);
-        }
 
         private void OnEnable()
         {
@@ -64,27 +64,18 @@ namespace Arcade
 
         private void Update()
         {
-            GatherMovementInputValues();
             HandleMovement(Time.deltaTime);
-
-            GatherLookInputValues();
             HandleLook();
         }
 
-        protected virtual void GatherMovementInputValues()
+        public void SetVerticalLookLimits(float min, float max)
         {
+            _minVerticalLookAngle = Mathf.Clamp(min, -89f, 0f);
+            _maxVerticalLookAngle = Mathf.Clamp(max, 0f, 89f);
         }
 
-        protected virtual void GatherLookInputValues()
-        {
-        }
+        protected abstract void HandleMovement(float dt);
 
-        protected virtual void HandleMovement(float dt)
-        {
-        }
-
-        protected virtual void HandleLook()
-        {
-        }
+        protected abstract void HandleLook();
     }
 }

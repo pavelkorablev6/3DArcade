@@ -38,9 +38,9 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.Data.UIController.SetState(UIState.SceneNormal);
+            _context.UIController.SetState(UIState.SceneNormal);
 
-            _context.Data.InputActions.CylArcade.Enable();
+            _context.InputActions.CylArcade.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)
             //    _context.Main.PlayerCylControls.CylArcadeActions.Look.Disable();
 
@@ -87,17 +87,17 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.Data.InputActions.CylArcade.Disable();
+            _context.InputActions.CylArcade.Disable();
 
-            _context.Data.UIController.SetState(UIState.None);
+            _context.UIController.SetState(UIState.None);
         }
 
         public override void Update(float dt)
         {
-            if (_context.Data.InputActions.Global.Quit.triggered)
+            if (_context.InputActions.Global.Quit.triggered)
                 SystemUtils.ExitApp();
 
-            if (_context.Data.InputActions.Global.ToggleCursor.triggered)
+            if (_context.InputActions.Global.ToggleCursor.triggered)
             {
                 SystemUtils.ToggleMouseCursor();
                 //if (_context.Main.PlayerCylControls.MouseLookEnabled)
