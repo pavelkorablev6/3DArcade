@@ -29,16 +29,12 @@ namespace Arcade
 {
     public abstract class Database<T> where T : DatabaseEntry
     {
-        protected readonly IVirtualFileSystem _virtualFileSystem;
         protected readonly string _directory;
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 
         public Database(IVirtualFileSystem virtualFileSystem, string directoryAlias)
-        {
-            _virtualFileSystem = virtualFileSystem;
-            _directory = _virtualFileSystem.GetDirectory(directoryAlias);
-        }
+            => _directory = virtualFileSystem.GetDirectory(directoryAlias);
 
         public bool Contains(string name) => _entries.ContainsKey(name);
 

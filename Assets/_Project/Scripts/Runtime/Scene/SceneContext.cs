@@ -59,21 +59,29 @@ namespace Arcade
                             MultiFileDatabase<PlatformConfiguration> platformDatabase,
                             MultiFileDatabase<ArcadeConfiguration> arcadeDatabase)
         {
-            InputActions          = inputActions;
-            Player                = player;
-            UIController          = uiController;
-            GeneralConfiguration  = generalConfiguration;
-            _emulatorDatabase     = emulatorDatabase;
-            _platformDatabase     = platformDatabase;
-            _arcadeDatabase       = arcadeDatabase;
-
-            if (!GeneralConfiguration.Load())
-                SystemUtils.ExitApp("Failed to load general configuration");
+            InputActions         = inputActions;
+            Player               = player;
+            UIController         = uiController;
+            GeneralConfiguration = generalConfiguration;
+            _emulatorDatabase    = emulatorDatabase;
+            _platformDatabase    = platformDatabase;
+            _arcadeDatabase      = arcadeDatabase;
 
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
             //_genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
             //_objectsHierarchy = new NormalHierarchy();
+        }
+
+        public override void Start()
+        {
+            if (!GeneralConfiguration.Load())
+            {
+                SystemUtils.ExitApp("Failed to load General Configuration");
+                return;
+            }
+
+            SetAndStartCurrentArcadeConfiguration(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
         }
 
         public bool SetCurrentArcadeConfiguration(string id, ArcadeType type, ArcadeMode mode)
@@ -88,19 +96,16 @@ namespace Arcade
             return false;
         }
 
-        public bool SetCurrentArcadeConfiguration(GeneralConfiguration generalConfiguration)
-            => SetCurrentArcadeConfiguration(generalConfiguration.StartingArcade, generalConfiguration.StartingArcadeType, ArcadeMode.Normal);
+        public void SetAndStartCurrentArcadeConfiguration(string id, ArcadeType type, ArcadeMode mode)
+        {
+            if (SetCurrentArcadeConfiguration(id, type, mode))
+                TransitionTo<SceneLoadState>();
+        }
 
-        //public void SetAndStartCurrentArcadeConfiguration(string id, SceneType type)
-        //{
-        //    if (SetCurrentArcadeConfiguration(id, type))
-        //        TransitionTo<SceneLoadState>();
-        //}
-
-        public bool StartCurrentArcade()
+        public void StartCurrentArcade()
         {
             if (CurrentArcadeConfiguration == null)
-                return false;
+                return;
 
             //_objectsHierarchy.RootNode.gameObject.AddComponentIfNotFound<ArcadeConfigurationComponent>()
             //                                     .Restore(CurrentSceneConfiguration);
@@ -153,7 +158,6 @@ namespace Arcade
             }
 
             ArcadeController.StartArcade(CurrentArcadeConfiguration);
-            return true;
         }
 
         protected override void OnUpdate(float dt)

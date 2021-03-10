@@ -41,23 +41,14 @@ namespace Arcade
 
         private void Awake()
         {
-            CheckCurrentOS();
-
             QualitySettings.vSyncCount  = 0;
             Application.targetFrameRate = -1;
             Time.timeScale              = 1f;
+
+            CheckCurrentOS();
         }
 
-        private void Start()
-        {
-            if (!_sceneContext.SetCurrentArcadeConfiguration(_sceneContext.GeneralConfiguration))
-            {
-                SystemUtils.ExitApp("Failed to set starting arcade");
-                return;
-            }
-
-            _sceneContext.TransitionTo<SceneLoadState>();
-        }
+        private void Start() => _sceneContext.Start();
 
         private void OnEnable() => _inputActions.Global.Enable();
 

@@ -39,7 +39,7 @@ namespace Arcade
 
             _context.UIController.SetState(UIState.SceneLoading);
 
-            _ = _context.StartCurrentArcade();
+            _context.StartCurrentArcade();
         }
 
         public override void OnExit()

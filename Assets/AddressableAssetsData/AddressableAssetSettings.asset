@@ -68,12 +68,7 @@ MonoBehaviour:
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
-    m_LabelNames:
-    - ArcadeScene
-    - GameModel
-    - PropModel
-    - Material
-    - Texture
+    m_LabelNames: []
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: ed044bec2d9985840b62b9f9aafd092d, type: 2}

@@ -22,6 +22,7 @@
 
 using System.Xml.Serialization;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
@@ -43,6 +44,7 @@ namespace Arcade
         {
         }
 
+        [Inject]
         public GeneralConfiguration(IVirtualFileSystem virtualFileSystem) => _filePath = virtualFileSystem.GetFile("general_cfg");
 
         public bool Load()

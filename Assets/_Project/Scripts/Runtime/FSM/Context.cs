@@ -35,6 +35,10 @@ namespace Arcade.FSM
             _currentState = null;
         }
 
+        public virtual void Start()
+        {
+        }
+
         public void Update(float dt)
         {
             OnUpdate(dt);

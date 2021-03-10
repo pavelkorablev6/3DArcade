@@ -129,6 +129,50 @@ MonoBehaviour:
     - Texture
     m_MainAsset: {fileID: 2800000, guid: c1ccbafb552484a2aaf79eae7efa5f9a, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: c1ccbafb552484a2aaf79eae7efa5f9a, type: 3}
+  - m_GUID: 8cf9f43803e07844d9e5575ac901c868
+    m_Address: Props/ElectricScooterProp
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 8969066206973201386, guid: 8cf9f43803e07844d9e5575ac901c868,
+      type: 3}
+    m_TargetAsset: {fileID: 8969066206973201386, guid: 8cf9f43803e07844d9e5575ac901c868,
+      type: 3}
+  - m_GUID: 31049d0c0a4cac543bfae8163737b6d4
+    m_Address: Props/ElectricScooter_black
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 4399238348627798894, guid: 31049d0c0a4cac543bfae8163737b6d4,
+      type: 3}
+    m_TargetAsset: {fileID: 4399238348627798894, guid: 31049d0c0a4cac543bfae8163737b6d4,
+      type: 3}
+  - m_GUID: 9f5a4449b60ef444892d8ddd9b2e2ee5
+    m_Address: Props/ElectricScooter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 4700524887866416556, guid: 9f5a4449b60ef444892d8ddd9b2e2ee5,
+      type: 3}
+    m_TargetAsset: {fileID: 4700524887866416556, guid: 9f5a4449b60ef444892d8ddd9b2e2ee5,
+      type: 3}
+  - m_GUID: 4ee8be195b4d10845a7878dd13d8e083
+    m_Address: Props/ElectricScooterProp_black
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 8408608322637286167, guid: 4ee8be195b4d10845a7878dd13d8e083,
+      type: 3}
+    m_TargetAsset: {fileID: 8408608322637286167, guid: 4ee8be195b4d10845a7878dd13d8e083,
+      type: 3}
+  - m_GUID: 634c41117f48a1940933d58845b6f252
+    m_Address: Arcades/Furniture_ges1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 102900000, guid: 634c41117f48a1940933d58845b6f252, type: 3}
+    m_TargetAsset: {fileID: 102900000, guid: 634c41117f48a1940933d58845b6f252, type: 3}
+  - m_GUID: 5a463281e6e238742a45430f11e82829
+    m_Address: Arcades/RPG_FPS_game_assets_industrial_Map_v1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 102900000, guid: 5a463281e6e238742a45430f11e82829, type: 3}
+    m_TargetAsset: {fileID: 102900000, guid: 5a463281e6e238742a45430f11e82829, type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:
