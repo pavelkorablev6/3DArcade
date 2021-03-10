@@ -41,6 +41,7 @@ namespace Arcade
         //public abstract AnimationCurve VolumeCurve { get; protected set; }
 
         protected abstract string ArcadeName { get; }
+
         //protected abstract bool UseModelTransforms { get; }
         //protected abstract PlayerControls PlayerControls { get; }
         //protected abstract CameraSettings CameraSettings { get; }
@@ -69,9 +70,12 @@ namespace Arcade
 
         //private bool _gameModelsLoaded;
 
+        private const string ARCADE_ADDRESS_PREFIX            = "Arcades";
+        private const string INTERNAL_ARCADE_CYLINDER_ADDRESS = ARCADE_ADDRESS_PREFIX + "/_cylinder";
+
         private AsyncOperationHandle<SceneInstance> _loadSceneHandle;
+        private IResourceLocation _sceneResourceLocation;
         private SceneInstance _sceneInstance;
-        private string _sceneName;
         private bool _triggerSceneReload;
 
         private readonly RectTransform _statusBarProgressBarTransform;
@@ -128,9 +132,9 @@ namespace Arcade
             ArcadeLoaded = false;
 
             _currentArcadeConfiguration = arcadeConfiguration;
-            _sceneName                  = ArcadeName ?? arcadeConfiguration.Id;
 
-            Addressables.LoadResourceLocationsAsync($"Arcades/{_sceneName}", typeof(SceneInstance)).Completed += ResourceLocationsRetrievedCallback;
+            string sceneName = ArcadeName ?? arcadeConfiguration.Id;
+            Addressables.LoadResourceLocationsAsync($"{ARCADE_ADDRESS_PREFIX}/{sceneName}", typeof(SceneInstance)).Completed += ResourceLocationsRetrievedCallback;
         }
 
         public void StopArcade() => Unload();
@@ -138,11 +142,21 @@ namespace Arcade
         private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
             if (aoHandle.Status != AsyncOperationStatus.Succeeded)
-                _sceneName = "internal_empty";
+            {
+                SystemUtils.ExitApp("Failed to get ResourceLocation");
+                return;
+            }
 
-            Addressables.Release(aoHandle);
-
-            Load();
+            if (aoHandle.Status == AsyncOperationStatus.Succeeded && aoHandle.Result.Count > 0)
+            {
+                _sceneResourceLocation = aoHandle.Result[0];
+                Load();
+            }
+            else
+            {
+                Debug.LogError("Scene addressable not found, loading default cylinder arcade");
+                Addressables.LoadResourceLocationsAsync(INTERNAL_ARCADE_CYLINDER_ADDRESS, typeof(SceneInstance)).Completed += ResourceLocationsRetrievedCallback;
+            }
         }
 
         private void Load()
@@ -154,7 +168,7 @@ namespace Arcade
             }
             else
             {
-                _loadSceneHandle = Addressables.LoadSceneAsync($"Arcades/{_sceneName}", LoadSceneMode.Additive);
+                _loadSceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
                 _loadSceneHandle.Completed += SceneLoadedCallback;
             }
         }
@@ -201,8 +215,6 @@ namespace Arcade
             {
                 if (_triggerSceneReload)
                     Load();
-                else
-                    _sceneName = null;
             }
 
             _triggerSceneReload = false;

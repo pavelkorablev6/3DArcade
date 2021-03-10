@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: internal_screen
+  m_Name: _screen
   m_Shader: {fileID: -6465566751694194690, guid: 3847ef9e6ede44e4bb261889bf74632b,
     type: 3}
   m_ShaderKeywords: 
