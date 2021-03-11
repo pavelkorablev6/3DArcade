@@ -25,7 +25,6 @@ using UnityEngine.InputSystem;
 
 namespace Arcade
 {
-    [RequireComponent(typeof(CharacterController))]
     public sealed class PlayerCylController : PlayerController
     {
         [SerializeField] private float _minHorizontalLookAngle = -40f;

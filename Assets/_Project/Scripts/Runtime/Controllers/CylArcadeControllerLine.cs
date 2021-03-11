@@ -20,45 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public abstract class CylArcadeControllerLine : CylArcadeController
     {
-        /*
-        protected sealed override Transform TransformAnchor => _targetSelection;
-
-        protected override Vector3 TransformVector => Quaternion.Euler(0f, 0f, -Mathf.Clamp(_cylArcadeProperties.LineAngle, -90f, 90f)) * Vector3.right;
-
-        public CylArcadeControllerLine(ObjectsHierarchy normalHierarchy,
-                                       Database<EmulatorConfiguration> emulatorDatabase,
-                                       PlatformDatabase platformDatabase,
-                                       AssetCache<GameObject> gameObjectCache,
-                                       NodeController<MarqueeNodeTag> marqueeNodeController,
-                                       NodeController<ScreenNodeTag> screenNodeController,
-                                       NodeController<GenericNodeTag> genericNodeController)
-        : base(normalHierarchy, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        public CylArcadeControllerLine(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
+        : base(player, generalConfiguration, uiController)
         {
         }
 
-        protected override float GetSpacing(Transform previousModel, Transform currentModel)
-        {
-            if (_cylArcadeProperties.LineAngle >= 45f || _cylArcadeProperties.LineAngle <= -45f)
-                return GetVerticalSpacing(previousModel, currentModel);
-            else
-                return GetHorizontalSpacing(previousModel, currentModel);
-        }
+        //protected sealed override Transform TransformAnchor => _targetSelection;
 
-        protected sealed override bool MoveForwardCondition() => _targetSelection.localPosition != _centerTargetPosition;
+        //protected override Vector3 TransformVector => Quaternion.Euler(0f, 0f, -Mathf.Clamp(_cylArcadeProperties.LineAngle, -90f, 90f)) * Vector3.right;
 
-        protected sealed override bool MoveBackwardCondition() => MoveForwardCondition();
+        //protected override float GetSpacing(Transform previousModel, Transform currentModel)
+        //{
+        //    if (_cylArcadeProperties.LineAngle >= 45f || _cylArcadeProperties.LineAngle <= -45f)
+        //        return GetVerticalSpacing(previousModel, currentModel);
+        //    else
+        //        return GetHorizontalSpacing(previousModel, currentModel);
+        //}
 
-        protected override void AdjustWheelForward(float dt) => _targetSelection.localPosition = Vector3.MoveTowards(_targetSelection.localPosition, _centerTargetPosition, 10f * dt);
+        //protected sealed override bool MoveForwardCondition() => _targetSelection.localPosition != _centerTargetPosition;
 
-        protected override void AdjustWheelBackward(float dt) => AdjustWheelForward(dt);
+        //protected sealed override bool MoveBackwardCondition() => MoveForwardCondition();
 
-        protected sealed override void AdjustModelPosition(Transform model, bool forward, float spacing) => model.Translate(TransformVector * (forward ? spacing : -spacing), Space.World);
-        */
-        }
+        //protected override void AdjustWheelForward(float dt) => _targetSelection.localPosition = Vector3.MoveTowards(_targetSelection.localPosition, _centerTargetPosition, 10f * dt);
+
+        //protected override void AdjustWheelBackward(float dt) => AdjustWheelForward(dt);
+
+        //protected sealed override void AdjustModelPosition(Transform model, bool forward, float spacing) => model.Translate(TransformVector * (forward ? spacing : -spacing), Space.World);
+    }
 }

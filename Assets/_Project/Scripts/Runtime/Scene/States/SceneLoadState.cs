@@ -51,10 +51,10 @@ namespace Arcade
 
         public override void Update(float dt)
         {
-            if (_context.ArcadeController == null || !_context.ArcadeController.ArcadeLoaded)
+            if (_context.ArcadeController == null || !_context.ArcadeController.SceneLoaded)
                 return;
 
-            switch (_context.CurrentArcadeType)
+            switch (_context.ArcadeType)
             {
                 case ArcadeType.Fps:
                     _context.TransitionTo<SceneFpsNormalState>();

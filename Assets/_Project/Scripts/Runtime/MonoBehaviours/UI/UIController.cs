@@ -20,32 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using TMPro;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class UIController : IUIController
+    [DisallowMultipleComponent]
+    public sealed class UIController : MonoBehaviour, IUIController
     {
-        private readonly GameObject _sceneLoadingUI;
-        private readonly GameObject _sceneNormalUI;
-        private readonly GameObject _sceneEditModeUI;
+        [SerializeField] private GameObject _loadingCanvas;
+        [SerializeField] private GameObject _normalCanvas;
+        [SerializeField] private GameObject _moveCabCanvas;
 
-        public UIController()
-        {
-            UISceneLoadingCanvasTag sceneLoadingCanvasTag = Object.FindObjectOfType<UISceneLoadingCanvasTag>(true);
-            if (sceneLoadingCanvasTag != null)
-                _sceneLoadingUI = sceneLoadingCanvasTag.gameObject;
+        [SerializeField] private TMP_Text _progressMessage;
+        [SerializeField] private RectTransform _progressTransform;
+        [SerializeField] private TMP_Text _progressPercent;
 
-            UISceneNormalCanvasTag sceneNormalCanvasTag = Object.FindObjectOfType<UISceneNormalCanvasTag>(true);
-            if (sceneNormalCanvasTag != null)
-                _sceneNormalUI = sceneNormalCanvasTag.gameObject;
-
-            UISceneMoveCabCanvasTag sceneEditModeCanvasTag = Object.FindObjectOfType<UISceneMoveCabCanvasTag>(true);
-            if (sceneEditModeCanvasTag != null)
-                _sceneEditModeUI = sceneEditModeCanvasTag.gameObject;
-
-            SetState(UIState.None);
-        }
+        private void Start() => SetState(UIState.None);
 
         public void SetState(UIState state)
         {
@@ -75,40 +66,60 @@ namespace Arcade
             }
         }
 
+        public void InitStatusBar(string message)
+        {
+            _progressMessage.SetText(message);
+            _progressTransform.localScale = new Vector3(0f, 1f, 1f);
+            _progressPercent.SetText("0%");
+        }
+
+        public void UpdateStatusBar(float percentComplete)
+        {
+            _progressTransform.localScale = new Vector3(percentComplete, 1f, 1f);
+            _progressPercent.SetText($"{percentComplete * 100:0}%");
+        }
+
+        public void ResetStatusBar()
+        {
+            _progressMessage.SetText(string.Empty);
+            _progressTransform.localScale = new Vector3(0f, 1f, 1f);
+            _progressPercent.SetText(string.Empty);
+        }
+
         private void EnableSceneLoadingUI()
         {
-            if (_sceneLoadingUI != null)
-                _sceneLoadingUI.SetActive(true);
+            if (_loadingCanvas != null)
+                _loadingCanvas.SetActive(true);
         }
 
         private void EnableSceneNormalUI()
         {
-            if (_sceneNormalUI != null)
-                _sceneNormalUI.SetActive(true);
+            if (_normalCanvas != null)
+                _normalCanvas.SetActive(true);
         }
 
         private void EnableSceneEditModeUI()
         {
-            if (_sceneEditModeUI != null)
-                _sceneEditModeUI.SetActive(true);
+            if (_moveCabCanvas != null)
+                _moveCabCanvas.SetActive(true);
         }
 
         private void DisableSceneLoadingUI()
         {
-            if (_sceneLoadingUI != null)
-                _sceneLoadingUI.SetActive(false);
+            if (_loadingCanvas != null)
+                _loadingCanvas.SetActive(false);
         }
 
         private void DisableSceneNormalUI()
         {
-            if (_sceneNormalUI != null)
-                _sceneNormalUI.SetActive(false);
+            if (_normalCanvas != null)
+                _normalCanvas.SetActive(false);
         }
 
         private void DisableSceneEditModeUI()
         {
-            if (_sceneEditModeUI != null)
-                _sceneEditModeUI.SetActive(false);
+            if (_moveCabCanvas != null)
+                _moveCabCanvas.SetActive(false);
         }
     }
 }

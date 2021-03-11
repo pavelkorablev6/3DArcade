@@ -20,27 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class CylArcadeControllerLineHorizontal : CylArcadeControllerLine
     {
-        /*
-        protected override Vector3 TransformVector => Vector3.right;
-
-        public CylArcadeControllerLineHorizontal(ObjectsHierarchy normalHierarchy,
-                                                 Database<EmulatorConfiguration> emulatorDatabase,
-                                                 PlatformDatabase platformDatabase,
-                                                 AssetCache<GameObject> gameObjectCache,
-                                                 NodeController<MarqueeNodeTag> marqueeNodeController,
-                                                 NodeController<ScreenNodeTag> screenNodeController,
-                                                 NodeController<GenericNodeTag> genericNodeController)
-        : base(normalHierarchy, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        public CylArcadeControllerLineHorizontal(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
+        : base(player, generalConfiguration, uiController)
         {
         }
 
-        protected override float GetSpacing(Transform previousModel, Transform currentModel) => GetHorizontalSpacing(previousModel, currentModel);
-        */
+        //protected override Vector3 TransformVector => Vector3.right;
+
+        //protected override float GetSpacing(Transform previousModel, Transform currentModel) => GetHorizontalSpacing(previousModel, currentModel);
     }
 }

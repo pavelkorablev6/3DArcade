@@ -32,7 +32,30 @@ namespace Arcade
 {
     public abstract class ArcadeController
     {
-        public bool ArcadeLoaded { get; protected set; }
+        public bool SceneLoaded { get; private set; }
+
+        public abstract float AudioMinDistance { get; protected set; }
+        public abstract float AudioMaxDistance { get; protected set; }
+        public abstract AnimationCurve VolumeCurve { get; protected set; }
+
+        protected abstract string ArcadeName { get; }
+        protected abstract CameraSettings CameraSettings { get; }
+
+        protected readonly Player _player;
+        protected readonly GeneralConfiguration _generalConfiguration;
+
+        protected ArcadeConfiguration ArcadeConfiguration { get; private set; }
+        protected ArcadeType ArcadeType { get; private set; }
+
+        private const string ARCADE_ADDRESS_PREFIX            = "Arcades";
+        private const string INTERNAL_ARCADE_CYLINDER_ADDRESS = ARCADE_ADDRESS_PREFIX + "/_cylinder";
+
+        private readonly IUIController _uiController;
+
+        private AsyncOperationHandle<SceneInstance> _loadSceneHandle;
+        private IResourceLocation _sceneResourceLocation;
+        private SceneInstance _sceneInstance;
+        private bool _triggerSceneReload;
 
         //public ModelConfigurationComponent CurrentGame { get; protected set; }
 
@@ -40,11 +63,8 @@ namespace Arcade
         //public abstract float AudioMaxDistance { get; protected set; }
         //public abstract AnimationCurve VolumeCurve { get; protected set; }
 
-        protected abstract string ArcadeName { get; }
-
         //protected abstract bool UseModelTransforms { get; }
         //protected abstract PlayerControls PlayerControls { get; }
-        //protected abstract CameraSettings CameraSettings { get; }
 
         //protected const string GAME_RESOURCES_DIRECTORY              = "Games";
         //protected const string PROP_RESOURCES_DIRECTORY              = "Props";
@@ -53,9 +73,6 @@ namespace Arcade
         //protected readonly Main _main;
         //protected readonly ObjectsHierarchy _normalHierarchy;
         //protected readonly List<Transform> _allGames;
-
-        protected ArcadeConfiguration _currentArcadeConfiguration;
-
         //protected bool _animating;
 
         //private readonly Database<EmulatorConfiguration> _emulatorDatabase;
@@ -70,27 +87,23 @@ namespace Arcade
 
         //private bool _gameModelsLoaded;
 
-        private const string ARCADE_ADDRESS_PREFIX            = "Arcades";
-        private const string INTERNAL_ARCADE_CYLINDER_ADDRESS = ARCADE_ADDRESS_PREFIX + "/_cylinder";
+        public ArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
+        {
+            _player               = player;
+            _generalConfiguration = generalConfiguration;
+            _uiController         = uiController;
+        }
 
-        private AsyncOperationHandle<SceneInstance> _loadSceneHandle;
-        private IResourceLocation _sceneResourceLocation;
-        private SceneInstance _sceneInstance;
-        private bool _triggerSceneReload;
-
-        private readonly RectTransform _statusBarProgressBarTransform;
-        private Vector3 _statusBarProgressBarScale;
-
-        public ArcadeController(/*ObjectsHierarchy normalHierarchy,
+        /*
+         * public ArcadeController(ObjectsHierarchy normalHierarchy,
                                 Database<EmulatorConfiguration> emulatorDatabase,
                                 PlatformDatabase platformDatabase,
                                 AssetCache<GameObject> gameObjectCache,
                                 NodeController<MarqueeNodeTag> marqueeNodeController,
                                 NodeController<ScreenNodeTag> screenNodeController,
-                                NodeController<GenericNodeTag> genericNodeController*/)
+                                NodeController<GenericNodeTag> genericNodeController)
         {
-            _statusBarProgressBarTransform = GameObject.Find("Bar").GetComponent<RectTransform>();
-            _statusBarProgressBarScale = Vector3.one;
+
             //_sceneCache      = sceneCache ?? throw new System.ArgumentNullException(nameof(sceneCache));
             //_gameObjectCache = gameObjectCache ?? throw new System.ArgumentNullException(nameof(gameObjectCache));
 
@@ -117,27 +130,30 @@ namespace Arcade
 //#endif
 //          }
         }
+        */
 
         public void DebugLogProgress()
         {
             if (_loadSceneHandle.IsValid() && !_loadSceneHandle.IsDone)
-            {
-                _statusBarProgressBarScale.x = _loadSceneHandle.PercentComplete;
-                _statusBarProgressBarTransform.localScale = _statusBarProgressBarScale;
-            }
+                _uiController.UpdateStatusBar(_loadSceneHandle.PercentComplete);
         }
 
-        public void StartArcade(ArcadeConfiguration arcadeConfiguration)
+        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
         {
-            ArcadeLoaded = false;
+            ArcadeConfiguration = arcadeConfiguration;
+            ArcadeType = arcadeType;
 
-            _currentArcadeConfiguration = arcadeConfiguration;
-
+            SceneLoaded = false;
             string sceneName = ArcadeName ?? arcadeConfiguration.Id;
+
+            _uiController.InitStatusBar($"Loading arcade: {sceneName}...");
+
             Addressables.LoadResourceLocationsAsync($"{ARCADE_ADDRESS_PREFIX}/{sceneName}", typeof(SceneInstance)).Completed += ResourceLocationsRetrievedCallback;
         }
 
         public void StopArcade() => Unload();
+
+        protected abstract void SetupPlayer();
 
         private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
@@ -186,30 +202,28 @@ namespace Arcade
 
             _sceneInstance = aoHandle.Result;
 
-            _sceneInstance.ActivateAsync().completed += SceneActivatedCallback;
-        }
+            if (SceneManager.SetActiveScene(_sceneInstance.Scene))
+            {
+                //RenderSettings renderSettings = _currentArcadeConfiguration.RenderSettings;
 
-        private void SceneActivatedCallback(AsyncOperation ao)
-        {
-            //RenderSettings renderSettings = _currentArcadeConfiguration.RenderSettings;
+                //_ = _main.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.Props, _normalHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ModelMatcher.GetNamesToTryForProp));
+                //_ = _main.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.Games, _normalHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, _modelMatcher.GetNamesToTryForGame));
+                //while (!_gameModelsLoaded)
+                //    return null;
 
-            //_ = _main.StartCoroutine(AddModelsToWorld(false, _arcadeConfiguration.Props, _normalHierarchy.PropsNode, renderSettings, PROP_RESOURCES_DIRECTORY, ModelMatcher.GetNamesToTryForProp));
-            //_ = _main.StartCoroutine(AddModelsToWorld(true, _arcadeConfiguration.Games, _normalHierarchy.GamesNode, renderSettings, GAME_RESOURCES_DIRECTORY, _modelMatcher.GetNamesToTryForGame));
-            //while (!_gameModelsLoaded)
-            //    return null;
+                //LateSetupWorld();
 
-            //LateSetupWorld();
+                SetupPlayer();
 
-            //SetupPlayer();
+                _uiController.ResetStatusBar();
 
-            ArcadeLoaded = true;
-
-            OnSceneActivated();
+                SceneLoaded = true;
+            }
         }
 
         private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
         {
-            ArcadeLoaded = false;
+            SceneLoaded = false;
 
             if (aoHandle.Status == AsyncOperationStatus.Succeeded)
             {
@@ -218,10 +232,6 @@ namespace Arcade
             }
 
             _triggerSceneReload = false;
-        }
-
-        protected virtual void OnSceneActivated()
-        {
         }
 
         /*
@@ -347,26 +357,6 @@ namespace Arcade
                 GameScreenType.Pinball => renderSettings.ScreenPinballIntensity,
                 _                      => 1.4f,
             };
-        }
-
-        private void SetupPlayer()
-        {
-            PreSetupPlayer();
-
-            PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
-
-            PlayerControls.Camera.rect = CameraSettings.ViewportRect;
-
-            CinemachineVirtualCamera vCam = PlayerControls.VirtualCamera;
-            vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
-            vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
-            vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;
-            vCam.m_Lens.OrthographicSize  = CameraSettings.AspectRatio;
-            vCam.m_Lens.NearClipPlane     = CameraSettings.NearClipPlane;
-            vCam.m_Lens.FarClipPlane      = CameraSettings.FarClipPlane;
-
-            CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
-            transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
         */
     }

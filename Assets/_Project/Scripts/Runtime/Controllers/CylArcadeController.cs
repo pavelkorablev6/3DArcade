@@ -20,26 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace Arcade
 {
     public abstract class CylArcadeController : ArcadeController
     {
-        //public sealed override float AudioMinDistance { get; protected set; }
-        //public sealed override float AudioMaxDistance { get; protected set; }
-        //public sealed override AnimationCurve VolumeCurve { get; protected set; }
+        public sealed override float AudioMinDistance { get; protected set; }
+        public sealed override float AudioMaxDistance { get; protected set; }
+        public sealed override AnimationCurve VolumeCurve { get; protected set; }
+
+        protected sealed override string ArcadeName => ArcadeConfiguration.CylArcadeProperties.Scene.ValueOrDefault();
+        protected sealed override CameraSettings CameraSettings => ArcadeConfiguration.CylArcadeProperties.CameraSettings;
 
         //protected abstract Transform TransformAnchor { get; }
         //protected abstract Vector3 TransformVector { get; }
 
-        protected sealed override string ArcadeName => !string.IsNullOrEmpty(_currentArcadeConfiguration.CylArcadeProperties.Scene) ? _currentArcadeConfiguration.CylArcadeProperties.Scene : null;
         //protected sealed override bool UseModelTransforms => false;
         //protected sealed override PlayerControls PlayerControls => _main.PlayerCylControls;
-        //protected sealed override CameraSettings CameraSettings => _cylArcadeProperties.CameraSettings;
 
         //protected CylArcadeProperties _cylArcadeProperties;
 
@@ -49,15 +47,8 @@ namespace Arcade
 
         //protected Transform _targetSelection;
 
-        /*
-        public CylArcadeController(ObjectsHierarchy normalHierarchy,
-                                   Database<EmulatorConfiguration> emulatorDatabase,
-                                   PlatformDatabase platformDatabase,
-                                   AssetCache<GameObject> gameObjectCache,
-                                   NodeController<MarqueeNodeTag> marqueeNodeController,
-                                   NodeController<ScreenNodeTag> screenNodeController,
-                                   NodeController<GenericNodeTag> genericNodeController)
-        : base(normalHierarchy, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
+        : base(player, generalConfiguration, uiController)
         {
             AudioMinDistance = 0f;
             AudioMaxDistance = 200f;
@@ -69,204 +60,220 @@ namespace Arcade
             });
         }
 
-        protected abstract float GetSpacing(Transform previousModel, Transform currentModel);
-
-        protected abstract bool MoveForwardCondition();
-
-        protected abstract bool MoveBackwardCondition();
-
-        protected abstract void AdjustWheelForward(float dt);
-
-        protected abstract void AdjustWheelBackward(float dt);
-
-        protected abstract void AdjustModelPosition(Transform model, bool forward, float spacing);
-
-        protected override void PostLoadScene()
+        protected sealed override void SetupPlayer()
         {
-            _cylArcadeProperties  = _arcadeConfiguration.CylArcadeProperties ?? throw new System.NullReferenceException(nameof(_arcadeConfiguration.CylArcadeProperties));
-            _centerTargetPosition = new Vector3(0f, 0f, _cylArcadeProperties.SelectedPositionZ);
+            _player.SetState(_generalConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
+
+            //_main.PlayerCylControls.gameObject.SetActive(false);
+            //_main.PlayerCylControls.gameObject.SetActive(true);
+            //_main.PlayerCylControls.MouseLookEnabled = _cylArcadeProperties.MouseLook;
+            //_main.PlayerCylControls.SetVerticalLookLimits(-40f, 40f);
+            //_main.PlayerCylControls.SetHorizontalLookLimits(0f, 0f);
+
+            //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
+
+            //PlayerControls.Camera.rect = CameraSettings.ViewportRect;
+
+            //CinemachineVirtualCamera vCam = PlayerControls.VirtualCamera;
+            //vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
+            //vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
+            //vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;
+            //vCam.m_Lens.OrthographicSize  = CameraSettings.AspectRatio;
+            //vCam.m_Lens.NearClipPlane     = CameraSettings.NearClipPlane;
+            //vCam.m_Lens.FarClipPlane      = CameraSettings.FarClipPlane;
+
+            //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
+            //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
 
-        protected sealed override void PreSetupPlayer()
-        {
-            _main.PlayerCylControls.gameObject.SetActive(false);
-            _main.PlayerCylControls.gameObject.SetActive(true);
-            _main.PlayerCylControls.MouseLookEnabled = _cylArcadeProperties.MouseLook;
-            _main.PlayerCylControls.SetVerticalLookLimits(-40f, 40f);
-            _main.PlayerCylControls.SetHorizontalLookLimits(0f, 0f);
-        }
+        //protected abstract float GetSpacing(Transform previousModel, Transform currentModel);
 
-        protected sealed override void AddModelsToWorldAdditionalLoopStepsForGames(GameObject instantiatedModel)
-        {
-            if (instantiatedModel.TryGetComponent(out Rigidbody rigidbody))
-            {
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                rigidbody.interpolation          = RigidbodyInterpolation.None;
-                rigidbody.useGravity             = false;
-                rigidbody.isKinematic            = true;
-            }
+        //protected abstract bool MoveForwardCondition();
 
-            instantiatedModel.SetActive(false);
-        }
+        //protected abstract bool MoveBackwardCondition();
 
-        protected sealed override void AddModelsToWorldAdditionalLoopStepsForProps(GameObject instantiatedModel)
-        {
-            if (Application.isPlaying)
-                VideoPlayerController.PlayVideo(instantiatedModel);
-        }
+        //protected abstract void AdjustWheelForward(float dt);
 
-        protected sealed override void LateSetupWorld()
-        {
-            base.LateSetupWorld();
+        //protected abstract void AdjustWheelBackward(float dt);
 
-            _sprockets            = Mathf.Clamp(_cylArcadeProperties.Sprockets, 1, _allGames.Count);
-            int selectedSprocket  = Mathf.Clamp(_cylArcadeProperties.SelectedSprocket - 1, 0, _sprockets);
-            int halfSprockets     = _sprockets % 2 != 0 ? _sprockets / 2 : _sprockets / 2 - 1;
-            _selectionIndex       = halfSprockets - selectedSprocket;
+        //protected abstract void AdjustModelPosition(Transform model, bool forward, float spacing);
 
-            if (_cylArcadeProperties.InverseList)
-            {
-                _allGames.Reverse();
-                _allGames.RotateRight(_selectionIndex + 1);
-            }
-            else
-                _allGames.RotateRight(_selectionIndex);
+        //protected override void PostLoadScene()
+        //{
+        //    _cylArcadeProperties  = _arcadeConfiguration.CylArcadeProperties ?? throw new System.NullReferenceException(nameof(_arcadeConfiguration.CylArcadeProperties));
+        //    _centerTargetPosition = new Vector3(0f, 0f, _cylArcadeProperties.SelectedPositionZ);
+        //}
 
-            SetupWheel();
+        //protected sealed override void AddModelsToWorldAdditionalLoopStepsForGames(GameObject instantiatedModel)
+        //{
+        //    if (instantiatedModel.TryGetComponent(out Rigidbody rigidbody))
+        //    {
+        //        rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+        //        rigidbody.interpolation          = RigidbodyInterpolation.None;
+        //        rigidbody.useGravity             = false;
+        //        rigidbody.isKinematic            = true;
+        //    }
 
-            if (_selectionIndex >= 0 && _allGames.Count >= _selectionIndex)
-                CurrentGame = _allGames[_selectionIndex].GetComponent<ModelConfigurationComponent>();
-            else
-                CurrentGame = null;
-        }
+        //    instantiatedModel.SetActive(false);
+        //}
 
-        protected sealed override IEnumerator CoNavigateForward(float dt)
-        {
-            _animating = true;
+        //protected sealed override void AddModelsToWorldAdditionalLoopStepsForProps(GameObject instantiatedModel)
+        //{
+        //    if (Application.isPlaying)
+        //        VideoPlayerController.PlayVideo(instantiatedModel);
+        //}
 
-            _targetSelection = _allGames[_selectionIndex + 1];
+        //protected sealed override void LateSetupWorld()
+        //{
+        //    base.LateSetupWorld();
 
-            ParentGamesToAnchor();
+        //    _sprockets            = Mathf.Clamp(_cylArcadeProperties.Sprockets, 1, _allGames.Count);
+        //    int selectedSprocket  = Mathf.Clamp(_cylArcadeProperties.SelectedSprocket - 1, 0, _sprockets);
+        //    int halfSprockets     = _sprockets % 2 != 0 ? _sprockets / 2 : _sprockets / 2 - 1;
+        //    _selectionIndex       = halfSprockets - selectedSprocket;
 
-            while (MoveForwardCondition())
-            {
-                AdjustWheelForward(dt);
-                yield return null;
-            }
+        //    if (_cylArcadeProperties.InverseList)
+        //    {
+        //        _allGames.Reverse();
+        //        _allGames.RotateRight(_selectionIndex + 1);
+        //    }
+        //    else
+        //        _allGames.RotateRight(_selectionIndex);
 
-            ResetGamesParent();
+        //    SetupWheel();
 
-            _allGames.RotateLeft();
+        //    if (_selectionIndex >= 0 && _allGames.Count >= _selectionIndex)
+        //        CurrentGame = _allGames[_selectionIndex].GetComponent<ModelConfigurationComponent>();
+        //    else
+        //        CurrentGame = null;
+        //}
 
-            UpdateWheel();
+        //protected sealed override IEnumerator CoNavigateForward(float dt)
+        //{
+        //    _animating = true;
 
-            _animating = false;
-        }
+        //    _targetSelection = _allGames[_selectionIndex + 1];
 
-        protected sealed override IEnumerator CoNavigateBackward(float dt)
-        {
-            _animating = true;
+        //    ParentGamesToAnchor();
 
-            _targetSelection = _allGames[_selectionIndex - 1];
+        //    while (MoveForwardCondition())
+        //    {
+        //        AdjustWheelForward(dt);
+        //        yield return null;
+        //    }
 
-            ParentGamesToAnchor();
+        //    ResetGamesParent();
 
-            while (MoveBackwardCondition())
-            {
-                AdjustWheelBackward(dt);
-                yield return null;
-            }
+        //    _allGames.RotateLeft();
 
-            ResetGamesParent();
+        //    UpdateWheel();
 
-            _allGames.RotateRight();
+        //    _animating = false;
+        //}
 
-            UpdateWheel();
+        //protected sealed override IEnumerator CoNavigateBackward(float dt)
+        //{
+        //    _animating = true;
 
-            _animating = false;
-        }
+        //    _targetSelection = _allGames[_selectionIndex - 1];
 
-        protected void SetupWheel()
-        {
-            if (_allGames.Count < 1)
-                return;
+        //    ParentGamesToAnchor();
 
-            Transform firstModel = _allGames[_selectionIndex];
-            firstModel.gameObject.SetActive(true);
-            firstModel.SetPositionAndRotation(_centerTargetPosition, Quaternion.Euler(_cylArcadeProperties.SprocketRotation));
+        //    while (MoveBackwardCondition())
+        //    {
+        //        AdjustWheelBackward(dt);
+        //        yield return null;
+        //    }
 
-            for (int i = _selectionIndex + 1; i < _sprockets; ++i)
-            {
-                Transform previousModel = _allGames[i - 1];
+        //    ResetGamesParent();
 
-                Transform currentModel = _allGames[i];
-                currentModel.gameObject.SetActive(true);
-                currentModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
-                float spacing = GetSpacing(previousModel, currentModel);
-                AdjustModelPosition(currentModel, true, spacing);
-            }
+        //    _allGames.RotateRight();
 
-            for (int i = _selectionIndex - 1; i >= 0; --i)
-            {
-                Transform previousModel = _allGames[i + 1];
+        //    UpdateWheel();
 
-                Transform currentModel = _allGames[i];
-                currentModel.gameObject.SetActive(true);
-                currentModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
-                float spacing = GetSpacing(previousModel, currentModel);
-                AdjustModelPosition(currentModel, false, spacing);
-            }
+        //    _animating = false;
+        //}
 
-            foreach (Transform model in _allGames.Skip(_sprockets))
-            {
-                model.gameObject.SetActive(false);
-                model.localPosition = Vector3.zero;
-            }
-        }
+        //protected void SetupWheel()
+        //{
+        //    if (_allGames.Count < 1)
+        //        return;
 
-        protected void UpdateWheel()
-        {
-            if (_allGames.Count < 1)
-                return;
+        //    Transform firstModel = _allGames[_selectionIndex];
+        //    firstModel.gameObject.SetActive(true);
+        //    firstModel.SetPositionAndRotation(_centerTargetPosition, Quaternion.Euler(_cylArcadeProperties.SprocketRotation));
 
-            Transform previousModel = _allGames[_sprockets - 2];
-            Transform newModel      = _allGames[_sprockets - 1];
-            newModel.gameObject.SetActive(true);
-            newModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
-            float spacing = GetSpacing(previousModel, newModel);
-            AdjustModelPosition(newModel, true, spacing);
+        //    for (int i = _selectionIndex + 1; i < _sprockets; ++i)
+        //    {
+        //        Transform previousModel = _allGames[i - 1];
 
-            previousModel = _allGames[1];
-            newModel      = _allGames[0];
-            newModel.gameObject.SetActive(true);
-            newModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
-            spacing = GetSpacing(previousModel, newModel);
-            AdjustModelPosition(newModel, false, spacing);
+        //        Transform currentModel = _allGames[i];
+        //        currentModel.gameObject.SetActive(true);
+        //        currentModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
+        //        float spacing = GetSpacing(previousModel, currentModel);
+        //        AdjustModelPosition(currentModel, true, spacing);
+        //    }
 
-            foreach (Transform model in _allGames.Skip(_sprockets))
-            {
-                model.gameObject.SetActive(false);
-                model.localPosition = Vector3.zero;
-            }
+        //    for (int i = _selectionIndex - 1; i >= 0; --i)
+        //    {
+        //        Transform previousModel = _allGames[i + 1];
 
-            CurrentGame = _allGames[_selectionIndex].GetComponent<ModelConfigurationComponent>();
-        }
+        //        Transform currentModel = _allGames[i];
+        //        currentModel.gameObject.SetActive(true);
+        //        currentModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
+        //        float spacing = GetSpacing(previousModel, currentModel);
+        //        AdjustModelPosition(currentModel, false, spacing);
+        //    }
 
-        protected float GetHorizontalSpacing(Transform previousModel, Transform currentModel) => previousModel.GetHalfWidth() + currentModel.GetHalfWidth() + _cylArcadeProperties.ModelSpacing;
+        //    foreach (Transform model in _allGames.Skip(_sprockets))
+        //    {
+        //        model.gameObject.SetActive(false);
+        //        model.localPosition = Vector3.zero;
+        //    }
+        //}
 
-        protected float GetVerticalSpacing(Transform previousModel, Transform currentModel) => previousModel.GetHalfHeight() + currentModel.GetHalfHeight() + _cylArcadeProperties.ModelSpacing;
+        //protected void UpdateWheel()
+        //{
+        //    if (_allGames.Count < 1)
+        //        return;
 
-        protected void ParentGamesToAnchor()
-        {
-            foreach (Transform game in _allGames.Take(_sprockets))
-                game.SetParent(TransformAnchor);
-        }
+        //    Transform previousModel = _allGames[_sprockets - 2];
+        //    Transform newModel      = _allGames[_sprockets - 1];
+        //    newModel.gameObject.SetActive(true);
+        //    newModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
+        //    float spacing = GetSpacing(previousModel, newModel);
+        //    AdjustModelPosition(newModel, true, spacing);
 
-        protected void ResetGamesParent()
-        {
-            foreach (Transform game in _allGames.Take(_sprockets))
-                game.SetParent(_normalHierarchy.GamesNode);
-        }
-        */
+        //    previousModel = _allGames[1];
+        //    newModel      = _allGames[0];
+        //    newModel.gameObject.SetActive(true);
+        //    newModel.SetPositionAndRotation(previousModel.localPosition, previousModel.localRotation);
+        //    spacing = GetSpacing(previousModel, newModel);
+        //    AdjustModelPosition(newModel, false, spacing);
+
+        //    foreach (Transform model in _allGames.Skip(_sprockets))
+        //    {
+        //        model.gameObject.SetActive(false);
+        //        model.localPosition = Vector3.zero;
+        //    }
+
+        //    CurrentGame = _allGames[_selectionIndex].GetComponent<ModelConfigurationComponent>();
+        //}
+
+        //protected float GetHorizontalSpacing(Transform previousModel, Transform currentModel) => previousModel.GetHalfWidth() + currentModel.GetHalfWidth() + _cylArcadeProperties.ModelSpacing;
+
+        //protected float GetVerticalSpacing(Transform previousModel, Transform currentModel) => previousModel.GetHalfHeight() + currentModel.GetHalfHeight() + _cylArcadeProperties.ModelSpacing;
+
+        //protected void ParentGamesToAnchor()
+        //{
+        //    foreach (Transform game in _allGames.Take(_sprockets))
+        //        game.SetParent(TransformAnchor);
+        //}
+
+        //protected void ResetGamesParent()
+        //{
+        //    foreach (Transform game in _allGames.Take(_sprockets))
+        //        game.SetParent(_normalHierarchy.GamesNode);
+        //}
     }
 }
