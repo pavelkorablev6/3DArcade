@@ -20,44 +20,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
     public sealed class FpsArcadeController : ArcadeController
     {
-        //public override float AudioMinDistance { get; protected set; }
-        //public override float AudioMaxDistance { get; protected set; }
-        //public override AnimationCurve VolumeCurve { get; protected set; }
+        public override float AudioMinDistance { get; protected set; }
+        public override float AudioMaxDistance { get; protected set; }
+        public override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected override string ArcadeName => !string.IsNullOrEmpty(_currentArcadeConfiguration.FpsArcadeProperties.Scene) ? _currentArcadeConfiguration.FpsArcadeProperties.Scene : null;
+        protected override string ArcadeName => ArcadeConfiguration.FpsArcadeProperties.Scene.ValueOrDefault();
+        protected override CameraSettings CameraSettings => ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
+
         //protected override bool UseModelTransforms => true;
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
-        //protected override CameraSettings CameraSettings => _currentArcadeConfiguration.FpsArcadeProperties.CameraSettings;
 
-        /*
-        public FpsArcadeController(ObjectsHierarchy normalHierarchy,
-                                   Database<EmulatorConfiguration> emulatorDatabase,
-                                   PlatformDatabase platformDatabase,
-                                   AssetCache<GameObject> gameObjectCache,
-                                   NodeController<MarqueeNodeTag> marqueeNodeController,
-                                   NodeController<ScreenNodeTag> screenNodeController,
-                                   NodeController<GenericNodeTag> genericNodeController)
-        : base(normalHierarchy, emulatorDatabase, platformDatabase, gameObjectCache, marqueeNodeController, screenNodeController, genericNodeController)
+        public FpsArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
+        : base(player, generalConfiguration, uiController)
         {
             AudioMinDistance = 1f;
             AudioMaxDistance = 3f;
 
             VolumeCurve = new AnimationCurve(new Keyframe[]
             {
-                 new Keyframe(0.8f,                     1.0f, -2.6966875f,  -2.6966875f,  0.2f,        0.10490462f),
+                 new Keyframe(0.8f,                    1.0f, -2.6966875f,  -2.6966875f,  0.2f,        0.10490462f),
                  new Keyframe(AudioMaxDistance * 0.5f, 0.3f, -0.49866775f, -0.49866775f, 0.28727788f, 0.2f),
                  new Keyframe(AudioMaxDistance,        0.0f, -0.08717632f, -0.08717632f, 0.5031141f,  0.2f)
             });
         }
-        protected override void PreSetupPlayer()
+
+        protected override void SetupPlayer()
         {
-            _main.PlayerFpsControls.gameObject.SetActive(true);
-            _main.PlayerCylControls.gameObject.SetActive(false);
+            _player.SetState(_generalConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
+
+            //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
+
+            //PlayerControls.Camera.rect = CameraSettings.ViewportRect;
+
+            //CinemachineVirtualCamera vCam = PlayerControls.VirtualCamera;
+            //vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
+            //vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
+            //vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;
+            //vCam.m_Lens.OrthographicSize  = CameraSettings.AspectRatio;
+            //vCam.m_Lens.NearClipPlane     = CameraSettings.NearClipPlane;
+            //vCam.m_Lens.FarClipPlane      = CameraSettings.FarClipPlane;
+
+            //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
+            //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
-        */
     }
 }

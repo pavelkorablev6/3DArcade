@@ -24,6 +24,10 @@ namespace Arcade
 {
     public interface IUIController
     {
-        public void SetState(UIState state);
+        void SetState(UIState state);
+
+        void InitStatusBar(string message);
+        void UpdateStatusBar(float percentComplete);
+        void ResetStatusBar();
     }
 }

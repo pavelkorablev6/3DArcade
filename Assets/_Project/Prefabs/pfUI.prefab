@@ -306,7 +306,6 @@ GameObject:
   - component: {fileID: 309567347583360445}
   - component: {fileID: 309567347583360444}
   - component: {fileID: 309567347583360447}
-  - component: {fileID: 8238255729956505233}
   m_Layer: 5
   m_Name: NormalCanvas
   m_TagString: Untagged
@@ -327,7 +326,7 @@ RectTransform:
   m_Children:
   - {fileID: 309567346723923891}
   m_Father: {fileID: 309567347937229945}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -395,18 +394,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8238255729956505233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309567347583360441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71ce7b785ee0fba4abab92e01b42f892, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &309567347878505819
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +406,6 @@ GameObject:
   - component: {fileID: 309567347878505823}
   - component: {fileID: 309567347878505822}
   - component: {fileID: 309567347878505817}
-  - component: {fileID: 2481270414808858825}
   m_Layer: 5
   m_Name: MoveCabCanvas
   m_TagString: Untagged
@@ -440,7 +426,7 @@ RectTransform:
   m_Children:
   - {fileID: 309567346438727979}
   m_Father: {fileID: 309567347937229945}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -508,18 +494,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2481270414808858825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309567347878505819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c4fd55854ec2e4f8bdc0cb49220600, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &309567347937229944
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,6 +503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309567347937229945}
+  - component: {fileID: 4929271740550794134}
   m_Layer: 5
   m_Name: pfUI
   m_TagString: Untagged
@@ -547,12 +522,30 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 3130026618657526455}
   - {fileID: 309567347583360446}
   - {fileID: 309567347878505816}
-  - {fileID: 3130026618657526455}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4929271740550794134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309567347937229944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6440696f7df5a604fb1dcb2f12734475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loadingCanvas: {fileID: 5213199643506851738}
+  _normalCanvas: {fileID: 309567347583360441}
+  _moveCabCanvas: {fileID: 309567347878505819}
+  _progressMessage: {fileID: 4445689403413602912}
+  _progressTransform: {fileID: 7558526536267540197}
+  _progressPercent: {fileID: 170307028815456464}
 --- !u!1 &1617805766635995213
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +692,6 @@ GameObject:
   - component: {fileID: 5101357582237030685}
   - component: {fileID: 5338180098507274651}
   - component: {fileID: 6703703539140845396}
-  - component: {fileID: 20201011087387652}
   m_Layer: 5
   m_Name: LoadingCanvas
   m_TagString: Untagged
@@ -722,7 +714,7 @@ RectTransform:
   - {fileID: 1290555403841220283}
   - {fileID: 2772214479448358311}
   m_Father: {fileID: 309567347937229945}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -790,18 +782,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &20201011087387652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5213199643506851738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907cb0e7e4490df46b1733c70e9cad41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6546296711571089835
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +812,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2772214479448358311}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -907,7 +887,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2772214479448358311}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1114,8 +1094,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9106006497398391707}
-  - {fileID: 7558526536267540197}
   - {fileID: 2129296249794691004}
+  - {fileID: 7558526536267540197}
   - {fileID: 1264792263689428441}
   m_Father: {fileID: 3130026618657526455}
   m_RootOrder: 2

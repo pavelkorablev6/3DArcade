@@ -20,11 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class UISceneLoadingCanvasTag : MonoBehaviour
+    public static class StringUtils
     {
+        public static string ValueOrDefault(this string @string, string @default = null)
+            => !string.IsNullOrEmpty(@string) ? @string : @default;
     }
 }

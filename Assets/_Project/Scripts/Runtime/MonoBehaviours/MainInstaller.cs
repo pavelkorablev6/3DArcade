@@ -38,14 +38,14 @@ namespace Arcade
                 .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
 
             _ = Container.Bind<IVirtualFileSystem>().FromInstance(virtualFileSystem).AsSingle().NonLazy();
+            _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
 
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
-            _ = Container.Bind<Player>().FromInstance(FindObjectOfType<Player>()).AsSingle();
+
+            _ = Container.Bind<Player>().FromComponentInHierarchy(true).AsSingle();
+            _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
+
             _ = Container.Bind<SceneContext>().AsSingle().NonLazy();
-
-            _ = Container.Bind<IUIController>().To<UIController>().AsSingle().NonLazy();
-
-            _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
 
             _ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();

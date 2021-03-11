@@ -24,7 +24,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [RequireComponent(typeof(CharacterController))]
     public sealed class PlayerFpsController : PlayerController
     {
         [SerializeField] private float _runSpeed  = 6f;

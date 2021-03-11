@@ -30,14 +30,12 @@ namespace Arcade
         //public ModelConfigurationComponent CurrentModelConfiguration;
 
         public readonly InputActions InputActions;
-        public readonly Player Player;
         public readonly IUIController UIController;
 
-        public GeneralConfiguration GeneralConfiguration { get; private set; }
+        public ArcadeConfiguration ArcadeConfiguration { get; private set; }
+        public ArcadeType ArcadeType { get; private set; }
+        public ArcadeMode ArcadeMode { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
-        public ArcadeConfiguration CurrentArcadeConfiguration { get; private set; }
-        public ArcadeType CurrentArcadeType { get; private set; }
-        public ArcadeMode CurrentArcadeMode { get; private set; }
 
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
@@ -47,6 +45,8 @@ namespace Arcade
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
+        private readonly Player _player;
+        private readonly GeneralConfiguration _generalConfiguration;
         private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
         private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
         private readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
@@ -59,13 +59,13 @@ namespace Arcade
                             MultiFileDatabase<PlatformConfiguration> platformDatabase,
                             MultiFileDatabase<ArcadeConfiguration> arcadeDatabase)
         {
-            InputActions         = inputActions;
-            Player               = player;
-            UIController         = uiController;
-            GeneralConfiguration = generalConfiguration;
-            _emulatorDatabase    = emulatorDatabase;
-            _platformDatabase    = platformDatabase;
-            _arcadeDatabase      = arcadeDatabase;
+            InputActions          = inputActions;
+            _player               = player;
+            UIController          = uiController;
+            _generalConfiguration = generalConfiguration;
+            _emulatorDatabase     = emulatorDatabase;
+            _platformDatabase     = platformDatabase;
+            _arcadeDatabase       = arcadeDatabase;
 
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
@@ -75,22 +75,22 @@ namespace Arcade
 
         public override void Start()
         {
-            if (!GeneralConfiguration.Load())
+            if (!_generalConfiguration.Load())
             {
                 SystemUtils.ExitApp("Failed to load General Configuration");
                 return;
             }
 
-            SetAndStartCurrentArcadeConfiguration(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
+            SetAndStartCurrentArcadeConfiguration(_generalConfiguration.StartingArcade, _generalConfiguration.StartingArcadeType, ArcadeMode.Normal);
         }
 
         public bool SetCurrentArcadeConfiguration(string id, ArcadeType type, ArcadeMode mode)
         {
             if (_arcadeDatabase.Get(id, out ArcadeConfiguration configuration))
             {
-                CurrentArcadeConfiguration = configuration;
-                CurrentArcadeType          = type;
-                CurrentArcadeMode          = mode;
+                ArcadeConfiguration = configuration;
+                ArcadeType          = type;
+                ArcadeMode          = mode;
                 return true;
             }
             return false;
@@ -104,7 +104,7 @@ namespace Arcade
 
         public void StartCurrentArcade()
         {
-            if (CurrentArcadeConfiguration == null)
+            if (ArcadeConfiguration == null)
                 return;
 
             //_objectsHierarchy.RootNode.gameObject.AddComponentIfNotFound<ArcadeConfigurationComponent>()
@@ -114,22 +114,19 @@ namespace Arcade
 
             ArcadeController?.StopArcade();
 
-            switch (CurrentArcadeType)
+            switch (ArcadeType)
             {
                 case ArcadeType.Fps:
                 {
-                    Player.SetState(GeneralConfiguration.EnableVR ? Player.State.VRFPS : Player.State.NormalFPS);
                     //VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
-                    ArcadeController = new FpsArcadeController(/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
+                    ArcadeController = new FpsArcadeController(_player, _generalConfiguration, UIController/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
                 }
                 break;
                 case ArcadeType.Cyl:
                 {
                     //VideoPlayerController = null;
 
-                    Player.SetState(GeneralConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
-
-                    switch (CurrentArcadeConfiguration.CylArcadeProperties.WheelVariant)
+                    switch (ArcadeConfiguration.CylArcadeProperties.WheelVariant)
                     {
                     //    case WheelVariant.CameraInsideHorizontal:
                     //        ArcadeController = new CylArcadeControllerWheel3DCameraInsideHorizontal(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
@@ -138,7 +135,7 @@ namespace Arcade
                     //        ArcadeController = new CylArcadeControllerWheel3DCameraOutsideHorizontal(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
                     //        break;
                         case WheelVariant.LineHorizontal:
-                            ArcadeController = new CylArcadeControllerLineHorizontal(/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
+                            ArcadeController = new CylArcadeControllerLineHorizontal(_player, _generalConfiguration, UIController/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
                             break;
                     //    case WheelVariant.CameraInsideVertical:
                     //        ArcadeController = new CylArcadeControllerWheel3DCameraInsideVertical(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
@@ -157,7 +154,7 @@ namespace Arcade
                 break;
             }
 
-            ArcadeController.StartArcade(CurrentArcadeConfiguration);
+            ArcadeController?.StartArcade(ArcadeConfiguration, ArcadeType);
         }
 
         protected override void OnUpdate(float dt)

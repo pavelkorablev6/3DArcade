@@ -27,7 +27,7 @@ using Zenject;
 
 namespace Arcade
 {
-    [RequireComponent(typeof(CharacterController))]
+    [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public abstract class PlayerController : MonoBehaviour
     {
         [SerializeField] protected Camera _camera;
@@ -67,6 +67,8 @@ namespace Arcade
             HandleMovement(Time.deltaTime);
             HandleLook();
         }
+
+        public void SetSpeed(float speed) => _walkSpeed = Mathf.Clamp(speed, 0.01f, 20f);
 
         public void SetVerticalLookLimits(float min, float max)
         {

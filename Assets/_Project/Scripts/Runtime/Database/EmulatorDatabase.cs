@@ -24,22 +24,20 @@ namespace Arcade
 {
     public sealed class EmulatorDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
-        public static EmulatorConfiguration FpsArcadeLauncher { get; private set; }
-        public static EmulatorConfiguration CylArcadeLauncher { get; private set; }
-        public static EmulatorConfiguration FpsMenuLauncher { get; private set; }
-        public static EmulatorConfiguration CylMenuLauncher { get; private set; }
-
-        static EmulatorDatabase()
-        {
-            FpsArcadeLauncher = MakeInternalLauncher("internal_fps_arcade_launcher", "FpsArcadeLauncher");
-            CylArcadeLauncher = MakeInternalLauncher("internal_cyl_arcade_launcher", "CylArcadeLauncher");
-            FpsMenuLauncher   = MakeInternalLauncher("internal_fps_menu_launcher", "FpsMenuLauncher");
-            CylMenuLauncher   = MakeInternalLauncher("internal_cyl_menu_launcher", "CylMenuLauncher");
-        }
+        public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalLauncher("_fps_arcade_launcher", "FpsArcadeLauncher");
+        public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalLauncher("_cyl_arcade_launcher", "CylArcadeLauncher");
+        public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalLauncher("_fps_menu_launcher", "FpsMenuLauncher");
+        public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalLauncher("_cyl_menu_launcher", "CylMenuLauncher");
 
         public EmulatorDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "emulator_cfgs")
             => _ = LoadAll();
+
+        public EmulatorConfiguration GetEmulatorForModelConfiguration(ModelConfiguration cfg)
+            => !string.IsNullOrEmpty(cfg.Emulator) ? Get(cfg.Emulator) : null;
+
+        public EmulatorConfiguration GetEmulatorForPlatformConfiguration(PlatformConfiguration cfg)
+            => !string.IsNullOrEmpty(cfg.Emulator) ? Get(cfg.Emulator) : null;
 
         private static EmulatorConfiguration MakeInternalLauncher(string id, string description) => new EmulatorConfiguration
         {
