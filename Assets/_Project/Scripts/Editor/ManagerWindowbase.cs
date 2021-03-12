@@ -1,4 +1,4 @@
-/* MIT License
+﻿/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,22 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+using UnityEditor;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    public sealed class EmulatorDatabaseEditor : DatabaseEditorBase<EmulatorConfiguration>
+    public abstract class ManagerWindowbase : EditorWindow
     {
-        protected override string VFSAlias => "emulator_cfgs";
-        protected override string VFSPath => $"{Application.streamingAssetsPath}/3darcade~/Configuration/Emulators";
-        protected override MultiFileDatabase<EmulatorConfiguration> DerivedDatabase
+        protected static IVirtualFileSystem _virtualFileSystem;
+
+        private void OnEnable()
         {
-            get
-            {
-                EmulatorDatabase emulatorDatabase = new EmulatorDatabase(_vfs);
-                emulatorDatabase.Initialize();
-                return emulatorDatabase;
-            }
+            _virtualFileSystem ??= new VirtualFileSystem();
+            Initialize();
         }
+
+        protected abstract void Initialize();
     }
 }

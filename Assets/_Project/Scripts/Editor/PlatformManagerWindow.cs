@@ -1,4 +1,4 @@
-/* MIT License
+﻿/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,14 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
+using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    [CustomEditor(typeof(EmulatorDatabaseEditor))]
-    internal sealed class EmulatorDatabaseEditorInspector : Editor
+    public sealed class PlatformManagerWindow : ManagerWindow<PlatformConfiguration>
     {
-        public override void OnInspectorGUI()
-            => DatabaseEditorHelpers.OnInspectorGUI<EmulatorDatabaseEditor, EmulatorConfiguration>(this);
+        [MenuItem("3DArcade/Platforms"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        private static void ShowWindow()
+        {
+            PlatformManagerWindow platformManagerWindow = GetWindow<PlatformManagerWindow>("Platform Manager", true);
+            platformManagerWindow.minSize = new Vector2(408f, 408f);
+        }
+
+        protected override string DirectoryAlias => "platform_cfgs";
+        protected override string DirectoryPath => $"{SystemUtils.GetDataPath()}/3darcade~/Configuration/Platforms";
+        protected override MultiFileDatabase<PlatformConfiguration> DerivedDatabase => new PlatformDatabase(_virtualFileSystem);
     }
 }

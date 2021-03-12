@@ -20,50 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
+using UnityEditor;
 using UnityEngine;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    [ExecuteAlways]
-    public abstract class DatabaseEditorBase<T> : MonoBehaviour
-        where T : DatabaseEntry
+    public sealed class EmulatorManagerWindow : ManagerWindow<EmulatorConfiguration>
     {
-        public T[] Entries;
-
-        protected static IVirtualFileSystem _vfs;
-        protected MultiFileDatabase<T> _database;
-
-        protected abstract string VFSAlias { get; }
-        protected abstract string VFSPath { get; }
-        protected abstract MultiFileDatabase<T> DerivedDatabase { get; }
-
-        private void OnEnable() => Load();
-
-        public void Save()
+        [MenuItem("3DArcade/Emulators"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        private static void ShowWindow()
         {
-            if (_database == null)
-                return;
-
-            _database.DeleteAll();
-
-            foreach (T entry in Entries)
-                if (!string.IsNullOrEmpty(entry.Id))
-                    _ = _database.Add(entry);
+            EmulatorManagerWindow emulatorManagerWindow = GetWindow<EmulatorManagerWindow>("Emulator Manager", true);
+            emulatorManagerWindow.minSize = new Vector2(408f, 408f);
         }
 
-        public void Load()
-        {
-            if (_vfs == null)
-                _vfs = new VirtualFileSystem().MountDirectory(VFSAlias, VFSPath);
-            else
-                _ = _vfs.MountDirectory(VFSAlias, VFSPath);
-
-            if (_database == null)
-                _database = DerivedDatabase;
-            else
-                _ = _database.LoadAll();
-
-            Entries = _database.GetValues();
-        }
+        protected override string DirectoryAlias => "emulator_cfgs";
+        protected override string DirectoryPath => $"{SystemUtils.GetDataPath()}/3darcade~/Configuration/Emulators";
+        protected override MultiFileDatabase<EmulatorConfiguration> DerivedDatabase => new EmulatorDatabase(_virtualFileSystem);
     }
 }

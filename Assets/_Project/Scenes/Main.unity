@@ -158,83 +158,6 @@ Transform:
   m_Father: {fileID: 96214925}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &58651336
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 58651338}
-  - component: {fileID: 58651337}
-  m_Layer: 0
-  m_Name: Platforms
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &58651337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 58651336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b6e7ff7e35a71e479c56b4ec0204acf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Entries:
-  - Id: arcade
-    Description: Arcade
-    MasterList: mame2003_plus
-    Emulator: mame2003_plus
-    Model: 
-    MarqueeImagesDirectories:
-    - '@/3darcade~/Platforms/arcade/marquees'
-    MarqueeVideosDirectories: []
-    ScreenSnapsDirectories:
-    - '@/3darcade~/Platforms/arcade/snaps'
-    ScreenTitlesDirectories:
-    - '@/3darcade~/Platforms/arcade/titles'
-    ScreenVideosDirectories:
-    - '@/3darcade~/Platforms/arcade/videos'
-    GenericImagesDirectories: []
-    GenericVideosDirectories: []
-    InfoDirectories: []
-  - Id: snes
-    Description: Super Nintendo Intertainment System
-    MasterList: snes
-    Emulator: snes9x
-    Model: snes
-    MarqueeImagesDirectories:
-    - '@/3darcade~/Platforms/snes/carts'
-    MarqueeVideosDirectories: []
-    ScreenSnapsDirectories:
-    - '@/3darcade~/Platforms/snes/snaps'
-    ScreenTitlesDirectories: []
-    ScreenVideosDirectories:
-    - '@/3darcade~/Platforms/snes/videos'
-    GenericImagesDirectories: []
-    GenericVideosDirectories: []
-    InfoDirectories: []
---- !u!4 &58651338
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 58651336}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &73109000
 GameObject:
   m_ObjectHideFlags: 3
@@ -332,7 +255,7 @@ Transform:
   - {fileID: 599590487}
   - {fileID: 38413210}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &174385822
 GameObject:
@@ -456,36 +379,6 @@ Transform:
   - {fileID: 581772265}
   m_Father: {fileID: 1924018302}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &545662177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 545662178}
-  m_Layer: 0
-  m_Name: ----------------------
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &545662178
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 545662177}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &581772264
 PrefabInstance:
@@ -1014,7 +907,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &917012469
 GameObject:
@@ -1452,7 +1345,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1394345729
 PrefabInstance:
@@ -1556,7 +1449,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1457968337
 MonoBehaviour:
@@ -2130,7 +2023,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924018301
 GameObject:
@@ -2470,70 +2363,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1924018302}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2121514172
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2121514174}
-  - component: {fileID: 2121514173}
-  m_Layer: 0
-  m_Name: Emulators
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2121514173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121514172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9890de6f18c59384c8c56957afa1da89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Entries:
-  - Id: mame_0228
-    Description: M.A.M.E. 0.228
-    InteractionType: 3
-    Directory: D:/__Emulators/mame
-    WorkingDirectory: 
-    Executable: mame64.exe
-    Arguments: 
-    SupportedExtensions: []
-    GamesDirectories:
-    - W:/complete/roms/MAME 0.227 ROMs (merged)
-  - Id: mame2003_plus
-    Description: 'Libretro: M.A.M.E. 2003+'
-    InteractionType: 2
-    Directory: 
-    WorkingDirectory: 
-    Executable: mame2003_plus
-    Arguments: 
-    SupportedExtensions: []
-    GamesDirectories:
-    - D:/__Roms/mame2003-plus
---- !u!4 &2121514174
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121514172}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &299124400949113745
@@ -3286,7 +3115,7 @@ PrefabInstance:
     - target: {fileID: 309567347937229945, guid: 16664b39fea913d47aa3267afd41bc64,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 309567347937229945, guid: 16664b39fea913d47aa3267afd41bc64,
         type: 3}
