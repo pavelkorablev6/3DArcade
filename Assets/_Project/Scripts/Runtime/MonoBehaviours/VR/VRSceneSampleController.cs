@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-	public sealed class VRSceneSampleController : MonoBehaviour
+    public sealed class VRSceneSampleController : MonoBehaviour
 	{
 		private OVRCameraRig _cameraController = null;
         private OVRGridCube _gridCube = null;

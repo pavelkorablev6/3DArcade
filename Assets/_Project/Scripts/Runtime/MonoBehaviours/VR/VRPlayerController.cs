@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-	[RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(CharacterController))]
 	public sealed class VRPlayerController : MonoBehaviour
 	{
 		public event Action CameraUpdated;

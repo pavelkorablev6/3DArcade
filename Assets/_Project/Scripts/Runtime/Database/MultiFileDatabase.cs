@@ -41,8 +41,24 @@ namespace Arcade
                 return false;
             }
 
-            string filePath = Path.Combine(_directory, $"{item.Id}.xml");
+            string filePath = Path.Combine(Directory, $"{item.Id}.xml");
             return Serialize(filePath, item);
+        }
+
+        public sealed override bool SaveAll()
+        {
+            try
+            {
+                foreach (KeyValuePair<string, T> entry in _entries)
+                    _ = Save(entry.Value);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
         }
 
         protected sealed override void PostAdd(T item)
@@ -55,7 +71,7 @@ namespace Arcade
 
             try
             {
-                string filePath = Path.Combine(_directory, $"{item.Id}.xml");
+                string filePath = Path.Combine(Directory, $"{item.Id}.xml");
                 _ = Serialize(filePath, item);
             }
             catch (System.Exception e)
@@ -66,7 +82,7 @@ namespace Arcade
 
         protected sealed override void PostDelete(string name)
         {
-            string filePath = Path.Combine(_directory, $"{name}.xml");
+            string filePath = Path.Combine(Directory, $"{name}.xml");
             if (File.Exists(filePath))
                 File.Delete(filePath);
         }
@@ -75,7 +91,7 @@ namespace Arcade
         {
             try
             {
-                string[] filePaths = Directory.GetFiles(_directory, "*.xml", SearchOption.TopDirectoryOnly);
+                string[] filePaths = System.IO.Directory.GetFiles(Directory, "*.xml", SearchOption.TopDirectoryOnly);
                 foreach (string filePath in filePaths)
                 {
                     T entry = Deserialize(filePath);
@@ -92,28 +108,12 @@ namespace Arcade
             }
         }
 
-        protected sealed override bool SaveAllToDisk()
-        {
-            try
-            {
-                foreach (KeyValuePair<string, T> keyValuePair in _entries)
-                    _ = Save(keyValuePair.Value);
-
-                return true;
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);
-                return false;
-            }
-        }
-
         protected sealed override void DeleteAllFromDisk()
         {
-            if (Directory.Exists(_directory))
+            if (System.IO.Directory.Exists(Directory))
             {
-                Directory.Delete(_directory, true);
-                _ = Directory.CreateDirectory(_directory);
+                System.IO.Directory.Delete(Directory, true);
+                _ = System.IO.Directory.CreateDirectory(Directory);
             }
         }
 

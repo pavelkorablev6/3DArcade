@@ -29,15 +29,14 @@ namespace Arcade
         public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalLauncher("_fps_menu_launcher", "FpsMenuLauncher");
         public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalLauncher("_cyl_menu_launcher", "CylMenuLauncher");
 
+        private const string VFS_DIRECTORY_ALIAS = "emulator_cfgs";
+
         public EmulatorDatabase(IVirtualFileSystem virtualFileSystem)
-        : base(virtualFileSystem, "emulator_cfgs")
-            => _ = LoadAll();
+        : base(virtualFileSystem, VFS_DIRECTORY_ALIAS)
+        {
+        }
 
-        public EmulatorConfiguration GetEmulatorForModelConfiguration(ModelConfiguration cfg)
-            => !string.IsNullOrEmpty(cfg.Emulator) ? Get(cfg.Emulator) : null;
-
-        public EmulatorConfiguration GetEmulatorForPlatformConfiguration(PlatformConfiguration cfg)
-            => !string.IsNullOrEmpty(cfg.Emulator) ? Get(cfg.Emulator) : null;
+        protected override void PostInitialize() => LoadAll();
 
         private static EmulatorConfiguration MakeInternalLauncher(string id, string description) => new EmulatorConfiguration
         {

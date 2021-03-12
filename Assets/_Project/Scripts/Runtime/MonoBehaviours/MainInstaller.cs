@@ -28,28 +28,19 @@ namespace Arcade
     {
         public override void InstallBindings()
         {
-            string dataPath = SystemUtils.GetDataPath();
-            IVirtualFileSystem virtualFileSystem = new VirtualFileSystem()
-                .MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
-                .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
-                .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
-                .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
-                .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
-                .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
-
-            _ = Container.Bind<IVirtualFileSystem>().FromInstance(virtualFileSystem).AsSingle().NonLazy();
-            _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
-
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
 
             _ = Container.Bind<Player>().FromComponentInHierarchy(true).AsSingle();
+
             _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
 
-            _ = Container.Bind<SceneContext>().AsSingle().NonLazy();
-
+            _ = Container.Bind<IVirtualFileSystem>().To<VirtualFileSystem>().AsSingle().NonLazy();
+            _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadeDatabase>().AsSingle().NonLazy();
+
+            _ = Container.Bind<SceneContext>().AsSingle().NonLazy();
         }
     }
 }

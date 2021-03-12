@@ -39,16 +39,16 @@ namespace Arcade
             _sceneContext = sceneContext;
         }
 
-        private void Awake()
+        private void Start()
         {
             QualitySettings.vSyncCount  = 0;
             Application.targetFrameRate = -1;
             Time.timeScale              = 1f;
 
             CheckCurrentOS();
-        }
 
-        private void Start() => _sceneContext.Start();
+            _sceneContext.Start();
+        }
 
         private void OnEnable() => _inputActions.Global.Enable();
 

@@ -20,15 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
-using Unity.Mathematics;
 using UnityEditor;
 using UnityEditor.Presets;
-using UnityEngine;
 
 namespace Arcade.UnityEditor
 {

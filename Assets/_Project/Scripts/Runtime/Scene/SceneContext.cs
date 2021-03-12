@@ -46,22 +46,25 @@ namespace Arcade
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
         private readonly Player _player;
+        private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly GeneralConfiguration _generalConfiguration;
         private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
         private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
         private readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
 
         public SceneContext(InputActions inputActions,
-                            Player player,
                             IUIController uiController,
+                            Player player,
+                            IVirtualFileSystem virtualFileSystem,
                             GeneralConfiguration generalConfiguration,
                             MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
                             MultiFileDatabase<PlatformConfiguration> platformDatabase,
                             MultiFileDatabase<ArcadeConfiguration> arcadeDatabase)
         {
             InputActions          = inputActions;
-            _player               = player;
             UIController          = uiController;
+            _player               = player;
+            _virtualFileSystem    = virtualFileSystem;
             _generalConfiguration = generalConfiguration;
             _emulatorDatabase     = emulatorDatabase;
             _platformDatabase     = platformDatabase;
@@ -75,11 +78,19 @@ namespace Arcade
 
         public override void Start()
         {
-            if (!_generalConfiguration.Load())
-            {
-                SystemUtils.ExitApp("Failed to load General Configuration");
-                return;
-            }
+            string dataPath = SystemUtils.GetDataPath();
+            _ = _virtualFileSystem.MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
+                                  .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
+                                  .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                                  .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                                  .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
+                                  .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
+
+            _generalConfiguration.Initialize();
+
+            _emulatorDatabase.Initialize();
+            _platformDatabase.Initialize();
+            _arcadeDatabase.Initialize();
 
             SetAndStartCurrentArcadeConfiguration(_generalConfiguration.StartingArcade, _generalConfiguration.StartingArcadeType, ArcadeMode.Normal);
         }

@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -29,12 +28,30 @@ namespace Arcade
 {
     public abstract class Database<T> where T : DatabaseEntry
     {
-        protected readonly string _directory;
+        protected string Directory { get; private set; }
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 
+        private readonly IVirtualFileSystem _virtualFileSystem;
+        private readonly string _directoryAlias;
+
         public Database(IVirtualFileSystem virtualFileSystem, string directoryAlias)
-            => _directory = virtualFileSystem.GetDirectory(directoryAlias);
+        {
+            _virtualFileSystem = virtualFileSystem;
+            _directoryAlias    = directoryAlias;
+        }
+
+        public void Initialize()
+        {
+            Directory = _virtualFileSystem.GetDirectory(_directoryAlias);
+            if (Directory == null)
+            {
+                SystemUtils.ExitApp("[Database] Directory not mapped in VirtualFileSystem");
+                return;
+            }
+
+            PostInitialize();
+        }
 
         public bool Contains(string name) => _entries.ContainsKey(name);
 
@@ -113,15 +130,16 @@ namespace Arcade
 
         public void DeleteAll()
         {
+
             DeleteAllFromDisk();
             _entries.Clear();
         }
 
         public bool LoadAll()
         {
-            if (!Directory.Exists(_directory))
+            if (!System.IO.Directory.Exists(Directory))
             {
-                Debug.LogWarning($"[{GetType().Name}.LoadAll] Directory doesn't exists: {_directory}");
+                Debug.LogWarning($"[{GetType().Name}.LoadAll] Directory doesn't exists: {Directory}");
                 return false;
             }
 
@@ -129,26 +147,17 @@ namespace Arcade
             return LoadAllFromDisk();
         }
 
-        public bool SaveAll()
+        protected virtual void PostInitialize()
         {
-            if (_entries.Count == 0)
-            {
-                Debug.LogWarning($"[{GetType().Name}.SaveAll] Empty database");
-                return false;
-            }
-
-            return SaveAllToDisk();
         }
+
+        public abstract bool SaveAll();
 
         protected abstract void PostAdd(T entry);
 
-        protected virtual void PostDelete(string name)
-        {
-        }
+        protected abstract void PostDelete(string name);
 
         protected abstract bool LoadAllFromDisk();
-
-        protected abstract bool SaveAllToDisk();
 
         protected abstract void DeleteAllFromDisk();
     }

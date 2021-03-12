@@ -28,18 +28,41 @@ namespace Arcade
 {
     public abstract class SingleFileDatabase<T, U> : Database<T> where T : DatabaseEntry where U : DatabaseEntries<T>, new()
     {
-        protected readonly string _filePath;
+        protected string FilePath { get; private set; }
 
-        protected SingleFileDatabase(IVirtualFileSystem virtualFileSystem, string directoryAlias, string fileName)
+        private readonly string _fileName;
+
+        public SingleFileDatabase(IVirtualFileSystem virtualFileSystem, string directoryAlias, string fileName)
         : base(virtualFileSystem, directoryAlias)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new System.ArgumentNullException(nameof(fileName));
 
-            _filePath = Path.GetFullPath(Path.Combine(_directory, $"{fileName}.xml"));
+            _fileName = fileName;
+
         }
 
+        public sealed override bool SaveAll()
+        {
+            try
+            {
+                U entryList = new U { Entries = _entries.Values.ToArray() };
+                Serialize(entryList);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        protected override void PostInitialize() => FilePath = Path.GetFullPath(Path.Combine(Directory, $"{_fileName}.xml"));
+
         protected sealed override void PostAdd(T entry) => SaveAll();
+
+        protected sealed override void PostDelete(string name) => SaveAll();
 
         protected sealed override bool LoadAllFromDisk()
         {
@@ -61,30 +84,14 @@ namespace Arcade
             }
         }
 
-        protected sealed override bool SaveAllToDisk()
-        {
-            try
-            {
-                U entryList = new U { Entries = _entries.Values.ToArray() };
-                Serialize(entryList);
-
-                return true;
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);
-                return false;
-            }
-        }
-
         protected sealed override void DeleteAllFromDisk()
         {
-            if (File.Exists(_filePath))
-                File.Delete(_filePath);
+            if (File.Exists(FilePath))
+                File.Delete(FilePath);
         }
 
-        private void Serialize(U entry) => XMLUtils.Serialize(_filePath, entry);
+        private void Serialize(U entry) => XMLUtils.Serialize(FilePath, entry);
 
-        private U Deserialize() => XMLUtils.Deserialize<U>(_filePath);
+        private U Deserialize() => XMLUtils.Deserialize<U>(FilePath);
     }
 }

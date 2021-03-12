@@ -28,9 +28,14 @@ namespace Arcade
     {
         protected override string VFSAlias => "platform_cfgs";
         protected override string VFSPath => $"{Application.streamingAssetsPath}/3darcade~/Configuration/Platforms";
-        protected override MultiFileDatabase<PlatformConfiguration> DerivedDatabase => new PlatformDatabase(_vfs);
-
-        [ContextMenu("Save")]
-        private void SaveChanges() => Save();
+        protected override MultiFileDatabase<PlatformConfiguration> DerivedDatabase
+        {
+            get
+            {
+                PlatformDatabase platformDatabase = new PlatformDatabase(_vfs);
+                platformDatabase.Initialize();
+                return platformDatabase;
+            }
+        }
     }
 }

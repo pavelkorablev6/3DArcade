@@ -26,14 +26,8 @@ namespace Arcade
 {
     public sealed class VirtualFileSystem : IVirtualFileSystem
     {
-        private readonly Dictionary<string, string> _mountedDirectories;
-        private readonly Dictionary<string, string> _mountedFiles;
-
-        public VirtualFileSystem()
-        {
-            _mountedDirectories = new Dictionary<string, string>();
-            _mountedFiles       = new Dictionary<string, string>();
-        }
+        private readonly Dictionary<string, string> _mountedDirectories = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _mountedFiles       = new Dictionary<string, string>();
 
         public IVirtualFileSystem MountDirectory(string alias, string path)
         {

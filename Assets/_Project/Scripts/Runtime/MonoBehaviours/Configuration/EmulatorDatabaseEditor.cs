@@ -28,9 +28,14 @@ namespace Arcade
     {
         protected override string VFSAlias => "emulator_cfgs";
         protected override string VFSPath => $"{Application.streamingAssetsPath}/3darcade~/Configuration/Emulators";
-        protected override MultiFileDatabase<EmulatorConfiguration> DerivedDatabase => new EmulatorDatabase(_vfs);
-
-        [ContextMenu("Save")]
-        private void SaveChanges() => Save();
+        protected override MultiFileDatabase<EmulatorConfiguration> DerivedDatabase
+        {
+            get
+            {
+                EmulatorDatabase emulatorDatabase = new EmulatorDatabase(_vfs);
+                emulatorDatabase.Initialize();
+                return emulatorDatabase;
+            }
+        }
     }
 }
