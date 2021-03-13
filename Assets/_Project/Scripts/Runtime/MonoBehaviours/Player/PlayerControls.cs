@@ -26,46 +26,22 @@ namespace Arcade
 {
     public sealed class PlayerControls : MonoBehaviour
     {
-        public enum State
-        {
-            Disabled,
-            FPS,
-            CYL
-        }
-
         [SerializeField] private GameObject _fpsController;
         [SerializeField] private GameObject _cylController;
 
-        public void SetState(State state)
-        {
-            switch (state)
-            {
-                case State.FPS:
-                    EnableFpsController();
-                    break;
-                case State.CYL:
-                    EnableCylController();
-                    break;
-                case State.Disabled:
-                default:
-                    Disable();
-                    break;
-            }
-        }
-
-        private void EnableFpsController()
+        public void EnableFpsController()
         {
             _cylController.SetActive(false);
             _fpsController.SetActive(true);
         }
 
-        private void EnableCylController()
+        public void EnableCylController()
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(true);
         }
 
-        private void Disable()
+        public void Disable()
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(false);

@@ -30,6 +30,8 @@ namespace Arcade
     {
         protected string Directory { get; private set; }
 
+        protected abstract T DefaultConfiguration { get; }
+
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 
         private readonly IVirtualFileSystem _virtualFileSystem;
@@ -46,7 +48,7 @@ namespace Arcade
             Directory = _virtualFileSystem.GetDirectory(_directoryAlias);
             if (Directory == null)
             {
-                SystemUtils.ExitApp("[Database] Directory not mapped in VirtualFileSystem");
+                Debug.LogWarning($"[{GetType().Name}.Initialize] Directory not mapped in VirtualFileSystem, using default values");
                 return;
             }
 
@@ -70,7 +72,7 @@ namespace Arcade
             if (!_entries.ContainsKey(id))
             {
                 Debug.LogWarning($"[{GetType().Name}.Get] Configuration not found: {id}");
-                return null;
+                return DefaultConfiguration;
             }
 
             return _entries[id];
@@ -147,11 +149,9 @@ namespace Arcade
             return LoadAllFromDisk();
         }
 
-        protected virtual void PostInitialize()
-        {
-        }
-
         public abstract bool SaveAll();
+
+        protected abstract void PostInitialize();
 
         protected abstract void PostAdd(T entry);
 

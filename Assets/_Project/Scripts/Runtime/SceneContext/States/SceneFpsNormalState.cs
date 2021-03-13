@@ -48,6 +48,8 @@ namespace Arcade
             //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
 
             //_context.VideoPlayerController.SetPlayer(_context.Main.PlayerFpsControls.transform);
+
+            _context.ArcadeController.SpawnGames();
         }
 
         public override void OnExit()

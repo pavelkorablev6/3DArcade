@@ -55,7 +55,7 @@ namespace Arcade
         private void OnDisable() => _inputActions.Global.Disable();
 
 #if !UNITY_EDITOR
-        private const bool SLEEP_TIME = 200;
+        private const int SLEEP_TIME = 200;
         private bool _focused = true;
         private void OnApplicationFocus(bool focus) => _focused = focus;
         private void Update()

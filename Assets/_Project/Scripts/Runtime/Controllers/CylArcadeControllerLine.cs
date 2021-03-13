@@ -24,8 +24,8 @@ namespace Arcade
 {
     public abstract class CylArcadeControllerLine : CylArcadeController
     {
-        public CylArcadeControllerLine(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
-        : base(player, generalConfiguration, uiController)
+        public CylArcadeControllerLine(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
+        : base(player, generalConfiguration, uiController, modelMatcher)
         {
         }
 

@@ -20,79 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
     public sealed class Player : MonoBehaviour
     {
-        public enum State
-        {
-            Disabled,
-            NormalFPS,
-            NormalCYL,
-            VRFPS,
-            VRCYL
-        }
+        [SerializeField] private PlayerControls _normalControls;
+        [SerializeField] private PlayerControls _virtualRealityControls;
 
-        [SerializeField] private PlayerControls _playerControls;
-        [SerializeField] private PlayerControls _playerControlsVR;
+        public PlayerControls NormalControls => _normalControls;
+        public PlayerControls VirtualRealityControls => _virtualRealityControls;
 
-        private void Awake() => SetState(State.Disabled);
+        private PlayerContext _playerContext;
 
-        public void SetState(State state)
-        {
-            switch (state)
-            {
-                case State.NormalFPS:
-                    EnableNormalController(PlayerControls.State.FPS);
-                    break;
-                case State.NormalCYL:
-                    EnableNormalController(PlayerControls.State.CYL);
-                    break;
-                case State.VRFPS:
-                    EnableVRController(PlayerControls.State.FPS);
-                    break;
-                case State.VRCYL:
-                    EnableVRController(PlayerControls.State.CYL);
-                    break;
-                case State.Disabled:
-                default:
-                    Disable();
-                    break;
-            }
-        }
+        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
+        private void Construct(PlayerContext context) => _playerContext = context;
 
-        private void Disable()
-        {
-            DisableNormalController();
-            DisableVRController();
-        }
+        private void Start() => TransitionTo<PlayerDisabledState>();
 
-        private void EnableNormalController(PlayerControls.State state)
-        {
-            DisableVRController();
-            _playerControls.gameObject.SetActive(true);
-            _playerControls.SetState(state);
-        }
-
-        private void EnableVRController(PlayerControls.State state)
-        {
-            DisableNormalController();
-            _playerControlsVR.gameObject.SetActive(true);
-            _playerControlsVR.SetState(state);
-        }
-
-        private void DisableNormalController()
-        {
-            _playerControls.SetState(PlayerControls.State.Disabled);
-            _playerControls.gameObject.SetActive(false);
-        }
-
-        private void DisableVRController()
-        {
-            _playerControlsVR.SetState(PlayerControls.State.Disabled);
-            _playerControlsVR.gameObject.SetActive(false);
-        }
+        public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
     }
 }

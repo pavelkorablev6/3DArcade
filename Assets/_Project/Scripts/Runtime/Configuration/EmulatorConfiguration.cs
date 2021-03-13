@@ -24,8 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable]
-    [XmlRoot("emulator")]
+    [System.Serializable, XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : DatabaseEntry
     {
         [XmlAttribute("description")]
@@ -51,5 +50,23 @@ namespace Arcade
 
         [XmlArray("games_directories"), XmlArrayItem("directory")]
         public string[] GamesDirectories;
+
+        public static readonly EmulatorConfiguration DummyEmulator     = MakeInternalLauncher("_dummy", "InternalDummyEmulator");
+        public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalLauncher("_fps_arcade_launcher", "InternalFpsArcadeLauncher");
+        public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalLauncher("_cyl_arcade_launcher", "InternalCylArcadeLauncher");
+        public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalLauncher("_fps_menu_launcher", "InternalFpsMenuLauncher");
+        public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalLauncher("_cyl_menu_launcher", "InternalCylMenuLauncher");
+
+        private static EmulatorConfiguration MakeInternalLauncher(string id, string description) => new EmulatorConfiguration
+        {
+            Id                  = id,
+            Description         = description,
+            Directory           = null,
+            WorkingDirectory    = null,
+            Executable          = null,
+            Arguments           = null,
+            SupportedExtensions = null,
+            GamesDirectories    = null
+        };
     }
 }

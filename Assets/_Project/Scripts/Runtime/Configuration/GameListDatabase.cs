@@ -24,6 +24,8 @@ namespace Arcade
 {
     public sealed class GameListDatabase : MultiFileDatabase<GamelistConfiguration>
     {
+        protected override GamelistConfiguration DefaultConfiguration => GamelistConfiguration.DummyGameList;
+
         public GameListDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "gamelist_cfgs")
         {

@@ -1,5 +1,5 @@
 <general>
-  <starting_arcade>mainmenu</starting_arcade>
+  <starting_arcade>demo</starting_arcade>
   <starting_arcade_type>Fps</starting_arcade_type>
   <enable_vr>false</enable_vr>
 </general>

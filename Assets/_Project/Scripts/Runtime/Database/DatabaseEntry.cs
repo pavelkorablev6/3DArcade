@@ -24,6 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
+    [System.Serializable]
     public abstract class DatabaseEntry
     {
         [XmlAttribute("id")]

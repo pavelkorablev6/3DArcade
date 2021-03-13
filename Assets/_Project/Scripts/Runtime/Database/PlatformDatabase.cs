@@ -24,10 +24,10 @@ namespace Arcade
 {
     public sealed class PlatformDatabase : MultiFileDatabase<PlatformConfiguration>
     {
-        private const string VFS_DIRECTORY_ALIAS = "platform_cfgs";
+        protected override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DummyPlatform;
 
         public PlatformDatabase(IVirtualFileSystem virtualFileSystem)
-        : base(virtualFileSystem, VFS_DIRECTORY_ALIAS)
+        : base(virtualFileSystem, "platform_cfgs")
         {
         }
 

@@ -24,10 +24,10 @@ namespace Arcade
 {
     public sealed class ArcadeDatabase : MultiFileDatabase<ArcadeConfiguration>
     {
-        private const string VFS_DIRECTORY_ALIAS = "arcade_cfgs";
+        protected override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DummyArcade;
 
         public ArcadeDatabase(IVirtualFileSystem virtualFileSystem)
-        : base(virtualFileSystem, VFS_DIRECTORY_ALIAS)
+        : base(virtualFileSystem, "arcade_cfgs")
         {
         }
 

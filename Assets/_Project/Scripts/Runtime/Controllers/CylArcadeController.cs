@@ -30,7 +30,7 @@ namespace Arcade
         public sealed override float AudioMaxDistance { get; protected set; }
         public sealed override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected sealed override string ArcadeName => ArcadeConfiguration.CylArcadeProperties.Scene.ValueOrDefault();
+        protected sealed override string ArcadeSceneName => ArcadeConfiguration.CylArcadeProperties.Scene.ValueOrDefault();
         protected sealed override CameraSettings CameraSettings => ArcadeConfiguration.CylArcadeProperties.CameraSettings;
 
         //protected abstract Transform TransformAnchor { get; }
@@ -47,8 +47,8 @@ namespace Arcade
 
         //protected Transform _targetSelection;
 
-        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController)
-        : base(player, generalConfiguration, uiController)
+        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
+        : base(player, generalConfiguration, uiController, modelMatcher)
         {
             AudioMinDistance = 0f;
             AudioMaxDistance = 200f;
@@ -62,7 +62,10 @@ namespace Arcade
 
         protected sealed override void SetupPlayer()
         {
-            _player.SetState(_generalConfiguration.EnableVR ? Player.State.VRCYL : Player.State.NormalCYL);
+            if (_generalConfiguration.EnableVR)
+                _player.TransitionTo<PlayerVirtualRealityCylState>();
+            else
+                _player.TransitionTo<PlayerNormalCylState>();
 
             //_main.PlayerCylControls.gameObject.SetActive(false);
             //_main.PlayerCylControls.gameObject.SetActive(true);

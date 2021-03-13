@@ -31,6 +31,7 @@ namespace Arcade
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
 
             _ = Container.Bind<Player>().FromComponentInHierarchy(true).AsSingle();
+            _ = Container.Bind<PlayerContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
 
@@ -39,6 +40,8 @@ namespace Arcade
             _ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadeDatabase>().AsSingle().NonLazy();
+
+            _ = Container.Bind<ModelMatcher>().AsSingle().NonLazy();
 
             _ = Container.Bind<SceneContext>().AsSingle().NonLazy();
         }

@@ -20,51 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class SceneLoadState : SceneState
+    public sealed class PlayerVirtualRealityFpsState : PlayerState
     {
-        public SceneLoadState(SceneContext context)
+        public PlayerVirtualRealityFpsState(PlayerContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter()
-        {
-            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+        public override void OnEnter() => _context.Player.VirtualRealityControls.EnableFpsController();
 
-            SystemUtils.HideMouseCursor();
-
-            _context.UIController.SetState(UIState.SceneLoading);
-
-            _context.StartCurrentArcade();
-        }
-
-        public override void OnExit()
-        {
-            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            _context.UIController.SetState(UIState.None);
-        }
-
-        public override void Update(float dt)
-        {
-            if (_context.ArcadeController == null || !_context.ArcadeController.SceneLoaded)
-                return;
-
-            switch (_context.ArcadeType)
-            {
-                case ArcadeType.Fps:
-                    _context.TransitionTo<SceneFpsNormalState>();
-                    break;
-                case ArcadeType.Cyl:
-                    _context.TransitionTo<SceneCylNormalState>();
-                    break;
-                default:
-                    break;
-            }
-        }
+        public override void OnExit() => _context.Player.VirtualRealityControls.Disable();
     }
 }

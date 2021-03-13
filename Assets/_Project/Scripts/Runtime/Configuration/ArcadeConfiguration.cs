@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [XmlRoot("arcade")]
+    [System.Serializable, XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : DatabaseEntry
     {
         [XmlAttribute("description")]
@@ -44,5 +44,18 @@ namespace Arcade
 
         [XmlArray("props"), XmlArrayItem("prop")]
         public ModelConfiguration[] Props;
+
+        public static readonly ArcadeConfiguration DummyArcade = MakeInternalArcade("_dummy", "InternalDummyArcade");
+
+        private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration
+        {
+            Id                  = id,
+            Description         = description,
+            RenderSettings      = null,
+            FpsArcadeProperties = new FpsArcadeProperties { Scene = "_cylinder" },
+            CylArcadeProperties = new CylArcadeProperties { Scene = "_cylinder" },
+            Games               = null,
+            Props               = null
+        };
     }
 }

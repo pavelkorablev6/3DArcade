@@ -24,8 +24,7 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable]
-    [XmlRoot("platform")]
+    [System.Serializable, XmlRoot("platform")]
     public sealed class PlatformConfiguration : DatabaseEntry
     {
         [XmlAttribute("description")]
@@ -63,5 +62,24 @@ namespace Arcade
 
         [XmlArray("info_directories"), XmlArrayItem("directory")]
         public string[] InfoDirectories;
+
+        public static readonly PlatformConfiguration DummyPlatform = MakeInternalPlatform("_dummy", "InternalDummyPlatform");
+
+        private static PlatformConfiguration MakeInternalPlatform(string id, string description) => new PlatformConfiguration
+        {
+            Id                       = id,
+            Description              = description,
+            MasterList               = null,
+            Emulator                 = EmulatorConfiguration.DummyEmulator.Id,
+            Model                    = null,
+            MarqueeImagesDirectories = null,
+            MarqueeVideosDirectories = null,
+            ScreenSnapsDirectories   = null,
+            ScreenTitlesDirectories  = null,
+            ScreenVideosDirectories  = null,
+            GenericImagesDirectories = null,
+            GenericVideosDirectories = null,
+            InfoDirectories          = null
+        };
     }
 }

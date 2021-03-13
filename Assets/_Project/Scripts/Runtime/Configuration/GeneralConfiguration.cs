@@ -40,12 +40,12 @@ namespace Arcade
 
         private const string VFS_FILE_ALIAS = "general_cfg";
 
-        private static string _className;
-
         private readonly IVirtualFileSystem _virtualFileSystem;
         private string _filePath;
 
-        public GeneralConfiguration() => _className ??= GetType().Name;
+        public GeneralConfiguration()
+        {
+        }
 
         [Inject]
         public GeneralConfiguration(IVirtualFileSystem virtualFileSystem)
@@ -55,12 +55,6 @@ namespace Arcade
         public void Initialize()
         {
             _filePath = _virtualFileSystem.GetFile(VFS_FILE_ALIAS);
-            if (_filePath == null)
-            {
-                Debug.LogWarning($"[{_className}] File not mapped in VirtualFileSystem, using default values");
-                SetDefaultValues();
-                return;
-            }
 
             Load();
         }
@@ -71,12 +65,14 @@ namespace Arcade
             {
                 if (_filePath == null)
                 {
-                    Debug.LogWarning($"[{_className}] File not mapped in VirtualFileSystem, using default values");
+                    Debug.LogWarning($"[{GetType().Name}.Load] File not mapped in VirtualFileSystem, using default values");
+                    SetDefaultValues();
                     return;
                 }
 
                 if (!FileSystem.FileExists(_filePath))
                 {
+                    Debug.Log($"[{GetType().Name}.Load] File not found, creating one using default values");
                     CreateDefaultConfiguration();
                     return;
                 }
@@ -92,7 +88,7 @@ namespace Arcade
                 StartingArcadeType = cfg.StartingArcadeType;
                 EnableVR           = cfg.EnableVR;
 
-                Debug.Log($"[{_className}] Loaded general configuration.");
+                Debug.Log($"[{GetType().Name}.Load] Loaded general configuration.");
             }
             catch (System.Exception e)
             {
@@ -106,7 +102,7 @@ namespace Arcade
             {
                 if (_filePath == null)
                 {
-                    Debug.LogWarning($"[{_className}] File not mapped in VirtualFileSystem, values will not be saved to disk");
+                    Debug.LogWarning($"[{GetType().Name}.Save] File not mapped in VirtualFileSystem, values will not be saved to disk");
                     return true;
                 }
 
@@ -121,7 +117,7 @@ namespace Arcade
 
         private void SetDefaultValues()
         {
-            StartingArcade     = "internal_default";
+            StartingArcade     = "_dummy";
             StartingArcadeType = ArcadeType.Fps;
             EnableVR           = false;
         }
@@ -131,9 +127,9 @@ namespace Arcade
             SetDefaultValues();
 
             if (Save())
-                Debug.Log($"[{_className}] Created default general configuration.");
+                Debug.Log($"[{GetType().Name}.CreateDefaultConfiguration] Created default general configuration.");
             else
-                Debug.LogError($"[{_className}] Failed default general configuration.");
+                Debug.LogError($"[{GetType().Name}.CreateDefaultConfiguration] Failed to create default general configuration.");
         }
     }
 }

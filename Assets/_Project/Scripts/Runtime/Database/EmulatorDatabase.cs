@@ -24,30 +24,13 @@ namespace Arcade
 {
     public sealed class EmulatorDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
-        public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalLauncher("_fps_arcade_launcher", "FpsArcadeLauncher");
-        public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalLauncher("_cyl_arcade_launcher", "CylArcadeLauncher");
-        public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalLauncher("_fps_menu_launcher", "FpsMenuLauncher");
-        public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalLauncher("_cyl_menu_launcher", "CylMenuLauncher");
-
-        private const string VFS_DIRECTORY_ALIAS = "emulator_cfgs";
+        protected override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
 
         public EmulatorDatabase(IVirtualFileSystem virtualFileSystem)
-        : base(virtualFileSystem, VFS_DIRECTORY_ALIAS)
+        : base(virtualFileSystem, "emulator_cfgs")
         {
         }
 
         protected override void PostInitialize() => LoadAll();
-
-        private static EmulatorConfiguration MakeInternalLauncher(string id, string description) => new EmulatorConfiguration
-        {
-            Id                  = id,
-            Description         = description,
-            Directory           = null,
-            WorkingDirectory    = null,
-            Executable          = null,
-            Arguments           = null,
-            SupportedExtensions = null,
-            GamesDirectories    = null
-        };
     }
 }

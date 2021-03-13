@@ -6,7 +6,7 @@
     <screen_pinball_intensity>1</screen_pinball_intensity>
   </render_settings>
   <fpsarcade_properties>
-    <scene>internal_cylinder</scene>
+    <scene>TempIndustrial</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0.89" z="0" />
       <rotation x="-0" y="0" z="0" />

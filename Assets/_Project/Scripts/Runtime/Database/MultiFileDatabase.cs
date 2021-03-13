@@ -61,6 +61,10 @@ namespace Arcade
             }
         }
 
+        protected override void PostInitialize()
+        {
+        }
+
         protected sealed override void PostAdd(T item)
         {
             if (item == null || string.IsNullOrEmpty(item.Id))

@@ -26,5 +26,13 @@ namespace Arcade
     public sealed class GamelistConfiguration : DatabaseEntry
     {
         public GameConfiguration[] Games;
+
+        public static readonly GamelistConfiguration DummyGameList = MakeInternalGameList("_dummy");
+
+        private static GamelistConfiguration MakeInternalGameList(string id) => new GamelistConfiguration
+        {
+            Id    = id,
+            Games = null
+        };
     }
 }
