@@ -47,7 +47,7 @@ namespace Arcade
         private void OnTargetChange(ModelConfigurationComponent modelConfiguration)
         {
             if (modelConfiguration != null)
-                _text.SetText(modelConfiguration.Description);
+                _text.SetText(modelConfiguration.VisualOverrides.Description);
             else
                 _text.Clear();
         }

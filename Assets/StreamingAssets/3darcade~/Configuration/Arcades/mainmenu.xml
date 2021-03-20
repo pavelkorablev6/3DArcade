@@ -1,12 +1,6 @@
 <arcade id="mainmenu" description="Main Menu">
-  <render_settings>
-    <marquee_intensity>4</marquee_intensity>
-    <screen_raster_intensity>4</screen_raster_intensity>
-    <screen_vector_intenstity>8</screen_vector_intenstity>
-    <screen_pinball_intensity>1</screen_pinball_intensity>
-  </render_settings>
   <fpsarcade_properties>
-    <scene>internal_empty</scene>
+    <scene>_cylinder</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0.89" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -17,9 +11,15 @@
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
+    <render_settings>
+      <marquee_intensity>4</marquee_intensity>
+      <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_vector_intenstity>8</screen_vector_intenstity>
+      <screen_pinball_intensity>1</screen_pinball_intensity>
+    </render_settings>
   </fpsarcade_properties>
-  <cylarcade_properties inverse_navigation="false" inverse_list="false" mouse_look="false" mouselook_reverse="true" horizontal_navigation="true">
-    <scene>internal_empty</scene>
+  <cylarcade_properties wheel_variant="LineHorizontal" wheel_radius="5" sprockets="5">
+    <scene>_empty</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -30,13 +30,21 @@
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
-    <wheel_variant>LineHorizontal</wheel_variant>
-    <wheel_radius>5</wheel_radius>
-    <sprockets>5</sprockets>
+    <render_settings>
+      <marquee_intensity>4</marquee_intensity>
+      <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_vector_intenstity>8</screen_vector_intenstity>
+      <screen_pinball_intensity>1</screen_pinball_intensity>
+    </render_settings>
+    <model>defaultmenu_sprocket</model>
+    <mouse_look>true</mouse_look>
     <selected_sprocket>-1</selected_sprocket>
     <selected_position_z>5</selected_position_z>
-    <model_spacing>0.2</model_spacing>
     <sprocket_rotation x="0" y="180" z="0" />
+    <model_spacing>0.2</model_spacing>
+    <horizontal_navigation>true</horizontal_navigation>
+    <inverse_navigation>false</inverse_navigation>
+    <inverse_list>false</inverse_list>
     <line_angle>-5</line_angle>
   </cylarcade_properties>
   <games>
@@ -45,7 +53,7 @@
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
       <description>Space Port</description>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>FpsArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -61,8 +69,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="5" />
       <rotation x="0" y="180" z="0" />
@@ -73,7 +81,7 @@
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
       <description>Time Out: Golden Age</description>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>FpsArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -89,8 +97,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="3.14422822" y="0" z="5" />
       <rotation x="0" y="180" z="0" />
@@ -100,7 +108,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -111,8 +119,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="6.28845644" y="0" z="5" />
       <rotation x="0" y="180" z="0" />
@@ -122,7 +130,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -133,8 +141,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -144,7 +152,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -155,8 +163,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -166,7 +174,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -177,8 +185,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -188,7 +196,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -199,8 +207,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -210,7 +218,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -221,8 +229,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -232,7 +240,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -243,8 +251,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -254,7 +262,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -265,8 +273,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -276,7 +284,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -287,8 +295,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -298,7 +306,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -309,8 +317,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -320,7 +328,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -331,8 +339,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-6.28845644" y="0" z="5" />
       <rotation x="0" y="180" z="0" />
@@ -342,7 +350,7 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model>defaultmenu_sprocket</model>
+      <model />
       <interaction_type>CylArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
@@ -353,8 +361,8 @@
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-3.14422822" y="0" z="5" />
       <rotation x="0" y="180" z="0" />
@@ -366,9 +374,9 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <interaction_type>Inherited</interaction_type>
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <interaction_type>Default</interaction_type>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="2.2" z="5.1" />
       <rotation x="-0" y="0" z="0" />
@@ -378,9 +386,9 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <interaction_type>Inherited</interaction_type>
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <interaction_type>Default</interaction_type>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0" y="0" z="5.5" />
       <rotation x="-0" y="0" z="0" />

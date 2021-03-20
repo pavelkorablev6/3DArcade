@@ -51,6 +51,30 @@ namespace Arcade
         [XmlElement("emulator")]
         public string Emulator;
 
+        [XmlArray("marquee_image_files"), XmlArrayItem("file")]
+        public string[] MarqueeImageFiles;
+
+        [XmlArray("marquee_video_files"), XmlArrayItem("file")]
+        public string[] MarqueeVideoFiles;
+
+        [XmlArray("screen_snap_files"), XmlArrayItem("file")]
+        public string[] ScreenSnapFiles;
+
+        [XmlArray("screen_title_files"), XmlArrayItem("file")]
+        public string[] ScreenTitleFiles;
+
+        [XmlArray("screen_video_files"), XmlArrayItem("file")]
+        public string[] ScreenVideoFiles;
+
+        [XmlArray("generic_image_files"), XmlArrayItem("file")]
+        public string[] GenericImageFiles;
+
+        [XmlArray("genericv_ideo_files"), XmlArrayItem("file")]
+        public string[] GenericVideoFiles;
+
+        [XmlArray("info_files"), XmlArrayItem("file")]
+        public string[] InfoFiles;
+
         [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
         public string[] MarqueeImageDirectories;
 

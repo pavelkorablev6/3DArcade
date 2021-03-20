@@ -1,5 +1,6 @@
 <general>
   <starting_arcade>demo</starting_arcade>
   <starting_arcade_type>Fps</starting_arcade_type>
+  <mouselook_reverse>false</mouselook_reverse>
   <enable_vr>false</enable_vr>
 </general>

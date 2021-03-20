@@ -34,7 +34,7 @@ namespace Arcade
         private static readonly int _arcadeModelsLayer    = LayerMask.NameToLayer("Arcade/ArcadeModels");
         private static readonly int _arcadeSelectionLayer = LayerMask.NameToLayer("Arcade/Selection");
 
-        public void FindModelSetup(in SceneEditModeData data, in Ray ray, in float maxDistance, in LayerMask layerMask)
+        public void FindModelSetup(in ArcadeEditModeData data, in Ray ray, in float maxDistance, in LayerMask layerMask)
         {
             Assert.IsNotNull(data);
 
@@ -107,7 +107,7 @@ namespace Arcade
             }
         }
 
-        public static void AutoMoveAndRotate(in SceneEditModeData data, in Ray ray, in Vector3 forward, in float maxDistance, in LayerMask layerMask)
+        public static void AutoMoveAndRotate(in ArcadeEditModeData data, in Ray ray, in Vector3 forward, in float maxDistance, in LayerMask layerMask)
         {
             Assert.IsNotNull(data);
             Assert.IsNotNull(data.ModelSetup);
@@ -142,7 +142,7 @@ namespace Arcade
             }
         }
 
-        public static MoveCabGrabSavedData InitGrabMode(in SceneEditModeData data, in Camera camera)
+        public static MoveCabGrabSavedData InitGrabMode(in ArcadeEditModeData data, in Camera camera)
         {
             Assert.IsNotNull(data);
             Assert.IsNotNull(data.ModelSetup);
@@ -170,7 +170,7 @@ namespace Arcade
             return result;
         }
 
-        public static void RestoreSavedValues(in SceneEditModeData data, MoveCabGrabSavedData savedValues)
+        public static void RestoreSavedValues(in ArcadeEditModeData data, MoveCabGrabSavedData savedValues)
         {
             Assert.IsNotNull(data);
             Assert.IsNotNull(data.Collider);

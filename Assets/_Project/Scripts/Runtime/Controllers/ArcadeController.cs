@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -30,115 +31,38 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade
 {
-    public sealed class ModelController
-    {
-        private readonly ModelMatcher _modelMatcher;
-
-        private readonly ModelConfiguration _modelConfiguration;
-        private readonly Transform _parent;
-
-        public ModelController(ModelMatcher modelMatcher, ModelConfiguration modelConfiguration, Transform parent)
-        {
-            _modelMatcher       = modelMatcher;
-            _modelConfiguration = modelConfiguration;
-            _parent             = parent;
-        }
-
-        public void Instantiate()
-        {
-            List<string> namesToTry = _modelMatcher.GetNamesToTryForGame(_modelConfiguration);
-
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += GameResourceLocationsRetrievedCallback;
-
-            //GameObject prefab = _gameObjectCache.Load(resourceDirectory, namesToTry);
-            //if (prefab == null)
-            //    continue;
-
-            //GameObject instantiatedModel = InstantiatePrefab(prefab, parent, modelConfiguration, !gameModels || UseModelTransforms);
-
-            //// Look for artworks only in play mode / runtime
-            //if (Application.isPlaying)
-            //{
-
-            //    PlatformConfiguration platform = null;
-            //    //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
-            //    //    platform = _platformDatabase.Get(modelConfiguration.Platform);
-
-            //    GameConfiguration game = null;
-            //    if (platform != null && platform.MasterList != null)
-            //    {
-            //        //game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
-            //        if (game != null)
-            //        {
-            //        }
-            //    }
-
-            //    _marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
-            //    _screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
-            //    _genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
-            //}
-
-            //if (gameModels)
-            //{
-            //    _allGames.Add(instantiatedModel.transform);
-            //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-            //}
-            //else
-            //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
-        }
-
-        private void GameResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
-        {
-            if (aoHandle.Result.Count > 0)
-                Addressables.InstantiateAsync(aoHandle.Result[0], _modelConfiguration.Position, Quaternion.Euler(_modelConfiguration.Rotation), _parent).Completed += GameInstantiatedCallback;
-        }
-
-        private void GameInstantiatedCallback(AsyncOperationHandle<GameObject> aoHandle)
-        {
-        }
-    }
-
     public abstract class ArcadeController
     {
-        public bool ArcadeSceneLoaded { get; private set; }
-
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
 
+        public bool ArcadeSceneLoaded { get; private set; }
+
+        protected abstract CameraSettings CameraSettings { get; }
+
         protected ArcadeConfiguration ArcadeConfiguration { get; private set; }
         protected ArcadeType ArcadeType { get; private set; }
 
-        protected abstract string ArcadeSceneName { get; }
-        protected abstract CameraSettings CameraSettings { get; }
-
         protected readonly Player _player;
         protected readonly GeneralConfiguration _generalConfiguration;
+        protected readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        protected readonly ModelMatcher _modelMatcher;
 
-        private const string ARCADE_ADDRESS_PREFIX            = "Arcades";
-        private const string INTERNAL_ARCADE_CYLINDER_ADDRESS = ARCADE_ADDRESS_PREFIX + "/_cylinder";
+        protected Transform _gamesNodeTransform;
+        protected Transform _propsNodeTransform;
 
         private readonly IUIController _uiController;
-        private readonly ModelMatcher _modelMatcher;
         private readonly List<ModelController> _gameControllers;
 
         private AsyncOperationHandle<SceneInstance> _loadArcadeSceneHandle;
         private IResourceLocation _arcadeSceneResourceLocation;
         private SceneInstance _arcadeSceneInstance;
+
+        private bool _includeEntities;
         private bool _triggerArcadeSceneReload;
 
-        private Transform _gamesNode;
-        private Transform _propsNode;
-
-
         //public ModelConfigurationComponent CurrentGame { get; protected set; }
-
-        //public abstract float AudioMinDistance { get; protected set; }
-        //public abstract float AudioMaxDistance { get; protected set; }
-        //public abstract AnimationCurve VolumeCurve { get; protected set; }
-
-        //protected abstract bool UseModelTransforms { get; }
-        //protected abstract PlayerControls PlayerControls { get; }
 
         //protected const string GAME_RESOURCES_DIRECTORY              = "Games";
         //protected const string PROP_RESOURCES_DIRECTORY              = "Props";
@@ -149,61 +73,20 @@ namespace Arcade
         //protected bool _animating;
 
         //private readonly Database<EmulatorConfiguration> _emulatorDatabase;
-        //private readonly PlatformDatabase _platformDatabase;
-        //private readonly AssetCache<SceneInstance> _sceneCache;
-        //private readonly AssetCache<GameObject> _gameObjectCache;
 
         //private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
-        //private bool _gameModelsLoaded;
-
-        public ArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
+        public ArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
         {
             _player               = player;
             _generalConfiguration = generalConfiguration;
-            _uiController         = uiController;
+            _platformDatabase     = platformDatabase;
             _modelMatcher         = modelMatcher;
+            _uiController         = uiController;
             _gameControllers      = new List<ModelController>();
         }
-
-        /*
-         * public ArcadeController(ObjectsHierarchy normalHierarchy,
-                                Database<EmulatorConfiguration> emulatorDatabase,
-                                PlatformDatabase platformDatabase,
-                                AssetCache<GameObject> gameObjectCache,
-                                NodeController<MarqueeNodeTag> marqueeNodeController,
-                                NodeController<ScreenNodeTag> screenNodeController,
-                                NodeController<GenericNodeTag> genericNodeController)
-        {
-
-            //_sceneCache      = sceneCache ?? throw new System.ArgumentNullException(nameof(sceneCache));
-            //_gameObjectCache = gameObjectCache ?? throw new System.ArgumentNullException(nameof(gameObjectCache));
-
-            //_main = Object.FindObjectOfType<Main>();
-
-//          _normalHierarchy   = normalHierarchy ?? throw new System.ArgumentNullException(nameof(normalHierarchy));
-//          _emulatorDatabase  = emulatorDatabase ?? throw new System.ArgumentNullException(nameof(emulatorDatabase));
-//          _platformDatabase  = platformDatabase ?? throw new System.ArgumentNullException(nameof(platformDatabase));
-
-//          _marqueeNodeController = marqueeNodeController;
-//          _screenNodeController  = screenNodeController;
-//          _genericNodeController = genericNodeController;
-
-//          _modelMatcher = new ModelMatcher(_platformDatabase);
-
-//          GameObject foundPivotPoint = GameObject.Find(CYLARCADE_PIVOT_POINT_GAMEOBJECT_NAME);
-//          if (foundPivotPoint != null)
-//          {
-//#if UNITY_EDITOR
-//              Object.DestroyImmediate(foundPivotPoint);
-//#else
-//              Object.Destroy(foundPivotPoint);
-//#endif
-//          }
-        }
-        */
 
         public void DebugLogProgress()
         {
@@ -211,54 +94,41 @@ namespace Arcade
                 _uiController.UpdateStatusBar(_loadArcadeSceneHandle.PercentComplete);
         }
 
-        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
+        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType, bool includeEntities = true)
         {
+            ArcadeSceneLoaded = false;
+
             ArcadeConfiguration = arcadeConfiguration;
             ArcadeType          = arcadeType;
+            _includeEntities    = includeEntities;
 
-            ArcadeSceneLoaded = false;
-            string arcadeSceneName = ArcadeSceneName ?? arcadeConfiguration.Id;
-
-            _uiController.InitStatusBar($"Loading arcade: {arcadeSceneName}...");
-
-            Addressables.LoadResourceLocationsAsync($"{ARCADE_ADDRESS_PREFIX}/{arcadeSceneName}", typeof(SceneInstance)).Completed += ArcadeSceneResourceLocationRetrievedCallback;
+            List<string> namesToTry = _modelMatcher.GetNamesToTryForArcade(arcadeConfiguration, arcadeType);
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                LoadInEditorArcade(namesToTry);
+                return;
+            }
+#endif
+            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance)).Completed += ArcadeSceneResourceLocationRetrievedCallback;
         }
 
         public void StopArcade() => UnloadArcadeScene();
 
-        public void SpawnGames()
-        {
-            Transform rootNode = new GameObject("Arcade").transform;
-            _gamesNode = new GameObject("Games").transform;
-            _gamesNode.SetParent(rootNode);
-            _propsNode = new GameObject("Props").transform;
-            _propsNode.SetParent(rootNode);
-
-            if (ArcadeConfiguration.Games != null)
-            {
-                foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
-                {
-                    ModelController modelController = new ModelController(_modelMatcher, modelConfiguration, _gamesNode);
-                    modelController.Instantiate();
-                    _gameControllers.Add(modelController);
-                }
-            }
-        }
-
         protected abstract void SetupPlayer();
+
+        protected abstract ModelController SetupGame(ModelConfiguration modelConfiguration);
 
         private void ArcadeSceneResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
-            if (aoHandle.Status == AsyncOperationStatus.Succeeded && aoHandle.Result.Count > 0)
-            {
-                _arcadeSceneResourceLocation = aoHandle.Result[0];
-                LoadArcadeScene();
-            }
-            else
-            {
-                Debug.LogError("Arcade addressable not found, loading default cylinder arcade");
-                Addressables.LoadResourceLocationsAsync(INTERNAL_ARCADE_CYLINDER_ADDRESS, typeof(SceneInstance)).Completed += ArcadeSceneResourceLocationRetrievedCallback;
-            }
+            if (aoHandle.Result.Count == 0)
+                return;
+
+            _arcadeSceneResourceLocation = aoHandle.Result[0];
+
+            _uiController.InitStatusBar($"Loading arcade: {_arcadeSceneResourceLocation}...");
+
+            LoadArcadeScene();
         }
 
         private void LoadArcadeScene()
@@ -290,25 +160,70 @@ namespace Arcade
 
             if (SceneManager.SetActiveScene(_arcadeSceneInstance.Scene))
             {
-                SetupPlayer();
-                _uiController.ResetStatusBar();
                 ArcadeSceneLoaded = true;
+                _uiController.ResetStatusBar();
+                SetupPlayer();
+                SetupHierarchy();
+                SpawnEntities();
             }
+        }
+
+        private void SetupHierarchy()
+        {
+            GameObject arcadeNodeGameObject = new GameObject("Arcade", typeof(ArcadeNodeTag));
+            arcadeNodeGameObject.AddComponent<ArcadeConfigurationComponent>()
+                                .FromArcadeConfiguration(ArcadeConfiguration);
+            Transform arcadeNodeTransform = arcadeNodeGameObject.transform;
+            _gamesNodeTransform = new GameObject("Games", typeof(GamesNodeTag)).transform;
+            _gamesNodeTransform.SetParent(arcadeNodeTransform);
+            _propsNodeTransform = new GameObject("Props", typeof(PropsNodeTag)).transform;
+            _propsNodeTransform.SetParent(arcadeNodeTransform);
+        }
+
+        private void SpawnEntities()
+        {
+            if (!_includeEntities)
+                return;
+
+            if (ArcadeConfiguration.Games != null)
+                foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
+                    _gameControllers.Add(SetupGame(modelConfiguration));
         }
 
         private void ArcadeSceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
         {
             ArcadeSceneLoaded = false;
 
-            if (aoHandle.Status == AsyncOperationStatus.Succeeded)
-            {
-                if (_triggerArcadeSceneReload)
-                    LoadArcadeScene();
-            }
+            if (_triggerArcadeSceneReload)
+                LoadArcadeScene();
 
             _triggerArcadeSceneReload = false;
         }
 
+#if UNITY_EDITOR
+        private void LoadInEditorArcade(List<string> namesToTry)
+        {
+            foreach (string nameToTry in namesToTry)
+            {
+                try
+                {
+                    Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
+                    if (assetType == typeof(UnityEditor.SceneAsset))
+                    {
+                        Scene scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(nameToTry, UnityEditor.SceneManagement.OpenSceneMode.Additive);
+                        _ = SceneManager.SetActiveScene(scene);
+                        SetupPlayer();
+                        SetupHierarchy();
+                        SpawnEntities();
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+#endif
         /*
         public void NavigateForward(float dt)
         {
@@ -404,20 +319,6 @@ namespace Arcade
 
             if (gameModels)
                 _gameModelsLoaded = true;
-        }
-
-        protected static GameObject InstantiatePrefab(GameObject prefab, Transform parent, ModelConfiguration modelConfiguration, bool useModelTransforms)
-        {
-            Vector3 position    = useModelTransforms ? modelConfiguration.Position : DatabaseVector3.zero;
-            Quaternion rotation = useModelTransforms ? Quaternion.Euler(modelConfiguration.Rotation) : Quaternion.identity;
-
-            GameObject model           = Object.Instantiate(prefab, position, rotation, parent);
-            model.name                 = modelConfiguration.Id;
-            model.transform.localScale = modelConfiguration.Scale;
-            model.transform.SetLayersRecursively(parent.gameObject.layer);
-            model.AddComponent<ModelConfigurationComponent>()
-                 .FromModelConfiguration(modelConfiguration);
-            return model;
         }
 
         protected static float GetScreenIntensity(GameConfiguration gameConfiguration, RenderSettings renderSettings)

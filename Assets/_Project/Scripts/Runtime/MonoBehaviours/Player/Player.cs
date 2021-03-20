@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Zenject;
 
@@ -34,10 +33,12 @@ namespace Arcade
         public PlayerControls NormalControls => _normalControls;
         public PlayerControls VirtualRealityControls => _virtualRealityControls;
 
+        public bool IsInCylMode => _playerContext.CurrentState is PlayerNormalCylState || _playerContext.CurrentState is PlayerVirtualRealityCylState;
+
         private PlayerContext _playerContext;
 
-        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(PlayerContext context) => _playerContext = context;
+        [Inject]
+        public void Construct(PlayerContext context) => _playerContext = context;
 
         private void Start() => TransitionTo<PlayerDisabledState>();
 

@@ -21,84 +21,74 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Arcade
 {
     public sealed class ModelMatcher
     {
-        private const string ARCADES_ADDRESS_PREFIX = "Arcades";
-        private const string GAMES_ADDRESS_PREFIX   = "Games";
-        private const string PROPS_ADDRESS_PREFIX   = "Props";
+        private const string ARCADES_ADDRESS_PREFIX    = "Arcades/";
+        private const string DEFAULT_ARCADE_SCENE_NAME = "_cylinder";
 
-        private const string DEFAULT_ARCADE_MODEL      = ARCADES_ADDRESS_PREFIX + "/_cylinder";
-        private const string DEFAULT_GAME_70_HOR_MODEL = GAMES_ADDRESS_PREFIX   + "/_70_horizontal";
-        private const string DEFAULT_GAME_80_HOR_MODEL = GAMES_ADDRESS_PREFIX   + "/_80_horizontal";
-        private const string DEFAULT_GAME_90_HOR_MODEL = GAMES_ADDRESS_PREFIX   + "/_90_horizontal";
-        private const string DEFAULT_GAME_70_VER_MODEL = GAMES_ADDRESS_PREFIX   + "/_70_vertical";
-        private const string DEFAULT_GAME_80_VER_MODEL = GAMES_ADDRESS_PREFIX   + "/_80_vertical";
-        private const string DEFAULT_GAME_90_VER_MODEL = GAMES_ADDRESS_PREFIX   + "/_90_vertical";
-        private const string DEFAULT_GAME_HOR_MODEL    = DEFAULT_GAME_80_HOR_MODEL;
-        private const string DEFAULT_GAME_VER_MODEL    = DEFAULT_GAME_80_VER_MODEL;
-        private const string DEFAULT_PROP_MODEL        = PROPS_ADDRESS_PREFIX   + "/ElectricScooter";
+        private const string GAMES_ADDRESS_PREFIX     = "Games/";
+        private const string DEFAULT_GAME_70_HOR_NAME = "_70_horizontal";
+        private const string DEFAULT_GAME_80_HOR_NAME = "_80_horizontal";
+        private const string DEFAULT_GAME_90_HOR_NAME = "_90_horizontal";
+        private const string DEFAULT_GAME_70_VER_NAME = "_70_vertical";
+        private const string DEFAULT_GAME_80_VER_NAME = "_80_vertical";
+        private const string DEFAULT_GAME_90_VER_NAME = "_90_vertical";
+        private const string DEFAULT_GAME_HOR_NAME    = DEFAULT_GAME_80_HOR_NAME;
+        private const string DEFAULT_GAME_VER_NAME    = DEFAULT_GAME_80_VER_NAME;
 
-        private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        private const string PROPS_ADDRESS_PREFIX = "Props/";
+        private const string DEFAULT_PROP_NAME    = "ElectricScooter";
 
-        public ModelMatcher(MultiFileDatabase<PlatformConfiguration> platformDatabase) => _platformDatabase = platformDatabase;
+        private const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
 
-        public static List<string> GetNamesToTryForArcade(ModelConfiguration cfg)
+        public List<string> GetNamesToTryForArcade(ArcadeConfiguration cfg, ArcadeType arcadeType)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            return new List<string>
+            string sceneName = arcadeType == ArcadeType.Fps ? cfg.FpsArcadeProperties.Scene : cfg.CylArcadeProperties.Scene;
+
+            List<string> result = new List<string>();
+            AddToList(sceneName);
+            AddToList(cfg.Id);
+            AddToList(DEFAULT_ARCADE_SCENE_NAME);
+            return result;
+
+            void AddToList(string name)
             {
-                cfg.Model,
-                cfg.Id,
-                DEFAULT_ARCADE_MODEL
-            };
+                if (string.IsNullOrEmpty(name))
+                    return;
+
+                if (Application.isPlaying)
+                    result.Add($"{ARCADES_ADDRESS_PREFIX}{name}");
+                else
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{ARCADES_ADDRESS_PREFIX}{name}/{name}.unity");
+            }
         }
 
-        public List<string> GetNamesToTryForGame(ModelConfiguration cfg)
+        public List<string> GetNamesToTryForGame(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
             List<string> result = new List<string>();
 
-            // From cfg model override
-            if (!string.IsNullOrEmpty(cfg.Model))
-                result.Add($"{GAMES_ADDRESS_PREFIX}/{cfg.Model}");
-
-            // From cfg id
-            result.Add($"{GAMES_ADDRESS_PREFIX}/{cfg.Id}");
-
-            PlatformConfiguration platform = null;
-            if (!string.IsNullOrEmpty(cfg.Platform))
-                platform = _platformDatabase.Get(cfg.Platform);
-
-            // TODO: From game CloneOf and RomOf in platform's masterlist
-            GameConfiguration game = null;
-            if (platform != null && !string.IsNullOrEmpty(platform.MasterList))
-            {
-                //game = _gameDatabase.Get(platform.MasterList, game.Id);
-                //if (game != null)
-                //{
-                //    result.AddStringIfNotNullOrEmpty(game.CloneOf);
-                //    result.AddStringIfNotNullOrEmpty(game.RomOf);
-                //}
-            }
-
-            // From platform model
-            if (platform != null && !string.IsNullOrEmpty(platform.Model))
-                result.Add($"{GAMES_ADDRESS_PREFIX}/{platform.Model}");
+            AddToList(cfg.Model);       // From cfg model override
+            AddToList(cfg.Id);          // From cfg id
+            AddToList(game?.CloneOf);   // From game CloneOf in platform masterlist
+            AddToList(game?.RomOf);     // From game RomOf in platform masterlist
+            AddToList(platform?.Model); // From platform model
 
             // Generic model from cfg orientation/year
             if (!string.IsNullOrEmpty(cfg.Year))
             {
                 switch (cfg.ScreenOrientation)
                 {
-                    case GameScreenOrientation.Undefined:
-                    case GameScreenOrientation.Inherited:
+                    case GameScreenOrientation.Default:
                         if (!string.IsNullOrEmpty(GetModelNameForGame(game)))
                             return result;
                         break;
@@ -109,34 +99,48 @@ namespace Arcade
                         result.AddStringIfNotNullOrEmpty(GetVerticalModelNameForYear(cfg.Year));
                         return result;
                     default:
-                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
+                        throw new System.Exception($"Unhandled switch case statement: {cfg.ScreenOrientation}");
                 }
             }
 
-            // Generic model from game orientation/year
-            string modelName = GetModelNameForGame(game);
-            if (!string.IsNullOrEmpty(modelName))
-            {
-                result.Add(modelName);
-                return result;
-            }
+            AddToList(GetModelNameForGame(game)); // Generic model from game orientation/year
+            AddToList(DEFAULT_GAME_HOR_NAME);     // Default horizontal model
 
-            // Default horizontal model
-            result.Add(DEFAULT_GAME_HOR_MODEL);
             return result;
+
+            void AddToList(string name)
+            {
+                if (string.IsNullOrEmpty(name))
+                    return;
+
+                if (Application.isPlaying)
+                    result.Add($"{GAMES_ADDRESS_PREFIX}{name}");
+                else
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESS_PREFIX}{name}.prefab");
+            }
         }
 
-        public static List<string> GetNamesToTryForProp(ModelConfiguration cfg)
+        public List<string> GetNamesToTryForProp(ModelConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            return new List<string>
+            List<string> result = new List<string>();
+            AddToList(cfg.Model);
+            AddToList(cfg.Id);
+            AddToList(DEFAULT_PROP_NAME);
+            return result;
+
+            void AddToList(string name)
             {
-                cfg.Model,
-                cfg.Id,
-                DEFAULT_PROP_MODEL
-            };
+                if (string.IsNullOrEmpty(name))
+                    return;
+
+                if (Application.isPlaying)
+                    result.Add($"{PROPS_ADDRESS_PREFIX}{name}");
+                else
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESS_PREFIX}{name}/{name}.prefab");
+            }
         }
 
         private static string GetModelNameForGame(GameConfiguration game)
@@ -150,30 +154,32 @@ namespace Arcade
 
         private static string GetHorizontalModelNameForYear(string yearString)
         {
+            string name = DEFAULT_GAME_HOR_NAME;
             if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {
                 if (year >= 1970 && year < 1980)
-                    return DEFAULT_GAME_70_HOR_MODEL;
+                    name = DEFAULT_GAME_70_HOR_NAME;
                 else if (year < 1990)
-                    return DEFAULT_GAME_80_HOR_MODEL;
+                    name = DEFAULT_GAME_80_HOR_NAME;
                 else if (year < 2000)
-                    return DEFAULT_GAME_90_HOR_MODEL;
+                    name = DEFAULT_GAME_90_HOR_NAME;
             }
-            return DEFAULT_GAME_HOR_MODEL;
+            return Application.isPlaying ? $"{GAMES_ADDRESS_PREFIX}{name}" : $"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESS_PREFIX}{name}.prefab";
         }
 
         private static string GetVerticalModelNameForYear(string yearString)
         {
+            string name = DEFAULT_GAME_VER_NAME;
             if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {
                 if (year >= 1970 && year < 1980)
-                    return DEFAULT_GAME_70_VER_MODEL;
+                    name = DEFAULT_GAME_70_VER_NAME;
                 else if (year < 1990)
-                    return DEFAULT_GAME_80_VER_MODEL;
+                    name = DEFAULT_GAME_80_VER_NAME;
                 else if (year < 2000)
-                    return DEFAULT_GAME_90_VER_MODEL;
+                    name = DEFAULT_GAME_90_VER_NAME;
             }
-            return DEFAULT_GAME_VER_MODEL;
+            return Application.isPlaying ? $"{GAMES_ADDRESS_PREFIX}/{name}" : $"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESS_PREFIX}{name}.prefab";
         }
     }
 }

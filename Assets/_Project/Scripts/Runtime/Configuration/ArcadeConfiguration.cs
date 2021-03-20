@@ -27,11 +27,10 @@ namespace Arcade
     [System.Serializable, XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : DatabaseEntry
     {
+        public static readonly ArcadeConfiguration DummyArcade = MakeInternalArcade("_dummy", "InternalDummyArcade");
+
         [XmlAttribute("description")]
         public string Description;
-
-        [XmlElement("render_settings")]
-        public RenderSettings RenderSettings;
 
         [XmlElement("fpsarcade_properties")]
         public FpsArcadeProperties FpsArcadeProperties;
@@ -45,17 +44,34 @@ namespace Arcade
         [XmlArray("props"), XmlArrayItem("prop")]
         public ModelConfiguration[] Props;
 
-        public static readonly ArcadeConfiguration DummyArcade = MakeInternalArcade("_dummy", "InternalDummyArcade");
-
         private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration
         {
-            Id                  = id,
-            Description         = description,
-            RenderSettings      = null,
-            FpsArcadeProperties = new FpsArcadeProperties { Scene = "_cylinder" },
-            CylArcadeProperties = new CylArcadeProperties { Scene = "_cylinder" },
-            Games               = null,
-            Props               = null
+            Id             = id,
+            Description    = description,
+            FpsArcadeProperties = new FpsArcadeProperties
+            {
+                Scene          = "_cylinder",
+                RenderSettings = new RenderSettings
+                {
+                    MarqueeIntensity       = 4f,
+                    ScreenRasterIntensity  = 4f,
+                    ScreenVectorIntenstity = 8f,
+                    ScreenPinballIntensity = 1f
+                }
+            },
+            CylArcadeProperties = new CylArcadeProperties
+            {
+                Scene          = "_empty",
+                RenderSettings = new RenderSettings
+                {
+                    MarqueeIntensity       = 4f,
+                    ScreenRasterIntensity  = 4f,
+                    ScreenVectorIntenstity = 8f,
+                    ScreenPinballIntensity = 1f
+                }
+            },
+            Games = null,
+            Props = null
         };
     }
 }

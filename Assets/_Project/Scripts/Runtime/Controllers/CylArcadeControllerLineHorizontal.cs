@@ -24,8 +24,8 @@ namespace Arcade
 {
     public sealed class CylArcadeControllerLineHorizontal : CylArcadeControllerLine
     {
-        public CylArcadeControllerLineHorizontal(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
-        : base(player, generalConfiguration, uiController, modelMatcher)
+        public CylArcadeControllerLineHorizontal(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
+        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
         {
         }
 

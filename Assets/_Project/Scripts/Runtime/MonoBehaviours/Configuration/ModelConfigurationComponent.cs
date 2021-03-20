@@ -24,108 +24,175 @@ using UnityEngine;
 
 namespace Arcade
 {
+
     [DisallowMultipleComponent, SelectionBase]
     public sealed class ModelConfigurationComponent : MonoBehaviour
     {
-        public string Id                       => _id;
-        public string Platform                 => _platform;
-        public bool MoveCabMovable             => _moveCabMovable;
-        public bool MoveCabGrabbable           => _moveCabGrabbable;
-        public string Description              => !string.IsNullOrEmpty(_description) ? _description : _id;
-        public InteractionType InteractionType => _interactionType;
-        public string Emulator                 => _emulator;
-
-        [Header("Configuration")]
-        [SerializeField] private string _id;
-        [SerializeField] private string _platform;
-        [SerializeField] private bool _grabbable        = true;
-        [SerializeField] private bool _moveCabMovable   = true;
-        [SerializeField] private bool _moveCabGrabbable = true;
-
-        [Header("Visual Overrides")]
-        [SerializeField] private string _description;
-        [SerializeField] private string _model;
-
-        [Header("Launch Overrides")]
-        [SerializeField] private InteractionType _interactionType;
-        [SerializeField] private string _emulator;
-
-        [Header("Artwork Overrides")]
-        [SerializeField] private string[] _marqueeImageDirectories;
-        [SerializeField] private string[] _marqueeVideoDirectories;
-        [SerializeField] private string[] _screenSnapDirectories;
-        [SerializeField] private string[] _screenTitleDirectories;
-        [SerializeField] private string[] _screenVideoDirectories;
-        [SerializeField] private string[] _genericImageDirectories;
-        [SerializeField] private string[] _genericVideoDirectories;
-        [SerializeField] private string[] _infoDirectories;
-
-        [Header("Data Overrides")]
-        [SerializeField] private string _cloneOf;
-        [SerializeField] private string _romOf;
-        [SerializeField] private string _genre;
-        [SerializeField] private string _year;
-        [SerializeField] private string _manufacturer;
-        [SerializeField] private GameScreenType _screenType;
-        [SerializeField] private GameScreenOrientation _screenOrientation;
-        [SerializeField] private bool _mature;
-
-        public void FromModelConfiguration(ModelConfiguration modelConfiguration)
+        [System.Serializable]
+        public sealed class ModelGeneralData
         {
-            _id                      = modelConfiguration.Id;
-            _platform                = modelConfiguration.Platform;
-            _grabbable               = modelConfiguration.Grabbable;
-            _moveCabMovable          = modelConfiguration.MoveCabMovable;
-            _moveCabGrabbable        = modelConfiguration.MoveCabGrabbable;
-            _description             = modelConfiguration.Description;
-            _model                   = modelConfiguration.Model;
-            _interactionType         = modelConfiguration.InteractionType;
-            _emulator                = modelConfiguration.Emulator;
-            _marqueeImageDirectories = modelConfiguration.MarqueeImageDirectories;
-            _marqueeVideoDirectories = modelConfiguration.MarqueeVideoDirectories;
-            _screenSnapDirectories   = modelConfiguration.ScreenSnapDirectories;
-            _screenTitleDirectories  = modelConfiguration.ScreenTitleDirectories;
-            _screenVideoDirectories  = modelConfiguration.ScreenVideoDirectories;
-            _genericImageDirectories = modelConfiguration.GenericImageDirectories;
-            _genericVideoDirectories = modelConfiguration.GenericVideoDirectories;
-            _infoDirectories         = modelConfiguration.InfoDirectories;
-            _cloneOf                 = modelConfiguration.CloneOf;
-            _romOf                   = modelConfiguration.RomOf;
-            _genre                   = modelConfiguration.Genre;
-            _year                    = modelConfiguration.Year;
-            _manufacturer            = modelConfiguration.Manufacturer;
-            _screenType              = modelConfiguration.ScreenType;
-            _screenOrientation       = modelConfiguration.ScreenOrientation;
-            _mature                  = modelConfiguration.Mature;
+            public string Id;
+            public string Platform;
+            public bool Grabbable = true;
+            public bool MoveCabMovable = true;
+            public bool MoveCabGrabbable = true;
+        }
+
+        [System.Serializable]
+        public sealed class ModelVisualOverrides
+        {
+            public string Description;
+            public string Model;
+        }
+
+        [System.Serializable]
+        public sealed class ModelLaunchOverrides
+        {
+            public InteractionType InteractionType;
+            public string Emulator;
+        }
+
+        [System.Serializable]
+        public sealed class ModelArtworkFilesOverrides
+        {
+            public string[] MarqueeImageFiles;
+            public string[] MarqueeVideoFiles;
+            public string[] ScreenSnapFiles;
+            public string[] ScreenTitleFiles;
+            public string[] ScreenVideoFiles;
+            public string[] GenericImageFiles;
+            public string[] GenericVideoFiles;
+            public string[] InfoFiles;
+        }
+
+        [System.Serializable]
+        public sealed class ModelArtworkDirectoriesOverrides
+        {
+            public string[] MarqueeImageDirectories;
+            public string[] MarqueeVideoDirectories;
+            public string[] ScreenSnapDirectories;
+            public string[] ScreenTitleDirectories;
+            public string[] ScreenVideoDirectories;
+            public string[] GenericImageDirectories;
+            public string[] GenericVideoDirectories;
+            public string[] InfoDirectories;
+        }
+
+        [System.Serializable]
+        public sealed class ModelGameDataOverrides
+        {
+            public string CloneOf;
+            public string RomOf;
+            public string Genre;
+            public string Year;
+            public string Manufacturer;
+            public GameScreenType ScreenType;
+            public GameScreenOrientation ScreenOrientation;
+            public bool Mature;
+        }
+
+        public ModelGeneralData GeneralData;
+        public ModelVisualOverrides VisualOverrides;
+        public ModelLaunchOverrides LaunchOverrides;
+        public ModelArtworkFilesOverrides ArtworkFilesOverrides;
+        public ModelArtworkDirectoriesOverrides ArtworkDirectoriesOverrides;
+        public ModelGameDataOverrides GameDataOverrides;
+
+        public void FromModelConfiguration(ModelConfiguration cfg)
+        {
+            GeneralData = new ModelGeneralData
+            {
+                Id               = cfg.Id,
+                Platform         = cfg.Platform,
+                Grabbable        = cfg.Grabbable,
+                MoveCabMovable   = cfg.MoveCabMovable,
+                MoveCabGrabbable = cfg.MoveCabGrabbable
+            };
+
+            VisualOverrides = new ModelVisualOverrides
+            {
+                Description = cfg.Description,
+                Model       = cfg.Model
+            };
+
+            LaunchOverrides = new ModelLaunchOverrides
+            {
+                InteractionType = cfg.InteractionType,
+                Emulator        = cfg.Emulator
+            };
+
+            ArtworkFilesOverrides = new ModelArtworkFilesOverrides
+            {
+                MarqueeImageFiles = cfg.MarqueeImageFiles,
+                MarqueeVideoFiles = cfg.MarqueeVideoFiles,
+                ScreenSnapFiles   = cfg.ScreenSnapFiles,
+                ScreenTitleFiles  = cfg.ScreenTitleFiles,
+                ScreenVideoFiles  = cfg.ScreenVideoFiles,
+                GenericImageFiles = cfg.GenericImageFiles,
+                GenericVideoFiles = cfg.GenericVideoFiles,
+                InfoFiles         = cfg.InfoFiles
+            };
+
+            ArtworkDirectoriesOverrides = new ModelArtworkDirectoriesOverrides
+            {
+                MarqueeImageDirectories = cfg.MarqueeImageDirectories,
+                MarqueeVideoDirectories = cfg.MarqueeVideoDirectories,
+                ScreenSnapDirectories   = cfg.ScreenSnapDirectories,
+                ScreenTitleDirectories  = cfg.ScreenTitleDirectories,
+                ScreenVideoDirectories  = cfg.ScreenVideoDirectories,
+                GenericImageDirectories = cfg.GenericImageDirectories,
+                GenericVideoDirectories = cfg.GenericVideoDirectories,
+                InfoDirectories         = cfg.InfoDirectories
+            };
+
+            GameDataOverrides = new ModelGameDataOverrides
+            {
+                CloneOf           = cfg.CloneOf,
+                RomOf             = cfg.RomOf,
+                Genre             = cfg.Genre,
+                Year              = cfg.Year,
+                Manufacturer      = cfg.Manufacturer,
+                ScreenType        = cfg.ScreenType,
+                ScreenOrientation = cfg.ScreenOrientation,
+                Mature            = cfg.Mature
+            };
         }
 
         public ModelConfiguration ToModelConfiguration() => new ModelConfiguration
         {
-            Id                      = _id,
-            Platform                = _platform,
-            Grabbable               = _grabbable,
-            MoveCabMovable          = _moveCabMovable,
-            MoveCabGrabbable        = _moveCabGrabbable,
-            Description             = _description,
-            Model                   = _model,
-            InteractionType         = _interactionType,
-            Emulator                = _emulator,
-            MarqueeImageDirectories = _marqueeImageDirectories,
-            MarqueeVideoDirectories = _marqueeVideoDirectories,
-            ScreenSnapDirectories   = _screenSnapDirectories,
-            ScreenTitleDirectories  = _screenTitleDirectories,
-            ScreenVideoDirectories  = _screenVideoDirectories,
-            GenericImageDirectories = _genericImageDirectories,
-            GenericVideoDirectories = _genericVideoDirectories,
-            InfoDirectories         = _infoDirectories,
-            CloneOf                 = _cloneOf,
-            RomOf                   = _romOf,
-            Genre                   = _genre,
-            Year                    = _year,
-            Manufacturer            = _manufacturer,
-            ScreenType              = _screenType,
-            ScreenOrientation       = _screenOrientation,
-            Mature                  = _mature,
+            Id                      = GeneralData.Id,
+            Platform                = GeneralData.Platform,
+            Grabbable               = GeneralData.Grabbable,
+            MoveCabMovable          = GeneralData.MoveCabMovable,
+            MoveCabGrabbable        = GeneralData.MoveCabGrabbable,
+            Description             = VisualOverrides.Description,
+            Model                   = VisualOverrides.Model,
+            InteractionType         = LaunchOverrides.InteractionType,
+            Emulator                = LaunchOverrides.Emulator,
+            MarqueeImageFiles       = ArtworkFilesOverrides.MarqueeImageFiles,
+            MarqueeVideoFiles       = ArtworkFilesOverrides.MarqueeVideoFiles,
+            ScreenSnapFiles         = ArtworkFilesOverrides.ScreenSnapFiles,
+            ScreenTitleFiles        = ArtworkFilesOverrides.ScreenTitleFiles,
+            ScreenVideoFiles        = ArtworkFilesOverrides.ScreenVideoFiles,
+            GenericImageFiles       = ArtworkFilesOverrides.GenericImageFiles,
+            GenericVideoFiles       = ArtworkFilesOverrides.GenericVideoFiles,
+            InfoFiles               = ArtworkFilesOverrides.InfoFiles,
+            MarqueeImageDirectories = ArtworkDirectoriesOverrides.MarqueeImageDirectories,
+            MarqueeVideoDirectories = ArtworkDirectoriesOverrides.MarqueeVideoDirectories,
+            ScreenSnapDirectories   = ArtworkDirectoriesOverrides.ScreenSnapDirectories,
+            ScreenTitleDirectories  = ArtworkDirectoriesOverrides.ScreenTitleDirectories,
+            ScreenVideoDirectories  = ArtworkDirectoriesOverrides.ScreenVideoDirectories,
+            GenericImageDirectories = ArtworkDirectoriesOverrides.GenericImageDirectories,
+            GenericVideoDirectories = ArtworkDirectoriesOverrides.GenericVideoDirectories,
+            InfoDirectories         = ArtworkDirectoriesOverrides.InfoDirectories,
+            CloneOf                 = GameDataOverrides.CloneOf,
+            RomOf                   = GameDataOverrides.RomOf,
+            Genre                   = GameDataOverrides.Genre,
+            Year                    = GameDataOverrides.Year,
+            Manufacturer            = GameDataOverrides.Manufacturer,
+            ScreenType              = GameDataOverrides.ScreenType,
+            ScreenOrientation       = GameDataOverrides.ScreenOrientation,
+            Mature                  = GameDataOverrides.Mature,
 
             Position = transform.localPosition,
             Rotation = MathUtils.CorrectEulerAngles(transform.localEulerAngles),

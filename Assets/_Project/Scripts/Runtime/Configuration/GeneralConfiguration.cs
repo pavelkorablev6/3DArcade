@@ -35,6 +35,9 @@ namespace Arcade
         [XmlElement("starting_arcade_type")]
         public ArcadeType StartingArcadeType;
 
+        [XmlElement("mouselook_reverse")]
+        public bool MouseLookReverse;
+
         [XmlElement("enable_vr")]
         public bool EnableVR;
 
@@ -43,19 +46,17 @@ namespace Arcade
         private readonly IVirtualFileSystem _virtualFileSystem;
         private string _filePath;
 
+        // Needed for XMLSerializer...
         public GeneralConfiguration()
         {
         }
 
         [Inject]
-        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem)
-        : this()
-            => _virtualFileSystem = virtualFileSystem;
+        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem) => _virtualFileSystem = virtualFileSystem;
 
         public void Initialize()
         {
             _filePath = _virtualFileSystem.GetFile(VFS_FILE_ALIAS);
-
             Load();
         }
 
@@ -86,9 +87,8 @@ namespace Arcade
 
                 StartingArcade     = cfg.StartingArcade;
                 StartingArcadeType = cfg.StartingArcadeType;
+                MouseLookReverse   = cfg.MouseLookReverse;
                 EnableVR           = cfg.EnableVR;
-
-                Debug.Log($"[{GetType().Name}.Load] Loaded general configuration.");
             }
             catch (System.Exception e)
             {
@@ -119,6 +119,7 @@ namespace Arcade
         {
             StartingArcade     = "_dummy";
             StartingArcadeType = ArcadeType.Fps;
+            MouseLookReverse   = false;
             EnableVR           = false;
         }
 

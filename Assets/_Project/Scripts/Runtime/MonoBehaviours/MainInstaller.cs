@@ -43,7 +43,7 @@ namespace Arcade
 
             _ = Container.Bind<ModelMatcher>().AsSingle().NonLazy();
 
-            _ = Container.Bind<SceneContext>().AsSingle().NonLazy();
+            _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }
     }
 }

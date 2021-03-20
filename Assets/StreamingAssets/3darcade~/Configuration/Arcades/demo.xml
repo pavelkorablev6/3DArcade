@@ -1,10 +1,4 @@
 <arcade id="demo" description="Demo">
-  <render_settings>
-    <marquee_intensity>4</marquee_intensity>
-    <screen_raster_intensity>4</screen_raster_intensity>
-    <screen_vector_intenstity>8</screen_vector_intenstity>
-    <screen_pinball_intensity>1</screen_pinball_intensity>
-  </render_settings>
   <fpsarcade_properties>
     <scene>TempIndustrial</scene>
     <camera_settings orthographic="false">
@@ -17,9 +11,16 @@
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
+    <render_settings>
+      <marquee_intensity>4</marquee_intensity>
+      <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_vector_intenstity>8</screen_vector_intenstity>
+      <screen_pinball_intensity>1</screen_pinball_intensity>
+    </render_settings>
+    <model />
   </fpsarcade_properties>
-  <cylarcade_properties inverse_navigation="false" inverse_list="false" mouse_look="false" mouselook_reverse="true" horizontal_navigation="true">
-    <scene>internal_cylinder</scene>
+  <cylarcade_properties wheel_variant="CameraInsideHorizontal" wheel_radius="5" sprockets="5">
+    <scene>_cylinder</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -30,13 +31,21 @@
       <far_clip>300</far_clip>
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
-    <wheel_variant>CameraInsideHorizontal</wheel_variant>
-    <wheel_radius>5</wheel_radius>
-    <sprockets>5</sprockets>
+    <render_settings>
+      <marquee_intensity>4</marquee_intensity>
+      <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_vector_intenstity>8</screen_vector_intenstity>
+      <screen_pinball_intensity>1</screen_pinball_intensity>
+    </render_settings>
+    <model />
+    <mouse_look>true</mouse_look>
     <selected_sprocket>-1</selected_sprocket>
     <selected_position_z>5</selected_position_z>
-    <model_spacing>0.2</model_spacing>
     <sprocket_rotation x="0" y="180" z="0" />
+    <model_spacing>0.2</model_spacing>
+    <horizontal_navigation>true</horizontal_navigation>
+    <inverse_navigation>false</inverse_navigation>
+    <inverse_list>false</inverse_list>
     <line_angle>-5</line_angle>
   </cylarcade_properties>
   <games>
@@ -46,7 +55,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -61,8 +70,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.23010254" y="-0.0134164691" z="0.748097837" />
       <rotation x="-0.000374074472" y="129.2002" z="0.0002911764" />
@@ -74,7 +83,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -89,8 +98,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-0.8947258" y="-4.351139E-06" z="-4.43362236" />
       <rotation x="-0.0003484324" y="0.000383848528" z="0.0007504085" />
@@ -102,7 +111,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -117,8 +126,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="3.898862" y="-0.0291766524" z="1.31314421" />
       <rotation x="0.00206199358" y="178.581635" z="0.00136121141" />
@@ -130,7 +139,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -145,8 +154,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.4858613" y="-0.0264974833" z="-1.2099961" />
       <rotation x="-8.9273286E-05" y="90.00004" z="-1.13223477E-05" />
@@ -158,7 +167,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -173,8 +182,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.55319" y="-3.33786E-06" z="-2.12044549" />
       <rotation x="-0.000193790576" y="90.00006" z="0.000454563764" />
@@ -186,7 +195,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -201,8 +210,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="7.71689129" y="-0.005056381" z="1.31834674" />
       <rotation x="-4.795396E-05" y="180" z="0.000158930823" />
@@ -214,7 +223,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -229,8 +238,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="8.519926" y="-5.78165054E-06" z="-2.95452046" />
       <rotation x="-0.000201649775" y="-90.00003" z="0.000815797" />
@@ -242,7 +251,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -257,8 +266,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="4.72853756" y="-0.0115066767" z="-4.399923" />
       <rotation x="-0.000318014936" y="0.000298595231" z="0.00021021346" />
@@ -270,7 +279,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -285,8 +294,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="8.57709" y="-2.2649765E-06" z="1.1289115" />
       <rotation x="-1.06492912E-07" y="-177.439941" z="-7.865219E-05" />
@@ -298,7 +307,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -313,8 +322,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="8.110512" y="-3.4570694E-06" z="-3.8852284" />
       <rotation x="-0.0002212119" y="-44.95981" z="9.958421E-05" />
@@ -326,7 +335,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -341,8 +350,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="6.48700953" y="-7.27176666E-06" z="-4.41731453" />
       <rotation x="-0.000376893557" y="0.000849350065" z="0.001148045" />
@@ -354,7 +363,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -369,8 +378,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="5.642172" y="-3.15904617E-06" z="-4.347541" />
       <rotation x="-0.000158269308" y="0.000179438779" z="0.000208253929" />
@@ -382,7 +391,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -397,8 +406,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="7.23047352" y="0.000985682" z="-4.47781658" />
       <rotation x="-0.0005974657" y="0.0006203675" z="0.000536218169" />
@@ -410,7 +419,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -425,8 +434,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="4.66338634" y="-3.75509262E-06" z="1.363372" />
       <rotation x="-0.000467817415" y="-179.999725" z="0.0003884209" />
@@ -438,7 +447,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -453,8 +462,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="6.99110842" y="-0.0137429237" z="1.357896" />
       <rotation x="-0.0003891469" y="-179.999863" z="0.000298012" />
@@ -466,7 +475,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -481,8 +490,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="6.23409653" y="-0.00221210718" z="1.32975745" />
       <rotation x="-0.000289798627" y="-179.999847" z="0.000290395779" />
@@ -494,7 +503,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -509,8 +518,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-0.7181876" y="-0.0435495973" z="-1.13218164" />
       <rotation x="-4.192777E-05" y="53.3601227" z="-0.000395526964" />
@@ -522,7 +531,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -537,8 +546,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="3.99769" y="-3.75509262E-06" z="-4.48295069" />
       <rotation x="-0.0006324288" y="0.000909647031" z="0.0005867366" />
@@ -550,7 +559,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -565,8 +574,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="1.97076607" y="-0.008183658" z="1.36508417" />
       <rotation x="-0.0006305197" y="178.615555" z="0.0005116255" />
@@ -578,7 +587,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -593,8 +602,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="1.6244036" y="-4.94718552E-06" z="-4.48696756" />
       <rotation x="-0.000649110239" y="0.00122363062" z="0.000862533867" />
@@ -606,7 +615,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -621,8 +630,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="2.597164" y="-0.00730961561" z="1.3245542" />
       <rotation x="-0.000440630363" y="178.6641" z="0.0007614699" />
@@ -634,7 +643,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -649,8 +658,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0.8557326" y="-2.8014183E-06" z="-4.44254875" />
       <rotation x="-0.000367895846" y="0.000197544665" z="0.000152960347" />
@@ -662,7 +671,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -677,8 +686,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="1.26546192" y="-0.0190920234" z="1.441562" />
       <rotation x="-0.0006329109" y="178.47644" z="0.0006070944" />
@@ -690,7 +699,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -705,8 +714,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.633108" y="0.0009874702" z="-0.143590331" />
       <rotation x="-0.0005273961" y="90.000145" z="0.0006046618" />
@@ -718,7 +727,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -733,8 +742,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="3.236551" y="-0.00730854273" z="1.33706546" />
       <rotation x="-0.000326125242" y="178.862839" z="0.000243950053" />
@@ -746,7 +755,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -761,8 +770,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0.09174048" y="-0.0148943067" z="-4.44207525" />
       <rotation x="-0.000423690566" y="0.000333518256" z="0.000319165672" />
@@ -774,7 +783,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -789,8 +798,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-1.74862766" y="-3.39746475E-06" z="-4.44425" />
       <rotation x="-0.000466676924" y="0.000231063575" z="0.0002873821" />
@@ -802,7 +811,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -817,8 +826,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-2.58096337" y="-3.39746475E-06" z="-4.45650053" />
       <rotation x="-0.0005237322" y="0.0002569684" z="0.0004493248" />
@@ -830,7 +839,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -845,8 +854,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-3.44886446" y="-0.0121481419" z="-4.4442544" />
       <rotation x="-0.000347351161" y="2.55824525E-05" z="-0.0002937972" />
@@ -858,7 +867,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -873,8 +882,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.32725763" y="-5.96046448E-06" z="-3.98477077" />
       <rotation x="-0.000450850115" y="51.13999" z="0.00113762054" />
@@ -886,7 +895,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -901,8 +910,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-1.08132517" y="-0.0134167075" z="1.35822344" />
       <rotation x="-0.000436773174" y="-179.999771" z="0.00030480104" />
@@ -914,7 +923,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -929,8 +938,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-3.24459267" y="-0.0008725524" z="1.32361424" />
       <rotation x="-0.00028926396" y="-179.999878" z="0.000194200213" />
@@ -942,7 +951,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -957,8 +966,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="0.4697534" y="-4.172325E-06" z="1.371206" />
       <rotation x="-0.000415769173" y="168.761276" z="0.00056171685" />
@@ -970,7 +979,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -985,8 +994,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="3.2072835" y="-0.0121489763" z="-4.46831" />
       <rotation x="-0.000544684648" y="0.000194578985" z="0.000309228984" />
@@ -998,7 +1007,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1013,8 +1022,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="2.183637" y="-2.44379044E-06" z="-1.98795617" />
       <rotation x="-0.000163550256" y="74.9931946" z="-9.67869E-06" />
@@ -1026,7 +1035,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1041,8 +1050,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="2.43638825" y="0.006602764" z="-4.43734264" />
       <rotation x="-0.000459162169" y="0.0003351615" z="0.00032003806" />
@@ -1054,7 +1063,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1069,8 +1078,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-2.16649461" y="-0.0134171247" z="1.35693693" />
       <rotation x="-0.000422398443" y="-179.999756" z="0.0002954013" />
@@ -1082,7 +1091,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1097,8 +1106,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="5.53716755" y="-3.516674E-06" z="1.38293922" />
       <rotation x="-0.0004913019" y="-179.999817" z="0.000398274016" />
@@ -1110,7 +1119,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1125,8 +1134,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.638604" y="-0.0190913677" z="-3.03230023" />
       <rotation x="-0.000497823639" y="90.00013" z="0.000637791934" />
@@ -1138,7 +1147,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1153,8 +1162,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="10.0240068" y="1.54972076E-06" z="-2.57519054" />
       <rotation x="1.74852157E-05" y="-29.2798157" z="0.00143308681" />
@@ -1166,7 +1175,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1181,8 +1190,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="11.7193193" y="0.0009896159" z="-3.04335141" />
       <rotation x="-0.0006193225" y="0.8007703" z="0.0005083821" />
@@ -1194,7 +1203,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator>mame_0228</emulator>
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1209,8 +1218,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="12.5792942" y="0.0009897351" z="-3.033144" />
       <rotation x="-0.0005863212" y="2.08039117" z="0.000546268537" />
@@ -1222,7 +1231,7 @@
       <movecab_grabbable>true</movecab_grabbable>
       <description />
       <model />
-      <interaction_type>Inherited</interaction_type>
+      <interaction_type>Default</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
@@ -1237,8 +1246,8 @@
       <genre />
       <year />
       <manufacturer />
-      <screen_type>Inherited</screen_type>
-      <screen_orientation>Inherited</screen_orientation>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="10.5483923" y="-0.0134921074" z="1.051185" />
       <rotation x="0.000306872185" y="112.879845" z="-0.000662469538" />

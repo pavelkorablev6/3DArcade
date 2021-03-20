@@ -20,14 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+//using UnityEngine;
 
-namespace Arcade
-{
-    public class GameObjectCache : AssetCache<GameObject>
-    {
-        protected override GameObject LoadAsset(string filePathNoExt) => Resources.Load<GameObject>(filePathNoExt);
+//namespace Arcade
+//{
+//    public class GameObjectCache : AssetCache<GameObject>
+//    {
+//        protected override GameObject LoadAsset(string filePathNoExt) => Resources.Load<GameObject>(filePathNoExt);
 
-        protected override void UnloadAsset(GameObject asset) => Resources.UnloadAsset(asset);
-    }
-}
+//        protected override void UnloadAsset(GameObject asset) => Resources.UnloadAsset(asset);
+//    }
+//}

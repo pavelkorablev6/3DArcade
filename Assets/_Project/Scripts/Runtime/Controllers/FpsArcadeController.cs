@@ -30,14 +30,13 @@ namespace Arcade
         public override float AudioMaxDistance { get; protected set; }
         public override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected override string ArcadeSceneName => ArcadeConfiguration.FpsArcadeProperties.Scene.ValueOrDefault();
         protected override CameraSettings CameraSettings => ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
 
         //protected override bool UseModelTransforms => true;
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
 
-        public FpsArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
-        : base(player, generalConfiguration, uiController, modelMatcher)
+        public FpsArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
+        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
         {
             AudioMinDistance = 1f;
             AudioMaxDistance = 3f;
@@ -72,5 +71,8 @@ namespace Arcade
             //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
             //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
+
+        protected override ModelController SetupGame(ModelConfiguration modelConfiguration)
+            => new FpsGameModelController(modelConfiguration, _gamesNodeTransform, _platformDatabase, _modelMatcher);
     }
 }

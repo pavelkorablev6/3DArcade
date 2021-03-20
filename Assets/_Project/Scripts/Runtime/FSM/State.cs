@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -32,11 +32,11 @@ namespace Arcade.FSM
         {
         }
 
-        public virtual void Update(float dt)
+        public virtual void OnUpdate(float dt)
         {
         }
 
-        public virtual void FixedUpdate(float dt)
+        public virtual void OnFixedUpdate(float dt)
         {
         }
     }

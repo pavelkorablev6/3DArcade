@@ -26,29 +26,23 @@ namespace Arcade.FSM
 {
     public abstract class Context<T> where T : State<T>
     {
-        private readonly List<T> _states;
-        private T _currentState;
+        private readonly List<T> _states = new List<T>();
 
-        public Context()
-        {
-            _states       = new List<T>();
-            _currentState = null;
-        }
+        public T CurrentState  { get; private set; } = null;
+        public T PreviousState { get; private set; } = null;
 
-        public virtual void Start()
-        {
-        }
+        public void Start() => OnStart();
 
         public void Update(float dt)
         {
             OnUpdate(dt);
-            _currentState?.Update(dt);
+            CurrentState?.OnUpdate(dt);
         }
 
         public void FixedUpdate(float dt)
         {
             OnFixedUpdate(dt);
-            _currentState?.FixedUpdate(dt);
+            CurrentState?.OnFixedUpdate(dt);
         }
 
         public void TransitionTo<U>() where U : T
@@ -56,19 +50,31 @@ namespace Arcade.FSM
             T foundState = _states.Find(x => x.GetType() == typeof(U));
             if (foundState != null)
             {
-                if (_currentState != foundState)
-                {
-                    _currentState?.OnExit();
-                    _currentState = foundState;
-                    _currentState.OnEnter();
-                }
+                PreviousState = CurrentState;
+                PreviousState?.OnExit();
+                CurrentState = foundState;
+                CurrentState.OnEnter();
             }
             else
             {
-                U newState = System.Activator.CreateInstance(typeof(U), new object[] { this }) as U;
+                U newState = System.Activator.CreateInstance(typeof(U), this) as U;
                 _states.Add(newState);
                 TransitionTo<U>();
             }
+        }
+
+        public void TransitionToPrevious()
+        {
+            if (PreviousState == null)
+                return;
+
+            PreviousState.OnExit();
+            CurrentState = PreviousState;
+            CurrentState.OnEnter();
+        }
+
+        protected virtual void OnStart()
+        {
         }
 
         protected virtual void OnUpdate(float dt)

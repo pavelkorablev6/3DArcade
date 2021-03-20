@@ -24,43 +24,20 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    public enum WheelVariant
-    {
-        CameraInsideHorizontal,
-        CameraOutsideHorizontal,
-        LineHorizontal,
-        CameraInsideVertical,
-        CameraOutsideVertical,
-        LineVertical,
-        LineCustom
-    }
-
     [System.Serializable]
-    public sealed class CylArcadeProperties
+    public sealed class CylArcadeProperties : ArcadeProperties
     {
-        [XmlElement("scene")]
-        public string Scene;
+        [XmlAttribute("wheel_variant")]
+        public CylArcadeWheelVariant WheelVariant;
 
-        [XmlElement("camera_settings")]
-        public CameraSettings CameraSettings;
-
-        [XmlElement("model")]
-        public string Model;
-
-        [XmlElement("wheel_variant")]
-        public WheelVariant WheelVariant;
-
-        [XmlAttribute("inverse_navigation")]
-        public bool InverseNavigation;
-
-        [XmlAttribute("inverse_list")]
-        public bool InverseList;
-
-        [XmlElement("wheel_radius")]
+        [XmlAttribute("wheel_radius")]
         public float WheelRadius;
 
-        [XmlElement("sprockets")]
+        [XmlAttribute("sprockets")]
         public int Sprockets;
+
+        [XmlElement("mouse_look")]
+        public bool MouseLook;
 
         [XmlElement("selected_sprocket")]
         public int SelectedSprocket;
@@ -68,22 +45,22 @@ namespace Arcade
         [XmlElement("selected_position_z")]
         public float SelectedPositionZ;
 
-        [XmlElement("model_spacing")]
-        public float ModelSpacing;
-
-        [XmlAttribute("mouse_look")]
-        public bool MouseLook;
-
-        [XmlAttribute("mouselook_reverse")]
-        public bool MouseLookReverse;
-
         [XmlElement("sprocket_rotation")]
         public DatabaseVector3 SprocketRotation;
 
+        [XmlElement("model_spacing")]
+        public float ModelSpacing;
+
+        [XmlElement("horizontal_navigation")]
+        public bool HorizontalNavigation;
+
+        [XmlElement("inverse_navigation")]
+        public bool InverseNavigation;
+
+        [XmlElement("inverse_list")]
+        public bool InverseList;
+
         [XmlElement("line_angle")]
         public float LineAngle;
-
-        [XmlAttribute("horizontal_navigation")]
-        public bool HorizontalNavigation;
     }
 }

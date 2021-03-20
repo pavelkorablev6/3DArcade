@@ -30,10 +30,10 @@ namespace Arcade
     public sealed class Main : MonoBehaviour
     {
         private InputActions _inputActions;
-        private SceneContext _sceneContext;
+        private ArcadeContext _sceneContext;
 
         [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(InputActions inputActions, SceneContext sceneContext)
+        private void Construct(InputActions inputActions, ArcadeContext sceneContext)
         {
             _inputActions = inputActions;
             _sceneContext = sceneContext;

@@ -30,7 +30,6 @@ namespace Arcade
         public sealed override float AudioMaxDistance { get; protected set; }
         public sealed override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected sealed override string ArcadeSceneName => ArcadeConfiguration.CylArcadeProperties.Scene.ValueOrDefault();
         protected sealed override CameraSettings CameraSettings => ArcadeConfiguration.CylArcadeProperties.CameraSettings;
 
         //protected abstract Transform TransformAnchor { get; }
@@ -47,8 +46,8 @@ namespace Arcade
 
         //protected Transform _targetSelection;
 
-        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, IUIController uiController, ModelMatcher modelMatcher)
-        : base(player, generalConfiguration, uiController, modelMatcher)
+        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
+        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
         {
             AudioMinDistance = 0f;
             AudioMaxDistance = 200f;
@@ -88,6 +87,9 @@ namespace Arcade
             //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
             //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
+
+        protected override ModelController SetupGame(ModelConfiguration modelConfiguration)
+            => new CylGameModelController(modelConfiguration, _gamesNodeTransform, _platformDatabase, _modelMatcher);
 
         //protected abstract float GetSpacing(Transform previousModel, Transform currentModel);
 
