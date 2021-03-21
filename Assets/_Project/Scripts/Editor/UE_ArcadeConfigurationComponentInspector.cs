@@ -20,12 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEditor;
 using UnityEngine;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    [DisallowMultipleComponent]
-    public sealed class ArcadeNodeTag : MonoBehaviour
+    [CustomEditor(typeof(ArcadeConfigurationComponent))]
+    internal sealed class UE_ArcadeConfigurationComponentInspector : Editor
     {
+        public override void OnInspectorGUI()
+        {
+            _ = DrawDefaultInspector();
+
+            if (Application.isPlaying)
+                return;
+
+            GUILayout.Space(8f);
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Load FPSArcade"))
+                {
+                    ArcadeConfigurationComponent cfg = target as ArcadeConfigurationComponent;
+                    if (!string.IsNullOrEmpty(cfg.Id))
+                        UE_ArcadeManager.LoadArcade(cfg.Id, ArcadeType.Fps, true);
+                }
+                if (GUILayout.Button("Load CYLArcade"))
+                {
+                    ArcadeConfigurationComponent cfg = target as ArcadeConfigurationComponent;
+                    if (!string.IsNullOrEmpty(cfg.Id))
+                        UE_ArcadeManager.LoadArcade(cfg.Id, ArcadeType.Cyl, true);
+                }
+            }
+        }
     }
 }

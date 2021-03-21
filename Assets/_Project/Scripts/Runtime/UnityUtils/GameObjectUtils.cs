@@ -20,21 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEditor;
+using UnityEngine;
 
-namespace Arcade.UnityEditor
+namespace Arcade
 {
-    [InitializeOnLoad]
-    public static class UE_InitializeOnLoad
+    public static class GameObjectUtils
     {
-        static UE_InitializeOnLoad() => EditorApplication.playModeStateChanged += PlayModeStateChangedCallback;
-
-        private static void PlayModeStateChangedCallback(PlayModeStateChange state)
+        public static void DestroyGameObjectThatHasComponent<T>() where T : Component
         {
-            if (state == PlayModeStateChange.ExitingEditMode)
-                UE_CloseArcadeMenuItem.CloseArcade();
-            else if (state == PlayModeStateChange.EnteredEditMode)
-                UE_ArcadeManager.ReloadCurrentArcade();
+            T node = Object.FindObjectOfType<T>(true);
+            if (node != null)
+            {
+                if (Application.isPlaying)
+                    Object.Destroy(node.gameObject);
+                else
+                    Object.DestroyImmediate(node.gameObject);
+            }
         }
     }
 }

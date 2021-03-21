@@ -20,21 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    [InitializeOnLoad]
-    public static class UE_InitializeOnLoad
+    internal static class UE_CloseArcadeMenuItem
     {
-        static UE_InitializeOnLoad() => EditorApplication.playModeStateChanged += PlayModeStateChangedCallback;
-
-        private static void PlayModeStateChangedCallback(PlayModeStateChange state)
+        [MenuItem("3DArcade/Close Arcade", false, 103), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEditor")]
+        public static void CloseArcade()
         {
-            if (state == PlayModeStateChange.ExitingEditMode)
-                UE_CloseArcadeMenuItem.CloseArcade();
-            else if (state == PlayModeStateChange.EnteredEditMode)
-                UE_ArcadeManager.ReloadCurrentArcade();
+            UE_ArcadeManager.SetCurrentArcade();
+            GameObjectUtils.DestroyGameObjectThatHasComponent<ArcadeConfigurationComponent>();
+            GameObjectUtils.DestroyGameObjectThatHasComponent<GamesNodeTag>();
+            GameObjectUtils.DestroyGameObjectThatHasComponent<PropsNodeTag>();
+            UE_Utilities.CloseAllScenes();
         }
     }
 }

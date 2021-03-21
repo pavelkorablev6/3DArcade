@@ -20,26 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEditor;
 using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class UE_ArcadeManager
+    internal static class UE_ArcadeManager
     {
-        public string[] ArcadeNames { get; private set; }
+        public static string[] ArcadeNames { get; private set; }
 
-        private readonly Player _player;
-        private readonly PlayerContext _playerContext;
-        private readonly IVirtualFileSystem _virtualFileSystem;
-        private readonly GeneralConfiguration _generalConfiguration;
-        //private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
-        private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
-        private readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
-        private readonly ModelMatcher _modelMatcher;
-        private readonly IUIController _uiController;
-        private ArcadeController _arcadeController;
+        private static readonly Player _player;
+        private static readonly PlayerContext _playerContext;
+        private static readonly IVirtualFileSystem _virtualFileSystem;
+        private static readonly GeneralConfiguration _generalConfiguration;
 
-        public UE_ArcadeManager()
+        //private static readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
+        private static readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+
+        private static readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
+        private static readonly ModelMatcher _modelMatcher;
+        private static readonly IUIController _uiController;
+        private static ArcadeController _arcadeController;
+
+        static UE_ArcadeManager()
         {
             _player        = Object.FindObjectOfType<Player>();
             _playerContext = new PlayerContext(_player);
@@ -62,13 +65,34 @@ namespace Arcade.UnityEditor
             _uiController         = Object.FindObjectOfType<UIController>();
 
             _generalConfiguration.Initialize();
-            _platformDatabase.Initialize();
-            _arcadeDatabase.Initialize();
 
+            _platformDatabase.Initialize();
+
+            _arcadeDatabase.Initialize();
             ArcadeNames = _arcadeDatabase.GetNames();
         }
 
-        public void LoadArcade(string name, ArcadeType arcadeType, bool spawnEntitites)
+        public static void RefreshConfigurations()
+        {
+            _generalConfiguration.Load();
+
+            _ = _platformDatabase.LoadAll();
+
+            _ = _arcadeDatabase.LoadAll();
+            ArcadeNames = _arcadeDatabase.GetNames();
+        }
+        public static void SetCurrentArcade()
+        {
+            ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>();
+            if (arcadeConfigurationComponent != null)
+            {
+                EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfigurationComponent.Id);
+                EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
+                EditorPrefs.SetBool("ArcadeManagerSpawnEntities", true);
+            }
+        }
+
+        public static void LoadArcade(string name, ArcadeType arcadeType, bool spawnEntitites)
         {
             if (!_arcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
@@ -78,6 +102,10 @@ namespace Arcade.UnityEditor
             _player.TransitionTo<PlayerDisabledState>();
             _arcadeController?.StopArcade();
             _arcadeController = null;
+
+            EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfiguration.Id);
+            EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)arcadeType);
+            EditorPrefs.SetBool("ArcadeManagerSpawnEntities", spawnEntitites);
 
             switch (arcadeType)
             {
@@ -93,7 +121,7 @@ namespace Arcade.UnityEditor
                         //WheelVariant.CameraInsideVertical    => new CylArcadeControllerWheel3DCameraInsideVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
                         //WheelVariant.CameraOutsideVertical   => new CylArcadeControllerWheel3DCameraOutsideVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
                         //WheelVariant.LineVertical            => new CylArcadeControllerLineVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
-                        CylArcadeWheelVariant.LineCustom              => new CylArcadeControllerLine(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
+                        CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
                         _                                    => new CylArcadeControllerLineHorizontal(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController)
                     };
                 }
@@ -103,7 +131,16 @@ namespace Arcade.UnityEditor
             _arcadeController?.StartArcade(arcadeConfiguration, arcadeType, spawnEntitites);
         }
 
-        public void SaveArcade(ArcadeConfigurationComponent arcadeConfiguration)
+        public static void ReloadCurrentArcade()
+        {
+            string arcadeId       = EditorPrefs.GetString("ArcadeManagerArcadeConfiguration", null);
+            ArcadeType arcadeType = (ArcadeType)EditorPrefs.GetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
+            bool spawnEntitites   = EditorPrefs.GetBool("ArcadeManagerSpawnEntities", true);
+            if (!string.IsNullOrEmpty(arcadeId))
+                LoadArcade(arcadeId, arcadeType, spawnEntitites);
+        }
+
+        public static void SaveArcade(ArcadeConfigurationComponent arcadeConfiguration)
         {
             //_playerCylControls.gameObject.SetActive(true);
             //_playerCylControls.gameObject.SetActive(false);

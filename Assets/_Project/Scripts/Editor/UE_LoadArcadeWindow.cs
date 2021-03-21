@@ -30,17 +30,15 @@ namespace Arcade.UnityEditor
     {
         private static bool _spawnEntities = true;
 
-        private UE_ArcadeManager _editorArcadeManager;
         private Vector2 _scrollPos = Vector2.zero;
 
         [MenuItem("3DArcade/Load Arcade", false, 101), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEditor")]
         private static void ShowWindow()
         {
+            UE_ArcadeManager.RefreshConfigurations();
             UE_LoadArcadeWindow window = GetWindow<UE_LoadArcadeWindow>("Load Arcade");
             window.minSize = new Vector2(310f, 100f);
         }
-
-        private void OnEnable() => _editorArcadeManager = new UE_ArcadeManager();
 
         private void OnGUI()
         {
@@ -53,15 +51,15 @@ namespace Arcade.UnityEditor
         private void DrawConfigurationsList()
         {
             using EditorGUILayout.ScrollViewScope scope = new EditorGUILayout.ScrollViewScope(_scrollPos, false, false);
-            foreach (string name in _editorArcadeManager.ArcadeNames)
+            foreach (string name in UE_ArcadeManager.ArcadeNames)
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.PrefixLabel(name);
                     if (GUILayout.Button("FPSArcade"))
-                        _editorArcadeManager.LoadArcade(name, ArcadeType.Fps, _spawnEntities);
+                        UE_ArcadeManager.LoadArcade(name, ArcadeType.Fps, _spawnEntities);
                     if (GUILayout.Button("CYLArcade"))
-                        _editorArcadeManager.LoadArcade(name, ArcadeType.Cyl, _spawnEntities);
+                        UE_ArcadeManager.LoadArcade(name, ArcadeType.Cyl, _spawnEntities);
                 }
             }
         }

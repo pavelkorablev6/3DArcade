@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -102,6 +101,8 @@ namespace Arcade
             ArcadeType          = arcadeType;
             _includeEntities    = includeEntities;
 
+            SetupEntitiesHierarchy();
+
             List<string> namesToTry = _modelMatcher.GetNamesToTryForArcade(arcadeConfiguration, arcadeType);
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -145,6 +146,39 @@ namespace Arcade
             }
         }
 
+        private void SetupEntitiesHierarchy()
+        {
+            SetupArcadeConfigurationNode();
+            SetupGamesNode();
+            SetupPropsNode();
+        }
+
+        private void SetupArcadeConfigurationNode()
+        {
+            ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>(true);
+            if (arcadeConfigurationComponent != null)
+            {
+                arcadeConfigurationComponent.gameObject.name = "ArcadeConfiguration";
+                arcadeConfigurationComponent.FromArcadeConfiguration(ArcadeConfiguration);
+            }
+            else
+            {
+                GameObject arcadeNodeGameObject = new GameObject("ArcadeConfiguration");
+                arcadeNodeGameObject.AddComponent<ArcadeConfigurationComponent>()
+                                    .FromArcadeConfiguration(ArcadeConfiguration);
+            }
+        }
+
+        private void SetupGamesNode() => _gamesNodeTransform = SetupNode<GamesNodeTag>("Games");
+
+        private void SetupPropsNode() => _propsNodeTransform = SetupNode<PropsNodeTag>("Props");
+
+        private static Transform SetupNode<T>(string name) where T : Component
+        {
+            GameObjectUtils.DestroyGameObjectThatHasComponent<T>();
+            return new GameObject(name, typeof(T)).transform;
+        }
+
         private void UnloadArcadeScene()
         {
             if (_arcadeSceneInstance.Scene.isLoaded)
@@ -158,27 +192,14 @@ namespace Arcade
 
             _arcadeSceneInstance = aoHandle.Result;
 
-            if (SceneManager.SetActiveScene(_arcadeSceneInstance.Scene))
-            {
-                ArcadeSceneLoaded = true;
-                _uiController.ResetStatusBar();
-                SetupPlayer();
-                SetupHierarchy();
-                SpawnEntities();
-            }
+            ArcadeSceneLoaded = true;
+            _uiController.ResetStatusBar();
+            SetupPlayer();
+            SpawnEntities();
+
+            _ = SceneManager.SetActiveScene(_arcadeSceneInstance.Scene);
         }
 
-        private void SetupHierarchy()
-        {
-            GameObject arcadeNodeGameObject = new GameObject("Arcade", typeof(ArcadeNodeTag));
-            arcadeNodeGameObject.AddComponent<ArcadeConfigurationComponent>()
-                                .FromArcadeConfiguration(ArcadeConfiguration);
-            Transform arcadeNodeTransform = arcadeNodeGameObject.transform;
-            _gamesNodeTransform = new GameObject("Games", typeof(GamesNodeTag)).transform;
-            _gamesNodeTransform.SetParent(arcadeNodeTransform);
-            _propsNodeTransform = new GameObject("Props", typeof(PropsNodeTag)).transform;
-            _propsNodeTransform.SetParent(arcadeNodeTransform);
-        }
 
         private void SpawnEntities()
         {
@@ -205,21 +226,14 @@ namespace Arcade
         {
             foreach (string nameToTry in namesToTry)
             {
-                try
+                System.Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
+                if (assetType == typeof(UnityEditor.SceneAsset))
                 {
-                    Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
-                    if (assetType == typeof(UnityEditor.SceneAsset))
-                    {
-                        Scene scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(nameToTry, UnityEditor.SceneManagement.OpenSceneMode.Additive);
-                        _ = SceneManager.SetActiveScene(scene);
-                        SetupPlayer();
-                        SetupHierarchy();
-                        SpawnEntities();
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
+                    Scene scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(nameToTry, UnityEditor.SceneManagement.OpenSceneMode.Additive);
+                    SetupPlayer();
+                    SpawnEntities();
+                    _ = SceneManager.SetActiveScene(scene);
+                    break;
                 }
             }
         }
