@@ -21,10 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using SK.Utilities.StateMachine;
 
 namespace Arcade
 {
-    public sealed class ArcadeContext : FSM.Context<ArcadeState>
+    public sealed class ArcadeContext : Context<ArcadeState>
     {
         //public PlayerControls CurrentPlayerControls;
         //public ModelConfigurationComponent CurrentModelConfiguration;

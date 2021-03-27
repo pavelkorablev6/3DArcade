@@ -36,28 +36,6 @@ namespace Arcade
 
     public static class SystemUtils
     {
-        public static void ToggleMouseCursor()
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-                ShowMouseCursor();
-            else
-                HideMouseCursor();
-        }
-
-        public static void ShowMouseCursor() => Cursor.lockState = CursorLockMode.None;
-
-        public static void HideMouseCursor() => Cursor.lockState = CursorLockMode.Locked;
-
-        public static void ExitApp(string errorMessage = null)
-        {
-            if (errorMessage != null)
-                Debug.LogError(errorMessage);
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            Application.Quit(errorMessage == null ? 0 : 1);
-        }
-
         public static OS GetCurrentOS()
         {
             switch (Application.platform)
@@ -77,15 +55,6 @@ namespace Arcade
                     return OS.Linux;
                 case RuntimePlatform.Android:
                     return OS.Android;
-                case RuntimePlatform.WebGLPlayer:
-                case RuntimePlatform.WSAPlayerX86:
-                case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.WSAPlayerARM:
-                case RuntimePlatform.PS4:
-                case RuntimePlatform.XboxOne:
-                case RuntimePlatform.Switch:
-                case RuntimePlatform.Lumin:
-                case RuntimePlatform.Stadia:
                 default:
                     throw new System.NotSupportedException($"Platform not supported '{Application.platform}'");
             }

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
@@ -46,21 +47,21 @@ namespace Arcade
 
         public void TransitionTo<T>() where T : UIState => UIContext.TransitionTo<T>();
 
-        public void EnableSceneLoadingUI() => _loadingCanvas.SetActiveIfNotNull(true);
+        public void EnableSceneLoadingUI() => _loadingCanvas.SetActive(true);
 
-        public void EnableSceneNormalUI() => _normalCanvas.SetActiveIfNotNull(true);
+        public void EnableSceneNormalUI() => _normalCanvas.SetActive(true);
 
-        public void EnableSceneEditModeUI() => _moveCabCanvas.SetActiveIfNotNull(true);
+        public void EnableSceneEditModeUI() => _moveCabCanvas.SetActive(true);
 
-        public void EnableConfigurationUI() => _configurationCanvas.SetActiveIfNotNull(true);
+        public void EnableConfigurationUI() => _configurationCanvas.SetActive(true);
 
-        public void DisableSceneLoadingUI() => _loadingCanvas.SetActiveIfNotNull(false);
+        public void DisableSceneLoadingUI() => _loadingCanvas.SetActive(false);
 
-        public void DisableSceneNormalUI() => _normalCanvas.SetActiveIfNotNull(false);
+        public void DisableSceneNormalUI() => _normalCanvas.SetActive(false);
 
-        public void DisableSceneEditModeUI() => _moveCabCanvas.SetActiveIfNotNull(false);
+        public void DisableSceneEditModeUI() => _moveCabCanvas.SetActive(false);
 
-        public void DisableConfigurationUI() => _configurationCanvas.SetActiveIfNotNull(false);
+        public void DisableConfigurationUI() => _configurationCanvas.SetActive(false);
 
         public void DisableAll()
         {

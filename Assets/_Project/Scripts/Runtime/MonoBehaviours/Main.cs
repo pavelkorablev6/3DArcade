@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Zenject;
@@ -81,7 +82,7 @@ namespace Arcade
             }
             catch (System.Exception e)
             {
-                SystemUtils.ExitApp(e.Message);
+                ApplicationUtils.ExitApp(e.Message);
             }
         }
     }

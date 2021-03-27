@@ -20,6 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities;
+using UnityEngine;
+
 namespace Arcade
 {
     public sealed class ExternalAppController
@@ -29,7 +32,7 @@ namespace Arcade
 
         private readonly OSUtils.ProcessLauncher _processLauncher;
 
-        public ExternalAppController() => _processLauncher = new OSUtils.ProcessLauncher();
+        public ExternalAppController() => _processLauncher = new OSUtils.ProcessLauncher(Debug.Log, Debug.LogWarning, Debug.LogError);
 
         public bool StartGame(EmulatorConfiguration emulator, string game, bool persistent = false)
         {

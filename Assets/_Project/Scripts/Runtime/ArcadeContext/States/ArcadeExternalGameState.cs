@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities;
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -66,9 +68,8 @@ namespace Arcade
             if (_isGameRunning)
                 return;
 
-            RestoreUnityWindow();
-
             _externalAppController.StopCurrent();
+            RestoreUnityWindow();
 
             //if (_context.CurrentArcadeType == ArcadeType.Fps)
             //    _context.TransitionTo<SceneFpsNormalState>();
@@ -90,8 +91,8 @@ namespace Arcade
         private void RestoreUnityWindow()
         {
             _ = SetForegroundWindow(_editorHwnd);
-            SystemUtils.ToggleMouseCursor();
-            SystemUtils.ToggleMouseCursor();
+            CursorUtils.ToggleMouseCursor();
+            CursorUtils.ToggleMouseCursor();
         }
 #else
         private void SaveUnityWindow()

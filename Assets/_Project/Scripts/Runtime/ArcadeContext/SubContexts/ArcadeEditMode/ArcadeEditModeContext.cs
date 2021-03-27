@@ -21,10 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using SK.Utilities.StateMachine;
 
 namespace Arcade
 {
-    public sealed class ArcadeEditModeContext : FSM.Context<ArcadeEditModeState>
+    public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
         //public readonly PlayerFpsControls PlayerFpsControls;
 

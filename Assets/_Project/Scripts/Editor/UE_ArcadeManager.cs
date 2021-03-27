@@ -85,9 +85,9 @@ namespace Arcade.UnityEditor
             ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>();
             if (arcadeConfigurationComponent != null)
             {
-                EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfigurationComponent.Id);
-                EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
-                EditorPrefs.SetBool("ArcadeManagerSpawnEntities", true);
+                //EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfigurationComponent.Id);
+                //EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
+                //EditorPrefs.SetBool("ArcadeManagerSpawnEntities", true);
             }
         }
 
@@ -102,9 +102,9 @@ namespace Arcade.UnityEditor
             _arcadeController?.StopArcade();
             _arcadeController = null;
 
-            EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfiguration.Id);
-            EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)arcadeType);
-            EditorPrefs.SetBool("ArcadeManagerSpawnEntities", spawnEntitites);
+            //EditorPrefs.SetString("ArcadeManagerArcadeConfiguration", arcadeConfiguration.Id);
+            //EditorPrefs.SetInt("ArcadeManagerArcadeType", (int)arcadeType);
+            //EditorPrefs.SetBool("ArcadeManagerSpawnEntities", spawnEntitites);
 
             switch (arcadeType)
             {
@@ -132,11 +132,11 @@ namespace Arcade.UnityEditor
 
         public static void ReloadCurrentArcade()
         {
-            string arcadeId       = EditorPrefs.GetString("ArcadeManagerArcadeConfiguration", null);
-            ArcadeType arcadeType = (ArcadeType)EditorPrefs.GetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
-            bool spawnEntitites   = EditorPrefs.GetBool("ArcadeManagerSpawnEntities", true);
-            if (!string.IsNullOrEmpty(arcadeId))
-                LoadArcade(arcadeId, arcadeType, spawnEntitites);
+            //string arcadeId       = EditorPrefs.GetString("ArcadeManagerArcadeConfiguration", null);
+            //ArcadeType arcadeType = (ArcadeType)EditorPrefs.GetInt("ArcadeManagerArcadeType", (int)ArcadeType.Fps);
+            //bool spawnEntitites   = EditorPrefs.GetBool("ArcadeManagerSpawnEntities", true);
+            //if (!string.IsNullOrEmpty(arcadeId))
+            //    LoadArcade(arcadeId, arcadeType, spawnEntitites);
         }
 
         public static void SaveArcade(ArcadeConfigurationComponent arcadeConfiguration)

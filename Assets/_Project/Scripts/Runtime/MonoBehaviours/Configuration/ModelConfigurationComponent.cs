@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -195,7 +196,7 @@ namespace Arcade
             Mature                  = GameDataOverrides.Mature,
 
             Position = transform.localPosition,
-            Rotation = MathUtils.CorrectEulerAngles(transform.localEulerAngles),
+            Rotation = MathUtils.ClampEulerAngles(transform.localEulerAngles),
             Scale    = transform.localScale
         };
     }

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -62,11 +63,11 @@ namespace Arcade
         public override void OnUpdate(float dt)
         {
             if (_context.InputActions.Global.Quit.triggered)
-                SystemUtils.ExitApp();
+                ApplicationUtils.ExitApp();
 
             if (_context.InputActions.Global.ToggleCursor.triggered)
             {
-                SystemUtils.ToggleMouseCursor();
+                CursorUtils.ToggleMouseCursor();
                 if (Cursor.lockState == CursorLockMode.Locked)
                     _context.InputActions.FpsArcade.Look.Enable();
                 else

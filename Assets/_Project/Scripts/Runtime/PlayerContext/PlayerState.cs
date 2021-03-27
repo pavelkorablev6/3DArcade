@@ -20,9 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.StateMachine;
+
 namespace Arcade
 {
-    public abstract class PlayerState : FSM.State<PlayerState>
+    public abstract class PlayerState : State<PlayerState>
     {
         protected PlayerContext _context;
 

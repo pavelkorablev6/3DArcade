@@ -121,4 +121,8 @@ Assets/StreamingAssets/3darcade_r~/Libretro/temp/
 /[Aa]ssets/StreamingAssets/libretro~/**
 !/[Aa]ssets/StreamingAssets/libretro~/core_options.json
 
+# Libretro Packages
+/Packages/**
+!/Packages/manifest.json
+
 Packages/packages-lock.json

@@ -20,20 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
+using SK.Utilities.Unity;
 using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
     internal static class UE_CloseArcadeMenuItem
     {
-        [MenuItem("3DArcade/Close Arcade", false, 103), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEditor")]
+        [MenuItem("3DArcade/Close Arcade", false, 103)]
         public static void CloseArcade()
         {
             UE_ArcadeManager.SetCurrentArcade();
-            GameObjectUtils.DestroyGameObjectThatHasComponent<ArcadeConfigurationComponent>();
-            GameObjectUtils.DestroyGameObjectThatHasComponent<GamesNodeTag>();
-            GameObjectUtils.DestroyGameObjectThatHasComponent<PropsNodeTag>();
+            GameObjectUtils.DestroyAllObjectsThatHaveComponent<ArcadeConfigurationComponent>();
+            GameObjectUtils.DestroyAllObjectsThatHaveComponent<GamesNodeTag>();
+            GameObjectUtils.DestroyAllObjectsThatHaveComponent<PropsNodeTag>();
             UE_Utilities.CloseAllScenes();
         }
     }

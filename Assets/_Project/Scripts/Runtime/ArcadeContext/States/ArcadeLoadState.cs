@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -35,7 +36,7 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            SystemUtils.HideMouseCursor();
+            CursorUtils.HideMouseCursor();
 
             _context.UIController.TransitionTo<UILoadingState>();
         }

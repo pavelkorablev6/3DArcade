@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -175,7 +176,7 @@ namespace Arcade
 
         private static Transform SetupNode<T>(string name) where T : Component
         {
-            GameObjectUtils.DestroyGameObjectThatHasComponent<T>();
+            GameObjectUtils.DestroyAllObjectsThatHaveComponent<T>();
             return new GameObject(name, typeof(T)).transform;
         }
 
