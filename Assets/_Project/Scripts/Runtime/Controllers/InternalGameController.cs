@@ -65,7 +65,7 @@ namespace Arcade
             //if (_screenNode.TryGetComponent(out _dynamicArtworkComponent))
             //    _dynamicArtworkComponent.EnableCycling = false;
 
-            ScreenNode screenNode = screenNodeTag.gameObject.AddComponentIfNotFound<ScreenNode>();
+            LibretroScreenNode screenNode = screenNodeTag.gameObject.AddComponentIfNotFound<LibretroScreenNode>();
             _libretroBridge = new LibretroBridge(screenNode, _player);
 
             foreach (string gameDirectory in gameDirectories)
@@ -98,7 +98,7 @@ namespace Arcade
             _libretroBridge?.Stop();
             _libretroBridge = null;
 
-            if (_screenNode != null && _screenNode.gameObject.TryGetComponent(out ScreenNode screenNode))
+            if (_screenNode != null && _screenNode.gameObject.TryGetComponent(out LibretroScreenNode screenNode))
                 Object.Destroy(screenNode);
 
             //if (_dynamicArtworkComponent != null)
