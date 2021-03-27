@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 2967407690569925642}
   - component: {fileID: 3076837728942277229}
   - component: {fileID: 6610416084872703044}
+  - component: {fileID: 8022547725497377008}
   m_Layer: 0
   m_Name: 001_DefaultMenu_Sprocket_Marquee.001
   m_TagString: Untagged
@@ -243,6 +244,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8022547725497377008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906981519204963817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa47212c50c2e74481929b830685047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3820252425560244589
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +348,7 @@ GameObject:
   - component: {fileID: 6185587010834783889}
   - component: {fileID: 6581991733885051979}
   - component: {fileID: 5545106694640493930}
+  - component: {fileID: 6664999772000768397}
   m_Layer: 0
   m_Name: 002_DefaultMenu_Sprocket_Screen.001
   m_TagString: Untagged
@@ -405,6 +419,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6664999772000768397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5583774869754055548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2500d90d07ed1a0469e7eddaa7ba519d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7596985059027718630
 GameObject:
   m_ObjectHideFlags: 0

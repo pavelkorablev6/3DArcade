@@ -28,6 +28,8 @@ namespace Arcade.UnityEditor
 {
     internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration>
     {
+        private PlatformConfigurationSO _tempCfg;
+
         [MenuItem("3DArcade/Platforms"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
         {
@@ -39,10 +41,11 @@ namespace Arcade.UnityEditor
 
         protected override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DummyPlatform;
 
-        protected override bool Add() => true;
-
-        protected override bool Save() => true;
-
-        protected override Editor GetComponentEditor() => null;
+        protected override SerializedObject GetSerializedObject(PlatformConfiguration cfg)
+        {
+            _tempCfg       = CreateInstance<PlatformConfigurationSO>();
+            _tempCfg.Value = cfg ?? DefaultConfiguration;
+            return new SerializedObject(_tempCfg);
+        }
     }
 }

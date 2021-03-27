@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8445061538603120957}
   - component: {fileID: 4537227116211788258}
   - component: {fileID: 8798593993718518213}
-  - component: {fileID: 1409211478823911107}
   m_Layer: 0
   m_Name: _80_horizontal_screen
   m_TagString: Untagged
@@ -94,18 +93,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2500d90d07ed1a0469e7eddaa7ba519d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1409211478823911107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889494664082661340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a92b8de2a6ea0740bcb271b99c1e764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2407076267671460913

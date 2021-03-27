@@ -20,32 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
-using UnityEditor;
-using UnityEngine;
-
 namespace Arcade.UnityEditor
 {
-    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration>
+    internal sealed class PlatformConfigurationSO : ConfigurationSO<PlatformConfiguration>
     {
-        private EmulatorConfigurationSO _tempCfg;
-
-        [MenuItem("3DArcade/Emulators"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
-        private static void ShowWindow()
-        {
-            EmulatorDatabaseEditorWindow window = GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true);
-            window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
-        }
-
-        protected override MultiFileDatabase<EmulatorConfiguration> Database => UE_ArcadeManager.EmulatorDatabase;
-
-        protected override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
-
-        protected override SerializedObject GetSerializedObject(EmulatorConfiguration cfg)
-        {
-            _tempCfg       = CreateInstance<EmulatorConfigurationSO>();
-            _tempCfg.Value = cfg ?? DefaultConfiguration;
-            return new SerializedObject(_tempCfg);
-        }
     }
 }

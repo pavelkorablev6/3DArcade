@@ -30,35 +30,25 @@ namespace Arcade.UnityEditor
         private enum WindowState
         {
             Normal,
-            AddNew,
-            Delete,
-            Edit
+            CreateNew,
+            EditSelection
         }
 
-        protected const float MIN_WINDOW_WIDTH = 408f;
-        protected const float MIN_WINDOW_HEIGHT = 408f;
+        protected const float MIN_WINDOW_WIDTH = 468f;
+        protected const float MIN_WINDOW_HEIGHT = 468f;
 
         protected abstract MultiFileDatabase<T> Database { get; }
         protected abstract T DefaultConfiguration { get; }
 
-        protected GameObject _tempGameObject;
-        protected T _selection;
-
         private T[] _entries;
-
         private WindowState _windowState = WindowState.Normal;
         private Vector2 _scrollPosition;
 
-        private Editor _editorSingle;
-        private Vector2 _scrollPositionSingle;
+        private SerializedObject _tempCfgObject;
+        private SerializedProperty _tempValueProperty;
+        private Vector2 _tempScrollPosition;
 
-        private void OnEnable() => Load();
-
-        private void OnDestroy()
-        {
-            if (_tempGameObject != null)
-                DestroyImmediate(_tempGameObject);
-        }
+        private void OnEnable() => RefreshDatabase();
 
         private void OnGUI()
         {
@@ -67,14 +57,11 @@ namespace Arcade.UnityEditor
                 case WindowState.Normal:
                     ShowNormalControls();
                     break;
-                case WindowState.AddNew:
-                    ShowAddNewControls();
+                case WindowState.CreateNew:
+                    ShowCreateNewControls();
                     break;
-                case WindowState.Delete:
-                    ShowDeleteControls();
-                    break;
-                case WindowState.Edit:
-                    ShowEditControls();
+                case WindowState.EditSelection:
+                    ShowEditSelectionControls();
                     break;
                 default:
                     throw new System.Exception($"Unhandled WindowState case: {_windowState}");
@@ -85,35 +72,60 @@ namespace Arcade.UnityEditor
         {
         }
 
-        protected virtual void DrawConfigurationExtras(T entry)
-        {
-        }
-
-        protected abstract bool Add();
-
-        protected abstract bool Save();
-
-        protected abstract Editor GetComponentEditor();
+        protected abstract SerializedObject GetSerializedObject(T cfg = null);
 
         private void ShowNormalControls()
+        {
+            if (_windowState != WindowState.Normal)
+                return;
+
+            DrawNormalToolbar();
+            DrawNormalListView();
+        }
+
+        private void ShowCreateNewControls()
+        {
+            if (_windowState != WindowState.CreateNew)
+                return;
+
+            DrawCreateNewToolar();
+            DrawCreateNewFields();
+        }
+
+        private void ShowEditSelectionControls()
+        {
+            if (_windowState != WindowState.EditSelection)
+                return;
+
+            DrawEditSelectionToolbar();
+            DrawEditSelectionFields();
+        }
+
+        private void RefreshDatabase()
+        {
+            if (Database.LoadAll())
+                _entries = Database.GetValues();
+        }
+
+        private void DrawNormalToolbar()
         {
             GUILayout.Space(8f);
             using (new GUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Add"))
                 {
-                    _selection = DefaultConfiguration;
-                    _editorSingle = GetComponentEditor();
-                    _windowState = WindowState.AddNew;
+                    _tempCfgObject     = GetSerializedObject();
+                    _tempValueProperty = _tempCfgObject.FindProperty("Value");
+                    _windowState       = WindowState.CreateNew;
                 }
 
                 if (GUILayout.Button("Reload"))
-                {
-                    _selection = null;
-                    Load();
-                }
+                    RefreshDatabase();
             }
+        }
 
+        private void DrawNormalListView()
+        {
             using GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_scrollPosition, EditorStyles.helpBox);
             _scrollPosition = scrollView.scrollPosition;
 
@@ -123,118 +135,88 @@ namespace Arcade.UnityEditor
                 {
                     if (GUILayout.Button(entry.ToString()))
                     {
-                        _selection = entry;
-                        _editorSingle = GetComponentEditor();
-                        _windowState = WindowState.Edit;
-                        return;
+                        _tempCfgObject     = GetSerializedObject(entry);
+                        _tempValueProperty = _tempCfgObject.FindProperty("Value");
+                        _windowState = WindowState.EditSelection;
                     }
 
                     DrawInlineButtons(entry);
 
                     if (GUILayout.Button("x", GUILayout.Width(35f)))
-                    {
-                        _selection = entry;
-                        _windowState = WindowState.Delete;
-                        return;
-                    }
+                        DeleteEntry(entry);
                 }
             }
         }
 
-        private void ShowAddNewControls()
+        private void DrawCreateNewToolar()
         {
             GUILayout.Space(8f);
             using (new GUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Add") && Add())
+                bool addButtonPressed    = GUILayout.Button("Add");
+                bool cancelButtonPressed = GUILayout.Button("Cancel");
+
+                if (addButtonPressed && AddEntry((_tempCfgObject.targetObject as ConfigurationSO<T>).Value))
                 {
-                    if (_tempGameObject != null)
-                        DestroyImmediate(_tempGameObject);
-                    _selection = null;
+                    _entries     = Database.GetValues();
+                    _windowState = WindowState.Normal;
+                }
+
+                if (addButtonPressed || cancelButtonPressed)
+                    _windowState = WindowState.Normal;
+            }
+        }
+
+        private void DrawCreateNewFields()
+        {
+            if (_tempValueProperty != null)
+            {
+                using GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_tempScrollPosition, EditorStyles.helpBox);
+                _tempScrollPosition = scrollView.scrollPosition;
+                _ = EditorGUILayout.PropertyField(_tempValueProperty, GUIContent.none, true);
+                _tempValueProperty.isExpanded = true;
+                _ = _tempCfgObject.ApplyModifiedProperties();
+            }
+        }
+
+        private void DrawEditSelectionToolbar()
+        {
+            GUILayout.Space(8f);
+            using (new GUILayout.HorizontalScope())
+            {
+                bool saveButtonPressed   = GUILayout.Button("Save");
+                bool cancelButtonPressed = GUILayout.Button("Cancel");
+
+                if (saveButtonPressed && SaveEntry((_tempCfgObject.targetObject as ConfigurationSO<T>).Value))
+                    RefreshDatabase();
+
+                if (saveButtonPressed || cancelButtonPressed)
+                    _windowState = WindowState.Normal;
+            }
+        }
+
+        private void DrawEditSelectionFields()
+        {
+            if (_tempValueProperty != null)
+            {
+                using GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_tempScrollPosition, EditorStyles.helpBox);
+                _tempScrollPosition = scrollView.scrollPosition;
+                _ = EditorGUILayout.PropertyField(_tempValueProperty, GUIContent.none, true);
+                _tempValueProperty.isExpanded = true;
+                _ = _tempCfgObject.ApplyModifiedProperties();
+            }
+        }
+
+        private bool AddEntry(T entry) => Database.Add(entry) != null;
+
+        private bool SaveEntry(T value) => Database.Save(value);
+
+        private void DeleteEntry(T entry)
+        {
+            if (EditorUtility.DisplayDialog($"Delete {typeof(T).Name}", $"Delete '{entry}' configuration?", "Yes", "No"))
+                if (Database.Delete(entry.Id))
                     _entries = Database.GetValues();
-                    _windowState = WindowState.Normal;
-                }
-                if (GUILayout.Button("Cancel"))
-                {
-                    if (_tempGameObject != null)
-                        DestroyImmediate(_tempGameObject);
-                    _selection = null;
-                    _windowState = WindowState.Normal;
-                }
-            }
-
-            if (_tempGameObject != null)
-            {
-                using GUILayout.ScrollViewScope scrollview = new GUILayout.ScrollViewScope(_scrollPositionSingle);
-                _scrollPositionSingle = scrollview.scrollPosition;
-                _ = _editorSingle.DrawDefaultInspector();
-                DrawConfigurationExtras(_selection);
-            }
         }
-
-        private void ShowDeleteControls()
-        {
-            GUILayout.Space(8f);
-            GUILayout.Label($"Delete {typeof(T).Name}: {_selection} ?");
-
-            GUILayout.Space(8f);
-            using (new GUILayout.HorizontalScope())
-            {
-                if (GUILayout.Button("Yes") && Database.Delete(_selection.Id))
-                {
-                    _entries = Database.GetValues();
-                    _selection = null;
-                    _windowState = WindowState.Normal;
-                }
-                if (GUILayout.Button("No"))
-                {
-                    _selection = null;
-                    _windowState = WindowState.Normal;
-                }
-            }
-        }
-
-        private void ShowEditControls()
-        {
-            GUILayout.Space(8f);
-            using (new GUILayout.HorizontalScope())
-            {
-                if (GUILayout.Button("Save"))
-                {
-                    if (Save())
-                    {
-                        if (_tempGameObject != null)
-                            DestroyImmediate(_tempGameObject);
-                        Load();
-                        _selection = null;
-                        _windowState = WindowState.Normal;
-                    }
-                }
-                if (GUILayout.Button("Cancel"))
-                {
-                    if (_tempGameObject != null)
-                        DestroyImmediate(_tempGameObject);
-                    _selection = null;
-                    _windowState = WindowState.Normal;
-                }
-            }
-
-            if (_tempGameObject != null)
-            {
-                using GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_scrollPositionSingle);
-                _scrollPositionSingle = scrollView.scrollPosition;
-                _ = _editorSingle.DrawDefaultInspector();
-                DrawConfigurationExtras(_selection);
-            }
-        }
-
-        private void Load()
-        {
-            if (Database.LoadAll())
-                _entries = Database.GetValues();
-        }
-
-        //private bool Delete(T entry) => Database.Delete(entry.Id);
 
         //private void Save()
         //{

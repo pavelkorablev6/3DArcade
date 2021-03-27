@@ -1,6 +1,6 @@
 <arcade id="demo" description="Demo">
   <fpsarcade_properties>
-    <scene>TempIndustrial</scene>
+    <scene>_cylinder</scene>
     <camera_settings orthographic="false">
       <position x="0" y="0.89" z="0" />
       <rotation x="-0" y="0" z="0" />
@@ -17,6 +17,13 @@
       <screen_vector_intenstity>8</screen_vector_intenstity>
       <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
+    <audio_settings>
+      <main_volume>0</main_volume>
+      <music_volume>0</music_volume>
+      <ambient_volume>0</ambient_volume>
+      <minimum_distance>0</minimum_distance>
+      <maximum_distance>0</maximum_distance>
+    </audio_settings>
     <model />
   </fpsarcade_properties>
   <cylarcade_properties wheel_variant="CameraInsideHorizontal" wheel_radius="5" sprockets="5">
@@ -37,6 +44,13 @@
       <screen_vector_intenstity>8</screen_vector_intenstity>
       <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
+    <audio_settings>
+      <main_volume>0</main_volume>
+      <music_volume>0</music_volume>
+      <ambient_volume>0</ambient_volume>
+      <minimum_distance>0</minimum_distance>
+      <maximum_distance>0</maximum_distance>
+    </audio_settings>
     <model />
     <mouse_look>true</mouse_look>
     <selected_sprocket>-1</selected_sprocket>
@@ -49,14 +63,21 @@
     <line_angle>-5</line_angle>
   </cylarcade_properties>
   <games>
-    <game id="vanguard" platform="arcade">
+    <game id="vanguard" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -77,14 +98,21 @@
       <rotation x="-0.000374074472" y="129.2002" z="0.0002911764" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="tutankst" platform="arcade">
+    <game id="tutankst" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -105,14 +133,21 @@
       <rotation x="-0.0003484324" y="0.000383848528" z="0.0007504085" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="tron" platform="arcade">
+    <game id="tron" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -133,14 +168,21 @@
       <rotation x="0.00206199358" y="178.581635" z="0.00136121141" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="smashtv" platform="arcade">
+    <game id="smashtv" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -161,14 +203,21 @@
       <rotation x="-8.9273286E-05" y="90.00004" z="-1.13223477E-05" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="scramble" platform="arcade">
+    <game id="scramble" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -189,14 +238,21 @@
       <rotation x="-0.000193790576" y="90.00006" z="0.000454563764" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="rtype" platform="arcade">
+    <game id="rtype" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -217,14 +273,21 @@
       <rotation x="-4.795396E-05" y="180" z="0.000158930823" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="pooyan" platform="arcade">
+    <game id="pooyan" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -245,14 +308,21 @@
       <rotation x="-0.000201649775" y="-90.00003" z="0.000815797" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="polepos" platform="arcade">
+    <game id="polepos" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -273,14 +343,21 @@
       <rotation x="-0.000318014936" y="0.000298595231" z="0.00021021346" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="pacman" platform="arcade">
+    <game id="pacman" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -301,14 +378,21 @@
       <rotation x="-1.06492912E-07" y="-177.439941" z="-7.865219E-05" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="marble" platform="arcade">
+    <game id="marble" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -329,14 +413,21 @@
       <rotation x="-0.0002212119" y="-44.95981" z="9.958421E-05" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="mappy" platform="arcade">
+    <game id="mappy" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -357,14 +448,21 @@
       <rotation x="-0.000376893557" y="0.000849350065" z="0.001148045" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="dotron" platform="arcade">
+    <game id="dotron" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -385,14 +483,21 @@
       <rotation x="-0.000158269308" y="0.000179438779" z="0.000208253929" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="commando" platform="arcade">
+    <game id="commando" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -413,14 +518,21 @@
       <rotation x="-0.0005974657" y="0.0006203675" z="0.000536218169" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="ccastles" platform="arcade">
+    <game id="ccastles" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -441,14 +553,21 @@
       <rotation x="-0.000467817415" y="-179.999725" z="0.0003884209" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="arkanoid" platform="arcade">
+    <game id="arkanoid" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -469,14 +588,21 @@
       <rotation x="-0.0003891469" y="-179.999863" z="0.000298012" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="tempest" platform="arcade">
+    <game id="tempest" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -497,14 +623,21 @@
       <rotation x="-0.000289798627" y="-179.999847" z="0.000290395779" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="starwarsc" platform="arcade">
+    <game id="starwarsc" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -525,14 +658,21 @@
       <rotation x="-4.192777E-05" y="53.3601227" z="-0.000395526964" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="robotron" platform="arcade">
+    <game id="robotron" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -553,14 +693,21 @@
       <rotation x="-0.0006324288" y="0.000909647031" z="0.0005867366" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="qbert" platform="arcade">
+    <game id="qbert" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -581,14 +728,21 @@
       <rotation x="-0.0006305197" y="178.615555" z="0.0005116255" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="pengo" platform="arcade">
+    <game id="pengo" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -609,14 +763,21 @@
       <rotation x="-0.000649110239" y="0.00122363062" z="0.000862533867" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="mspacman" platform="arcade">
+    <game id="mspacman" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -637,14 +798,21 @@
       <rotation x="-0.000440630363" y="178.6641" z="0.0007614699" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="mrdo" platform="arcade">
+    <game id="mrdo" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -665,14 +833,21 @@
       <rotation x="-0.000367895846" y="0.000197544665" z="0.000152960347" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="mpatrol" platform="arcade">
+    <game id="mpatrol" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -693,14 +868,21 @@
       <rotation x="-0.0006329109" y="178.47644" z="0.0006070944" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="Space Invaders - The Original Game (J).smc" platform="arcade">
+    <game id="Space Invaders - The Original Game (J).smc" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -721,14 +903,21 @@
       <rotation x="-0.0005273961" y="90.000145" z="0.0006046618" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="galaga" platform="arcade">
+    <game id="galaga" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -749,14 +938,21 @@
       <rotation x="-0.000326125242" y="178.862839" z="0.000243950053" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="frogger" platform="arcade">
+    <game id="frogger" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -777,14 +973,21 @@
       <rotation x="-0.000423690566" y="0.000333518256" z="0.000319165672" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="digdug" platform="arcade">
+    <game id="digdug" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -805,14 +1008,21 @@
       <rotation x="-0.000466676924" y="0.000231063575" z="0.0002873821" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="defender" platform="arcade">
+    <game id="defender" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -833,14 +1043,21 @@
       <rotation x="-0.0005237322" y="0.0002569684" z="0.0004493248" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="centiped" platform="arcade">
+    <game id="centiped" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -861,14 +1078,21 @@
       <rotation x="-0.000347351161" y="2.55824525E-05" z="-0.0002937972" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="bzone" platform="arcade">
+    <game id="bzone" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -889,14 +1113,21 @@
       <rotation x="-0.000450850115" y="51.13999" z="0.00113762054" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="bombjack" platform="arcade">
+    <game id="bombjack" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -917,14 +1148,21 @@
       <rotation x="-0.000436773174" y="-179.999771" z="0.00030480104" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="berzerk" platform="arcade">
+    <game id="berzerk" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -945,14 +1183,21 @@
       <rotation x="-0.00028926396" y="-179.999878" z="0.000194200213" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="asteroid" platform="arcade">
+    <game id="asteroid" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -973,14 +1218,21 @@
       <rotation x="-0.000415769173" y="168.761276" z="0.00056171685" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="gyruss" platform="arcade">
+    <game id="gyruss" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1001,14 +1253,21 @@
       <rotation x="-0.000544684648" y="0.000194578985" z="0.000309228984" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="missile" platform="arcade">
+    <game id="missile" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1029,14 +1288,21 @@
       <rotation x="-0.000163550256" y="74.9931946" z="-9.67869E-06" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="szaxxon" platform="arcade">
+    <game id="szaxxon" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1057,14 +1323,21 @@
       <rotation x="-0.000459162169" y="0.0003351615" z="0.00032003806" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="timeplt" platform="arcade">
+    <game id="timeplt" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1085,14 +1358,21 @@
       <rotation x="-0.000422398443" y="-179.999756" z="0.0002954013" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="zookeep" platform="arcade">
+    <game id="zookeep" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1113,14 +1393,21 @@
       <rotation x="-0.0004913019" y="-179.999817" z="0.000398274016" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="joust" platform="arcade">
+    <game id="joust" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1141,14 +1428,21 @@
       <rotation x="-0.000497823639" y="90.00013" z="0.000637791934" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="mach3" platform="arcade">
+    <game id="mach3" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1169,14 +1463,21 @@
       <rotation x="1.74852157E-05" y="-29.2798157" z="0.00143308681" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="ssf2" platform="arcade">
+    <game id="ssf2" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1197,14 +1498,21 @@
       <rotation x="-0.0006193225" y="0.8007703" z="0.0005083821" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="ssf2" platform="arcade">
+    <game id="ssf2" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator>mame_0228</emulator>
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
@@ -1225,14 +1533,21 @@
       <rotation x="-0.0005863212" y="2.08039117" z="0.000546268537" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="1942" platform="arcade">
+    <game id="1942" description="" platform="arcade">
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <description />
       <model />
       <interaction_type>Default</interaction_type>
       <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
