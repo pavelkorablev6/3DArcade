@@ -22,10 +22,10 @@
 
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public sealed class UIContext : FSM.Context<UIState>
     {
-        public readonly Player Player;
+        public readonly IUIController UIController;
 
-        public PlayerContext(Player player) => Player = player;
+        public UIContext(IUIController uiController) => UIController = uiController;
     }
 }

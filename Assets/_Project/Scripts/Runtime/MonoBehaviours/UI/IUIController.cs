@@ -24,7 +24,19 @@ namespace Arcade
 {
     public interface IUIController
     {
-        void SetState(UIState state);
+        void TransitionTo<T>() where T : UIState;
+
+        void EnableSceneLoadingUI();
+        void EnableSceneNormalUI();
+        void EnableSceneEditModeUI();
+        void EnableConfigurationUI();
+
+        void DisableSceneLoadingUI();
+        void DisableSceneNormalUI();
+        void DisableSceneEditModeUI();
+        void DisableConfigurationUI();
+
+        void DisableAll();
 
         void InitStatusBar(string message);
         void UpdateStatusBar(float percentComplete);

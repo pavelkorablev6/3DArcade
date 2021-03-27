@@ -22,10 +22,13 @@
 
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public sealed class UIDisabledState : UIState
     {
-        public readonly Player Player;
+        public UIDisabledState(UIContext context)
+        : base(context)
+        {
+        }
 
-        public PlayerContext(Player player) => Player = player;
+        public override void OnEnter() => _context.UIController.DisableAll();
     }
 }

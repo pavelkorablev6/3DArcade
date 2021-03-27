@@ -29,9 +29,6 @@ namespace Arcade
     {
         public static readonly ArcadeConfiguration DummyArcade = MakeInternalArcade("_dummy", "InternalDummyArcade");
 
-        [XmlAttribute("description")]
-        public string Description;
-
         [XmlElement("fpsarcade_properties")]
         public FpsArcadeProperties FpsArcadeProperties;
 

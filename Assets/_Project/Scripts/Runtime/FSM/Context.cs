@@ -28,21 +28,21 @@ namespace Arcade.FSM
     {
         private readonly List<T> _states = new List<T>();
 
-        public T CurrentState  { get; private set; } = null;
-        public T PreviousState { get; private set; } = null;
+        private T _currentState  = null;
+        private T _previousState = null;
 
         public void Start() => OnStart();
 
         public void Update(float dt)
         {
             OnUpdate(dt);
-            CurrentState?.OnUpdate(dt);
+            _currentState?.OnUpdate(dt);
         }
 
         public void FixedUpdate(float dt)
         {
             OnFixedUpdate(dt);
-            CurrentState?.OnFixedUpdate(dt);
+            _currentState?.OnFixedUpdate(dt);
         }
 
         public void TransitionTo<U>() where U : T
@@ -50,10 +50,10 @@ namespace Arcade.FSM
             T foundState = _states.Find(x => x.GetType() == typeof(U));
             if (foundState != null)
             {
-                PreviousState = CurrentState;
-                PreviousState?.OnExit();
-                CurrentState = foundState;
-                CurrentState.OnEnter();
+                _currentState?.OnExit();
+                _previousState = _currentState;
+                _currentState = foundState;
+                _currentState.OnEnter();
             }
             else
             {
@@ -65,12 +65,12 @@ namespace Arcade.FSM
 
         public void TransitionToPrevious()
         {
-            if (PreviousState == null)
+            if (_previousState == null)
                 return;
 
-            PreviousState.OnExit();
-            CurrentState = PreviousState;
-            CurrentState.OnEnter();
+            _previousState.OnExit();
+            Utils.Swap(ref _currentState, ref _previousState);
+            _currentState.OnEnter();
         }
 
         protected virtual void OnStart()

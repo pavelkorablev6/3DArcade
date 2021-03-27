@@ -20,8 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
@@ -31,39 +33,41 @@ namespace Arcade
         [SerializeField] private GameObject _loadingCanvas;
         [SerializeField] private GameObject _normalCanvas;
         [SerializeField] private GameObject _moveCabCanvas;
+        [SerializeField] private GameObject _configurationCanvas;
 
         [SerializeField] private TMP_Text _progressMessage;
         [SerializeField] private RectTransform _progressTransform;
         [SerializeField] private TMP_Text _progressPercent;
 
-        private void Start() => SetState(UIState.None);
+        public UIContext UIContext { get; private set; }
 
-        public void SetState(UIState state)
+        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
+        private void Construct(UIContext uiContext) => UIContext = uiContext;
+
+        public void TransitionTo<T>() where T : UIState => UIContext.TransitionTo<T>();
+
+        public void EnableSceneLoadingUI() => _loadingCanvas.SetActiveIfNotNull(true);
+
+        public void EnableSceneNormalUI() => _normalCanvas.SetActiveIfNotNull(true);
+
+        public void EnableSceneEditModeUI() => _moveCabCanvas.SetActiveIfNotNull(true);
+
+        public void EnableConfigurationUI() => _configurationCanvas.SetActiveIfNotNull(true);
+
+        public void DisableSceneLoadingUI() => _loadingCanvas.SetActiveIfNotNull(false);
+
+        public void DisableSceneNormalUI() => _normalCanvas.SetActiveIfNotNull(false);
+
+        public void DisableSceneEditModeUI() => _moveCabCanvas.SetActiveIfNotNull(false);
+
+        public void DisableConfigurationUI() => _configurationCanvas.SetActiveIfNotNull(false);
+
+        public void DisableAll()
         {
-            switch (state)
-            {
-                case UIState.SceneLoading:
-                    EnableSceneLoadingUI();
-                    DisableSceneNormalUI();
-                    DisableSceneEditModeUI();
-                    break;
-                case UIState.SceneNormal:
-                    DisableSceneLoadingUI();
-                    EnableSceneNormalUI();
-                    DisableSceneEditModeUI();
-                    break;
-                case UIState.SceneEditMode:
-                    DisableSceneLoadingUI();
-                    DisableSceneNormalUI();
-                    EnableSceneEditModeUI();
-                    break;
-                case UIState.None:
-                default:
-                    DisableSceneLoadingUI();
-                    DisableSceneNormalUI();
-                    DisableSceneEditModeUI();
-                    break;
-            }
+            DisableSceneLoadingUI();
+            DisableSceneNormalUI();
+            DisableSceneEditModeUI();
+            DisableConfigurationUI();
         }
 
         public void InitStatusBar(string message)
@@ -86,40 +90,48 @@ namespace Arcade
             _progressPercent.SetText(string.Empty);
         }
 
-        private void EnableSceneLoadingUI()
+#if UNITY_EDITOR
+        [ContextMenu("Loading State")]
+        private void Context_LoadingState()
         {
-            if (_loadingCanvas != null)
-                _loadingCanvas.SetActive(true);
+            DisableSceneNormalUI();
+            DisableSceneEditModeUI();
+            DisableConfigurationUI();
+
+            EnableSceneLoadingUI();
         }
 
-        private void EnableSceneNormalUI()
+        [ContextMenu("Normal State")]
+        private void Context_NormalState()
         {
-            if (_normalCanvas != null)
-                _normalCanvas.SetActive(true);
+            DisableSceneLoadingUI();
+            DisableSceneEditModeUI();
+            DisableConfigurationUI();
+
+            EnableSceneNormalUI();
         }
 
-        private void EnableSceneEditModeUI()
+        [ContextMenu("MoveCab State")]
+        private void Context_MoveCabState()
         {
-            if (_moveCabCanvas != null)
-                _moveCabCanvas.SetActive(true);
+            DisableSceneLoadingUI();
+            DisableSceneNormalUI();
+            DisableConfigurationUI();
+
+            EnableSceneEditModeUI();
         }
 
-        private void DisableSceneLoadingUI()
+        [ContextMenu("Configuration State")]
+        private void Context_ConfigurationState()
         {
-            if (_loadingCanvas != null)
-                _loadingCanvas.SetActive(false);
+            DisableSceneLoadingUI();
+            DisableSceneNormalUI();
+            DisableSceneEditModeUI();
+
+            EnableConfigurationUI();
         }
 
-        private void DisableSceneNormalUI()
-        {
-            if (_normalCanvas != null)
-                _normalCanvas.SetActive(false);
-        }
-
-        private void DisableSceneEditModeUI()
-        {
-            if (_moveCabCanvas != null)
-                _moveCabCanvas.SetActive(false);
-        }
+        [ContextMenu("Disabled State")] private void Context_DisableAll() => DisableAll();
+#endif
     }
 }

@@ -60,13 +60,10 @@ namespace Arcade
 
             void AddToList(string name)
             {
-                if (string.IsNullOrEmpty(name))
-                    return;
-
                 if (Application.isPlaying)
-                    result.Add($"{ARCADES_ADDRESS_PREFIX}{name}");
+                    result.AddStringIfNotNullOrEmpty($"{ARCADES_ADDRESS_PREFIX}{name}");
                 else
-                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{ARCADES_ADDRESS_PREFIX}{name}/{name}.unity");
+                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{ARCADES_ADDRESS_PREFIX}{name}/{name}.unity");
             }
         }
 
@@ -110,13 +107,10 @@ namespace Arcade
 
             void AddToList(string name)
             {
-                if (string.IsNullOrEmpty(name))
-                    return;
-
                 if (Application.isPlaying)
-                    result.Add($"{GAMES_ADDRESS_PREFIX}{name}");
+                    result.AddStringIfNotNullOrEmpty($"{GAMES_ADDRESS_PREFIX}{name}");
                 else
-                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESS_PREFIX}{name}.prefab");
+                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESS_PREFIX}{name}.prefab");
             }
         }
 
@@ -133,13 +127,10 @@ namespace Arcade
 
             void AddToList(string name)
             {
-                if (string.IsNullOrEmpty(name))
-                    return;
-
                 if (Application.isPlaying)
-                    result.Add($"{PROPS_ADDRESS_PREFIX}{name}");
+                    result.AddStringIfNotNullOrEmpty($"{PROPS_ADDRESS_PREFIX}{name}");
                 else
-                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESS_PREFIX}{name}/{name}.prefab");
+                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESS_PREFIX}{name}/{name}.prefab");
             }
         }
 

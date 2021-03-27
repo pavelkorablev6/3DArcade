@@ -31,6 +31,9 @@ namespace Arcade.UnityEditor
 
         private static void PlayModeStateChangedCallback(PlayModeStateChange state)
         {
+            if (!UE_ArcadeManager.Ready)
+                return;
+
             if (state == PlayModeStateChange.ExitingEditMode)
                 UE_CloseArcadeMenuItem.CloseArcade();
             else if (state == PlayModeStateChange.EnteredEditMode)

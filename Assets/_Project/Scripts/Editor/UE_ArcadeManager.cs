@@ -27,60 +27,59 @@ namespace Arcade.UnityEditor
 {
     internal static class UE_ArcadeManager
     {
-        public static string[] ArcadeNames { get; private set; }
+        public static bool Ready { get; private set; }
+
+        public static readonly MultiFileDatabase<EmulatorConfiguration> EmulatorDatabase;
+        public static readonly MultiFileDatabase<PlatformConfiguration> PlatformDatabase;
+        public static readonly MultiFileDatabase<ArcadeConfiguration> ArcadeDatabase;
 
         private static readonly Player _player;
-        private static readonly PlayerContext _playerContext;
+
         private static readonly IVirtualFileSystem _virtualFileSystem;
         private static readonly GeneralConfiguration _generalConfiguration;
-
-        //private static readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
-        private static readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
-
-        private static readonly MultiFileDatabase<ArcadeConfiguration> _arcadeDatabase;
         private static readonly ModelMatcher _modelMatcher;
         private static readonly IUIController _uiController;
         private static ArcadeController _arcadeController;
 
         static UE_ArcadeManager()
         {
-            _player        = Object.FindObjectOfType<Player>();
-            _playerContext = new PlayerContext(_player);
-            _player.Construct(_playerContext);
+            _player = Object.FindObjectOfType<Player>();
+            if (_player == null)
+                return;
 
-            string dataPath    = SystemUtils.GetDataPath();
-            _virtualFileSystem = new VirtualFileSystem();
-            _ = _virtualFileSystem.MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
-                                  .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
-                                  .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
-                                  .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
-                                  .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
-                                  .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
+            _player.Construct(new PlayerContext(_player));
+
+            string dataPath = SystemUtils.GetDataPath();
+            _virtualFileSystem = new VirtualFileSystem().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
+                                                        .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
+                                                        .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                                                        .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                                                        .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
+                                                        .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
 
             _generalConfiguration = new GeneralConfiguration(_virtualFileSystem);
-            //_emulatorDatabase     = new EmulatorDatabase(_virtualFileSystem);
-            _platformDatabase     = new PlatformDatabase(_virtualFileSystem);
-            _arcadeDatabase       = new ArcadeDatabase(_virtualFileSystem);
+            EmulatorDatabase      = new EmulatorDatabase(_virtualFileSystem);
+            PlatformDatabase      = new PlatformDatabase(_virtualFileSystem);
+            ArcadeDatabase        = new ArcadeDatabase(_virtualFileSystem);
             _modelMatcher         = new ModelMatcher();
             _uiController         = Object.FindObjectOfType<UIController>();
 
             _generalConfiguration.Initialize();
+            EmulatorDatabase.Initialize();
+            PlatformDatabase.Initialize();
+            ArcadeDatabase.Initialize();
 
-            _platformDatabase.Initialize();
-
-            _arcadeDatabase.Initialize();
-            ArcadeNames = _arcadeDatabase.GetNames();
+            Ready = true;
         }
 
         public static void RefreshConfigurations()
         {
             _generalConfiguration.Load();
-
-            _ = _platformDatabase.LoadAll();
-
-            _ = _arcadeDatabase.LoadAll();
-            ArcadeNames = _arcadeDatabase.GetNames();
+            _ = EmulatorDatabase.LoadAll();
+            _ = PlatformDatabase.LoadAll();
+            _ = ArcadeDatabase.LoadAll();
         }
+
         public static void SetCurrentArcade()
         {
             ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>();
@@ -94,7 +93,7 @@ namespace Arcade.UnityEditor
 
         public static void LoadArcade(string name, ArcadeType arcadeType, bool spawnEntitites)
         {
-            if (!_arcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
+            if (!ArcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
             UE_Utilities.CloseAllScenes();
@@ -110,7 +109,7 @@ namespace Arcade.UnityEditor
             switch (arcadeType)
             {
                 case ArcadeType.Fps:
-                    _arcadeController = new FpsArcadeController(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
+                    _arcadeController = new FpsArcadeController(_player, _generalConfiguration, PlatformDatabase, _modelMatcher, _uiController/*_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController*/);
                     break;
                 case ArcadeType.Cyl:
                 {
@@ -121,8 +120,8 @@ namespace Arcade.UnityEditor
                         //WheelVariant.CameraInsideVertical    => new CylArcadeControllerWheel3DCameraInsideVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
                         //WheelVariant.CameraOutsideVertical   => new CylArcadeControllerWheel3DCameraOutsideVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
                         //WheelVariant.LineVertical            => new CylArcadeControllerLineVertical(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
-                        CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController),
-                        _                                    => new CylArcadeControllerLineHorizontal(_player, _generalConfiguration, _platformDatabase, _modelMatcher, _uiController)
+                        CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(_player, _generalConfiguration, PlatformDatabase, _modelMatcher, _uiController),
+                        _                                    => new CylArcadeControllerLineHorizontal(_player, _generalConfiguration, PlatformDatabase, _modelMatcher, _uiController)
                     };
                 }
                 break;

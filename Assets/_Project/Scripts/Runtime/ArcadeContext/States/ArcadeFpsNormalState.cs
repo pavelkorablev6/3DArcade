@@ -43,7 +43,7 @@ namespace Arcade
 
             //_context.CurrentModelConfiguration = null;
 
-            _context.UIController.SetState(UIState.SceneNormal);
+            _context.UIController.TransitionTo<UINormalState>();
 
             //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
 
@@ -56,7 +56,7 @@ namespace Arcade
 
             _context.InputActions.FpsArcade.Disable();
 
-            _context.UIController.SetState(UIState.None);
+            _context.UIController.TransitionTo<UIDisabledState>();
         }
 
         public override void OnUpdate(float dt)

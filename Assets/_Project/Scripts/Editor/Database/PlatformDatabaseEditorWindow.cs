@@ -20,12 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-namespace Arcade
-{
-    public sealed class PlayerContext : FSM.Context<PlayerState>
-    {
-        public readonly Player Player;
+using System.Diagnostics.CodeAnalysis;
+using UnityEditor;
+using UnityEngine;
 
-        public PlayerContext(Player player) => Player = player;
+namespace Arcade.UnityEditor
+{
+    internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration>
+    {
+        [MenuItem("3DArcade/Platforms"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        private static void ShowWindow()
+        {
+            PlatformDatabaseEditorWindow window = GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true);
+            window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        }
+
+        protected override MultiFileDatabase<PlatformConfiguration> Database => UE_ArcadeManager.PlatformDatabase;
+
+        protected override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DummyPlatform;
+
+        protected override bool Add() => true;
+
+        protected override bool Save() => true;
+
+        protected override Editor GetComponentEditor() => null;
     }
 }

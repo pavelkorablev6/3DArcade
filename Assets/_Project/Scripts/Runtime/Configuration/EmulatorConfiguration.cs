@@ -27,9 +27,6 @@ namespace Arcade
     [System.Serializable, XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : DatabaseEntry
     {
-        [XmlAttribute("description")]
-        public string Description;
-
         [XmlElement("interaction_type")]
         public InteractionType InteractionType;
 

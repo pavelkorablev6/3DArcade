@@ -39,9 +39,6 @@ namespace Arcade
         [XmlElement("movecab_grabbable")]
         public bool MoveCabGrabbable;
 
-        [XmlElement("description")]
-        public string Description;
-
         [XmlElement("model")]
         public string Model;
 

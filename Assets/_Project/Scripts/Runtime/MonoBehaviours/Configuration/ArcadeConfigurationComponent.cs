@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Linq;
 using UnityEngine;
 
 namespace Arcade
@@ -73,6 +74,33 @@ namespace Arcade
             CylArcadeProperties = cfg.CylArcadeProperties;
         }
 
+        public ArcadeConfiguration ToArcadeConfiguration()
+        {
+            ArcadeConfiguration cfg = new ArcadeConfiguration
+            {
+                Id                  = Id,
+                Description         = Description,
+                FpsArcadeProperties = FpsArcadeProperties,
+                CylArcadeProperties = CylArcadeProperties
+            };
+
+            GamesNodeTag gamesRoot = FindObjectOfType<GamesNodeTag>();
+            if (gamesRoot != null)
+            {
+                ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>();
+                cfg.Games = components.Select(x => x.ToModelConfiguration()).ToArray();
+            }
+
+            PropsNodeTag propsRoot = FindObjectOfType<PropsNodeTag>();
+            if (propsRoot != null)
+            {
+                ModelConfigurationComponent[] components = propsRoot.GetComponentsInChildren<ModelConfigurationComponent>();
+                cfg.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
+            }
+
+            return cfg;
+        }
+
         //public void SetGamesAndPropsTransforms(ArcadeConfiguration cfg) => SetGamesAndPropsTransforms(cfg.Games, cfg.Props);
 
         //public void SetGamesAndPropsTransforms(ModelConfiguration[] games, ModelConfiguration[] props)
@@ -84,9 +112,9 @@ namespace Arcade
 
         private void GetGamesAndProps(out ModelConfiguration[] outGames, out ModelConfiguration[] outProps)
         {
-            GetParentNodes(out Transform games, out Transform tProps);
-            outGames = GetModelConfigurations(games);
-            outProps = GetModelConfigurations(tProps);
+            GetParentNodes(out Transform gamesNode, out Transform propsNode);
+            outGames = gamesNode != null ? GetModelConfigurations(gamesNode) : null;
+            outProps = propsNode != null ? GetModelConfigurations(propsNode) : null;
         }
 
         private void GetParentNodes(out Transform outGamesNode, out Transform outPropsNode)
@@ -100,12 +128,8 @@ namespace Arcade
 
         private static ModelConfiguration[] GetModelConfigurations(Transform node)
         {
-            ModelConfigurationComponent[] configurations = node.GetComponentsInChildren<ModelConfigurationComponent>();
-
-            ModelConfiguration[] result = new ModelConfiguration[configurations.Length];
-            for (int i = 0; i < configurations.Length; ++i)
-                result[i] = configurations[i].ToModelConfiguration();
-            return result;
+            ModelConfigurationComponent[] cfgComponents = node.GetComponentsInChildren<ModelConfigurationComponent>();
+            return cfgComponents.Select(x => x.ToModelConfiguration()).ToArray();;
         }
 
         //private static void SetModelTransforms(Transform node, ModelConfiguration[] modelConfigurations)

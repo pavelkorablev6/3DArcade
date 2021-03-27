@@ -1624,7 +1624,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 1, y: 1}
+    m_SensorSize: {x: 2.5077844, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -1658,6 +1658,104 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1492262172}
   m_Enabled: 1
+--- !u!1 &1521795317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521795319}
+  - component: {fileID: 1521795318}
+  m_Layer: 0
+  m_Name: ArcadeConfiguration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1521795318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521795317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144461e945b96fe48a359419347e06fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: demo
+  Description: Demo
+  FpsArcadeProperties:
+    Scene: TempIndustrial
+    CameraSettings:
+      Height: 0.6
+      Orthographic: 0
+      FieldOfView: 60
+      AspectRatio: 1
+      NearClipPlane: 0.01
+      FarClipPlane: 300
+    RenderSettings:
+      MarqueeIntensity: 4
+      ScreenRasterIntensity: 4
+      ScreenVectorIntenstity: 8
+      ScreenPinballIntensity: 1
+    AudioSettings:
+      MainVolume: 0
+      MusicVolume: 0
+      AmbientVolume: 0
+      MinimumDistance: 0
+      MaximumDistance: 0
+    Model: 
+  CylArcadeProperties:
+    Scene: _cylinder
+    CameraSettings:
+      Height: 0.6
+      Orthographic: 0
+      FieldOfView: 60
+      AspectRatio: 2
+      NearClipPlane: 0.01
+      FarClipPlane: 300
+    RenderSettings:
+      MarqueeIntensity: 4
+      ScreenRasterIntensity: 4
+      ScreenVectorIntenstity: 8
+      ScreenPinballIntensity: 1
+    AudioSettings:
+      MainVolume: 0
+      MusicVolume: 0
+      AmbientVolume: 0
+      MinimumDistance: 0
+      MaximumDistance: 0
+    Model: 
+    WheelVariant: 3
+    WheelRadius: 5
+    Sprockets: 5
+    MouseLook: 1
+    SelectedSprocket: -1
+    SelectedPositionZ: 5
+    ModelSpacing: 0.2
+    HorizontalNavigation: 1
+    InverseNavigation: 0
+    InverseList: 0
+    LineAngle: -5
+--- !u!4 &1521795319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521795317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1533774436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1869,6 +1967,49 @@ Transform:
   - {fileID: 1492262173}
   m_Father: {fileID: 599590487}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1848353633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1848353635}
+  - component: {fileID: 1848353634}
+  m_Layer: 0
+  m_Name: Props
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1848353634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848353633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e024aa92a93df3143bb8de3ee245fedc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1848353635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848353633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1860245296
 GameObject:
@@ -2365,6 +2506,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1924018302}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2126334216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2126334218}
+  - component: {fileID: 2126334217}
+  m_Layer: 0
+  m_Name: Games
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2126334217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126334216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a6f7fe71ae7ee4f979cfff788744d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2126334218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126334216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &299124400949113745
 Transform:

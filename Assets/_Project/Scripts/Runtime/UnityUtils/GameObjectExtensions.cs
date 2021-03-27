@@ -20,12 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public static class GameObjectExtensions
     {
-        public readonly Player Player;
-
-        public PlayerContext(Player player) => Player = player;
+        public static void SetActiveIfNotNull(this GameObject go, bool value)
+        {
+            if (go != null)
+                go.SetActive(value);
+        }
     }
 }

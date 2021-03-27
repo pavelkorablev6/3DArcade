@@ -29,36 +29,6 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 1e9e55e029309fe42a14bbbc403365b6
-    m_Address: Assets/_Project/ModelResources/Props/ElectricScooter/Materials/ElectricScooter.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: a7df95c31cb5b2842bc4bf1acab3ecd1
-    m_Address: Assets/_Project/ModelResources/Props/ElectricScooter/Textures/ElectricScooter_ElectricScooter_Normal.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 03aaac2514f273341848370df1a10474
-    m_Address: Assets/_Project/ModelResources/Props/ElectricScooter/Textures/ElectricScooter_ElectricScooter_BaseColor.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 64dd5d29982dd5649946c7c48bcc557d
-    m_Address: Assets/_Project/ModelResources/Props/ElectricScooter/Textures/ElectricScooter_ElectricScooter_MaskMap.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 844a1816776cf9347a229f2854756284
-    m_Address: Assets/_Project/ModelResources/Props/ElectricScooter/Meshes/ElectricScooter.FBX
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:

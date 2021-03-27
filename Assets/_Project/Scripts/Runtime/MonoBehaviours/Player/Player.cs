@@ -33,8 +33,6 @@ namespace Arcade
         public PlayerControls NormalControls => _normalControls;
         public PlayerControls VirtualRealityControls => _virtualRealityControls;
 
-        public bool IsInCylMode => _playerContext.CurrentState is PlayerNormalCylState || _playerContext.CurrentState is PlayerVirtualRealityCylState;
-
         private PlayerContext _playerContext;
 
         [Inject]

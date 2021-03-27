@@ -29,5 +29,10 @@ namespace Arcade
     {
         [XmlAttribute("id")]
         public string Id;
+
+        [XmlAttribute("description")]
+        public string Description;
+
+        public override string ToString() => $"{Description} ({Id})";
     }
 }

@@ -22,10 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public sealed class UILoadingState : UIState
     {
-        public readonly Player Player;
+        public UILoadingState(UIContext context)
+        : base(context)
+        {
+        }
 
-        public PlayerContext(Player player) => Player = player;
+        public override void OnEnter() => _context.UIController.EnableSceneLoadingUI();
+
+        public override void OnExit() => _context.UIController.DisableSceneLoadingUI();
     }
 }

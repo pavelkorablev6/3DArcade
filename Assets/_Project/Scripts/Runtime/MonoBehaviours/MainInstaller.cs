@@ -34,6 +34,7 @@ namespace Arcade
             _ = Container.Bind<PlayerContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
+            _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<IVirtualFileSystem>().To<VirtualFileSystem>().AsSingle().NonLazy();
             _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();

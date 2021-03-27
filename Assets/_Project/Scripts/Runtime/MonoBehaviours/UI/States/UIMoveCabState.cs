@@ -22,10 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public sealed class UIMoveCabState : UIState
     {
-        public readonly Player Player;
+        public UIMoveCabState(UIContext context)
+        : base(context)
+        {
+        }
 
-        public PlayerContext(Player player) => Player = player;
+        public override void OnEnter() => _context.UIController.EnableSceneEditModeUI();
+
+        public override void OnExit() => _context.UIController.DisableSceneEditModeUI();
     }
 }

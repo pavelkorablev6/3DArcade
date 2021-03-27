@@ -22,10 +22,13 @@
 
 namespace Arcade
 {
-    public sealed class PlayerContext : FSM.Context<PlayerState>
+    public static class Utils
     {
-        public readonly Player Player;
-
-        public PlayerContext(Player player) => Player = player;
+        public static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
     }
 }

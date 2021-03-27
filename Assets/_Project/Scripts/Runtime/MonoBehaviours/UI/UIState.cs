@@ -22,11 +22,10 @@
 
 namespace Arcade
 {
-    public enum UIState
+    public abstract class UIState : FSM.State<UIState>
     {
-        None,
-        SceneLoading,
-        SceneNormal,
-        SceneEditMode
+        public readonly UIContext _context;
+
+        public UIState(UIContext context) => _context = context;
     }
 }

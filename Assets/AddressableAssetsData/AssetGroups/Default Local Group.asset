@@ -35,18 +35,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 0bce5907d797a4cd8b0660dc119867e8
-    m_Address: Arcades/TempCabin
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: dc3bd9336a0611a408bb58512aba394f
     m_Address: Materials/_screen
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    m_MainAsset: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f, type: 2}
+    m_TargetAsset: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f, type: 2}
   - m_GUID: 0edce053b8b684879b6d1aa64bfda02f
     m_Address: Props/_text
     m_ReadOnly: 0
@@ -103,42 +97,6 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: c1ccbafb552484a2aaf79eae7efa5f9a
     m_Address: Textures/_default_marquee_04
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 8cf9f43803e07844d9e5575ac901c868
-    m_Address: Props/ElectricScooterProp
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 31049d0c0a4cac543bfae8163737b6d4
-    m_Address: Props/ElectricScooter_black
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 9f5a4449b60ef444892d8ddd9b2e2ee5
-    m_Address: Props/ElectricScooter
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 4ee8be195b4d10845a7878dd13d8e083
-    m_Address: Props/ElectricScooterProp_black
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 634c41117f48a1940933d58845b6f252
-    m_Address: Arcades/TempRoom
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 5a463281e6e238742a45430f11e82829
-    m_Address: Arcades/TempIndustrial
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

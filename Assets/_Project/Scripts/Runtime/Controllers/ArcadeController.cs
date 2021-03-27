@@ -233,6 +233,7 @@ namespace Arcade
                     SetupPlayer();
                     SpawnEntities();
                     _ = SceneManager.SetActiveScene(scene);
+                    UnityEditor.SceneVisibilityManager.instance.DisablePicking(scene);
                     break;
                 }
             }
