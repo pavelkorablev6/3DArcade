@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: _screen
-  m_Shader: {fileID: -6465566751694194690, guid: 3847ef9e6ede44e4bb261889bf74632b,
+  m_Shader: {fileID: -6465566751694194690, guid: 32d8f31ed8b2a8443aa039710a1e3ef2,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -257,7 +257,7 @@ Material:
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
     - _ImageType: 0
-    - _Intensity: 1.99
+    - _Intensity: 1.8
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1
