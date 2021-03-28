@@ -28,39 +28,39 @@ namespace Arcade
     public sealed class CylArcadeProperties : ArcadeProperties
     {
         [XmlAttribute("wheel_variant")]
-        public CylArcadeWheelVariant WheelVariant;
+        public CylArcadeWheelVariant WheelVariant = CylArcadeWheelVariant.LineHorizontal;
 
         [XmlAttribute("wheel_radius")]
-        public float WheelRadius;
+        public float WheelRadius = 5f;
 
         [XmlAttribute("sprockets")]
-        public int Sprockets;
+        public int Sprockets = 5;
 
         [XmlElement("mouse_look")]
-        public bool MouseLook;
+        public bool MouseLook = false;
 
         [XmlElement("selected_sprocket")]
-        public int SelectedSprocket;
+        public int SelectedSprocket = -1;
 
         [XmlElement("selected_position_z")]
-        public float SelectedPositionZ;
+        public float SelectedPositionZ = 5f;
 
         [XmlElement("sprocket_rotation")]
-        public DatabaseVector3 SprocketRotation;
+        public DatabaseVector3 SprocketRotation = new DatabaseVector3(0f, 180f, 0f);
 
         [XmlElement("model_spacing")]
-        public float ModelSpacing;
+        public float ModelSpacing = 0.2f;
 
         [XmlElement("horizontal_navigation")]
-        public bool HorizontalNavigation;
+        public bool HorizontalNavigation = true;
 
         [XmlElement("inverse_navigation")]
-        public bool InverseNavigation;
+        public bool InverseNavigation = false;
 
         [XmlElement("inverse_list")]
-        public bool InverseList;
+        public bool InverseList = false;
 
         [XmlElement("line_angle")]
-        public float LineAngle;
+        public float LineAngle = -5f;
     }
 }

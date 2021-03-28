@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class ArcadeDatabase : MultiFileDatabase<ArcadeConfiguration>
     {
-        protected override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DummyArcade;
+        protected override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
 
         public ArcadeDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "arcade_cfgs")

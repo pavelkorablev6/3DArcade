@@ -20,47 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Xml.Serialization;
+using System.Diagnostics.CodeAnalysis;
+using UnityEditor;
 using UnityEngine;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    public sealed class DatabaseRect
+    internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration, PlatformConfigurationSO>
     {
-        [XmlAttribute("x")]
-        public float X = 0f;
+        public override MultiFileDatabase<PlatformConfiguration> Database => UE_ArcadeManager.PlatformDatabase;
 
-        [XmlAttribute("y")]
-        public float Y = 0f;
+        public override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DefaultPlatform;
 
-        [XmlAttribute("width")]
-        public float Width = 1f;
-
-        [XmlAttribute("height")]
-        public float Height = 1f;
-
-        public DatabaseRect()
-        {
-        }
-
-        public DatabaseRect(float x, float y, float width, float height)
-        {
-            X      = x;
-            Y      = y;
-            Width  = width;
-            Height = height;
-        }
-
-        public DatabaseRect(Rect r)
-        {
-            X      = r.x;
-            Y      = r.y;
-            Width  = r.width;
-            Height = r.height;
-        }
-
-        public static implicit operator DatabaseRect(Rect r) => new DatabaseRect(r);
-
-        public static implicit operator Rect(DatabaseRect r) => new Rect(r.X, r.Y, r.Width, r.Height);
+        [MenuItem("3DArcade/Platforms", priority = 11), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        private static void ShowWindow()
+            => GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
     }
 }

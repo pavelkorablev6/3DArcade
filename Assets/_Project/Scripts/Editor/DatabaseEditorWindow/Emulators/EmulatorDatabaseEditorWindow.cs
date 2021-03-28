@@ -26,26 +26,14 @@ using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration>
+    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
     {
-        private PlatformConfigurationSO _tempCfg;
+        public override MultiFileDatabase<EmulatorConfiguration> Database => UE_ArcadeManager.EmulatorDatabase;
 
-        [MenuItem("3DArcade/Platforms"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
+
+        [MenuItem("3DArcade/Emulators", priority = 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
-        {
-            PlatformDatabaseEditorWindow window = GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true);
-            window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
-        }
-
-        protected override MultiFileDatabase<PlatformConfiguration> Database => UE_ArcadeManager.PlatformDatabase;
-
-        protected override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DummyPlatform;
-
-        protected override SerializedObject GetSerializedObject(PlatformConfiguration cfg)
-        {
-            _tempCfg       = CreateInstance<PlatformConfigurationSO>();
-            _tempCfg.Value = cfg ?? DefaultConfiguration;
-            return new SerializedObject(_tempCfg);
-        }
+            => GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
     }
 }

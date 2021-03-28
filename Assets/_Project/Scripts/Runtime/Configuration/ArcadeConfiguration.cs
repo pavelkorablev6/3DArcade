@@ -27,48 +27,24 @@ namespace Arcade
     [System.Serializable, XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : DatabaseEntry
     {
-        public static readonly ArcadeConfiguration DummyArcade = MakeInternalArcade("_dummy", "InternalDummyArcade");
+        public static ArcadeConfiguration DefaultArcade => MakeInternalArcade("_default", "InternalDefaultArcade");
 
         [XmlElement("fpsarcade_properties")]
-        public FpsArcadeProperties FpsArcadeProperties;
+        public FpsArcadeProperties FpsArcadeProperties = new FpsArcadeProperties { Scene = "_cylinder" };
 
         [XmlElement("cylarcade_properties")]
-        public CylArcadeProperties CylArcadeProperties;
+        public CylArcadeProperties CylArcadeProperties = new CylArcadeProperties { Scene = "_empty" };
 
         [XmlArray("games"), XmlArrayItem("game")]
-        public ModelConfiguration[] Games;
+        public ModelConfiguration[] Games = new ModelConfiguration[0];
 
         [XmlArray("props"), XmlArrayItem("prop")]
-        public ModelConfiguration[] Props;
+        public ModelConfiguration[] Props = new ModelConfiguration[0];
 
         private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration
         {
-            Id             = id,
-            Description    = description,
-            FpsArcadeProperties = new FpsArcadeProperties
-            {
-                Scene          = "_cylinder",
-                RenderSettings = new RenderSettings
-                {
-                    MarqueeIntensity       = 4f,
-                    ScreenRasterIntensity  = 4f,
-                    ScreenVectorIntenstity = 8f,
-                    ScreenPinballIntensity = 1f
-                }
-            },
-            CylArcadeProperties = new CylArcadeProperties
-            {
-                Scene          = "_empty",
-                RenderSettings = new RenderSettings
-                {
-                    MarqueeIntensity       = 4f,
-                    ScreenRasterIntensity  = 4f,
-                    ScreenVectorIntenstity = 8f,
-                    ScreenPinballIntensity = 1f
-                }
-            },
-            Games = null,
-            Props = null
+            Id          = id,
+            Description = description
         };
     }
 }

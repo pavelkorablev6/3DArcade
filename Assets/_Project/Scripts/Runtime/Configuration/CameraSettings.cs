@@ -28,30 +28,30 @@ namespace Arcade
     public sealed class CameraSettings
     {
         [XmlElement("position")]
-        public DatabaseVector3 Position;
+        public DatabaseVector3 Position = default;
 
         [XmlElement("rotation")]
-        public DatabaseVector3 Rotation;
+        public DatabaseVector3 Rotation = default;
 
         [XmlElement("height")]
-        public float Height;
+        public float Height = 0.6f;
 
         [XmlAttribute("orthographic")]
-        public bool Orthographic;
+        public bool Orthographic = false;
 
         [XmlElement("field_of_view")]
-        public float FieldOfView;
+        public float FieldOfView = 60f;
 
         [XmlElement("aspect_ratio")]
-        public float AspectRatio;
+        public float AspectRatio = 1f;
 
         [XmlElement("near_clip")]
-        public float NearClipPlane;
+        public float NearClipPlane = 0.1f;
 
         [XmlElement("far_clip")]
-        public float FarClipPlane;
+        public float FarClipPlane = 300f;
 
         [XmlElement("viewport_rect")]
-        public DatabaseRect ViewportRect;
+        public DatabaseRect ViewportRect = default;
     }
 }

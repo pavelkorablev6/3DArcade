@@ -25,13 +25,12 @@ using UnityEngine;
 
 namespace Arcade
 {
+    [System.Serializable]
     public sealed class DatabaseVector3
     {
-        public static DatabaseVector3 zero = new DatabaseVector3(0f, 0f, 0f);
-
-        [XmlAttribute("x")] public float x = 0f;
-        [XmlAttribute("y")] public float y = 0f;
-        [XmlAttribute("z")] public float z = 0f;
+        [XmlAttribute("x")] public float X = 0f;
+        [XmlAttribute("y")] public float Y = 0f;
+        [XmlAttribute("z")] public float Z = 0f;
 
         public DatabaseVector3()
         {
@@ -39,20 +38,20 @@ namespace Arcade
 
         public DatabaseVector3(float x, float y, float z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         public DatabaseVector3(Vector3 v)
         {
-            x = v.x;
-            y = v.y;
-            z = v.z;
+            X = v.x;
+            Y = v.y;
+            Z = v.z;
         }
 
         public static implicit operator DatabaseVector3(Vector3 v) => new DatabaseVector3(v);
 
-        public static implicit operator Vector3(DatabaseVector3 v) => new Vector3(v.x, v.y, v.z);
+        public static implicit operator Vector3(DatabaseVector3 v) => new Vector3(v.X, v.Y, v.Z);
     }
 }

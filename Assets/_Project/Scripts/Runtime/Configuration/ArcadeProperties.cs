@@ -30,19 +30,19 @@ namespace Arcade
     {
         [Tooltip("First priority arcade scene name lookup.\nSecond priority is the 'Id' string.")]
         [XmlElement("scene")]
-        public string Scene;
+        public string Scene = "";
 
         [XmlElement("camera_settings")]
-        public CameraSettings CameraSettings;
+        public CameraSettings CameraSettings = default;
 
         [XmlElement("render_settings")]
-        public RenderSettings RenderSettings;
+        public RenderSettings RenderSettings = default;
 
         [XmlElement("audio_settings")]
-        public AudioSettings AudioSettings;
+        public AudioSettings AudioSettings = default;
 
         [Tooltip("If this is set, all games in the arcade will use this.")]
         [XmlElement("model")]
-        public string Model;
+        public string Model = "";
     }
 }

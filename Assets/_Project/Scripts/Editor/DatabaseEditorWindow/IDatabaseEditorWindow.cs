@@ -20,47 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Xml.Serialization;
-using UnityEngine;
+using UnityEditor;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    public sealed class DatabaseRect
+    internal interface IDatabaseEditorWindow<T> where T : DatabaseEntry
     {
-        [XmlAttribute("x")]
-        public float X = 0f;
+        MultiFileDatabase<T> Database { get; }
 
-        [XmlAttribute("y")]
-        public float Y = 0f;
+        SerializedObject GetSerializedObject(T entry);
 
-        [XmlAttribute("width")]
-        public float Width = 1f;
+        void ClearConfiguration();
 
-        [XmlAttribute("height")]
-        public float Height = 1f;
-
-        public DatabaseRect()
-        {
-        }
-
-        public DatabaseRect(float x, float y, float width, float height)
-        {
-            X      = x;
-            Y      = y;
-            Width  = width;
-            Height = height;
-        }
-
-        public DatabaseRect(Rect r)
-        {
-            X      = r.x;
-            Y      = r.y;
-            Width  = r.width;
-            Height = r.height;
-        }
-
-        public static implicit operator DatabaseRect(Rect r) => new DatabaseRect(r);
-
-        public static implicit operator Rect(DatabaseRect r) => new Rect(r.X, r.Y, r.Width, r.Height);
+        void DrawInlineButtons(T entry);
     }
 }

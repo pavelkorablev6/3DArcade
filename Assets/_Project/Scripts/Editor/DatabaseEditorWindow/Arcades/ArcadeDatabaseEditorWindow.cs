@@ -26,26 +26,23 @@ using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration>
+    internal sealed class ArcadeDatabaseEditorWindow : DatabaseEditorWindowBase<ArcadeConfiguration, ArcadeConfigurationSO>
     {
-        private EmulatorConfigurationSO _tempCfg;
+        public override MultiFileDatabase<ArcadeConfiguration> Database => UE_ArcadeManager.ArcadeDatabase;
 
-        [MenuItem("3DArcade/Emulators"), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
+
+        [MenuItem("3DArcade/Arcades", priority = 12), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
+            => GetWindow<ArcadeDatabaseEditorWindow>("Arcade Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+
+        public override void DrawInlineButtons(ArcadeConfiguration entry)
         {
-            EmulatorDatabaseEditorWindow window = GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true);
-            window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
-        }
+            if (GUILayout.Button("Load (FPS)", GUILayout.Width(85f)))
+                UE_ArcadeManager.LoadArcade(entry.Id, ArcadeType.Fps, true);
 
-        protected override MultiFileDatabase<EmulatorConfiguration> Database => UE_ArcadeManager.EmulatorDatabase;
-
-        protected override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
-
-        protected override SerializedObject GetSerializedObject(EmulatorConfiguration cfg)
-        {
-            _tempCfg       = CreateInstance<EmulatorConfigurationSO>();
-            _tempCfg.Value = cfg ?? DefaultConfiguration;
-            return new SerializedObject(_tempCfg);
+            if (GUILayout.Button("Load (CYL)", GUILayout.Width(85f)))
+                UE_ArcadeManager.LoadArcade(entry.Id, ArcadeType.Cyl, true);
         }
     }
 }

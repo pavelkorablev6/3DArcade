@@ -27,43 +27,39 @@ namespace Arcade
     [System.Serializable, XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : DatabaseEntry
     {
+        public static EmulatorConfiguration DummyEmulator => MakeInternalEmulator("_default", "InternalDefaultEmulator", InteractionType.Default);
+
+        public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalEmulator("_fps_arcade_launcher", "InternalFpsArcadeLauncher", InteractionType.FpsArcadeConfiguration);
+        public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalEmulator("_cyl_arcade_launcher", "InternalCylArcadeLauncher", InteractionType.CylArcadeConfiguration);
+        public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalEmulator("_fps_menu_launcher", "InternalFpsMenuLauncher", InteractionType.FpsMenuConfiguration);
+        public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalEmulator("_cyl_menu_launcher", "InternalCylMenuLauncher", InteractionType.CylMenuConfiguration);
+
         [XmlElement("interaction_type")]
-        public InteractionType InteractionType;
+        public InteractionType InteractionType = InteractionType.Default;
 
         [XmlElement("directory")]
-        public string Directory;
+        public string Directory = "";
 
         [XmlElement("working_directory")]
-        public string WorkingDirectory;
+        public string WorkingDirectory = "";
 
         [XmlElement("executable")]
-        public string Executable;
+        public string Executable = "";
 
         [XmlElement("arguments")]
-        public string Arguments;
+        public string Arguments = "";
 
         [XmlArray("supported_extensions"), XmlArrayItem("extension")]
-        public string[] SupportedExtensions;
+        public string[] SupportedExtensions = new string[0];
 
         [XmlArray("games_directories"), XmlArrayItem("directory")]
-        public string[] GamesDirectories;
+        public string[] GamesDirectories = new string[0];
 
-        public static readonly EmulatorConfiguration DummyEmulator     = MakeInternalLauncher("_dummy", "InternalDummyEmulator");
-        public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalLauncher("_fps_arcade_launcher", "InternalFpsArcadeLauncher");
-        public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalLauncher("_cyl_arcade_launcher", "InternalCylArcadeLauncher");
-        public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalLauncher("_fps_menu_launcher", "InternalFpsMenuLauncher");
-        public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalLauncher("_cyl_menu_launcher", "InternalCylMenuLauncher");
-
-        private static EmulatorConfiguration MakeInternalLauncher(string id, string description) => new EmulatorConfiguration
+        private static EmulatorConfiguration MakeInternalEmulator(string id, string description, InteractionType interactionType) => new EmulatorConfiguration
         {
-            Id                  = id,
-            Description         = description,
-            Directory           = null,
-            WorkingDirectory    = null,
-            Executable          = null,
-            Arguments           = null,
-            SupportedExtensions = null,
-            GamesDirectories    = null
+            Id              = id,
+            Description     = description,
+            InteractionType = interactionType
         };
     }
 }

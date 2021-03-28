@@ -28,18 +28,18 @@ namespace Arcade
     public sealed class AudioSettings
     {
         [XmlElement("main_volume")]
-        public float MainVolume;
+        public float MainVolume = 1f;
 
         [XmlElement("music_volume")]
-        public float MusicVolume;
+        public float MusicVolume = 0.6f;
 
         [XmlElement("ambient_volume")]
-        public float AmbientVolume;
+        public float AmbientVolume = 0.4f;
 
         [XmlElement("minimum_distance")]
-        public float MinimumDistance;
+        public float MinimumDistance = 1f;
 
         [XmlElement("maximum_distance")]
-        public float MaximumDistance;
+        public float MaximumDistance = 3f;
     }
 }

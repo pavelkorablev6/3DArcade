@@ -27,56 +27,45 @@ namespace Arcade
     [System.Serializable, XmlRoot("platform")]
     public sealed class PlatformConfiguration : DatabaseEntry
     {
+        public static PlatformConfiguration DefaultPlatform => MakeInternalPlatform("_default", "InternalDefaultPlatform");
+
         [XmlElement("master_list")]
-        public string MasterList;
+        public string MasterList = "";
 
         [XmlElement("emulator")]
-        public string Emulator;
+        public string Emulator = "";
 
         [XmlElement("model")]
-        public string Model;
+        public string Model = "";
 
         [XmlArray("marquee_images_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeImagesDirectories;
+        public string[] MarqueeImagesDirectories = new string[0];
 
         [XmlArray("marquee_videos_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeVideosDirectories;
+        public string[] MarqueeVideosDirectories = new string[0];
 
         [XmlArray("screen_snaps_directories"), XmlArrayItem("directory")]
-        public string[] ScreenSnapsDirectories;
+        public string[] ScreenSnapsDirectories = new string[0];
 
         [XmlArray("screen_titles_directories"), XmlArrayItem("directory")]
-        public string[] ScreenTitlesDirectories;
+        public string[] ScreenTitlesDirectories = new string[0];
 
         [XmlArray("screen_videos_directories"), XmlArrayItem("directory")]
-        public string[] ScreenVideosDirectories;
+        public string[] ScreenVideosDirectories = new string[0];
 
         [XmlArray("generic_images_directories"), XmlArrayItem("directory")]
-        public string[] GenericImagesDirectories;
+        public string[] GenericImagesDirectories = new string[0];
 
         [XmlArray("generic_videos_directories"), XmlArrayItem("directory")]
-        public string[] GenericVideosDirectories;
+        public string[] GenericVideosDirectories = new string[0];
 
         [XmlArray("info_directories"), XmlArrayItem("directory")]
-        public string[] InfoDirectories;
-
-        public static readonly PlatformConfiguration DummyPlatform = MakeInternalPlatform("_dummy", "InternalDummyPlatform");
+        public string[] InfoDirectories = new string[0];
 
         private static PlatformConfiguration MakeInternalPlatform(string id, string description) => new PlatformConfiguration
         {
-            Id                       = id,
-            Description              = description,
-            MasterList               = null,
-            Emulator                 = EmulatorConfiguration.DummyEmulator.Id,
-            Model                    = null,
-            MarqueeImagesDirectories = null,
-            MarqueeVideosDirectories = null,
-            ScreenSnapsDirectories   = null,
-            ScreenTitlesDirectories  = null,
-            ScreenVideosDirectories  = null,
-            GenericImagesDirectories = null,
-            GenericVideosDirectories = null,
-            InfoDirectories          = null
+            Id          = id,
+            Description = description
         };
     }
 }
