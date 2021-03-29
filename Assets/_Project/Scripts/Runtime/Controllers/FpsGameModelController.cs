@@ -26,8 +26,11 @@ namespace Arcade
 {
     public sealed class FpsGameModelController : ModelController
     {
-        public FpsGameModelController(ModelConfiguration modelConfiguration, Transform parent, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher)
-        : base(modelConfiguration, parent, platformDatabase, modelMatcher)
+        public FpsGameModelController(ModelConfiguration modelConfiguration,
+                                      Transform parent,
+                                      MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                                      IModelNameProvider modelNameProvider)
+        : base(modelConfiguration, parent, platformDatabase, modelNameProvider)
         {
         }
 

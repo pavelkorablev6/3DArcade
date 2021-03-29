@@ -31,13 +31,19 @@ namespace Arcade.UnityEditor
 
         private static void PlayModeStateChangedCallback(PlayModeStateChange state)
         {
-            if (!UE_ArcadeManager.Ready)
+            if (!ArcadeManager.Instance.Ready)
                 return;
 
-            if (state == PlayModeStateChange.ExitingEditMode)
-                UE_CloseArcadeMenuItem.CloseArcade();
-            else if (state == PlayModeStateChange.EnteredEditMode)
-                UE_ArcadeManager.ReloadCurrentArcade();
+            switch (state)
+            {
+                case PlayModeStateChange.EnteredEditMode:
+                    ArcadeManager.Instance.ReloadCurrentArcade();
+                    break;
+                case PlayModeStateChange.ExitingEditMode:
+                    ArcadeManager.SaveCurrentArcadeStateInEditorPrefs();
+                    UE_Utilities.CloseAllScenes();
+                    break;
+            }
         }
     }
 }

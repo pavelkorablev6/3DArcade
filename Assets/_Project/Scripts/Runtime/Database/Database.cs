@@ -28,7 +28,7 @@ namespace Arcade
 {
     public abstract class Database<T> where T : DatabaseEntry
     {
-        protected string Directory { get; private set; }
+        public string Directory { get; private set; }
 
         protected abstract T DefaultConfiguration { get; }
 

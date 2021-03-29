@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -38,14 +37,17 @@ namespace Arcade
 
         private readonly Transform _parent;
 
-        public ModelController(ModelConfiguration modelConfiguration, Transform parent, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher)
+        public ModelController(ModelConfiguration modelConfiguration,
+                               Transform parent,
+                               MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                               IModelNameProvider modelNameProvider)
         {
             _modelConfiguration = modelConfiguration;
             _parent             = parent;
 
             PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? platformDatabase.Get(modelConfiguration.Platform) : null;
             GameConfiguration game         = /*platform != null && !string.IsNullOrEmpty(platform.MasterList) ? gameDatabase.Get(platform.MasterList) : */null;
-            List<string> namesToTry        = modelMatcher.GetNamesToTryForGame(_modelConfiguration, platform, game);
+            IEnumerable<string> namesToTry = modelNameProvider.GetNamesToTryForGame(_modelConfiguration, platform, game);
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -75,7 +77,7 @@ namespace Arcade
             gameObject.name                 = _modelConfiguration.Id;
             gameObject.transform.localScale = _modelConfiguration.Scale;
             gameObject.AddComponent<ModelConfigurationComponent>()
-                      .FromModelConfiguration(_modelConfiguration);
+                      .SetModelConfiguration(_modelConfiguration);
 
             // Look for artworks only in play mode / runtime
             //if (Application.isPlaying)
@@ -108,7 +110,7 @@ namespace Arcade
         }
 
 #if UNITY_EDITOR
-        private void LoadInEditorGame(List<string> namesToTry)
+        private void LoadInEditorGame(IEnumerable<string> namesToTry)
         {
             foreach (string nameToTry in namesToTry)
             {
@@ -117,12 +119,12 @@ namespace Arcade
                     GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(nameToTry);
                     if (prefab != null)
                     {
-                        GameObject gameObject = UnityEngine.Object.Instantiate(prefab, ModelPosition, ModelOrientation, _parent);
+                        GameObject gameObject = Object.Instantiate(prefab, ModelPosition, ModelOrientation, _parent);
                         SetupModel(gameObject);
-                        break;
+                        return;
                     }
                 }
-                catch (Exception)
+                catch
                 {
                 }
             }

@@ -31,13 +31,15 @@ namespace Arcade
     public sealed class Main : MonoBehaviour
     {
         private InputActions _inputActions;
+        private IVirtualFileSystem _virtualFileSystem;
         private ArcadeContext _sceneContext;
 
         [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(InputActions inputActions, ArcadeContext sceneContext)
+        private void Construct(InputActions inputActions, IVirtualFileSystem virtualFileSystem, ArcadeContext sceneContext)
         {
-            _inputActions = inputActions;
-            _sceneContext = sceneContext;
+            _inputActions      = inputActions;
+            _virtualFileSystem = virtualFileSystem;
+            _sceneContext      = sceneContext;
         }
 
         private void Start()
@@ -46,7 +48,15 @@ namespace Arcade
             Application.targetFrameRate = -1;
             Time.timeScale              = 1f;
 
-            CheckCurrentOS();
+            ValidateCurrentOS();
+
+            string dataPath = SystemUtils.GetDataPath();
+            _ = _virtualFileSystem.MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
+                                  .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
+                                  .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                                  .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                                  .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
+                                  .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
 
             _sceneContext.Start();
         }
@@ -73,7 +83,7 @@ namespace Arcade
 #endif
         private void FixedUpdate() => _sceneContext.FixedUpdate(Time.fixedDeltaTime);
 
-        private void CheckCurrentOS()
+        private void ValidateCurrentOS()
         {
             try
             {

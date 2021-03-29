@@ -24,8 +24,8 @@ namespace Arcade
 {
     public class CylArcadeControllerLine : CylArcadeController
     {
-        public CylArcadeControllerLine(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
-        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
+        public CylArcadeControllerLine(ArcadeContext arcadeContext)
+        : base(arcadeContext)
         {
         }
 

@@ -28,7 +28,7 @@ namespace Arcade.UnityEditor
 {
     internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
     {
-        public override MultiFileDatabase<EmulatorConfiguration> Database => UE_ArcadeManager.EmulatorDatabase;
+        public override MultiFileDatabase<EmulatorConfiguration> Database => ArcadeManager.Instance.ArcadeContext.EmulatorDatabase;
 
         public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
 

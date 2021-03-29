@@ -47,14 +47,14 @@ namespace Arcade.UnityEditor
             using (new GUILayout.HorizontalScope())
             {
                 GUI.backgroundColor = Color.cyan;
-                if (GUILayout.Button("Add"))
+                if (GUILayout.Button(new GUIContent("Add", "Create a new configuration")))
                 {
                     AddButtonClicked();
                     return;
                 }
 
                 GUI.backgroundColor = Color.yellow;
-                if (GUILayout.Button("Reload"))
+                if (GUILayout.Button(new GUIContent("Reload", "Reload all configurations")))
                 {
                     ReloadButtonClicked();
                     return;
@@ -70,7 +70,7 @@ namespace Arcade.UnityEditor
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button(entry.ToString()))
+                    if (GUILayout.Button(new GUIContent(entry.ToString(), "Edit this configuration")))
                     {
                         ListItemEditButtonClicked(entry);
                         return;
@@ -79,7 +79,7 @@ namespace Arcade.UnityEditor
                     _context.DatabaseEditorWindow.DrawInlineButtons(entry);
 
                     GUI.backgroundColor = Color.red;
-                    if (GUILayout.Button("x", GUILayout.Width(35f)))
+                    if (GUILayout.Button(new GUIContent("x", "Delete this configuration"), GUILayout.Width(35f)))
                         ListItemDeleteButtonClicked(entry);
                     GUI.backgroundColor = originalBackgroundColor;
                 }

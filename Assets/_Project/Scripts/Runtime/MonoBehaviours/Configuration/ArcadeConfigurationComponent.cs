@@ -28,78 +28,61 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class ArcadeConfigurationComponent : MonoBehaviour
     {
-        [Tooltip("Second priority arcade scene name lookup, after ArcadeProperties.Scene.\nAlso used to match external artworks.\n")]
-        public string Id;
-        [Tooltip("Used for UI texts")]
-        public string Description;
-        [Tooltip("FPSArcade specific settings")]
-        public FpsArcadeProperties FpsArcadeProperties;
-        [Tooltip("CYLArcade specific settings")]
-        public CylArcadeProperties CylArcadeProperties;
+        public ArcadeType ArcadeType;
 
-        public bool Save(MultiFileDatabase<ArcadeConfiguration> arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
+        [SerializeField] private ArcadeConfiguration _arcadeConfiguration;
+
+        public string Id => _arcadeConfiguration.Id;
+
+        public ArcadeConfiguration GetArcadeConfiguration()
         {
-            GetParentNodes(out Transform games, out Transform props);
-
-            ArcadeConfiguration cfg = new ArcadeConfiguration
-            {
-                Id                  = Id,
-                Description         = Description,
-                FpsArcadeProperties = FpsArcadeProperties,
-                CylArcadeProperties = CylArcadeProperties,
-                Games               = saveGameTransforms ? GetModelConfigurations(games) : arcadeDatabase.Get(Id).Games,
-                Props               = GetModelConfigurations(props)
-            };
-
-            if (fpsCameraSettings != null)
-                cfg.FpsArcadeProperties.CameraSettings = fpsCameraSettings;
-
-            if (cylCameraSettings != null)
-                cfg.CylArcadeProperties.CameraSettings = cylCameraSettings;
-
-            return arcadeDatabase.Save(cfg);
-        }
-
-        public bool SaveModelsOnly(MultiFileDatabase<ArcadeConfiguration> arcadeDatabase, ArcadeConfiguration cfg)
-        {
-            GetGamesAndProps(out cfg.Games, out cfg.Props);
-            return arcadeDatabase.Save(cfg);
-        }
-
-        public void FromArcadeConfiguration(ArcadeConfiguration cfg)
-        {
-            Id                  = cfg.Id;
-            Description         = cfg.Description;
-            FpsArcadeProperties = cfg.FpsArcadeProperties;
-            CylArcadeProperties = cfg.CylArcadeProperties;
-        }
-
-        public ArcadeConfiguration ToArcadeConfiguration()
-        {
-            ArcadeConfiguration cfg = new ArcadeConfiguration
-            {
-                Id                  = Id,
-                Description         = Description,
-                FpsArcadeProperties = FpsArcadeProperties,
-                CylArcadeProperties = CylArcadeProperties
-            };
-
             GamesNodeTag gamesRoot = FindObjectOfType<GamesNodeTag>();
             if (gamesRoot != null)
             {
                 ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                cfg.Games = components.Select(x => x.ToModelConfiguration()).ToArray();
+                _arcadeConfiguration.Games = components.Select(x => x.GetModelConfiguration()).ToArray();
             }
 
             PropsNodeTag propsRoot = FindObjectOfType<PropsNodeTag>();
             if (propsRoot != null)
             {
                 ModelConfigurationComponent[] components = propsRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                cfg.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
+                _arcadeConfiguration.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
             }
 
-            return cfg;
+            return _arcadeConfiguration;
         }
+
+        public void SetArcadeConfiguration(ArcadeConfiguration arcadeConfiguration) => _arcadeConfiguration = arcadeConfiguration;
+
+        //public bool Save(MultiFileDatabase<ArcadeConfiguration> arcadeDatabase, CameraSettings fpsCameraSettings, CameraSettings cylCameraSettings, bool saveGameTransforms)
+        //{
+        //    GetParentNodes(out Transform games, out Transform props);
+
+        //    ArcadeConfiguration cfg = new ArcadeConfiguration
+        //    {
+        //        Id                  = Id,
+        //        Description         = Description,
+        //        FpsArcadeProperties = FpsArcadeProperties,
+        //        CylArcadeProperties = CylArcadeProperties,
+        //        Games               = saveGameTransforms ? GetModelConfigurations(games) : arcadeDatabase.Get(Id).Games,
+        //        Props               = GetModelConfigurations(props)
+        //    };
+
+        //    if (fpsCameraSettings != null)
+        //        cfg.FpsArcadeProperties.CameraSettings = fpsCameraSettings;
+
+        //    if (cylCameraSettings != null)
+        //        cfg.CylArcadeProperties.CameraSettings = cylCameraSettings;
+
+        //    return arcadeDatabase.Save(cfg);
+        //}
+
+        //public bool SaveModelsOnly(MultiFileDatabase<ArcadeConfiguration> arcadeDatabase, ArcadeConfiguration cfg)
+        //{
+        //    GetGamesAndProps(out cfg.Games, out cfg.Props);
+        //    return arcadeDatabase.Save(cfg);
+        //}
 
         //public void SetGamesAndPropsTransforms(ArcadeConfiguration cfg) => SetGamesAndPropsTransforms(cfg.Games, cfg.Props);
 
@@ -110,27 +93,27 @@ namespace Arcade
         //    SetModelTransforms(tProps, props);
         //}
 
-        private void GetGamesAndProps(out ModelConfiguration[] outGames, out ModelConfiguration[] outProps)
-        {
-            GetParentNodes(out Transform gamesNode, out Transform propsNode);
-            outGames = gamesNode != null ? GetModelConfigurations(gamesNode) : null;
-            outProps = propsNode != null ? GetModelConfigurations(propsNode) : null;
-        }
+        //private void GetGamesAndProps(out ModelConfiguration[] outGames, out ModelConfiguration[] outProps)
+        //{
+        //    GetParentNodes(out Transform gamesNode, out Transform propsNode);
+        //    outGames = gamesNode != null ? GetModelConfigurations(gamesNode) : null;
+        //    outProps = propsNode != null ? GetModelConfigurations(propsNode) : null;
+        //}
 
-        private void GetParentNodes(out Transform outGamesNode, out Transform outPropsNode)
-        {
-            GamesNodeTag gamesNode = FindObjectOfType<GamesNodeTag>();
-            outGamesNode = gamesNode != null ? gamesNode.transform : null;
+        //private void GetParentNodes(out Transform outGamesNode, out Transform outPropsNode)
+        //{
+        //    GamesNodeTag gamesNode = FindObjectOfType<GamesNodeTag>();
+        //    outGamesNode = gamesNode != null ? gamesNode.transform : null;
 
-            PropsNodeTag propsNode = FindObjectOfType<PropsNodeTag>();
-            outPropsNode = propsNode != null ? propsNode.transform : null;
-        }
+        //    PropsNodeTag propsNode = FindObjectOfType<PropsNodeTag>();
+        //    outPropsNode = propsNode != null ? propsNode.transform : null;
+        //}
 
-        private static ModelConfiguration[] GetModelConfigurations(Transform node)
-        {
-            ModelConfigurationComponent[] cfgComponents = node.GetComponentsInChildren<ModelConfigurationComponent>();
-            return cfgComponents.Select(x => x.ToModelConfiguration()).ToArray();;
-        }
+        //private static ModelConfiguration[] GetModelConfigurations(Transform node)
+        //{
+        //    ModelConfigurationComponent[] cfgComponents = node.GetComponentsInChildren<ModelConfigurationComponent>();
+        //    return cfgComponents.Select(x => x.GetModelConfiguration()).ToArray();;
+        //}
 
         //private static void SetModelTransforms(Transform node, ModelConfiguration[] modelConfigurations)
         //{

@@ -64,7 +64,7 @@ namespace Arcade
 
         public override void OnFixedUpdate(float dt)
         {
-            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.GeneralData.MoveCabMovable)
+            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.MoveCabMovable)
                 SceneEditModeController.ManualMoveAndRotate(_context.Data.ModelSetup.transform, _context.Data.Rigidbody, _context.Data.AimPosition, _context.Data.AimRotation);
         }
     }

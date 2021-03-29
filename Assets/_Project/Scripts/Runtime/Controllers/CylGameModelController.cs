@@ -26,8 +26,11 @@ namespace Arcade
 {
     public sealed class CylGameModelController : ModelController
     {
-        public CylGameModelController(ModelConfiguration modelConfiguration, Transform parent, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher)
-        : base(modelConfiguration, parent, platformDatabase, modelMatcher)
+        public CylGameModelController(ModelConfiguration modelConfiguration,
+                                      Transform parent,
+                                      MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                                      IModelNameProvider modelNameProvider)
+        : base(modelConfiguration, parent, platformDatabase, modelNameProvider)
         {
         }
 

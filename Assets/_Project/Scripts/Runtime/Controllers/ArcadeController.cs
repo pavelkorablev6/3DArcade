@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -28,6 +27,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 namespace Arcade
 {
@@ -44,23 +46,23 @@ namespace Arcade
         protected ArcadeConfiguration ArcadeConfiguration { get; private set; }
         protected ArcadeType ArcadeType { get; private set; }
 
-        protected readonly Player _player;
-        protected readonly GeneralConfiguration _generalConfiguration;
-        protected readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
-        protected readonly ModelMatcher _modelMatcher;
+        protected readonly ArcadeContext _arcadeContext;
 
+        protected Transform _arcadeNodeTransform;
         protected Transform _gamesNodeTransform;
         protected Transform _propsNodeTransform;
 
-        private readonly IUIController _uiController;
-        private readonly List<ModelController> _gameControllers;
+        private const string ARCADE_SETUP_SCENE_NAME = "ArcadeSetup";
+
+        private readonly List<ModelController> _gameModelControllers;
 
         private AsyncOperationHandle<SceneInstance> _loadArcadeSceneHandle;
         private IResourceLocation _arcadeSceneResourceLocation;
         private SceneInstance _arcadeSceneInstance;
 
-        private bool _includeEntities;
         private bool _triggerArcadeSceneReload;
+
+        private Scene _entititesScene;
 
         //public ModelConfigurationComponent CurrentGame { get; protected set; }
 
@@ -78,33 +80,28 @@ namespace Arcade
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
-        public ArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
+        public ArcadeController(ArcadeContext arcadeContext)
         {
-            _player               = player;
-            _generalConfiguration = generalConfiguration;
-            _platformDatabase     = platformDatabase;
-            _modelMatcher         = modelMatcher;
-            _uiController         = uiController;
-            _gameControllers      = new List<ModelController>();
+            _arcadeContext        = arcadeContext;
+            _gameModelControllers = new List<ModelController>();
         }
 
         public void DebugLogProgress()
         {
             if (_loadArcadeSceneHandle.IsValid() && !_loadArcadeSceneHandle.IsDone)
-                _uiController.UpdateStatusBar(_loadArcadeSceneHandle.PercentComplete);
+                _arcadeContext.UIController.UpdateStatusBar(_loadArcadeSceneHandle.PercentComplete);
         }
 
-        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType, bool includeEntities = true)
+        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
         {
             ArcadeSceneLoaded = false;
 
             ArcadeConfiguration = arcadeConfiguration;
             ArcadeType          = arcadeType;
-            _includeEntities    = includeEntities;
 
-            SetupEntitiesHierarchy();
+            SetupEntitiesScene();
 
-            List<string> namesToTry = _modelMatcher.GetNamesToTryForArcade(arcadeConfiguration, arcadeType);
+            IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForArcade(arcadeConfiguration, arcadeType);
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -128,7 +125,7 @@ namespace Arcade
 
             _arcadeSceneResourceLocation = aoHandle.Result[0];
 
-            _uiController.InitStatusBar($"Loading arcade: {_arcadeSceneResourceLocation}...");
+            _arcadeContext.UIController.InitStatusBar($"Loading arcade: {_arcadeSceneResourceLocation}...");
 
             LoadArcadeScene();
         }
@@ -147,37 +144,46 @@ namespace Arcade
             }
         }
 
-        private void SetupEntitiesHierarchy()
+        private void SetupEntitiesScene()
         {
-            SetupArcadeConfigurationNode();
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (_entititesScene != default)
+                    EditorSceneManager.CloseScene(_entititesScene, true);
+
+                _entititesScene      = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+                _entititesScene.name = ARCADE_SETUP_SCENE_NAME;
+            }
+            else
+                _entititesScene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
+#else
+            _entititesScene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
+#endif
+            SetupArcadeNode();
             SetupGamesNode();
             SetupPropsNode();
         }
 
-        private void SetupArcadeConfigurationNode()
+        private void SetupArcadeNode()
         {
-            ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>(true);
-            if (arcadeConfigurationComponent != null)
-            {
-                arcadeConfigurationComponent.gameObject.name = "ArcadeConfiguration";
-                arcadeConfigurationComponent.FromArcadeConfiguration(ArcadeConfiguration);
-            }
-            else
-            {
-                GameObject arcadeNodeGameObject = new GameObject("ArcadeConfiguration");
-                arcadeNodeGameObject.AddComponent<ArcadeConfigurationComponent>()
-                                    .FromArcadeConfiguration(ArcadeConfiguration);
-            }
+            GameObject arcadeGameObject = new GameObject("Arcade");
+            ArcadeConfigurationComponent arcadeConfigurationComponent = arcadeGameObject.AddComponent<ArcadeConfigurationComponent>();
+            arcadeConfigurationComponent.SetArcadeConfiguration(ArcadeConfiguration);
+            arcadeConfigurationComponent.ArcadeType = ArcadeType;
+            SceneManager.MoveGameObjectToScene(arcadeGameObject, _entititesScene);
+            _arcadeNodeTransform = arcadeGameObject.transform;
         }
 
-        private void SetupGamesNode() => _gamesNodeTransform = SetupNode<GamesNodeTag>("Games");
+        private void SetupGamesNode() => _gamesNodeTransform = SetupChildNode<GamesNodeTag>("Games");
 
-        private void SetupPropsNode() => _propsNodeTransform = SetupNode<PropsNodeTag>("Props");
+        private void SetupPropsNode() => _propsNodeTransform = SetupChildNode<PropsNodeTag>("Props");
 
-        private static Transform SetupNode<T>(string name) where T : Component
+        private Transform SetupChildNode<T>(string name) where T : Component
         {
-            GameObjectUtils.DestroyAllObjectsThatHaveComponent<T>();
-            return new GameObject(name, typeof(T)).transform;
+            GameObject nodeGameObject = new GameObject(name, typeof(T));
+            nodeGameObject.transform.SetParent(_arcadeNodeTransform);
+            return nodeGameObject.transform;
         }
 
         private void UnloadArcadeScene()
@@ -194,22 +200,18 @@ namespace Arcade
             _arcadeSceneInstance = aoHandle.Result;
 
             ArcadeSceneLoaded = true;
-            _uiController.ResetStatusBar();
+            _arcadeContext.UIController.ResetStatusBar();
             SetupPlayer();
             SpawnEntities();
 
             _ = SceneManager.SetActiveScene(_arcadeSceneInstance.Scene);
         }
 
-
         private void SpawnEntities()
         {
-            if (!_includeEntities)
-                return;
-
             if (ArcadeConfiguration.Games != null)
                 foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
-                    _gameControllers.Add(SetupGame(modelConfiguration));
+                    _gameModelControllers.Add(SetupGame(modelConfiguration));
         }
 
         private void ArcadeSceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
@@ -223,7 +225,7 @@ namespace Arcade
         }
 
 #if UNITY_EDITOR
-        private void LoadInEditorArcade(List<string> namesToTry)
+        private void LoadInEditorArcade(IEnumerable<string> namesToTry)
         {
             foreach (string nameToTry in namesToTry)
             {
@@ -235,7 +237,7 @@ namespace Arcade
                     SpawnEntities();
                     _ = SceneManager.SetActiveScene(scene);
                     UnityEditor.SceneVisibilityManager.instance.DisablePicking(scene);
-                    break;
+                    return;
                 }
             }
         }

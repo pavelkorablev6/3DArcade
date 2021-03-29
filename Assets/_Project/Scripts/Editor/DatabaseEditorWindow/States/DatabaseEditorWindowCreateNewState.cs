@@ -71,7 +71,7 @@ namespace Arcade.UnityEditor
                     GUI.enabled         = false;
                 }
 
-                if (GUILayout.Button("Add"))
+                if (GUILayout.Button(new GUIContent("Add", "Create this configuration file")))
                 {
                     AddButtonClicked();
                     return;
@@ -79,7 +79,7 @@ namespace Arcade.UnityEditor
 
                 GUI.backgroundColor = Color.yellow;
                 GUI.enabled         = true;
-                if (GUILayout.Button("Cancel"))
+                if (GUILayout.Button(new GUIContent("Cancel", "Cancel the creation of this configuration file")))
                 {
                     CancelButtonClicked();
                     return;
@@ -105,8 +105,8 @@ namespace Arcade.UnityEditor
         private void AddButtonClicked()
         {
             EditorGUI.FocusTextInControl(null);
-            _ = _context.AddEntry(_configuration);
-            _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
+            if (_context.AddEntry(_configuration))
+                _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }
 
         private void CancelButtonClicked()

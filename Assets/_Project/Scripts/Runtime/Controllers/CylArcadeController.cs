@@ -46,8 +46,8 @@ namespace Arcade
 
         //protected Transform _targetSelection;
 
-        public CylArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
-        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
+        public CylArcadeController(ArcadeContext arcadeContext)
+        : base(arcadeContext)
         {
             AudioMinDistance = 0f;
             AudioMaxDistance = 200f;
@@ -61,10 +61,10 @@ namespace Arcade
 
         protected sealed override void SetupPlayer()
         {
-            if (_generalConfiguration.EnableVR)
-                _player.TransitionTo<PlayerVirtualRealityCylState>();
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
+                _arcadeContext.Player.TransitionTo<PlayerVirtualRealityCylState>();
             else
-                _player.TransitionTo<PlayerNormalCylState>();
+                _arcadeContext.Player.TransitionTo<PlayerNormalCylState>();
 
             //_main.PlayerCylControls.gameObject.SetActive(false);
             //_main.PlayerCylControls.gameObject.SetActive(true);
@@ -89,7 +89,7 @@ namespace Arcade
         }
 
         protected override ModelController SetupGame(ModelConfiguration modelConfiguration)
-            => new CylGameModelController(modelConfiguration, _gamesNodeTransform, _platformDatabase, _modelMatcher);
+            => new CylGameModelController(modelConfiguration, _gamesNodeTransform, _arcadeContext.PlatformDatabase, _arcadeContext.ModelNameProvider);
 
         //protected abstract float GetSpacing(Transform previousModel, Transform currentModel);
 

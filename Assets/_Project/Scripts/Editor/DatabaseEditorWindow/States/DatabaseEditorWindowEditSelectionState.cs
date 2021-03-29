@@ -38,7 +38,7 @@ namespace Arcade.UnityEditor
         {
             EditorGUI.FocusTextInControl(null);
             _scrollPosition = Vector2.zero;
-            _configuration = (_context.TempCfgObject.targetObject as ConfigurationSO<T>).Value;
+            _configuration  = (_context.TempCfgObject.targetObject as ConfigurationSO<T>).Value;
         }
 
         public override void OnExit() => _context.ClearSerializedFields();
@@ -64,7 +64,7 @@ namespace Arcade.UnityEditor
                     GUI.enabled         = false;
                 }
 
-                if (GUILayout.Button("Save"))
+                if (GUILayout.Button(new GUIContent("Save", "Save this configuration, create a new configuration if 'Id' is changed")))
                 {
                     SaveButtonClicked();
                     return;
@@ -72,7 +72,7 @@ namespace Arcade.UnityEditor
 
                 GUI.backgroundColor = Color.yellow;
                 GUI.enabled         = true;
-                if (GUILayout.Button("Cancel"))
+                if (GUILayout.Button(new GUIContent("Cancel", "Revert all the changes")))
                 {
                     CancelButtonClicked();
                     return;
@@ -98,8 +98,8 @@ namespace Arcade.UnityEditor
         private void SaveButtonClicked()
         {
             EditorGUI.FocusTextInControl(null);
-            _ = _context.SaveEntry(_configuration);
-            _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
+            if (_context.SaveEntry(_configuration))
+                _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }
 
         private void CancelButtonClicked()

@@ -44,10 +44,10 @@ namespace Arcade
             SceneEditModeController.OnCurrentModelChanged -= OnTargetChange;
         }
 
-        private void OnTargetChange(ModelConfigurationComponent modelConfiguration)
+        private void OnTargetChange(ModelConfigurationComponent modelConfigurationComponent)
         {
-            if (modelConfiguration != null)
-                _text.SetText(modelConfiguration.VisualOverrides.Description);
+            if (modelConfigurationComponent != null)
+                _text.SetText(modelConfigurationComponent.Description);
             else
                 _text.Clear();
         }

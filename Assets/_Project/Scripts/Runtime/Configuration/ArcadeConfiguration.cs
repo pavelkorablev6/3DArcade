@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace Arcade
 {
@@ -36,9 +37,11 @@ namespace Arcade
         public CylArcadeProperties CylArcadeProperties = new CylArcadeProperties { Scene = "_empty" };
 
         [XmlArray("games"), XmlArrayItem("game")]
+        [HideInInspector]
         public ModelConfiguration[] Games = new ModelConfiguration[0];
 
         [XmlArray("props"), XmlArrayItem("prop")]
+        [HideInInspector]
         public ModelConfiguration[] Props = new ModelConfiguration[0];
 
         private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration

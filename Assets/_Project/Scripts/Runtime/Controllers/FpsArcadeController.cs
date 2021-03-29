@@ -35,8 +35,8 @@ namespace Arcade
         //protected override bool UseModelTransforms => true;
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
 
-        public FpsArcadeController(Player player, GeneralConfiguration generalConfiguration, MultiFileDatabase<PlatformConfiguration> platformDatabase, ModelMatcher modelMatcher, IUIController uiController)
-        : base(player, generalConfiguration, platformDatabase, modelMatcher, uiController)
+        public FpsArcadeController(ArcadeContext arcadeContext)
+        : base(arcadeContext)
         {
             AudioMinDistance = 1f;
             AudioMaxDistance = 3f;
@@ -51,10 +51,10 @@ namespace Arcade
 
         protected override void SetupPlayer()
         {
-            if (_generalConfiguration.EnableVR)
-                _player.TransitionTo<PlayerVirtualRealityFpsState>();
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
+                _arcadeContext.Player.TransitionTo<PlayerVirtualRealityFpsState>();
             else
-                _player.TransitionTo<PlayerNormalFpsState>();
+                _arcadeContext.Player.TransitionTo<PlayerNormalFpsState>();
 
             //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
 
@@ -73,6 +73,6 @@ namespace Arcade
         }
 
         protected override ModelController SetupGame(ModelConfiguration modelConfiguration)
-            => new FpsGameModelController(modelConfiguration, _gamesNodeTransform, _platformDatabase, _modelMatcher);
+            => new FpsGameModelController(modelConfiguration, _gamesNodeTransform, _arcadeContext.PlatformDatabase, _arcadeContext.ModelNameProvider);
     }
 }

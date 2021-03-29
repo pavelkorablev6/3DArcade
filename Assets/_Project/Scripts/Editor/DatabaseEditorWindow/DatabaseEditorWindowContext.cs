@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using UnityEditor;
-using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
@@ -30,13 +29,12 @@ namespace Arcade.UnityEditor
         public readonly IDatabaseEditorWindow<T> DatabaseEditorWindow;
 
         public T[] Entries { get; private set; }
-        public SerializedObject TempCfgObject { get; set; }
-        public SerializedProperty TempValueProperty { get; set; }
+        public SerializedObject TempCfgObject { get; private set; }
+        public SerializedProperty TempValueProperty { get; private set; }
 
         public DatabaseEditorWindowContext(IDatabaseEditorWindow<T> databaseEditorWindow)
         {
             DatabaseEditorWindow = databaseEditorWindow;
-            RefreshDatabase();
             TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }
 
@@ -53,21 +51,9 @@ namespace Arcade.UnityEditor
             Entries = DatabaseEditorWindow.Database.GetValues();
         }
 
-        public bool AddEntry(T entry)
-        {
-            bool result = DatabaseEditorWindow.Database.Add(entry) != null;
-            if (result)
-                RefreshDatabase();
-            return result;
-        }
+        public bool AddEntry(T entry) => DatabaseEditorWindow.Database.Add(entry) != null;
 
-        public bool SaveEntry(T entry)
-        {
-            bool result = DatabaseEditorWindow.Database.Save(entry);
-            if (result)
-                RefreshDatabase();
-            return result;
-        }
+        public bool SaveEntry(T entry) => DatabaseEditorWindow.Database.Save(entry);
 
         public void DeleteEntry(T entry)
         {

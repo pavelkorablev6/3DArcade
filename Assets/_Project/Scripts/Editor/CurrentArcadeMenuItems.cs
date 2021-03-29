@@ -20,21 +20,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEditor;
+using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal static class UE_CloseArcadeMenuItem
+    internal static class CurrentArcadeMenuItems
     {
-        [MenuItem("3DArcade/Close Arcade", false, 103)]
-        public static void CloseArcade()
+#pragma warning disable IDE0051 // Remove unused private members
+        [MenuItem("3DArcade/Reload Current Arcade", false, 103)]
+        private static void ReloadCurrentArcade() => ArcadeManager.Instance.ReloadCurrentArcade();
+
+        [MenuItem("3DArcade/Close Current Arcade", false, 103)]
+        private static void CloseCurrentArcade()
         {
-            UE_ArcadeManager.SetCurrentArcade();
-            GameObjectUtils.DestroyAllObjectsThatHaveComponent<ArcadeConfigurationComponent>();
-            GameObjectUtils.DestroyAllObjectsThatHaveComponent<GamesNodeTag>();
-            GameObjectUtils.DestroyAllObjectsThatHaveComponent<PropsNodeTag>();
+            ArcadeManager.ClearCurrentArcadeStateFromEditorPrefs();
             UE_Utilities.CloseAllScenes();
         }
+
+        // ************************************************************************************************
+        // * Validation
+        // ************************************************************************************************
+        [MenuItem("3DArcade/Reload Current Arcade", true)]
+        private static bool ReloadCurrentArcadeValidation() => !Application.isPlaying && !string.IsNullOrEmpty(EditorPrefs.GetString("LoadedArcadeId"));
+
+        [MenuItem("3DArcade/Close Current Arcade", true)]
+        private static bool CloseCurrentArcadeValidation() => ReloadCurrentArcadeValidation();
+#pragma warning restore IDE0051 // Remove unused private members
     }
 }

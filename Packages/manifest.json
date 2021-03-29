@@ -1,5 +1,15 @@
 {
-  "dependencies": {
+  "scopedRegistries": [
+  {
+    "name": "npmjs",
+    "url": "https://registry.npmjs.org/",
+    "scopes": [
+      "com.unity.uiextensions"
+    ]
+  }
+],
+"dependencies": {
+    "com.unity.uiextensions": "2.2.4",
     "com.sk.libretro": "https://github.com/Skurdt/SK.Libretro.git",
     "com.sk.utilities": "https://github.com/Skurdt/SK.Utilities.git",
     "com.sk.utilities.unity": "https://github.com/Skurdt/SK.Utilities.Unity.git",

@@ -303,7 +303,7 @@ namespace Arcade
                     ""id"": ""5bc352fa-37c6-428f-b639-dce6f5a7151f"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=0.4,y=0.2)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": true,

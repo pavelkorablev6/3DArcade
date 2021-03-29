@@ -28,7 +28,7 @@ namespace Arcade.UnityEditor
 {
     internal sealed class ArcadeDatabaseEditorWindow : DatabaseEditorWindowBase<ArcadeConfiguration, ArcadeConfigurationSO>
     {
-        public override MultiFileDatabase<ArcadeConfiguration> Database => UE_ArcadeManager.ArcadeDatabase;
+        public override MultiFileDatabase<ArcadeConfiguration> Database => ArcadeManager.Instance.ArcadeContext.ArcadeDatabase;
 
         public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
 
@@ -38,11 +38,11 @@ namespace Arcade.UnityEditor
 
         public override void DrawInlineButtons(ArcadeConfiguration entry)
         {
-            if (GUILayout.Button("Load (FPS)", GUILayout.Width(85f)))
-                UE_ArcadeManager.LoadArcade(entry.Id, ArcadeType.Fps, true);
+            if (GUILayout.Button(new GUIContent("Load (FPS)", "Load this arcade's fps scene"), GUILayout.Width(85f)))
+                ArcadeManager.Instance.LoadArcade(entry.Id, ArcadeType.Fps);
 
-            if (GUILayout.Button("Load (CYL)", GUILayout.Width(85f)))
-                UE_ArcadeManager.LoadArcade(entry.Id, ArcadeType.Cyl, true);
+            if (GUILayout.Button(new GUIContent("Load (CYL)", "Load this arcade's cyl scene"), GUILayout.Width(85f)))
+                ArcadeManager.Instance.LoadArcade(entry.Id, ArcadeType.Cyl);
         }
     }
 }

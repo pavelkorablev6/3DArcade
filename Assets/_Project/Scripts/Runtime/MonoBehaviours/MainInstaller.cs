@@ -42,7 +42,7 @@ namespace Arcade
             _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadeDatabase>().AsSingle().NonLazy();
 
-            _ = Container.Bind<ModelMatcher>().AsSingle().NonLazy();
+            _ = Container.Bind<IModelNameProvider>().To<ModelNameProvider>().AsSingle().NonLazy();
 
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }
