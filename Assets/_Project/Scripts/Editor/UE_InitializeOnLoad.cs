@@ -31,9 +31,6 @@ namespace Arcade.UnityEditor
 
         private static void PlayModeStateChangedCallback(PlayModeStateChange state)
         {
-            if (!ArcadeManager.Instance.Ready)
-                return;
-
             switch (state)
             {
                 case PlayModeStateChange.EnteredEditMode:

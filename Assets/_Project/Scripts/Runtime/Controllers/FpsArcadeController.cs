@@ -72,7 +72,7 @@ namespace Arcade
             //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
 
-        protected override ModelController SetupGame(ModelConfiguration modelConfiguration)
-            => new FpsGameModelController(modelConfiguration, _gamesNodeTransform, _arcadeContext.PlatformDatabase, _arcadeContext.ModelNameProvider);
+        protected override ModelController SetupGame(ModelConfiguration modelConfiguration, Transform parent)
+            => new GameModelControllerWithPosition(modelConfiguration, parent, _arcadeContext.ModelNameProvider, _arcadeContext.PlatformDatabase);
     }
 }

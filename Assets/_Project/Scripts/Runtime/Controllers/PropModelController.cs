@@ -20,22 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class CylGameModelController : ModelController
+    public sealed class PropModelController : ModelController
     {
-        public CylGameModelController(ModelConfiguration modelConfiguration,
-                                      Transform parent,
-                                      MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                                      IModelNameProvider modelNameProvider)
-        : base(modelConfiguration, parent, platformDatabase, modelNameProvider)
+        protected override Vector3 ModelPosition => _modelConfiguration.Position;
+
+        protected override Quaternion ModelOrientation => Quaternion.Euler(_modelConfiguration.Rotation);
+
+        public PropModelController(ModelConfiguration modelConfiguration,
+                                   Transform parent,
+                                   IModelNameProvider modelNameProvider)
+        : base(modelConfiguration, parent, modelNameProvider)
+            => SpawnModel();
+
+        protected override IEnumerable<string> GetNamesToTry() => _modelNameProvider.GetNamesToTryForProp(_modelConfiguration);
+
+        protected override void SetupArtworks()
         {
         }
-
-        protected override Vector3 ModelPosition => Vector3.zero;
-
-        protected override Quaternion ModelOrientation => Quaternion.identity;
     }
 }

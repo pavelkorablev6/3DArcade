@@ -130,7 +130,7 @@ namespace Arcade
                 if (Application.isPlaying)
                     result.AddStringIfNotNullOrEmpty($"{PROPS_ADDRESSABLES_PREFIX}{name}");
                 else
-                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESSABLES_PREFIX}{name}/{name}.prefab");
+                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESSABLES_PREFIX}{name}.prefab");
             }
         }
 

@@ -1,4 +1,4 @@
-/* MIT License
+﻿/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,53 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeLoadState : ArcadeState
+    public abstract class GameModelController : ModelController
     {
-        public ArcadeLoadState(ArcadeContext context)
-        : base(context)
+        protected readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+
+        protected GameModelController(ModelConfiguration modelConfiguration,
+                                      Transform parent,
+                                      IModelNameProvider modelNameProvider,
+                                      MultiFileDatabase<PlatformConfiguration> platformDatabase)
+        : base(modelConfiguration, parent, modelNameProvider)
         {
+            _platformDatabase = platformDatabase;
+            SpawnModel();
         }
 
-        public override void OnEnter()
+        protected sealed override IEnumerable<string> GetNamesToTry()
         {
-            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
-
-            CursorUtils.HideMouseCursor();
-
-            _context.UIController.TransitionTo<UILoadingState>();
+            PlatformConfiguration platform = !string.IsNullOrEmpty(_modelConfiguration.Platform) ? _platformDatabase.Get(_modelConfiguration.Platform) : null;
+            GameConfiguration game         = /*platform != null && !string.IsNullOrEmpty(platform.MasterList) ? gameDatabase.Get(platform.MasterList) : */null;
+            return _modelNameProvider.GetNamesToTryForGame(_modelConfiguration, platform, game);
         }
 
-        public override void OnExit()
+        protected sealed override void SetupArtworks()
         {
-            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            _context.UIController.TransitionTo<UIDisabledState>();
-        }
-
-        public override void OnUpdate(float dt)
-        {
-            if (!_context.ArcadeController.ArcadeSceneLoaded)
-            {
-                _context.ArcadeController.DebugLogProgress();
-                return;
-            }
-
-            switch (_context.ArcadeType)
-            {
-                case ArcadeType.Fps:
-                    _context.TransitionTo<ArcadeFpsNormalState>();
-                    break;
-                case ArcadeType.Cyl:
-                    _context.TransitionTo<ArcadeCylNormalState>();
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

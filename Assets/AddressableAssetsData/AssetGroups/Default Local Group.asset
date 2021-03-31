@@ -39,8 +39,8 @@ MonoBehaviour:
     m_Address: Materials/_screen
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f, type: 2}
-    m_TargetAsset: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0edce053b8b684879b6d1aa64bfda02f
     m_Address: Props/_text
     m_ReadOnly: 0
@@ -109,6 +109,12 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 8e38ea18ffbe3c048a0fba8f4c779367
     m_Address: Games/1942
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 42f0f4fd09ddc7d4783e8b55ebc5d55b
+    m_Address: Props/_pink_cube
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

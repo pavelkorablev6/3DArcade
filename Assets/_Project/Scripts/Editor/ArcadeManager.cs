@@ -21,7 +21,9 @@
  * SOFTWARE. */
 
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
@@ -29,16 +31,18 @@ namespace Arcade.UnityEditor
     {
         public static ArcadeManager Instance => _instance ?? new ArcadeManager();
 
-        public bool Ready { get; private set; }
-
         public readonly ArcadeContext ArcadeContext;
 
-        private static readonly ArcadeManager _instance;
+        private static ArcadeManager _instance;
+        private static GameObject _dummyGamePrefab;
+        private static GameObject _dummyPropPrefab;
 
         private ArcadeController _arcadeController;
 
         public ArcadeManager()
         {
+            _instance = this;
+
             string dataPath = SystemUtils.GetDataPath();
             IVirtualFileSystem vfs = new VirtualFileSystem().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
                                                             .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
@@ -47,31 +51,42 @@ namespace Arcade.UnityEditor
                                                             .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
                                                             .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
 
-            Player _player = Object.FindObjectOfType<Player>();
-            if (_player == null)
+            Player player = Object.FindObjectOfType<Player>();
+            if (player == null)
                 return;
 
-            _player.Construct(new PlayerContext(_player));
+            player.Construct(new PlayerContext(player));
 
-            GeneralConfiguration _generalConfiguration                 = new GeneralConfiguration(vfs);
-            MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase = new EmulatorDatabase(vfs);
-            MultiFileDatabase<PlatformConfiguration> _platformDatabase = new PlatformDatabase(vfs);
-            MultiFileDatabase<ArcadeConfiguration>   _arcadeDatabase   = new ArcadeDatabase(vfs);
-            IModelNameProvider _modelNameProvider                      = new ModelNameProvider();
-            IUIController _uiController                                = Object.FindObjectOfType<UIController>();
+            GeneralConfiguration generalConfiguration                 = new GeneralConfiguration(vfs);
+            MultiFileDatabase<EmulatorConfiguration> emulatorDatabase = new EmulatorDatabase(vfs);
+            MultiFileDatabase<PlatformConfiguration> platformDatabase = new PlatformDatabase(vfs);
+            MultiFileDatabase<ArcadeConfiguration>   arcadeDatabase   = new ArcadeDatabase(vfs);
+            IModelNameProvider modelNameProvider                      = new ModelNameProvider();
+            IUIController uiController                                = Object.FindObjectOfType<UIController>();
 
-            _generalConfiguration.Initialize();
-            _emulatorDatabase.Initialize();
-            _platformDatabase.Initialize();
-            _arcadeDatabase.Initialize();
+            generalConfiguration.Initialize();
+            emulatorDatabase.Initialize();
+            platformDatabase.Initialize();
+            arcadeDatabase.Initialize();
 
-            ArcadeContext = new ArcadeContext(null, _player, _generalConfiguration, _emulatorDatabase, _platformDatabase, _arcadeDatabase, _modelNameProvider, _uiController);
-
-            Ready = true;
+            ArcadeContext = new ArcadeContext(null,
+                                              player,
+                                              generalConfiguration,
+                                              emulatorDatabase,
+                                              platformDatabase,
+                                              arcadeDatabase,
+                                              modelNameProvider,
+                                              uiController);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)
         {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            if (ArcadeContext == null)
+                return;
+
             if (!ArcadeContext.ArcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
@@ -102,31 +117,35 @@ namespace Arcade.UnityEditor
                 break;
             }
 
-            if (_arcadeController != null)
-            {
-                SetCurrentArcadeStateInEditorPrefs(arcadeConfiguration.Id, arcadeType);
-                _arcadeController.StartArcade(arcadeConfiguration, arcadeType);
-            }
+            if (_arcadeController == null)
+                return;
+
+            SetCurrentArcadeStateInEditorPrefs(arcadeConfiguration.Id, arcadeType);
+            _arcadeController.StartArcade(arcadeConfiguration, arcadeType);
         }
 
         public void ReloadCurrentArcade()
         {
-            string loadedArcadeId = EditorPrefs.GetString("LoadedArcadeId", null);
-            if (!string.IsNullOrEmpty(loadedArcadeId))
-            {
-                ArcadeType loadedArcadeType = (ArcadeType)EditorPrefs.GetInt("LoadedArcadeType", 0);
-                LoadArcade(loadedArcadeId, loadedArcadeType);
-            }
+            string loadedArcadeId       = EditorPrefs.GetString("LoadedArcadeId", null);
+            ArcadeType loadedArcadeType = (ArcadeType)EditorPrefs.GetInt("LoadedArcadeType", 0);
+            LoadArcade(loadedArcadeId, loadedArcadeType);
+        }
+
+        public void SaveCurrentArcade()
+        {
+            if (!ArcadeContext.SaveCurrentArcade())
+                return;
+
+            SaveCurrentArcadeStateInEditorPrefs();
+            ReloadCurrentArcade();
         }
 
         public static void SaveCurrentArcadeStateInEditorPrefs()
         {
-            ArcadeConfigurationComponent arcadeConfigurationComponent = Object.FindObjectOfType<ArcadeConfigurationComponent>();
-            if (arcadeConfigurationComponent == null)
-            {
-                ClearCurrentArcadeStateFromEditorPrefs();
+            ClearCurrentArcadeStateFromEditorPrefs();
+
+            if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return;
-            }
 
             SetCurrentArcadeStateInEditorPrefs(arcadeConfigurationComponent.Id, arcadeConfigurationComponent.ArcadeType);
         }
@@ -141,6 +160,61 @@ namespace Arcade.UnityEditor
         {
             EditorPrefs.SetString("LoadedArcadeId", arcadeId);
             EditorPrefs.SetInt("LoadedArcadeType", (int)arcadeType);
+        }
+
+        public static void SpawnGame()
+        {
+            if (!ValidatePrefabStatus("pfDummyCabModel", ref _dummyGamePrefab))
+                return;
+
+            if (!EntitiesScene.TryGetGamesNode(out Transform gamesNode))
+                return;
+
+            SpawnEntity(gamesNode, _dummyGamePrefab);
+        }
+
+        public static void SpawnProp()
+        {
+            if (!ValidatePrefabStatus("pfDummyPropModel", ref _dummyPropPrefab))
+                return;
+
+            if (!EntitiesScene.TryGetPropsNode(out Transform gamesNode))
+                return;
+
+            SpawnEntity(gamesNode, _dummyPropPrefab);
+        }
+
+        private static bool ValidatePrefabStatus(string prefabName, ref GameObject outPrefab)
+        {
+            if (string.IsNullOrEmpty(prefabName))
+                return false;
+
+            if (outPrefab == null)
+                outPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/_Project/Prefabs/{prefabName}.prefab");
+            return outPrefab != null;
+        }
+
+        private static void SpawnEntity(Transform parent, GameObject prefab)
+        {
+            if (parent == null || prefab == null)
+                return;
+
+            GameObject gameObject = Object.Instantiate(prefab, parent);
+            gameObject.name       = "set_proper_id";
+
+            ModelConfiguration modelConfiguration = new ModelConfiguration
+            {
+                Id          = "id",
+                Description = "Description"
+            };
+            gameObject.AddComponent<ModelConfigurationComponent>()
+                      .SetModelConfiguration(modelConfiguration);
+
+            Scene entititesScene = SceneManager.GetSceneByName(EntitiesScene.ARCADE_SETUP_SCENE_NAME);
+            _ = EditorSceneManager.MarkSceneDirty(entititesScene);
+
+            Selection.activeGameObject = gameObject;
+            EditorGUIUtility.PingObject(gameObject);
         }
 
         //public void SaveArcade(ArcadeConfigurationComponent arcadeConfiguration)

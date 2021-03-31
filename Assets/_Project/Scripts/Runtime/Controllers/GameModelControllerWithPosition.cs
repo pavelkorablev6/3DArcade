@@ -24,18 +24,18 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class FpsGameModelController : ModelController
+    public sealed class GameModelControllerWithPosition : GameModelController
     {
-        public FpsGameModelController(ModelConfiguration modelConfiguration,
-                                      Transform parent,
-                                      MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                                      IModelNameProvider modelNameProvider)
-        : base(modelConfiguration, parent, platformDatabase, modelNameProvider)
-        {
-        }
-
         protected override Vector3 ModelPosition => _modelConfiguration.Position;
 
         protected override Quaternion ModelOrientation => Quaternion.Euler(_modelConfiguration.Rotation);
+
+        public GameModelControllerWithPosition(ModelConfiguration modelConfiguration,
+                                               Transform parent,
+                                               IModelNameProvider modelNameProvider,
+                                               MultiFileDatabase<PlatformConfiguration> platformDatabase)
+        : base(modelConfiguration, parent, modelNameProvider, platformDatabase)
+        {
+        }
     }
 }

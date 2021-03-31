@@ -34,39 +34,45 @@ namespace Arcade
         protected abstract Quaternion ModelOrientation { get; }
 
         protected readonly ModelConfiguration _modelConfiguration;
+        protected readonly IModelNameProvider _modelNameProvider;
 
         private readonly Transform _parent;
 
-        public ModelController(ModelConfiguration modelConfiguration,
-                               Transform parent,
-                               MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                               IModelNameProvider modelNameProvider)
+        protected ModelController(ModelConfiguration modelConfiguration,
+                                  Transform parent,
+                                  IModelNameProvider modelNameProvider)
         {
             _modelConfiguration = modelConfiguration;
             _parent             = parent;
+            _modelNameProvider  = modelNameProvider;
+        }
 
-            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? platformDatabase.Get(modelConfiguration.Platform) : null;
-            GameConfiguration game         = /*platform != null && !string.IsNullOrEmpty(platform.MasterList) ? gameDatabase.Get(platform.MasterList) : */null;
-            IEnumerable<string> namesToTry = modelNameProvider.GetNamesToTryForGame(_modelConfiguration, platform, game);
+        protected void SpawnModel()
+        {
+            IEnumerable<string> namesToTry = GetNamesToTry();
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                LoadInEditorGame(namesToTry);
+                SetupEntityOutsidePlayMode(namesToTry);
                 return;
             }
 #endif
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += GameResourceLocationsRetrievedCallback;
+            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
         }
 
-        private void GameResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
+        protected abstract IEnumerable<string> GetNamesToTry();
+
+        protected abstract void SetupArtworks();
+
+        private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
             if (aoHandle.Result.Count == 0)
                 return;
 
-            Addressables.InstantiateAsync(aoHandle.Result[0], ModelPosition, ModelOrientation, _parent).Completed += GameInstantiatedCallback;
+            Addressables.InstantiateAsync(aoHandle.Result[0], ModelPosition, ModelOrientation, _parent).Completed += InstantiatedCallback;
         }
 
-        private void GameInstantiatedCallback(AsyncOperationHandle<GameObject> aoHandle)
+        private void InstantiatedCallback(AsyncOperationHandle<GameObject> aoHandle)
         {
             if (aoHandle.Status == AsyncOperationStatus.Succeeded)
                 SetupModel(aoHandle.Result);
@@ -80,25 +86,25 @@ namespace Arcade
                       .SetModelConfiguration(_modelConfiguration);
 
             // Look for artworks only in play mode / runtime
-            //if (Application.isPlaying)
+            if (Application.isPlaying)
+                SetupArtworks();
+
+            //PlatformConfiguration platform = null;
+            //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
+            //    platform = _platformDatabase.Get(modelConfiguration.Platform);
+
+            //GameConfiguration game = null;
+            //if (platform != null && platform.MasterList != null)
             //{
-            //    PlatformConfiguration platform = null;
-            //    //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
-            //    //    platform = _platformDatabase.Get(modelConfiguration.Platform);
-
-            //    GameConfiguration game = null;
-            //    if (platform != null && platform.MasterList != null)
+            //    game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
+            //    if (game != null)
             //    {
-            //        //game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
-            //        if (game != null)
-            //        {
-            //        }
             //    }
-
-            //    _marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
-            //    _screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
-            //    _genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
             //}
+
+            //_marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
+            //_screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
+            //_genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
 
             //if (gameModels)
             //{
@@ -110,7 +116,7 @@ namespace Arcade
         }
 
 #if UNITY_EDITOR
-        private void LoadInEditorGame(IEnumerable<string> namesToTry)
+        private void SetupEntityOutsidePlayMode(IEnumerable<string> namesToTry)
         {
             foreach (string nameToTry in namesToTry)
             {

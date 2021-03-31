@@ -9,7 +9,6 @@
       <aspect_ratio>1</aspect_ratio>
       <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
-      <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
       <marquee_intensity>4</marquee_intensity>
@@ -36,7 +35,6 @@
       <aspect_ratio>2</aspect_ratio>
       <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
-      <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
       <marquee_intensity>4</marquee_intensity>
@@ -200,7 +198,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.4858613" y="-0.0264974833" z="-1.2099961" />
-      <rotation x="-8.9273286E-05" y="90.00004" z="-1.13223477E-05" />
+      <rotation x="-8.927341E-05" y="90.00004" z="-1.13223323E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="scramble" description="" platform="arcade">
@@ -235,7 +233,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-4.55319" y="-3.33786E-06" z="-2.12044549" />
-      <rotation x="-0.000193790576" y="90.00006" z="0.000454563764" />
+      <rotation x="-0.000193790882" y="90.00006" z="0.000454563822" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="rtype" description="" platform="arcade">
@@ -375,7 +373,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="8.57709" y="-2.2649765E-06" z="1.1289115" />
-      <rotation x="-1.06492912E-07" y="-177.439941" z="-7.865219E-05" />
+      <rotation x="-1.0649169E-07" y="-177.439941" z="-7.865226E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="marble" description="" platform="arcade">
@@ -410,7 +408,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="8.110512" y="-3.4570694E-06" z="-3.8852284" />
-      <rotation x="-0.0002212119" y="-44.95981" z="9.958421E-05" />
+      <rotation x="-0.000221212162" y="-44.95981" z="9.958422E-05" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="mappy" description="" platform="arcade">
@@ -655,7 +653,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="-0.7181876" y="-0.0435495973" z="-1.13218164" />
-      <rotation x="-4.192777E-05" y="53.3601227" z="-0.000395526964" />
+      <rotation x="-4.192777E-05" y="53.3601227" z="-0.000395526935" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="robotron" description="" platform="arcade">
@@ -725,7 +723,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="1.97076607" y="-0.008183658" z="1.36508417" />
-      <rotation x="-0.0006305197" y="178.615555" z="0.0005116255" />
+      <rotation x="-0.0006305202" y="178.615555" z="0.0005116256" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="pengo" description="" platform="arcade">
@@ -1285,7 +1283,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="2.183637" y="-2.44379044E-06" z="-1.98795617" />
-      <rotation x="-0.000163550256" y="74.9931946" z="-9.67869E-06" />
+      <rotation x="-0.000163550285" y="74.9931946" z="-9.678709E-06" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="szaxxon" description="" platform="arcade">
@@ -1495,7 +1493,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="11.7193193" y="0.0009896159" z="-3.04335141" />
-      <rotation x="-0.0006193225" y="0.8007703" z="0.0005083821" />
+      <rotation x="-0.000619323459" y="0.8007703" z="0.0005083821" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="ssf2" description="" platform="arcade">
@@ -1530,7 +1528,7 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="12.5792942" y="0.0009897351" z="-3.033144" />
-      <rotation x="-0.0005863212" y="2.08039117" z="0.000546268537" />
+      <rotation x="-0.0005863222" y="2.08039165" z="0.000546268537" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="1942" description="" platform="arcade">
@@ -1565,7 +1563,31 @@
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
       <position x="10.5483923" y="-0.0134921074" z="1.051185" />
-      <rotation x="0.000306872185" y="112.879845" z="-0.000662469538" />
+      <rotation x="0.000306872476" y="112.879845" z="-0.000662469363" />
+      <scale x="1" y="1" z="1" />
+    </game>
+    <game id="id" description="Description">
+      <grabbable>false</grabbable>
+      <movecab_movable>false</movecab_movable>
+      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>Default</interaction_type>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
+      <mature>false</mature>
+      <position x="0" y="0" z="5.08" />
+      <rotation x="0" y="180" z="0" />
+      <scale x="1" y="1" z="1" />
+    </game>
+    <game id="id" description="Description">
+      <grabbable>false</grabbable>
+      <movecab_movable>false</movecab_movable>
+      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>Default</interaction_type>
+      <screen_type>Default</screen_type>
+      <screen_orientation>Default</screen_orientation>
+      <mature>false</mature>
+      <position x="5.41" y="0" z="-0.91" />
+      <rotation x="-0" y="-89.99997" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>

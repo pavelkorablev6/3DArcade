@@ -38,6 +38,9 @@ namespace Arcade
         public readonly MultiFileDatabase<ArcadeConfiguration> ArcadeDatabase;
         public readonly IModelNameProvider ModelNameProvider;
         public readonly IUIController UIController;
+        public readonly ArcadeSceneManager ArcadeSceneManager;
+
+        public readonly EntitiesScene EntitiesSceneManager;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeType ArcadeType { get; private set; }
@@ -47,7 +50,6 @@ namespace Arcade
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
 
-        //private readonly ObjectsHierarchy _objectsHierarchy;
         //private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
@@ -70,22 +72,12 @@ namespace Arcade
             ArcadeDatabase       = arcadeDatabase;
             ModelNameProvider    = modelNameProvider;
 
+            ArcadeSceneManager   = new ArcadeSceneManager();
+            EntitiesSceneManager = new EntitiesScene();
+
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
             //_genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
-            //_objectsHierarchy = new NormalHierarchy();
-        }
-
-        public void StartArcade(string id, ArcadeType type, ArcadeMode mode)
-        {
-            if (!ArcadeDatabase.Get(id, out ArcadeConfiguration configuration))
-                return;
-
-            ArcadeConfiguration = configuration;
-            ArcadeType          = type;
-            ArcadeMode          = mode;
-
-            StartCurrentArcade();
         }
 
         protected override void OnStart()
@@ -105,10 +97,26 @@ namespace Arcade
                 StartCurrentArcade();
         }
 
+        private void StartArcade(string id, ArcadeType type, ArcadeMode mode)
+        {
+            if (string.IsNullOrEmpty(id))
+                return;
+
+            if (!ArcadeDatabase.Get(id, out ArcadeConfiguration configuration))
+                return;
+
+            ArcadeConfiguration = configuration;
+            ArcadeType          = type;
+            ArcadeMode          = mode;
+
+            StartCurrentArcade();
+        }
+
         private void StartCurrentArcade()
         {
             Player.TransitionTo<PlayerDisabledState>();
             ArcadeController?.StopArcade();
+            ArcadeController = null;
 
             switch (ArcadeType)
             {
@@ -155,6 +163,15 @@ namespace Arcade
 
             ArcadeController.StartArcade(ArcadeConfiguration, ArcadeType);
             TransitionTo<ArcadeLoadState>();
+        }
+
+        public bool SaveCurrentArcade()
+        {
+            if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
+                return false;
+            if (!ArcadeDatabase.Save(arcadeConfigurationComponent.GetArcadeConfiguration()))
+                return false;
+            return ArcadeDatabase.LoadAll();
         }
 
         /*

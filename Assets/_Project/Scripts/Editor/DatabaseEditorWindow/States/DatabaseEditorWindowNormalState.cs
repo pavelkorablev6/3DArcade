@@ -108,6 +108,14 @@ namespace Arcade.UnityEditor
         private void ListItemDeleteButtonClicked(T entry)
         {
             EditorGUI.FocusTextInControl(null);
+
+            if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent, false)
+                && arcadeConfigurationComponent.Id.Equals(entry.Id, System.StringComparison.OrdinalIgnoreCase))
+            {
+                ArcadeManager.ClearCurrentArcadeStateFromEditorPrefs();
+                UE_Utilities.CloseAllScenes();
+            }
+
             _context.DeleteEntry(entry);
         }
     }

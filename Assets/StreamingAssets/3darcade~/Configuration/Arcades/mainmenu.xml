@@ -17,6 +17,7 @@
       <screen_vector_intenstity>8</screen_vector_intenstity>
       <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
+    <model />
   </fpsarcade_properties>
   <cylarcade_properties wheel_variant="LineHorizontal" wheel_radius="5" sprockets="5">
     <scene>_empty</scene>
@@ -52,15 +53,14 @@
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <description>Space Port</description>
       <model />
       <interaction_type>FpsArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -72,23 +72,22 @@
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
-      <position x="0" y="0" z="5" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0" y="0" z="0" />
+      <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="toga" platform="">
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <description>Time Out: Golden Age</description>
       <model />
       <interaction_type>FpsArcadeConfiguration</interaction_type>
       <emulator />
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -100,8 +99,8 @@
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
-      <position x="3.14422822" y="0" z="5" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0" y="0" z="0" />
+      <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_right">
@@ -114,16 +113,16 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
-      <position x="6.28845644" y="0" z="5" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0" y="0" z="0" />
+      <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_left">
@@ -136,8 +135,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -158,8 +157,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -180,8 +179,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -202,8 +201,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -224,8 +223,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -246,8 +245,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -268,8 +267,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -290,8 +289,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -312,8 +311,8 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
@@ -334,16 +333,16 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
-      <position x="-6.28845644" y="0" z="5" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0" y="0" z="0" />
+      <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_outside_up">
@@ -356,25 +355,48 @@
       <marquee_image_directories />
       <marquee_video_directories />
       <screen_snap_directories />
-      <screen_video_directories />
       <screen_title_directories />
+      <screen_video_directories />
       <generic_image_directories />
       <generic_video_directories />
       <info_directories />
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
-      <position x="-3.14422822" y="0" z="5" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0" y="0" z="0" />
+      <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>
   <props>
-    <prop id="menu_title">
+    <prop id="menu_title" description="" platform="">
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
+      <model>_text</model>
       <interaction_type>Default</interaction_type>
+      <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
+      <marquee_image_directories />
+      <marquee_video_directories />
+      <screen_snap_directories />
+      <screen_title_directories />
+      <screen_video_directories />
+      <generic_image_directories />
+      <generic_video_directories />
+      <info_directories />
+      <cloneof />
+      <romof />
+      <genre />
+      <year />
+      <manufacturer />
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>
@@ -382,11 +404,34 @@
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </prop>
-    <prop id="default_mainmenu_background">
+    <prop id="default_mainmenu_background" description="" platform="">
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
+      <model>_plane</model>
       <interaction_type>Default</interaction_type>
+      <emulator />
+      <marquee_image_files />
+      <marquee_video_files />
+      <screen_snap_files />
+      <screen_title_files />
+      <screen_video_files />
+      <generic_image_files />
+      <genericv_ideo_files />
+      <info_files />
+      <marquee_image_directories />
+      <marquee_video_directories />
+      <screen_snap_directories />
+      <screen_title_directories />
+      <screen_video_directories />
+      <generic_image_directories />
+      <generic_video_directories />
+      <info_directories />
+      <cloneof />
+      <romof />
+      <genre />
+      <year />
+      <manufacturer />
       <screen_type>Default</screen_type>
       <screen_orientation>Default</screen_orientation>
       <mature>false</mature>

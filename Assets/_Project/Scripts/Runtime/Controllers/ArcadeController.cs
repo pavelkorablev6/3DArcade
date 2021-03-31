@@ -22,47 +22,27 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
-using UnityEngine.ResourceManagement.ResourceProviders;
-using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 namespace Arcade
 {
     public abstract class ArcadeController
     {
+        public bool ArcadeSceneLoaded { get; private set; }
+
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
 
-        public bool ArcadeSceneLoaded { get; private set; }
-
         protected abstract CameraSettings CameraSettings { get; }
 
         protected ArcadeConfiguration ArcadeConfiguration { get; private set; }
-        protected ArcadeType ArcadeType { get; private set; }
 
         protected readonly ArcadeContext _arcadeContext;
 
-        protected Transform _arcadeNodeTransform;
-        protected Transform _gamesNodeTransform;
-        protected Transform _propsNodeTransform;
+        private readonly List<ModelController> _gameModelControllers = new List<ModelController>();
+        private readonly List<ModelController> _propModelControllers = new List<ModelController>();
 
-        private const string ARCADE_SETUP_SCENE_NAME = "ArcadeSetup";
-
-        private readonly List<ModelController> _gameModelControllers;
-
-        private AsyncOperationHandle<SceneInstance> _loadArcadeSceneHandle;
-        private IResourceLocation _arcadeSceneResourceLocation;
-        private SceneInstance _arcadeSceneInstance;
-
-        private bool _triggerArcadeSceneReload;
-
-        private Scene _entititesScene;
+        private ArcadeType _arcadeType;
 
         //public ModelConfigurationComponent CurrentGame { get; protected set; }
 
@@ -82,166 +62,74 @@ namespace Arcade
 
         public ArcadeController(ArcadeContext arcadeContext)
         {
-            _arcadeContext        = arcadeContext;
-            _gameModelControllers = new List<ModelController>();
-        }
+            _arcadeContext = arcadeContext;
 
-        public void DebugLogProgress()
-        {
-            if (_loadArcadeSceneHandle.IsValid() && !_loadArcadeSceneHandle.IsDone)
-                _arcadeContext.UIController.UpdateStatusBar(_loadArcadeSceneHandle.PercentComplete);
+            _arcadeContext.ArcadeSceneManager.Started   = ArcadeSceneManagerStartedCallback;
+            _arcadeContext.ArcadeSceneManager.Completed = ArcadeSceneManagerCompletedCallback;
+
+            _arcadeContext.EntitiesSceneManager.Completed = LoadArcadeScene;
         }
 
         public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
         {
-            ArcadeSceneLoaded = false;
-
             ArcadeConfiguration = arcadeConfiguration;
-            ArcadeType          = arcadeType;
+            _arcadeType         = arcadeType;
 
-            SetupEntitiesScene();
-
-            IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForArcade(arcadeConfiguration, arcadeType);
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                LoadInEditorArcade(namesToTry);
-                return;
-            }
-#endif
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance)).Completed += ArcadeSceneResourceLocationRetrievedCallback;
+            _arcadeContext.EntitiesSceneManager.Initialize(arcadeConfiguration, arcadeType);
         }
 
-        public void StopArcade() => UnloadArcadeScene();
+        public void StopArcade() => _arcadeContext.ArcadeSceneManager.UnloadScene();
+
+        public void DebugLogProgress()
+        {
+            if (_arcadeContext.ArcadeSceneManager.IsSceneLoading)
+                _arcadeContext.UIController.UpdateStatusBar(_arcadeContext.ArcadeSceneManager.LoadingPercentCompleted);
+        }
 
         protected abstract void SetupPlayer();
 
-        protected abstract ModelController SetupGame(ModelConfiguration modelConfiguration);
-
-        private void ArcadeSceneResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
-        {
-            if (aoHandle.Result.Count == 0)
-                return;
-
-            _arcadeSceneResourceLocation = aoHandle.Result[0];
-
-            _arcadeContext.UIController.InitStatusBar($"Loading arcade: {_arcadeSceneResourceLocation}...");
-
-            LoadArcadeScene();
-        }
+        protected abstract ModelController SetupGame(ModelConfiguration modelConfiguration, Transform parent);
 
         private void LoadArcadeScene()
         {
-            if (_arcadeSceneInstance.Scene.isLoaded)
-            {
-                _triggerArcadeSceneReload = true;
-                UnloadArcadeScene();
-            }
-            else
-            {
-                _loadArcadeSceneHandle = Addressables.LoadSceneAsync(_arcadeSceneResourceLocation, LoadSceneMode.Additive);
-                _loadArcadeSceneHandle.Completed += ArcadeSceneLoadedCallback;
-            }
+            IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForArcade(ArcadeConfiguration, _arcadeType);
+            _arcadeContext.ArcadeSceneManager.LoadScene(namesToTry);
         }
 
-        private void SetupEntitiesScene()
+        private void ArcadeSceneManagerStartedCallback(string resourceLocation)
+            => _arcadeContext.UIController.InitStatusBar($"Loading arcade: {resourceLocation}...");
+
+        private void ArcadeSceneManagerCompletedCallback()
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                if (_entititesScene != default)
-                    EditorSceneManager.CloseScene(_entititesScene, true);
-
-                _entititesScene      = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-                _entititesScene.name = ARCADE_SETUP_SCENE_NAME;
-            }
-            else
-                _entititesScene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
-#else
-            _entititesScene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
-#endif
-            SetupArcadeNode();
-            SetupGamesNode();
-            SetupPropsNode();
-        }
-
-        private void SetupArcadeNode()
-        {
-            GameObject arcadeGameObject = new GameObject("Arcade");
-            ArcadeConfigurationComponent arcadeConfigurationComponent = arcadeGameObject.AddComponent<ArcadeConfigurationComponent>();
-            arcadeConfigurationComponent.SetArcadeConfiguration(ArcadeConfiguration);
-            arcadeConfigurationComponent.ArcadeType = ArcadeType;
-            SceneManager.MoveGameObjectToScene(arcadeGameObject, _entititesScene);
-            _arcadeNodeTransform = arcadeGameObject.transform;
-        }
-
-        private void SetupGamesNode() => _gamesNodeTransform = SetupChildNode<GamesNodeTag>("Games");
-
-        private void SetupPropsNode() => _propsNodeTransform = SetupChildNode<PropsNodeTag>("Props");
-
-        private Transform SetupChildNode<T>(string name) where T : Component
-        {
-            GameObject nodeGameObject = new GameObject(name, typeof(T));
-            nodeGameObject.transform.SetParent(_arcadeNodeTransform);
-            return nodeGameObject.transform;
-        }
-
-        private void UnloadArcadeScene()
-        {
-            if (_arcadeSceneInstance.Scene.isLoaded)
-                Addressables.UnloadSceneAsync(_arcadeSceneInstance).Completed += ArcadeSceneUnloadedCallback;
-        }
-
-        private void ArcadeSceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
-        {
-            if (aoHandle.Status != AsyncOperationStatus.Succeeded)
-                return;
-
-            _arcadeSceneInstance = aoHandle.Result;
-
             ArcadeSceneLoaded = true;
             _arcadeContext.UIController.ResetStatusBar();
             SetupPlayer();
             SpawnEntities();
-
-            _ = SceneManager.SetActiveScene(_arcadeSceneInstance.Scene);
         }
 
         private void SpawnEntities()
         {
+            SpawnGames();
+            SpawProps();
+        }
+
+        private void SpawnGames()
+        {
             if (ArcadeConfiguration.Games != null)
                 foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
-                    _gameModelControllers.Add(SetupGame(modelConfiguration));
+                    _gameModelControllers.Add(SetupGame(modelConfiguration, _arcadeContext.EntitiesSceneManager.GamesNodeTransform));
         }
 
-        private void ArcadeSceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
+        private void SpawProps()
         {
-            ArcadeSceneLoaded = false;
-
-            if (_triggerArcadeSceneReload)
-                LoadArcadeScene();
-
-            _triggerArcadeSceneReload = false;
+            if (ArcadeConfiguration.Props != null)
+                foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Props)
+                    _propModelControllers.Add(SetupProp(modelConfiguration, _arcadeContext.EntitiesSceneManager.PropsNodeTransform));
         }
 
-#if UNITY_EDITOR
-        private void LoadInEditorArcade(IEnumerable<string> namesToTry)
-        {
-            foreach (string nameToTry in namesToTry)
-            {
-                System.Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
-                if (assetType == typeof(UnityEditor.SceneAsset))
-                {
-                    Scene scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(nameToTry, UnityEditor.SceneManagement.OpenSceneMode.Additive);
-                    SetupPlayer();
-                    SpawnEntities();
-                    _ = SceneManager.SetActiveScene(scene);
-                    UnityEditor.SceneVisibilityManager.instance.DisablePicking(scene);
-                    return;
-                }
-            }
-        }
-#endif
+        private ModelController SetupProp(ModelConfiguration modelConfiguration, Transform parent)
+            => new PropModelController(modelConfiguration, parent, _arcadeContext.ModelNameProvider);
+
         /*
         public void NavigateForward(float dt)
         {
