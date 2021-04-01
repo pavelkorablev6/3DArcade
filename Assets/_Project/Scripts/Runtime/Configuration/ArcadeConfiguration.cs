@@ -40,10 +40,6 @@ namespace Arcade
         [HideInInspector]
         public ModelConfiguration[] Games = new ModelConfiguration[0];
 
-        [XmlArray("props"), XmlArrayItem("prop")]
-        [HideInInspector]
-        public ModelConfiguration[] Props = new ModelConfiguration[0];
-
         private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration
         {
             Id          = id,

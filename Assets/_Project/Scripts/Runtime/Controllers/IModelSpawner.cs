@@ -20,17 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UILoadingState : UIState
+    public interface IModelSpawner
     {
-        public UILoadingState(UIContext context)
-        : base(context)
-        {
-        }
-
-        public override void OnEnter() => _context.UIController.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.UIController.DisableSceneLoadingUI();
+        void Spawn(IEnumerable<string> namesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
     }
 }

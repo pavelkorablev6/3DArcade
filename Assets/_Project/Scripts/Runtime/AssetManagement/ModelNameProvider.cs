@@ -60,10 +60,13 @@ namespace Arcade
 
             void AddToList(string name)
             {
+                if (string.IsNullOrEmpty(name))
+                    return;
+
                 if (Application.isPlaying)
-                    result.AddStringIfNotNullOrEmpty($"{ARCADES_ADDRESSABLES_PREFIX}{name}");
+                    result.Add($"{ARCADES_ADDRESSABLES_PREFIX}{name}");
                 else
-                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{ARCADES_ADDRESSABLES_PREFIX}{name}/{name}.unity");
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{ARCADES_ADDRESSABLES_PREFIX}{name}/{name}.unity");
             }
         }
 
@@ -90,10 +93,10 @@ namespace Arcade
                             return result;
                         break;
                     case GameScreenOrientation.Horizontal:
-                        result.AddStringIfNotNullOrEmpty(GetHorizontalModelNameForYear(cfg.Year));
+                        result.Add(GetHorizontalModelNameForYear(cfg.Year));
                         return result;
                     case GameScreenOrientation.Vertical:
-                        result.AddStringIfNotNullOrEmpty(GetVerticalModelNameForYear(cfg.Year));
+                        result.Add(GetVerticalModelNameForYear(cfg.Year));
                         return result;
                     default:
                         throw new System.Exception($"Unhandled switch case statement: {cfg.ScreenOrientation}");
@@ -107,10 +110,13 @@ namespace Arcade
 
             void AddToList(string name)
             {
+                if (string.IsNullOrEmpty(name))
+                    return;
+
                 if (Application.isPlaying)
-                    result.AddStringIfNotNullOrEmpty($"{GAMES_ADDRESSABLES_PREFIX}{name}");
+                    result.Add($"{GAMES_ADDRESSABLES_PREFIX}{name}");
                 else
-                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESSABLES_PREFIX}{name}.prefab");
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESSABLES_PREFIX}{name}.prefab");
             }
         }
 
@@ -127,10 +133,13 @@ namespace Arcade
 
             void AddToList(string name)
             {
+                if (string.IsNullOrEmpty(name))
+                    return;
+
                 if (Application.isPlaying)
-                    result.AddStringIfNotNullOrEmpty($"{PROPS_ADDRESSABLES_PREFIX}{name}");
+                    result.Add($"{PROPS_ADDRESSABLES_PREFIX}{name}");
                 else
-                    result.AddStringIfNotNullOrEmpty($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESSABLES_PREFIX}{name}.prefab");
+                    result.Add($"{EDITOR_ADDRESSABLES_PATH}{PROPS_ADDRESSABLES_PREFIX}{name}.prefab");
             }
         }
 

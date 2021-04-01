@@ -22,15 +22,23 @@
 
 namespace Arcade
 {
-    public sealed class PlayerVirtualRealityFpsState : PlayerState
+    public sealed class UILoadingState : UIState
     {
-        public PlayerVirtualRealityFpsState(PlayerContext context)
+        public UILoadingState(UIContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter() => _context.Player.VirtualRealityControls.EnableFpsController();
+        public override void OnEnter()
+        {
+            _context.UIController.EnableSceneLoadingUI();
+            _context.UIController.ResetStatusBar();
+        }
 
-        public override void OnExit() => _context.Player.VirtualRealityControls.Disable();
+        public override void OnExit()
+        {
+            _context.UIController.ResetStatusBar();
+            _context.UIController.DisableSceneLoadingUI();
+        }
     }
 }

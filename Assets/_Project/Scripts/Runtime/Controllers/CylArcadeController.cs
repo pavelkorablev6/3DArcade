@@ -31,11 +31,11 @@ namespace Arcade
         public sealed override AnimationCurve VolumeCurve { get; protected set; }
 
         protected sealed override CameraSettings CameraSettings => ArcadeConfiguration.CylArcadeProperties.CameraSettings;
+        protected sealed override bool GameModelsSpawnAtPositionWithRotation => false;
 
         //protected abstract Transform TransformAnchor { get; }
         //protected abstract Vector3 TransformVector { get; }
 
-        //protected sealed override bool UseModelTransforms => false;
         //protected sealed override PlayerControls PlayerControls => _main.PlayerCylControls;
 
         //protected CylArcadeProperties _cylArcadeProperties;
@@ -50,7 +50,7 @@ namespace Arcade
         : base(arcadeContext)
         {
             AudioMinDistance = 0f;
-            AudioMaxDistance = 200f;
+            AudioMaxDistance = 50f;
 
             VolumeCurve = new AnimationCurve(new Keyframe[]
             {
@@ -87,9 +87,6 @@ namespace Arcade
             //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
             //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
-
-        protected override ModelController SetupGame(ModelConfiguration modelConfiguration, Transform parent)
-            => new GameModelControllerWithoutPosition(modelConfiguration, parent, _arcadeContext.ModelNameProvider, _arcadeContext.PlatformDatabase);
 
         //protected abstract float GetSpacing(Transform previousModel, Transform currentModel);
 

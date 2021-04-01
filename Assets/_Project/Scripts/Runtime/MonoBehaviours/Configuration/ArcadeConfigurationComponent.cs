@@ -47,7 +47,10 @@ namespace Arcade
             if (propsRoot != null)
             {
                 ModelConfigurationComponent[] components = propsRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                _arcadeConfiguration.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
+                if (ArcadeType == ArcadeType.Fps)
+                    _arcadeConfiguration.FpsArcadeProperties.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
+                else if (ArcadeType == ArcadeType.Cyl)
+                    _arcadeConfiguration.CylArcadeProperties.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
             }
 
             return _arcadeConfiguration;

@@ -20,22 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class GameModelControllerWithPosition : GameModelController
+    public sealed class PlayerNormalCylState : PlayerState
     {
-        protected override Vector3 ModelPosition => _modelConfiguration.Position;
-
-        protected override Quaternion ModelOrientation => Quaternion.Euler(_modelConfiguration.Rotation);
-
-        public GameModelControllerWithPosition(ModelConfiguration modelConfiguration,
-                                               Transform parent,
-                                               IModelNameProvider modelNameProvider,
-                                               MultiFileDatabase<PlatformConfiguration> platformDatabase)
-        : base(modelConfiguration, parent, modelNameProvider, platformDatabase)
+        public PlayerNormalCylState(PlayerContext context)
+        : base(context)
         {
         }
+
+        public override void OnEnter() => _context.Player.EnableNormalCylControls();
+
+        public override void OnExit() => _context.Player.DisableNormalControls();
     }
 }

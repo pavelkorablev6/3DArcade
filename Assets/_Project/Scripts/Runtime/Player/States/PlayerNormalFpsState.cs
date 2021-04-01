@@ -22,11 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class UIConfigurationState : UIState
+    public sealed class PlayerNormalFpsState : PlayerState
     {
-        public UIConfigurationState(UIContext context)
+        public PlayerNormalFpsState(PlayerContext context)
         : base(context)
         {
         }
+
+        public override void OnEnter() => _context.Player.EnableNormalFpsControls();
+
+        public override void OnExit() => _context.Player.DisableNormalControls();
     }
 }

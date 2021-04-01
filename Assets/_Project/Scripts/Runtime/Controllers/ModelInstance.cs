@@ -22,60 +22,44 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Arcade
 {
-    public abstract class ModelController
+    public sealed class ModelInstance
     {
-        protected abstract Vector3 ModelPosition { get; }
-        protected abstract Quaternion ModelOrientation { get; }
+        private readonly ModelConfiguration _modelConfiguration;
+        private readonly IModelSpawner _modelSpawner;
 
-        protected readonly ModelConfiguration _modelConfiguration;
-        protected readonly IModelNameProvider _modelNameProvider;
-
-        private readonly Transform _parent;
-
-        protected ModelController(ModelConfiguration modelConfiguration,
-                                  Transform parent,
-                                  IModelNameProvider modelNameProvider)
+        public ModelInstance(ModelConfiguration modelConfiguration)
         {
             _modelConfiguration = modelConfiguration;
-            _parent             = parent;
-            _modelNameProvider  = modelNameProvider;
-        }
-
-        protected void SpawnModel()
-        {
-            IEnumerable<string> namesToTry = GetNamesToTry();
 #if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                SetupEntityOutsidePlayMode(namesToTry);
-                return;
-            }
+            if (Application.isPlaying)
+                _modelSpawner = new ModelSpawner();
+            else
+                _modelSpawner = new EditorModelSpawner();
+#else
+            _modelSpawner = new ModelSpawner();
 #endif
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
         }
 
-        protected abstract IEnumerable<string> GetNamesToTry();
-
-        protected abstract void SetupArtworks();
-
-        private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
+        public void SpawnModel(IEnumerable<string> namesToTry, Transform parent, bool atPositionWithRotation)
         {
-            if (aoHandle.Result.Count == 0)
-                return;
+            Vector3 targetPosition;
+            Quaternion targetOrientation;
 
-            Addressables.InstantiateAsync(aoHandle.Result[0], ModelPosition, ModelOrientation, _parent).Completed += InstantiatedCallback;
-        }
+            if (atPositionWithRotation)
+            {
+                targetPosition    = _modelConfiguration.Position;
+                targetOrientation = Quaternion.Euler(_modelConfiguration.Rotation);
+            }
+            else
+            {
+                targetPosition    = Vector3.zero;
+                targetOrientation = Quaternion.identity;
+            }
 
-        private void InstantiatedCallback(AsyncOperationHandle<GameObject> aoHandle)
-        {
-            if (aoHandle.Status == AsyncOperationStatus.Succeeded)
-                SetupModel(aoHandle.Result);
+            _modelSpawner.Spawn(namesToTry, targetPosition, targetOrientation, parent, SetupModel);
         }
 
         private void SetupModel(GameObject gameObject)
@@ -86,8 +70,8 @@ namespace Arcade
                       .SetModelConfiguration(_modelConfiguration);
 
             // Look for artworks only in play mode / runtime
-            if (Application.isPlaying)
-                SetupArtworks();
+            //if (Application.isPlaying)
+            //    SetupArtworks();
 
             //PlatformConfiguration platform = null;
             //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
@@ -114,27 +98,5 @@ namespace Arcade
             //else
             //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
         }
-
-#if UNITY_EDITOR
-        private void SetupEntityOutsidePlayMode(IEnumerable<string> namesToTry)
-        {
-            foreach (string nameToTry in namesToTry)
-            {
-                try
-                {
-                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(nameToTry);
-                    if (prefab != null)
-                    {
-                        GameObject gameObject = Object.Instantiate(prefab, ModelPosition, ModelOrientation, _parent);
-                        SetupModel(gameObject);
-                        return;
-                    }
-                }
-                catch
-                {
-                }
-            }
-        }
-#endif
     }
 }

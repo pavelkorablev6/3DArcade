@@ -44,5 +44,8 @@ namespace Arcade
         [Tooltip("If this is set, all games in the arcade will use this.")]
         [XmlElement("model")]
         public string Model = "";
+
+        [XmlArray("props"), XmlArrayItem("prop")]
+        public ModelConfiguration[] Props = new ModelConfiguration[0];
     }
 }

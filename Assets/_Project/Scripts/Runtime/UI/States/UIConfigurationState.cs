@@ -22,17 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class PlayerDisabledState : PlayerState
+    public sealed class UIConfigurationState : UIState
     {
-        public PlayerDisabledState(PlayerContext context)
+        public UIConfigurationState(UIContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter()
-        {
-            _context.Player.NormalControls.Disable();
-            _context.Player.VirtualRealityControls.Disable();
-        }
+        public override void OnEnter() => _context.UIController.EnableConfigurationUI();
+
+        public override void OnExit() => _context.UIController.DisableConfigurationUI();
     }
 }

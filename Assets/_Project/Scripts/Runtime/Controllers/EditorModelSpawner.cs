@@ -20,17 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+#if UNITY_EDITOR
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class PlayerNormalFpsState : PlayerState
+    public sealed class EditorModelSpawner : IModelSpawner
     {
-        public PlayerNormalFpsState(PlayerContext context)
-        : base(context)
+        void IModelSpawner.Spawn(IEnumerable<string> namesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
+            foreach (string nameToTry in namesToTry)
+            {
+                try
+                {
+                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(nameToTry);
+                    if (prefab != null)
+                    {
+                        GameObject gameObject = Object.Instantiate(prefab, position, orientation, parent);
+                        onComplete?.Invoke(gameObject);
+                        return;
+                    }
+                }
+                catch
+                {
+                }
+            }
         }
-
-        public override void OnEnter() => _context.Player.NormalControls.EnableFpsController();
-
-        public override void OnExit() => _context.Player.NormalControls.Disable();
     }
 }
+#endif

@@ -634,7 +634,6 @@ GameObject:
   - component: {fileID: 760113831}
   - component: {fileID: 760113835}
   - component: {fileID: 760113834}
-  - component: {fileID: 760113833}
   - component: {fileID: 760113832}
   m_Layer: 0
   m_Name: CylControls_VR
@@ -669,18 +668,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b71d1996d67004241a3b69960856ffcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &760113833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760113830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44f13667b53491340aea05ddb5376580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &760113834
@@ -808,7 +795,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 1, y: 1}
+    m_SensorSize: {x: 0.89640886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -1624,7 +1611,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.80837005, y: 1}
+    m_SensorSize: {x: 0.89640886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -2627,7 +2614,6 @@ GameObject:
   - component: {fileID: 299866397395647581}
   - component: {fileID: 299866397382268347}
   - component: {fileID: 299866397395148921}
-  - component: {fileID: 299866397395148916}
   - component: {fileID: 299866397389784205}
   m_Layer: 0
   m_Name: FpsControls_VR
@@ -2636,18 +2622,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &299866397395148916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299866397395148915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44f13667b53491340aea05ddb5376580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &299866397395148917
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
@@ -86,9 +85,9 @@ namespace Arcade
 
         public void ResetStatusBar()
         {
-            _progressMessage.SetText(string.Empty);
+            _progressMessage.Clear();
             _progressTransform.localScale = new Vector3(0f, 1f, 1f);
-            _progressPercent.SetText(string.Empty);
+            _progressPercent.Clear();
         }
 
 #if UNITY_EDITOR

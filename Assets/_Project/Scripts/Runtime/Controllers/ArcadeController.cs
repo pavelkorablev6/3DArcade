@@ -28,19 +28,21 @@ namespace Arcade
     public abstract class ArcadeController
     {
         public bool ArcadeSceneLoaded { get; private set; }
+        public float ArcadeSceneLoadingPercentCompleted => _arcadeContext.ArcadeSceneManager.IsSceneLoading ? _arcadeContext.ArcadeSceneManager.LoadingPercentCompleted : 0f;
 
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
 
         protected abstract CameraSettings CameraSettings { get; }
+        protected abstract bool GameModelsSpawnAtPositionWithRotation { get; }
 
         protected ArcadeConfiguration ArcadeConfiguration { get; private set; }
 
         protected readonly ArcadeContext _arcadeContext;
 
-        private readonly List<ModelController> _gameModelControllers = new List<ModelController>();
-        private readonly List<ModelController> _propModelControllers = new List<ModelController>();
+        private readonly List<ModelInstance> _gameModels = new List<ModelInstance>();
+        private readonly List<ModelInstance> _propModels = new List<ModelInstance>();
 
         private ArcadeType _arcadeType;
 
@@ -80,15 +82,7 @@ namespace Arcade
 
         public void StopArcade() => _arcadeContext.ArcadeSceneManager.UnloadScene();
 
-        public void DebugLogProgress()
-        {
-            if (_arcadeContext.ArcadeSceneManager.IsSceneLoading)
-                _arcadeContext.UIController.UpdateStatusBar(_arcadeContext.ArcadeSceneManager.LoadingPercentCompleted);
-        }
-
         protected abstract void SetupPlayer();
-
-        protected abstract ModelController SetupGame(ModelConfiguration modelConfiguration, Transform parent);
 
         private void LoadArcadeScene()
         {
@@ -102,33 +96,62 @@ namespace Arcade
         private void ArcadeSceneManagerCompletedCallback()
         {
             ArcadeSceneLoaded = true;
-            _arcadeContext.UIController.ResetStatusBar();
-            SetupPlayer();
-            SpawnEntities();
-        }
 
-        private void SpawnEntities()
-        {
+            SetupPlayer();
             SpawnGames();
             SpawProps();
         }
 
         private void SpawnGames()
         {
-            if (ArcadeConfiguration.Games != null)
-                foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
-                    _gameModelControllers.Add(SetupGame(modelConfiguration, _arcadeContext.EntitiesSceneManager.GamesNodeTransform));
+            if (ArcadeConfiguration.Games == null)
+                return;
+
+            foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
+                _gameModels.Add(SpawnGame(modelConfiguration, _arcadeContext.EntitiesSceneManager.GamesNodeTransform));
         }
 
         private void SpawProps()
         {
-            if (ArcadeConfiguration.Props != null)
-                foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Props)
-                    _propModelControllers.Add(SetupProp(modelConfiguration, _arcadeContext.EntitiesSceneManager.PropsNodeTransform));
+            switch (_arcadeType)
+            {
+                case ArcadeType.Fps:
+                    SpawnProps(ArcadeConfiguration.FpsArcadeProperties.Props);
+                    break;
+                case ArcadeType.Cyl:
+                    SpawnProps(ArcadeConfiguration.CylArcadeProperties.Props);
+                    break;
+                default:
+                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeType}");
+            }
         }
 
-        private ModelController SetupProp(ModelConfiguration modelConfiguration, Transform parent)
-            => new PropModelController(modelConfiguration, parent, _arcadeContext.ModelNameProvider);
+        private void SpawnProps(ModelConfiguration[] modelConfigurations)
+        {
+            if (modelConfigurations == null)
+                return;
+
+            foreach (ModelConfiguration modelConfiguration in modelConfigurations)
+                _propModels.Add(SpawnProp(modelConfiguration, _arcadeContext.EntitiesSceneManager.PropsNodeTransform));
+        }
+
+        private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
+        {
+            ModelInstance modelInstance    = new ModelInstance(modelConfiguration);
+            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _arcadeContext.PlatformDatabase.Get(modelConfiguration.Platform) : null;
+            GameConfiguration game         = /*platform != null && !string.IsNullOrEmpty(platform.MasterList) ? _arcadeContext.GameDatabase.Get(platform.MasterList, modelConfiguration.Id) :*/ null;
+            IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForGame(modelConfiguration, platform, game);
+            modelInstance.SpawnModel(namesToTry, parent, GameModelsSpawnAtPositionWithRotation);
+            return modelInstance;
+        }
+
+        private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
+        {
+            ModelInstance modelInstance    = new ModelInstance(modelConfiguration);
+            IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForProp(modelConfiguration);
+            modelInstance.SpawnModel(namesToTry, parent, true);
+            return modelInstance;
+        }
 
         /*
         public void NavigateForward(float dt)

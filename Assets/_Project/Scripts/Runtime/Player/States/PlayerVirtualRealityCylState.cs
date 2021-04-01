@@ -29,8 +29,8 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.Player.VirtualRealityControls.EnableCylController();
+        public override void OnEnter() => _context.Player.EnableVirtualRealityCylControls();
 
-        public override void OnExit() => _context.Player.VirtualRealityControls.Disable();
+        public override void OnExit() => _context.Player.DisableVirtualRealityControls();
     }
 }

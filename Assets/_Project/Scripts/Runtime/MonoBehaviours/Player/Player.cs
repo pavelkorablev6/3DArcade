@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -30,9 +31,6 @@ namespace Arcade
         [SerializeField] private PlayerControls _normalControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
 
-        public PlayerControls NormalControls => _normalControls;
-        public PlayerControls VirtualRealityControls => _virtualRealityControls;
-
         private PlayerContext _playerContext;
 
         [Inject]
@@ -41,5 +39,19 @@ namespace Arcade
         private void Start() => TransitionTo<PlayerDisabledState>();
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
+
+        public void EnableNormalFpsControls() => _normalControls.EnableFpsController();
+        public void EnableNormalCylControls() => _normalControls.EnableCylController();
+        public void DisableNormalControls()   => _normalControls.Disable();
+
+        public void EnableVirtualRealityFpsControls() => _virtualRealityControls.EnableFpsController();
+        public void EnableVirtualRealityCylControls() => _virtualRealityControls.EnableCylController();
+        public void DisableVirtualRealityControls()   => _virtualRealityControls.Disable();
+
+        public void Disable()
+        {
+            _normalControls.Disable();
+            _virtualRealityControls.Disable();
+        }
     }
 }

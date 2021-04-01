@@ -24,6 +24,7 @@
       <maximum_distance>0</maximum_distance>
     </audio_settings>
     <model />
+    <props />
   </fpsarcade_properties>
   <cylarcade_properties wheel_variant="CameraInsideHorizontal" wheel_radius="5" sprockets="5">
     <scene>_cylinder</scene>
@@ -50,6 +51,7 @@
       <maximum_distance>0</maximum_distance>
     </audio_settings>
     <model />
+    <props />
     <mouse_look>true</mouse_look>
     <selected_sprocket>-1</selected_sprocket>
     <selected_position_z>5</selected_position_z>
@@ -1591,5 +1593,4 @@
       <scale x="1" y="1" z="1" />
     </game>
   </games>
-  <props />
 </arcade>

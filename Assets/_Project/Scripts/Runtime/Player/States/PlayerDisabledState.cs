@@ -20,27 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class PropModelController : ModelController
+    public sealed class PlayerDisabledState : PlayerState
     {
-        protected override Vector3 ModelPosition => _modelConfiguration.Position;
-
-        protected override Quaternion ModelOrientation => Quaternion.Euler(_modelConfiguration.Rotation);
-
-        public PropModelController(ModelConfiguration modelConfiguration,
-                                   Transform parent,
-                                   IModelNameProvider modelNameProvider)
-        : base(modelConfiguration, parent, modelNameProvider)
-            => SpawnModel();
-
-        protected override IEnumerable<string> GetNamesToTry() => _modelNameProvider.GetNamesToTryForProp(_modelConfiguration);
-
-        protected override void SetupArtworks()
+        public PlayerDisabledState(PlayerContext context)
+        : base(context)
         {
         }
+
+        public override void OnEnter() => _context.Player.Disable();
     }
 }

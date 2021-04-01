@@ -22,15 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class PlayerNormalCylState : PlayerState
+    public sealed class PlayerVirtualRealityFpsState : PlayerState
     {
-        public PlayerNormalCylState(PlayerContext context)
+        public PlayerVirtualRealityFpsState(PlayerContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter() => _context.Player.NormalControls.EnableCylController();
+        public override void OnEnter() => _context.Player.EnableVirtualRealityFpsControls();
 
-        public override void OnExit() => _context.Player.NormalControls.Disable();
+        public override void OnExit() => _context.Player.DisableVirtualRealityControls();
     }
 }

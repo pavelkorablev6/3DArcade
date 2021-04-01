@@ -31,8 +31,8 @@ namespace Arcade
         public override AnimationCurve VolumeCurve { get; protected set; }
 
         protected override CameraSettings CameraSettings => ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
+        protected sealed override bool GameModelsSpawnAtPositionWithRotation => true;
 
-        //protected override bool UseModelTransforms => true;
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
 
         public FpsArcadeController(ArcadeContext arcadeContext)
@@ -71,8 +71,5 @@ namespace Arcade
             //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
             //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
-
-        protected override ModelController SetupGame(ModelConfiguration modelConfiguration, Transform parent)
-            => new GameModelControllerWithPosition(modelConfiguration, parent, _arcadeContext.ModelNameProvider, _arcadeContext.PlatformDatabase);
     }
 }
