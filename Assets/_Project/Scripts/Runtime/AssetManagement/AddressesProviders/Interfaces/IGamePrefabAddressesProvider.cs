@@ -20,20 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
-using UnityEditor;
-using UnityEngine;
+using System.Collections.Generic;
 
-namespace Arcade.UnityEditor
+namespace Arcade
 {
-    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
+    public interface IGamePrefabAddressesProvider
     {
-        public override MultiFileDatabase<EmulatorConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Emulators;
-
-        public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
-
-        [MenuItem("3DArcade/Emulators", priority = 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
-        private static void ShowWindow()
-            => GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        IEnumerable<string> GetNamesToTry(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game);
     }
 }

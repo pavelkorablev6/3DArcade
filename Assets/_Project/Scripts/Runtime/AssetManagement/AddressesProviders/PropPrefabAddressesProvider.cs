@@ -20,20 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
-using UnityEditor;
-using UnityEngine;
+using System.Collections.Generic;
 
-namespace Arcade.UnityEditor
+namespace Arcade
 {
-    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
+    public sealed class PropPrefabAddressesProvider : IPropPrefabAddressesProvider
     {
-        public override MultiFileDatabase<EmulatorConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Emulators;
+        public const string PROPS_ADDRESSABLES_PREFIX = "Props/";
+        public const string DEFAULT_PROP_PREFAB_NAME  = "_pink_cube";
 
-        public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
+        public IEnumerable<string> GetNamesToTry(ModelConfiguration cfg)
+        {
+            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
+                return null;
 
-        [MenuItem("3DArcade/Emulators", priority = 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
-        private static void ShowWindow()
-            => GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+            List<string> result = new List<string>();
+
+            AddToList(cfg.Model);
+            AddToList(cfg.Id);
+            AddToList(DEFAULT_PROP_PREFAB_NAME);
+
+            return result;
+
+            void AddToList(string name) => AssetAddressUtilities.AddToList(result, name, AssetAddressUtilities.PREFAB_FILE_EXTENSION, PROPS_ADDRESSABLES_PREFIX);
+        }
     }
 }

@@ -30,8 +30,9 @@ namespace Arcade
         public override float AudioMaxDistance { get; protected set; }
         public override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected override CameraSettings CameraSettings => ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
-        protected sealed override bool GameModelsSpawnAtPositionWithRotation => true;
+        protected override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
+        protected override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.FpsArcadeProperties.RenderSettings;
+        protected override bool GameModelsSpawnAtPositionWithRotation => true;
 
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
 

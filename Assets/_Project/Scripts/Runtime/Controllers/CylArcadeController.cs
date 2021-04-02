@@ -30,7 +30,8 @@ namespace Arcade
         public sealed override float AudioMaxDistance { get; protected set; }
         public sealed override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected sealed override CameraSettings CameraSettings => ArcadeConfiguration.CylArcadeProperties.CameraSettings;
+        protected sealed override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.CylArcadeProperties.CameraSettings;
+        protected sealed override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.CylArcadeProperties.RenderSettings;
         protected sealed override bool GameModelsSpawnAtPositionWithRotation => false;
 
         //protected abstract Transform TransformAnchor { get; }

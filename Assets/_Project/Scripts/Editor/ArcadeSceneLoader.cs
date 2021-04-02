@@ -20,33 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-#if UNITY_EDITOR
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    public sealed class EditorArcadeSceneLoader : IArcadeSceneLoader
+    public sealed class ArcadeSceneLoader : IArcadeSceneLoader
     {
-        public bool IsSceneLoading => false;
+        public bool Loaded { get; set; } = false;
+        public bool Loading => false;
         public float LoadPercentCompleted => 100f;
 
         public void Load(IEnumerable<string> namesToTry, System.Action onComplete)
         {
             foreach (string nameToTry in namesToTry)
             {
-                System.Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
-                if (assetType == typeof(UnityEditor.SceneAsset))
+                System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
+                if (assetType == typeof(SceneAsset))
                 {
                     Scene scene = EditorSceneManager.OpenScene(nameToTry, OpenSceneMode.Additive);
                     onComplete?.Invoke();
                     _ = SceneManager.SetActiveScene(scene);
-                    UnityEditor.SceneVisibilityManager.instance.DisablePicking(scene);
+                    SceneVisibilityManager.instance.DisablePicking(scene);
+                    Loaded = true;
                     return;
                 }
             }
         }
     }
 }
-#endif

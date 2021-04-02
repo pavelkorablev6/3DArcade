@@ -29,20 +29,36 @@ namespace Arcade
         public override void InstallBindings()
         {
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
-
             _ = Container.Bind<Player>().FromComponentInHierarchy(true).AsSingle();
             _ = Container.Bind<PlayerContext>().AsSingle().NonLazy();
-
-            _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
-            _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<IVirtualFileSystem>().To<VirtualFileSystem>().AsSingle().NonLazy();
             _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();
             _ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadeDatabase>().AsSingle().NonLazy();
+            _ = Container.Bind<Databases>().AsSingle().NonLazy();
 
-            _ = Container.Bind<IModelNameProvider>().To<ModelNameProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IEntititesSceneCreator>().To<EntitiesSceneCreator>().AsSingle().NonLazy();
+            _ = Container.Bind<IArcadeSceneLoader>().To<ArcadeSceneLoader>().AsSingle().NonLazy();
+            _ = Container.Bind<EntitiesScene>().AsSingle().NonLazy();
+            _ = Container.Bind<ArcadeScene>().AsSingle().NonLazy();
+            _ = Container.Bind<Scenes>().AsSingle().NonLazy();
+
+            _ = Container.Bind<IArcadeSceneAddressesProvider>().To<ArcadeSceneAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IGamePrefabAddressesProvider>().To<GamePrefabAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IPropPrefabAddressesProvider>().To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<AddressesProviders>().AsSingle().NonLazy();
+
+            _ = Container.Bind<ArtworkNameProvider>().AsSingle().NonLazy();
+
+            _ = Container.Bind<NodeController<MarqueeNodeTag>>().To<MarqueeNodeController>().AsSingle().NonLazy();
+            _ = Container.Bind<NodeController<ScreenNodeTag>>().To<ScreenNodeController>().AsSingle().NonLazy();
+            _ = Container.Bind<NodeController<GenericNodeTag>>().To<GenericNodeController>().AsSingle().NonLazy();
+            _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
+
+            _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
+            _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }

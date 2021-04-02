@@ -26,8 +26,9 @@ namespace Arcade
 {
     public interface IArcadeSceneLoader
     {
-        bool IsSceneLoading { get; }
+        bool Loading { get; }
         float LoadPercentCompleted { get; }
+        bool Loaded { get; }
 
         void Load(IEnumerable<string> namesToTry, System.Action onComplete);
     }

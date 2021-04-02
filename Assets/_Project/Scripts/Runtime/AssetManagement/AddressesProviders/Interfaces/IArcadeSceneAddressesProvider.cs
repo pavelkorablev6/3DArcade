@@ -24,10 +24,8 @@ using System.Collections.Generic;
 
 namespace Arcade
 {
-    public interface IModelNameProvider
+    public interface IArcadeSceneAddressesProvider
     {
-        IEnumerable<string> GetNamesToTryForArcade(ArcadeConfiguration cfg, ArcadeType arcadeType);
-        IEnumerable<string> GetNamesToTryForGame(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game);
-        IEnumerable<string> GetNamesToTryForProp(ModelConfiguration cfg);
+        IEnumerable<string> GetNamesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType);
     }
 }

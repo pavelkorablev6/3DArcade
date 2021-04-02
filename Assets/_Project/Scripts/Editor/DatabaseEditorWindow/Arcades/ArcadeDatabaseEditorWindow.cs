@@ -27,7 +27,7 @@ namespace Arcade.UnityEditor
 {
     internal sealed class ArcadeDatabaseEditorWindow : DatabaseEditorWindowBase<ArcadeConfiguration, ArcadeConfigurationSO>
     {
-        public override MultiFileDatabase<ArcadeConfiguration> Database => ArcadeManager.Instance.ArcadeContext.ArcadeDatabase;
+        public override MultiFileDatabase<ArcadeConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Arcades;
 
         public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
 

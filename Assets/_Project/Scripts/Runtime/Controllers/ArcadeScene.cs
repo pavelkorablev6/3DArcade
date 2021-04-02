@@ -26,7 +26,7 @@ namespace Arcade
 {
     public sealed class ArcadeScene
     {
-        public bool IsSceneLoading => _sceneLoader.IsSceneLoading;
+        public bool Loaded => _sceneLoader.Loaded;
         public float LoadingPercentCompleted => _sceneLoader.LoadPercentCompleted;
 
         private readonly IArcadeSceneLoader _sceneLoader;

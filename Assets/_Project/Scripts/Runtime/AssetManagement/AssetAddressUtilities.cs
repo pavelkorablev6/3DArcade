@@ -20,24 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Arcade
 {
-    public sealed class EditorEntitiesSceneCreator : IEntititesSceneCreator
+    public static class AssetAddressUtilities
     {
-        public Scene Create(string name)
-        {
-            if (Application.isPlaying)
-                return SceneManager.CreateScene(name);
+        public const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
+        public const string SCENE_FILE_EXTENSION     = "unity";
+        public const string PREFAB_FILE_EXTENSION    = "prefab";
 
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-            scene.name  = name;
-            return scene;
+        public static void AddToList(List<string> list, string name, string extension, string runtimePrefix, string editorPrefix = null)
+        {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            if (Application.isPlaying)
+            {
+                list.Add($"{runtimePrefix}{name}");
+                return;
+            }
+
+            editorPrefix ??= runtimePrefix;
+            list.Add($"{EDITOR_ADDRESSABLES_PATH}{editorPrefix}{name}.{extension}");
         }
     }
 }
-#endif

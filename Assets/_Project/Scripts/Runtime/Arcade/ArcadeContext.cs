@@ -20,91 +20,80 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
 using SK.Utilities.StateMachine;
+using UnityEngine;
 
 namespace Arcade
 {
+    public sealed class Scenes
+    {
+        public readonly EntitiesScene Entities;
+        public readonly ArcadeScene Arcade;
+
+        public Scenes(EntitiesScene entitiesScene, ArcadeScene arcadeScene)
+        {
+            Entities = entitiesScene;
+            Arcade   = arcadeScene;
+        }
+    }
+
     public sealed class ArcadeContext : Context<ArcadeState>
     {
-        public float ArcadeSceneLoadingPercentCompleted => ArcadeScene.LoadingPercentCompleted;
-
         public readonly InputActions InputActions;
         public readonly Player Player;
         public readonly GeneralConfiguration GeneralConfiguration;
-        public readonly MultiFileDatabase<EmulatorConfiguration> EmulatorDatabase;
-        public readonly MultiFileDatabase<PlatformConfiguration> PlatformDatabase;
-        public readonly MultiFileDatabase<ArcadeConfiguration> ArcadeDatabase;
-        public readonly IModelNameProvider ModelNameProvider;
-        public readonly IUIController UIController;
+        public readonly Databases Databases;
 
-        public readonly EntitiesScene EntitiesScene;
-        public readonly ArcadeScene ArcadeScene;
+        public readonly Scenes Scenes;
+
+        public readonly AddressesProviders AddressesProviders;
+        public readonly ArtworkNameProvider ArtworkNameProvider;
+        public readonly NodeControllers NodeControllers;
+        public readonly IUIController UIController;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeType ArcadeType { get; private set; }
         public ArcadeMode ArcadeMode { get; private set; }
-        public ArcadeController ArcadeController { get; private set; }
+
+        private ArcadeController _arcadeController;
 
         //public PlayerControls CurrentPlayerControls;
         //public ModelConfigurationComponent CurrentModelConfiguration;
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
-        //private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
-        //private readonly NodeController<ScreenNodeTag> _screenNodeController;
-        //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
         public ArcadeContext(InputActions inputActions,
                              Player player,
                              GeneralConfiguration generalConfiguration,
-                             MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
-                             MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                             MultiFileDatabase<ArcadeConfiguration> arcadeDatabase,
-                             IModelNameProvider modelNameProvider,
+                             Databases databases,
+                             Scenes scenes,
+                             AddressesProviders addressesProviders,
+                             ArtworkNameProvider artworkNameProvider,
+                             NodeControllers nodeControllers,
                              IUIController uiController)
         {
             InputActions         = inputActions;
-            UIController         = uiController;
             Player               = player;
             GeneralConfiguration = generalConfiguration;
-            EmulatorDatabase     = emulatorDatabase;
-            PlatformDatabase     = platformDatabase;
-            ArcadeDatabase       = arcadeDatabase;
-            ModelNameProvider    = modelNameProvider;
+            Databases            = databases;
+            Scenes               = scenes;
+            AddressesProviders   = addressesProviders;
+            ArtworkNameProvider  = artworkNameProvider;
+            NodeControllers      = nodeControllers;
+            UIController         = uiController;
+        }
 
-            IEntititesSceneCreator entititesSceneCreator;
-            IArcadeSceneLoader arcadeSceneLoader;
-#if UNITY_EDITOR
-            if (Application.isPlaying)
-            {
-                entititesSceneCreator = new EntitiesSceneCreator();
-                arcadeSceneLoader     = new ArcadeSceneLoader();
-            }
-            else
-            {
-                entititesSceneCreator = new EditorEntitiesSceneCreator();
-                arcadeSceneLoader     = new EditorArcadeSceneLoader();
-            }
-#else
-            entititesSceneCreator = new EntitiesSceneCreator();
-            arcadeSceneLoader     = new ArcadeSceneLoader();
-#endif
-
-            EntitiesScene = new EntitiesScene(entititesSceneCreator);
-            ArcadeScene   = new ArcadeScene(arcadeSceneLoader);
-
-            //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
-            //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
-            //_genericNodeController = new GenericNodeController(EmulatorDatabase, PlatformDatabase);
+        public void SetCurrentArcadeConfiguration(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
+        {
+            ArcadeConfiguration = arcadeConfiguration;
+            ArcadeType          = arcadeType;
         }
 
         protected override void OnStart()
         {
             GeneralConfiguration.Initialize();
 
-            EmulatorDatabase.Initialize();
-            PlatformDatabase.Initialize();
-            ArcadeDatabase.Initialize();
+            Databases.Initialize();
 
             StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
         }
@@ -120,8 +109,11 @@ namespace Arcade
             if (string.IsNullOrEmpty(id))
                 return;
 
-            if (!ArcadeDatabase.Get(id, out ArcadeConfiguration configuration))
+            if (!Databases.Arcades.Get(id, out ArcadeConfiguration configuration))
                 return;
+
+            if (UIController != null)
+                UIController.InitStatusBar($"Loading arcade: {configuration}...");
 
             ArcadeConfiguration = configuration;
             ArcadeType          = type;
@@ -133,52 +125,39 @@ namespace Arcade
         private void StartCurrentArcade()
         {
             Player.TransitionTo<PlayerDisabledState>();
-            ArcadeController = null;
+            _arcadeController = null;
 
             switch (ArcadeType)
             {
                 case ArcadeType.Fps:
                 {
                     //VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
-                    ArcadeController = new FpsArcadeController(this);
+                    _arcadeController = new FpsArcadeController(this);
                 }
                 break;
                 case ArcadeType.Cyl:
                 {
                     //VideoPlayerController = null;
 
-                    switch (ArcadeConfiguration.CylArcadeProperties.WheelVariant)
+                    _arcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
-                        //    case WheelVariant.CameraInsideHorizontal:
-                        //        ArcadeController = new CylArcadeControllerWheel3DCameraInsideHorizontal(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                        //        break;
-                        //    case WheelVariant.CameraOutsideHorizontal:
-                        //        ArcadeController = new CylArcadeControllerWheel3DCameraOutsideHorizontal(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                        //        break;
-                        case CylArcadeWheelVariant.LineHorizontal:
-                            ArcadeController = new CylArcadeControllerLineHorizontal(this);
-                            break;
-                            //    case WheelVariant.CameraInsideVertical:
-                            //        ArcadeController = new CylArcadeControllerWheel3DCameraInsideVertical(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                            //        break;
-                            //    case WheelVariant.CameraOutsideVertical:
-                            //        ArcadeController = new CylArcadeControllerWheel3DCameraOutsideVertical(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                            //        break;
-                            //    case WheelVariant.LineVertical:
-                            //        ArcadeController = new CylArcadeControllerLineVertical(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                            //        break;
-                            //    case WheelVariant.LineCustom:
-                            //        ArcadeController = new CylArcadeControllerLine(_objectsHierarchy, EmulatorDatabase, PlatformDatabase, _gameObjectCache, _marqueeNodeController, _screenNodeController, _genericNodeController);
-                            //        break;
-                    }
+                        //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
+                        //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
+                        //WheelVariant.CameraInsideVertical    => new CylArcadeControllerWheel3DCameraInsideVertical(ArcadeContext),
+                        //WheelVariant.CameraOutsideVertical   => new CylArcadeControllerWheel3DCameraOutsideVertical(ArcadeContext),
+                        CylArcadeWheelVariant.LineHorizontal   => new CylArcadeControllerLineHorizontal(this),
+                        //WheelVariant.LineVertical            => new CylArcadeControllerLineVertical(ArcadeContext),
+                        CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(this),
+                        _                                    => new CylArcadeControllerLineHorizontal(this)
+                    };
                 }
                 break;
             }
 
-            if (ArcadeController == null)
+            if (_arcadeController == null)
                 return;
 
-            ArcadeController.StartArcade(ArcadeConfiguration, ArcadeType);
+            _arcadeController.StartArcade(ArcadeConfiguration, ArcadeType);
             TransitionTo<ArcadeLoadState>();
         }
 
@@ -186,9 +165,9 @@ namespace Arcade
         {
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return false;
-            if (!ArcadeDatabase.Save(arcadeConfigurationComponent.GetArcadeConfiguration()))
+            if (!Databases.Arcades.Save(arcadeConfigurationComponent.GetArcadeConfiguration()))
                 return false;
-            return ArcadeDatabase.LoadAll();
+            return Databases.Arcades.LoadAll();
         }
 
         /*

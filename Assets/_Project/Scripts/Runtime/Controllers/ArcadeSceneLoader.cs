@@ -31,8 +31,9 @@ namespace Arcade
 {
     public sealed class ArcadeSceneLoader : IArcadeSceneLoader
     {
-        public bool IsSceneLoading => _sceneHandle.IsValid() && !_sceneHandle.IsDone;
-        public float LoadPercentCompleted => IsSceneLoading ? _sceneHandle.PercentComplete : 0f;
+        public bool Loaded => _sceneInstance.Scene.IsValid() && _sceneInstance.Scene.isLoaded;
+        public bool Loading => _sceneHandle.IsValid() && !_sceneHandle.IsDone;
+        public float LoadPercentCompleted => Loading ? _sceneHandle.PercentComplete : 0f;
 
         private System.Action _onComplete;
         private IResourceLocation _sceneResourceLocation;

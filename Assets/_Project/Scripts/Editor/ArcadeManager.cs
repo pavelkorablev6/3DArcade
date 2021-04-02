@@ -57,26 +57,24 @@ namespace Arcade.UnityEditor
 
             player.Construct(new PlayerContext(player));
 
-            GeneralConfiguration generalConfiguration                 = new GeneralConfiguration(vfs);
-            MultiFileDatabase<EmulatorConfiguration> emulatorDatabase = new EmulatorDatabase(vfs);
-            MultiFileDatabase<PlatformConfiguration> platformDatabase = new PlatformDatabase(vfs);
-            MultiFileDatabase<ArcadeConfiguration>   arcadeDatabase   = new ArcadeDatabase(vfs);
-            IModelNameProvider modelNameProvider                      = new ModelNameProvider();
-            IUIController uiController                                = Object.FindObjectOfType<UIController>();
-
+            GeneralConfiguration generalConfiguration = new GeneralConfiguration(vfs);
             generalConfiguration.Initialize();
-            emulatorDatabase.Initialize();
-            platformDatabase.Initialize();
-            arcadeDatabase.Initialize();
 
-            ArcadeContext = new ArcadeContext(null,
-                                              player,
-                                              generalConfiguration,
-                                              emulatorDatabase,
-                                              platformDatabase,
-                                              arcadeDatabase,
-                                              modelNameProvider,
-                                              uiController);
+            Databases databases = new Databases(new EmulatorDatabase(vfs), new PlatformDatabase(vfs), new ArcadeDatabase(vfs));
+            databases.Initialize();
+
+            ArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();
+            GamePrefabAddressesProvider gameProvider    = new GamePrefabAddressesProvider();
+            PropPrefabAddressesProvider propProvider    = new PropPrefabAddressesProvider();
+            AddressesProviders addressesProviders       = new AddressesProviders(arcadeProvider, gameProvider, propProvider);
+
+            EntitiesSceneCreator entitiesSceneCreator = new EntitiesSceneCreator();
+            EntitiesScene entitiesScene               = new EntitiesScene(entitiesSceneCreator);
+            ArcadeSceneLoader arcadeSceneLoader       = new ArcadeSceneLoader();
+            ArcadeScene arcadeScene                   = new ArcadeScene(arcadeSceneLoader);
+            Scenes scenes                             = new Scenes(entitiesScene, arcadeScene);
+
+            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)
@@ -87,7 +85,7 @@ namespace Arcade.UnityEditor
             if (ArcadeContext == null)
                 return;
 
-            if (!ArcadeContext.ArcadeDatabase.Get(name, out ArcadeConfiguration arcadeConfiguration))
+            if (!ArcadeContext.Databases.Arcades.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
             UE_Utilities.CloseAllScenes();
@@ -143,7 +141,7 @@ namespace Arcade.UnityEditor
         {
             ClearCurrentArcadeStateFromEditorPrefs();
 
-            if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
+            if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent, false))
                 return;
 
             SetCurrentArcadeStateInEditorPrefs(arcadeConfigurationComponent.Id, arcadeConfigurationComponent.ArcadeType);

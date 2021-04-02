@@ -29,74 +29,51 @@ namespace Arcade
     {
         private readonly ModelConfiguration _modelConfiguration;
         private readonly IModelSpawner _modelSpawner;
+        private readonly System.Action<ModelConfigurationComponent> _onModelSpawned;
 
-        public ModelInstance(ModelConfiguration modelConfiguration)
+        public ModelInstance(ModelConfiguration modelConfiguration, System.Action<ModelConfigurationComponent> onModelSpawned)
         {
             _modelConfiguration = modelConfiguration;
+            _onModelSpawned     = onModelSpawned;
+
 #if UNITY_EDITOR
-            if (Application.isPlaying)
-                _modelSpawner = new ModelSpawner();
-            else
+            if (!Application.isPlaying)
+            {
                 _modelSpawner = new EditorModelSpawner();
-#else
-            _modelSpawner = new ModelSpawner();
+                return;
+            }
 #endif
+            _modelSpawner = new ModelSpawner();
         }
 
         public void SpawnModel(IEnumerable<string> namesToTry, Transform parent, bool atPositionWithRotation)
         {
-            Vector3 targetPosition;
-            Quaternion targetOrientation;
+            Vector3 position;
+            Quaternion orientation;
 
             if (atPositionWithRotation)
             {
-                targetPosition    = _modelConfiguration.Position;
-                targetOrientation = Quaternion.Euler(_modelConfiguration.Rotation);
+                position    = _modelConfiguration.Position;
+                orientation = Quaternion.Euler(_modelConfiguration.Rotation);
             }
             else
             {
-                targetPosition    = Vector3.zero;
-                targetOrientation = Quaternion.identity;
+                position    = Vector3.zero;
+                orientation = Quaternion.identity;
             }
 
-            _modelSpawner.Spawn(namesToTry, targetPosition, targetOrientation, parent, SetupModel);
+            _modelSpawner.Spawn(namesToTry, position, orientation, parent, SetupModel);
         }
 
         private void SetupModel(GameObject gameObject)
         {
             gameObject.name                 = _modelConfiguration.Id;
             gameObject.transform.localScale = _modelConfiguration.Scale;
-            gameObject.AddComponent<ModelConfigurationComponent>()
-                      .SetModelConfiguration(_modelConfiguration);
 
-            // Look for artworks only in play mode / runtime
-            //if (Application.isPlaying)
-            //    SetupArtworks();
+            ModelConfigurationComponent modelConfigurationComponent = gameObject.AddComponent<ModelConfigurationComponent>();
+            modelConfigurationComponent.SetModelConfiguration(_modelConfiguration);
 
-            //PlatformConfiguration platform = null;
-            //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
-            //    platform = _platformDatabase.Get(modelConfiguration.Platform);
-
-            //GameConfiguration game = null;
-            //if (platform != null && platform.MasterList != null)
-            //{
-            //    game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
-            //    if (game != null)
-            //    {
-            //    }
-            //}
-
-            //_marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
-            //_screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
-            //_genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
-
-            //if (gameModels)
-            //{
-            //    _allGames.Add(instantiatedModel.transform);
-            //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-            //}
-            //else
-            //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
+            _onModelSpawned?.Invoke(modelConfigurationComponent);
         }
     }
 }
