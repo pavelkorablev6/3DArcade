@@ -28,7 +28,6 @@ namespace Arcade
     public abstract class ArcadeController
     {
         public bool ArcadeSceneLoaded { get; private set; }
-        public float ArcadeSceneLoadingPercentCompleted => _arcadeContext.ArcadeSceneManager.IsSceneLoading ? _arcadeContext.ArcadeSceneManager.LoadingPercentCompleted : 0f;
 
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
@@ -62,38 +61,27 @@ namespace Arcade
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
 
-        public ArcadeController(ArcadeContext arcadeContext)
-        {
-            _arcadeContext = arcadeContext;
-
-            _arcadeContext.ArcadeSceneManager.Started   = ArcadeSceneManagerStartedCallback;
-            _arcadeContext.ArcadeSceneManager.Completed = ArcadeSceneManagerCompletedCallback;
-
-            _arcadeContext.EntitiesSceneManager.Completed = LoadArcadeScene;
-        }
+        public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
         public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
         {
             ArcadeConfiguration = arcadeConfiguration;
             _arcadeType         = arcadeType;
 
-            _arcadeContext.EntitiesSceneManager.Initialize(arcadeConfiguration, arcadeType);
+            _arcadeContext.UIController.InitStatusBar($"Loading arcade: {arcadeConfiguration}...");
+            _arcadeContext.EntitiesScene.Initialize(arcadeConfiguration, arcadeType);
+            LoadArcadeScene();
         }
-
-        public void StopArcade() => _arcadeContext.ArcadeSceneManager.UnloadScene();
 
         protected abstract void SetupPlayer();
 
         private void LoadArcadeScene()
         {
             IEnumerable<string> namesToTry = _arcadeContext.ModelNameProvider.GetNamesToTryForArcade(ArcadeConfiguration, _arcadeType);
-            _arcadeContext.ArcadeSceneManager.LoadScene(namesToTry);
+            _arcadeContext.ArcadeScene.Load(namesToTry, ArcadeSceneLoadCompletedCallback);
         }
 
-        private void ArcadeSceneManagerStartedCallback(string resourceLocation)
-            => _arcadeContext.UIController.InitStatusBar($"Loading arcade: {resourceLocation}...");
-
-        private void ArcadeSceneManagerCompletedCallback()
+        private void ArcadeSceneLoadCompletedCallback()
         {
             ArcadeSceneLoaded = true;
 
@@ -108,7 +96,7 @@ namespace Arcade
                 return;
 
             foreach (ModelConfiguration modelConfiguration in ArcadeConfiguration.Games)
-                _gameModels.Add(SpawnGame(modelConfiguration, _arcadeContext.EntitiesSceneManager.GamesNodeTransform));
+                _gameModels.Add(SpawnGame(modelConfiguration, _arcadeContext.EntitiesScene.GamesNodeTransform));
         }
 
         private void SpawProps()
@@ -132,7 +120,7 @@ namespace Arcade
                 return;
 
             foreach (ModelConfiguration modelConfiguration in modelConfigurations)
-                _propModels.Add(SpawnProp(modelConfiguration, _arcadeContext.EntitiesSceneManager.PropsNodeTransform));
+                _propModels.Add(SpawnProp(modelConfiguration, _arcadeContext.EntitiesScene.PropsNodeTransform));
         }
 
         private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)

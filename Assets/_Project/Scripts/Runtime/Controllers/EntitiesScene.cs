@@ -23,9 +23,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SK.Utilities.Unity;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 namespace Arcade
 {
@@ -33,40 +30,26 @@ namespace Arcade
     {
         public const string ARCADE_SETUP_SCENE_NAME = "ArcadeSetup";
 
-        public System.Action Completed;
-
         public Transform GamesNodeTransform { get; private set; }
         public Transform PropsNodeTransform { get; private set; }
 
+        private readonly IEntititesSceneCreator _sceneCreator;
+
         private Scene _scene;
         private Transform _arcadeNodeTransform;
+
+        public EntitiesScene(IEntititesSceneCreator sceneCreator) => _sceneCreator = sceneCreator;
 
         public void Initialize(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
         {
             if (_scene.IsValid() && _scene.isLoaded)
                 ObjectUtils.DestroyObject(_arcadeNodeTransform.gameObject);
             else
-            {
-#if UNITY_EDITOR
-                if (!Application.isPlaying)
-                {
-                    _scene      = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-                    _scene.name = ARCADE_SETUP_SCENE_NAME;
-                }
-                else
-                {
-                    _scene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
-                }
-#else
-                _scene = SceneManager.CreateScene(ARCADE_SETUP_SCENE_NAME);
-#endif
-            }
+                _scene = _sceneCreator.Create(ARCADE_SETUP_SCENE_NAME);
 
             SetupArcadeNode(arcadeConfiguration, arcadeType);
             SetupGamesNode();
             SetupPropsNode();
-
-            Completed?.Invoke();
         }
 
         public static bool TryGetArcadeConfiguration(out ArcadeConfigurationComponent outComponent, bool logErrors = true)

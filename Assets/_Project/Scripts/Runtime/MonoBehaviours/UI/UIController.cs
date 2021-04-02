@@ -131,7 +131,8 @@ namespace Arcade
             EnableConfigurationUI();
         }
 
-        [ContextMenu("Disabled State")] private void Context_DisableAll() => DisableAll();
+        [ContextMenu("Disabled State")]
+        private void Context_DisableAll() => DisableAll();
 #endif
     }
 }

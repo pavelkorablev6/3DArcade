@@ -20,21 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace Arcade
 {
-    public sealed class UILoadingState : UIState
+    public sealed class EditorEntitiesSceneCreator : IEntititesSceneCreator
     {
-        public UILoadingState(UIContext context)
-        : base(context)
+        public Scene Create(string name)
         {
-        }
+            if (Application.isPlaying)
+                return SceneManager.CreateScene(name);
 
-        public override void OnEnter() => _context.UIController.EnableSceneLoadingUI();
-
-        public override void OnExit()
-        {
-            _context.UIController.ResetStatusBar();
-            _context.UIController.DisableSceneLoadingUI();
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            scene.name  = name;
+            return scene;
         }
     }
 }
+#endif

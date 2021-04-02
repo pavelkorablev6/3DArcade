@@ -52,7 +52,7 @@ namespace Arcade
         {
             if (!_context.ArcadeController.ArcadeSceneLoaded)
             {
-                float percentComplete = _context.ArcadeController.ArcadeSceneLoadingPercentCompleted;
+                float percentComplete = _context.ArcadeSceneLoadingPercentCompleted;
                 _context.UIController.UpdateStatusBar(percentComplete);
                 return;
             }

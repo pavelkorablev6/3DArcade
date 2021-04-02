@@ -27,8 +27,7 @@ namespace Arcade
 {
     public sealed class ArcadeContext : Context<ArcadeState>
     {
-        //public PlayerControls CurrentPlayerControls;
-        //public ModelConfigurationComponent CurrentModelConfiguration;
+        public float ArcadeSceneLoadingPercentCompleted => ArcadeScene.LoadingPercentCompleted;
 
         public readonly InputActions InputActions;
         public readonly Player Player;
@@ -38,18 +37,19 @@ namespace Arcade
         public readonly MultiFileDatabase<ArcadeConfiguration> ArcadeDatabase;
         public readonly IModelNameProvider ModelNameProvider;
         public readonly IUIController UIController;
-        public readonly ArcadeSceneManager ArcadeSceneManager;
 
-        public readonly EntitiesScene EntitiesSceneManager;
+        public readonly EntitiesScene EntitiesScene;
+        public readonly ArcadeScene ArcadeScene;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeType ArcadeType { get; private set; }
         public ArcadeMode ArcadeMode { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
 
+        //public PlayerControls CurrentPlayerControls;
+        //public ModelConfigurationComponent CurrentModelConfiguration;
         //public VideoPlayerController VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
-
         //private readonly NodeController<MarqueeNodeTag> _marqueeNodeController;
         //private readonly NodeController<ScreenNodeTag> _screenNodeController;
         //private readonly NodeController<GenericNodeTag> _genericNodeController;
@@ -72,8 +72,26 @@ namespace Arcade
             ArcadeDatabase       = arcadeDatabase;
             ModelNameProvider    = modelNameProvider;
 
-            ArcadeSceneManager   = new ArcadeSceneManager();
-            EntitiesSceneManager = new EntitiesScene();
+            IEntititesSceneCreator entititesSceneCreator;
+            IArcadeSceneLoader arcadeSceneLoader;
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+            {
+                entititesSceneCreator = new EntitiesSceneCreator();
+                arcadeSceneLoader     = new ArcadeSceneLoader();
+            }
+            else
+            {
+                entititesSceneCreator = new EditorEntitiesSceneCreator();
+                arcadeSceneLoader     = new EditorArcadeSceneLoader();
+            }
+#else
+            entititesSceneCreator = new EntitiesSceneCreator();
+            arcadeSceneLoader     = new ArcadeSceneLoader();
+#endif
+
+            EntitiesScene = new EntitiesScene(entititesSceneCreator);
+            ArcadeScene   = new ArcadeScene(arcadeSceneLoader);
 
             //_marqueeNodeController = new MarqueeNodeController(EmulatorDatabase, PlatformDatabase);
             //_screenNodeController  = new ScreenNodeController(EmulatorDatabase, PlatformDatabase);
@@ -115,7 +133,6 @@ namespace Arcade
         private void StartCurrentArcade()
         {
             Player.TransitionTo<PlayerDisabledState>();
-            ArcadeController?.StopArcade();
             ArcadeController = null;
 
             switch (ArcadeType)

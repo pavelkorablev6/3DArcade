@@ -93,7 +93,6 @@ namespace Arcade.UnityEditor
             UE_Utilities.CloseAllScenes();
 
             ArcadeContext.Player.TransitionTo<PlayerDisabledState>();
-            _arcadeController?.StopArcade();
             _arcadeController = null;
 
             switch (arcadeType)

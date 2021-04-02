@@ -20,21 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
+
 namespace Arcade
 {
-    public sealed class UILoadingState : UIState
+    public interface IArcadeSceneLoader
     {
-        public UILoadingState(UIContext context)
-        : base(context)
-        {
-        }
+        bool IsSceneLoading { get; }
+        float LoadPercentCompleted { get; }
 
-        public override void OnEnter() => _context.UIController.EnableSceneLoadingUI();
-
-        public override void OnExit()
-        {
-            _context.UIController.ResetStatusBar();
-            _context.UIController.DisableSceneLoadingUI();
-        }
+        void Load(IEnumerable<string> namesToTry, System.Action onComplete);
     }
 }

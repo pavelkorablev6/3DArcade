@@ -20,21 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine.SceneManagement;
+
 namespace Arcade
 {
-    public sealed class UILoadingState : UIState
+    public interface IEntititesSceneCreator
     {
-        public UILoadingState(UIContext context)
-        : base(context)
-        {
-        }
-
-        public override void OnEnter() => _context.UIController.EnableSceneLoadingUI();
-
-        public override void OnExit()
-        {
-            _context.UIController.ResetStatusBar();
-            _context.UIController.DisableSceneLoadingUI();
-        }
+        Scene Create(string name);
     }
 }

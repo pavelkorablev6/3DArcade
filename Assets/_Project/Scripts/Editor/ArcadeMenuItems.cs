@@ -29,7 +29,6 @@ namespace Arcade.UnityEditor
     internal static class ArcadeMenuItems
     {
 #pragma warning disable IDE0051 // Remove unused private members
-
         [MenuItem("3DArcade/Spawn New Game #1", false, 41)]
         private static void AddNewGameMenuItem() => ArcadeManager.SpawnGame();
 

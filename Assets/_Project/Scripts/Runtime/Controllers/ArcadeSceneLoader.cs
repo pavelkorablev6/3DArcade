@@ -21,51 +21,33 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 namespace Arcade
 {
-    public sealed class ArcadeSceneManager
+    public sealed class ArcadeSceneLoader : IArcadeSceneLoader
     {
-        public System.Action<string> Started;
-        public System.Action Completed;
-
         public bool IsSceneLoading => _sceneHandle.IsValid() && !_sceneHandle.IsDone;
-        public float LoadingPercentCompleted => _sceneHandle.PercentComplete;
+        public float LoadPercentCompleted => IsSceneLoading ? _sceneHandle.PercentComplete : 0f;
 
-        private AsyncOperationHandle<SceneInstance> _sceneHandle;
+        private System.Action _onComplete;
         private IResourceLocation _sceneResourceLocation;
+        private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private SceneInstance _sceneInstance;
-
         private bool _triggerSceneReload;
 
-        public void LoadScene(IEnumerable<string> namesToTry)
+        public void Load(IEnumerable<string> namesToTry, System.Action onComplete)
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                LoadSceneInEditor(namesToTry);
-                return;
-            }
-#endif
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance)).Completed += SceneResourceLocationRetrievedCallback;
+            _onComplete = onComplete;
+            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
+                        .Completed += ResourceLocationRetrievedCallback;
         }
 
-        public void UnloadScene()
-        {
-            if (_sceneInstance.Scene.isLoaded)
-                Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
-        }
-
-        private void SceneResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
+        private void ResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
         {
             if (aoHandle.Result.Count == 0)
                 return;
@@ -76,18 +58,15 @@ namespace Arcade
 
         private void LoadScene()
         {
-            Started?.Invoke(_sceneResourceLocation.ToString());
-
             if (_sceneInstance.Scene.isLoaded)
             {
                 _triggerSceneReload = true;
-                UnloadScene();
+                Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
+                return;
             }
-            else
-            {
-                _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
-                _sceneHandle.Completed += SceneLoadedCallback;
-            }
+
+            _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
+            _sceneHandle.Completed += SceneLoadedCallback;
         }
 
         private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
@@ -97,7 +76,7 @@ namespace Arcade
 
             _sceneInstance = aoHandle.Result;
 
-            Completed?.Invoke();
+            _onComplete?.Invoke();
 
             _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
         }
@@ -106,26 +85,7 @@ namespace Arcade
         {
             if (_triggerSceneReload)
                 LoadScene();
-
             _triggerSceneReload = false;
         }
-
-#if UNITY_EDITOR
-        public void LoadSceneInEditor(IEnumerable<string> namesToTry)
-        {
-            foreach (string nameToTry in namesToTry)
-            {
-                System.Type assetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(nameToTry);
-                if (assetType == typeof(UnityEditor.SceneAsset))
-                {
-                    Scene scene = EditorSceneManager.OpenScene(nameToTry, OpenSceneMode.Additive);
-                    Completed?.Invoke();
-                    _ = SceneManager.SetActiveScene(scene);
-                    UnityEditor.SceneVisibilityManager.instance.DisablePicking(scene);
-                    return;
-                }
-            }
-        }
-#endif
     }
 }
