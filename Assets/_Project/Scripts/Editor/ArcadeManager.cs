@@ -163,7 +163,7 @@ namespace Arcade.UnityEditor
             ModelConfiguration modelConfiguration = new ModelConfiguration
             {
                 Id          = "id",
-                Description = "Description"
+                Description = string.Empty
             };
             gameObject.AddComponent<ModelConfigurationComponent>()
                       .SetModelConfiguration(modelConfiguration);
