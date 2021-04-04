@@ -20,133 +20,100 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
-//namespace Arcade
-//{
-//    public abstract class AssetCache<T> where T : class
-//    {
-//        protected readonly Dictionary<string, T> _loadedAssets;
+namespace Arcade
+{
+    public abstract class AssetCache<T> where T : class
+    {
+        protected readonly Dictionary<string, T> _loadedAssets = new Dictionary<string, T>();
 
-//        public AssetCache() => _loadedAssets = new Dictionary<string, T>();
+        public bool Get(string filePathNoExt, out T asset) => _loadedAssets.TryGetValue(filePathNoExt, out asset);
 
-//        protected abstract T LoadAsset(string filePathNoExt);
+        //public T Load(string directory, params string[] namesToTry)
+        //{
+        //    if (string.IsNullOrEmpty(directory))
+        //        return null;
 
-//        protected abstract void UnloadAsset(T asset);
+        //    foreach (string name in namesToTry)
+        //    {
+        //        if (string.IsNullOrEmpty(name))
+        //            continue;
 
-//        public bool Get(string filePathNoExt, out T asset) => _loadedAssets.TryGetValue(filePathNoExt, out asset);
+        //        string filePathNoExt = Path.Combine(directory, name);
+        //        if (_loadedAssets.TryGetValue(filePathNoExt, out T foundAsset))
+        //            return foundAsset;
+        //        else
+        //        {
+        //            T newAsset = LoadAsset(filePathNoExt);
+        //            if (newAsset != null)
+        //            {
+        //                _loadedAssets[filePathNoExt] = newAsset;
+        //                return newAsset;
+        //            }
+        //        }
+        //    }
 
-//        public T Load(string directory, params string[] namesToTry)
-//        {
-//            if (string.IsNullOrEmpty(directory))
-//                return null;
+        //    return null;
+        //}
 
-//            foreach (string name in namesToTry)
-//            {
-//                if (string.IsNullOrEmpty(name))
-//                    continue;
+        //public T Load(string directory, IEnumerable<string> namesToTry) => Load(directory, namesToTry.ToArray());
 
-//                string filePathNoExt = Path.Combine(directory, name);
-//                if (_loadedAssets.TryGetValue(filePathNoExt, out T foundAsset))
-//                    return foundAsset;
-//                else
-//                {
-//                    T newAsset = LoadAsset(filePathNoExt);
-//                    if (newAsset != null)
-//                    {
-//                        _loadedAssets[filePathNoExt] = newAsset;
-//                        return newAsset;
-//                    }
-//                }
-//            }
+        //public T Load(IEnumerable<string> directories, params string[] namesToTry)
+        //{
+        //    foreach (string directory in directories)
+        //    {
+        //        T result = Load(directory, namesToTry);
+        //        if (result != null)
+        //            return result;
+        //    }
 
-//            return null;
-//        }
+        //    return null;
+        //}
 
-//        public T Load(string directory, IEnumerable<string> namesToTry) => Load(directory, namesToTry.ToArray());
+        //public T Load(IEnumerable<string> directories, IEnumerable<string> namesToTry) => Load(directories, namesToTry.ToArray());
 
-//        public T Load(IEnumerable<string> directories, params string[] namesToTry)
-//        {
-//            foreach (string directory in directories)
-//            {
-//                T result = Load(directory, namesToTry);
-//                if (result != null)
-//                    return result;
-//            }
+        public T[] LoadMultiple(string directory, params string[] namesToTry)
+        {
+            if (string.IsNullOrEmpty(directory) || namesToTry == null || namesToTry.Length == 0)
+                return null;
 
-//            return null;
-//        }
+            List<T> result = new List<T>();
 
-//        public T Load(IEnumerable<string> directories, IEnumerable<string> namesToTry) => Load(directories, namesToTry.ToArray());
+            foreach (string name in namesToTry)
+            {
+                string filePathNoExt = Path.Combine(directory, name);
+                if (Get(filePathNoExt, out T foundAsset))
+                {
+                    result.Add(foundAsset);
+                    continue;
+                }
 
-//        public T[] LoadMultiple(string directory, params string[] namesToTry)
-//        {
-//            if (string.IsNullOrEmpty(directory))
-//                return null;
+                if (TryLoadAsset(filePathNoExt, out T newAsset))
+                {
+                    _loadedAssets[filePathNoExt] = newAsset;
+                    result.Add(newAsset);
+                }
+            }
 
-//            List<T> result = new List<T>();
+            return result.ToArray();
+        }
 
-//            foreach (string name in namesToTry)
-//            {
-//                if (string.IsNullOrEmpty(name))
-//                    continue;
+        public T[] LoadMultiple(string[] directories, params string[] namesToTry)
+        {
+            List<T> result = new List<T>();
 
-//                string filePathNoExt = Path.Combine(directory, name);
-//                if (_loadedAssets.TryGetValue(filePathNoExt, out T foundAsset))
-//                    result.Add(foundAsset);
-//                else
-//                {
-//                    T newAsset = LoadAsset(filePathNoExt);
-//                    if (newAsset != null)
-//                    {
-//                        _loadedAssets[filePathNoExt] = newAsset;
-//                        result.Add(newAsset);
-//                    }
-//                }
-//            }
+            foreach (string directory in directories)
+            {
+                T[] assets = LoadMultiple(directory, namesToTry);
+                if (assets != null)
+                    result.AddRange(assets);
+            }
 
-//            return result.Count > 0 ? result.ToArray() : null;
-//        }
+            return result.ToArray();
+        }
 
-//        public T[] LoadMultiple(string directory, IEnumerable<string> namesToTry) => LoadMultiple(directory, namesToTry.ToArray());
-
-//        public T[] LoadMultiple(IEnumerable<string> directories, params string[] namesToTry)
-//        {
-//            List<T> result = new List<T>();
-
-//            foreach (string directory in directories)
-//            {
-//                T[] range = LoadMultiple(directory, namesToTry);
-//                if (range != null)
-//                    result.AddRange(range);
-//            }
-
-//            return result.Count > 0 ? result.ToArray() : null;
-//        }
-
-//        public T[] LoadMultiple(IEnumerable<string> directories, IEnumerable<string> namesToTry)
-//            => LoadMultiple(directories, namesToTry.ToArray());
-
-//        public void Unload(string filePathNoExt)
-//        {
-//            if (Get(filePathNoExt, out T asset))
-//                UnloadInternal(filePathNoExt, asset);
-//        }
-
-//        public void Reset()
-//        {
-//            foreach (KeyValuePair<string, T> loadedAsset in _loadedAssets)
-//                UnloadInternal(loadedAsset.Key, loadedAsset.Value);
-//            _loadedAssets.Clear();
-//        }
-
-//        private void UnloadInternal(string filePathNoExt, T asset)
-//        {
-//            if (asset != null)
-//                UnloadAsset(asset);
-//            _ = _loadedAssets.Remove(filePathNoExt);
-//        }
-//    }
-//}
+        protected abstract bool TryLoadAsset(string filePathNoExt, out T outAsset);
+    }
+}

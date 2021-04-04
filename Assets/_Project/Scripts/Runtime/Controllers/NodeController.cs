@@ -25,102 +25,64 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class NodeController<T> where T : NodeTag
+    public sealed class NodeController<T> where T : NodeTag
     {
-        protected static readonly string _defaultMediaDirectory = $"{SystemUtils.GetDataPath()}/3darcade~/Configuration/Media";
+        private readonly System.Threading.SynchronizationContext _mainThread;
 
-        protected abstract string[] DefaultImageDirectories { get; }
-        protected abstract string[] DefaultVideoDirectories { get; }
+        private readonly IArtworkDirectoryNamesProvider _directoryNamesProvider;
+        private readonly ArtworkFileNamesProvider _artworkNameProvider;
+        private readonly ArtworkController _artworkController;
+        private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
 
-        protected readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
-        protected readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
-
-        public NodeController(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase, MultiFileDatabase<PlatformConfiguration> platformDatabase)
+        public NodeController(IArtworkDirectoryNamesProvider directoryNamesProvider, ArtworkFileNamesProvider artworkNameProvider, ArtworkController artworkController, MultiFileDatabase<PlatformConfiguration> platformDatabase)
         {
-            _emulatorDatabase = emulatorDatabase;
-            _platformDatabase = platformDatabase;
+            _mainThread = System.Threading.SynchronizationContext.Current;
+
+            _directoryNamesProvider = directoryNamesProvider;
+            _artworkNameProvider    = artworkNameProvider;
+            _artworkController      = artworkController;
+            _platformDatabase       = platformDatabase;
         }
 
-        public void Setup(ArcadeController arcadeController, ModelConfigurationComponent modelConfigurationComponent, float emissionIntensity)
+        public void Setup(GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
-            Renderer[] renderers = GetNodeRenderers(modelConfigurationComponent.gameObject);
+            if (gameObject == null)
+                return;
+
+            Renderer[] renderers = GetNodeRenderers(gameObject);
             if (renderers == null)
                 return;
 
-            //foreach (Renderer renderer in renderers)
-            //{
-            //    renderer.material.EnableEmission(true);
-            //    renderer.material.SetBaseColor(Color.black);
-            //    renderer.material.SetBaseTexture(null);
-            //    renderer.material.SetEmissionColor(Color.white * emissionIntensity);
-            //}
+            string[] namesToTry = _artworkNameProvider.GetNamesToTry(modelConfiguration);
 
-            //List<string> namesToTry = _artworkMatcher.GetNamesToTry(modelConfigurationComponent);
+            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _platformDatabase.Get(modelConfiguration.Platform) : null;
 
-            //PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _platformDatabase.Get(modelConfiguration.Platform) : null;
+            string[] gameArtworkDirectories     = _directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
+            string[] platformArtworkDirectories = _directoryNamesProvider.GetPlatformImageDirectories(platform);
+            string[] defaultArtworkDirectories  = _directoryNamesProvider.DefaultImageDirectories;
+            string[] imagesDirectories          = ArtworkDirectoriesResolver.GetDirectoriesToTry(gameArtworkDirectories, platformArtworkDirectories, defaultArtworkDirectories);
 
-            //List<string> directories = _artworkMatcher.GetDirectoriesToTry(GetModelImageDirectories(modelConfiguration), GetPlatformImageDirectories(platform), DefaultImageDirectories);
-            //ArtworkUtils.SetupImages(directories, namesToTry, renderers, this is MarqueeNodeController);
+            _mainThread.Post(x => _artworkController.SetupImages(imagesDirectories, namesToTry, renderers, emissionIntensity), this);
 
-            //directories = _artworkMatcher.GetDirectoriesToTry(GetModelVideoDirectories(modelConfiguration), GetPlatformVideoDirectories(platform), DefaultVideoDirectories);
-            //ArtworkUtils.SetupVideos(directories, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
-        }
-
-        protected abstract string[] GetModelImageDirectories(ModelConfiguration modelConfiguration);
-
-        protected abstract string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration);
-
-        protected abstract string[] GetPlatformImageDirectories(PlatformConfiguration platform);
-
-        protected abstract string[] GetPlatformVideoDirectories(PlatformConfiguration platform);
-
-        protected static string[] GetDirectories(string[] array)
-        {
-            if (array == null)
-                return null;
-
-            List<string> result = new List<string>();
-            AddPossibleDirectories(result, array);
-            return result.Count > 0 ? result.ToArray() : null;
-        }
-
-        protected static string[] GetDirectories(string[] array1, string[] array2)
-        {
-            if (array1 == null)
-                return null;
-
-            List<string> result = new List<string>();
-            AddPossibleDirectories(result, array1);
-
-            if (array2 == null)
-                return result.Count > 0 ? result.ToArray() : null;
-
-            AddPossibleDirectories(result, array2);
-            return result.Count > 0 ? result.ToArray() : null;
-        }
-
-        protected static void AddPossibleDirectories(List<string> list, string[] directories)
-        {
-            if (directories != null && directories.Length > 0)
-                list.AddRange(FileSystem.CorrectPaths(directories));
+            string[] gameVideoDirectories     = _directoryNamesProvider.GetModelVideoDirectories(modelConfiguration);
+            string[] platformVideoDirectories = _directoryNamesProvider.GetPlatformVideoDirectories(platform);
+            string[] defaultVideoDirectories  = _directoryNamesProvider.DefaultVideoDirectories;
+            string[] videosDirectories        = ArtworkDirectoriesResolver.GetDirectoriesToTry(gameVideoDirectories, platformVideoDirectories, defaultVideoDirectories);
+            //_mainThread.Post(x => _artworkController.SetupVideos(directories, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve), this);
         }
 
         private static Renderer[] GetNodeRenderers(GameObject model)
         {
-            if (model == null)
+            T[] nodeTags = model.GetComponentsInChildren<T>(true);
+            if (nodeTags == null || nodeTags.Length == 0)
                 return null;
 
             List<Renderer> renderers = new List<Renderer>();
 
-            T[] nodeTags = model.GetComponentsInChildren<T>();
-            if (nodeTags != null)
+            foreach (T nodeTag in nodeTags)
             {
-                foreach (T nodeTag in nodeTags)
-                {
-                    Renderer renderer = nodeTag.GetComponent<Renderer>();
-                    if (renderer != null)
-                        renderers.Add(renderer);
-                }
+                if (nodeTag.TryGetComponent(out Renderer renderer))
+                    renderers.Add(renderer);
             }
 
             return renderers.Count > 0 ? renderers.ToArray() : null;

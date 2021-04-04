@@ -37,8 +37,6 @@ namespace Arcade.UnityEditor
         private static GameObject _dummyGamePrefab;
         private static GameObject _dummyPropPrefab;
 
-        private ArcadeController _arcadeController;
-
         public ArcadeManager()
         {
             _instance = this;
@@ -66,7 +64,7 @@ namespace Arcade.UnityEditor
             ArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();
             GamePrefabAddressesProvider gameProvider    = new GamePrefabAddressesProvider();
             PropPrefabAddressesProvider propProvider    = new PropPrefabAddressesProvider();
-            AddressesProviders addressesProviders       = new AddressesProviders(arcadeProvider, gameProvider, propProvider);
+            AssetAddressesProviders addressesProviders  = new AssetAddressesProviders(arcadeProvider, gameProvider, propProvider);
 
             EntitiesSceneCreator entitiesSceneCreator = new EntitiesSceneCreator();
             EntitiesScene entitiesScene               = new EntitiesScene(entitiesSceneCreator);
@@ -74,51 +72,18 @@ namespace Arcade.UnityEditor
             ArcadeScene arcadeScene                   = new ArcadeScene(arcadeSceneLoader);
             Scenes scenes                             = new Scenes(entitiesScene, arcadeScene);
 
-            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null);
+            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null, null);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)
         {
-            if (string.IsNullOrEmpty(name))
-                return;
-
             if (ArcadeContext == null)
-                return;
-
-            if (!ArcadeContext.Databases.Arcades.Get(name, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
             UE_Utilities.CloseAllScenes();
 
-            ArcadeContext.Player.TransitionTo<PlayerDisabledState>();
-            _arcadeController = null;
-
-            switch (arcadeType)
-            {
-                case ArcadeType.Fps:
-                    _arcadeController = new FpsArcadeController(ArcadeContext);
-                    break;
-                case ArcadeType.Cyl:
-                {
-                    _arcadeController = arcadeConfiguration.CylArcadeProperties.WheelVariant switch
-                    {
-                        //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
-                        //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
-                        //WheelVariant.CameraInsideVertical    => new CylArcadeControllerWheel3DCameraInsideVertical(ArcadeContext),
-                        //WheelVariant.CameraOutsideVertical   => new CylArcadeControllerWheel3DCameraOutsideVertical(ArcadeContext),
-                        //WheelVariant.LineVertical            => new CylArcadeControllerLineVertical(ArcadeContext),
-                        CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(ArcadeContext),
-                        _                                    => new CylArcadeControllerLineHorizontal(ArcadeContext)
-                    };
-                }
-                break;
-            }
-
-            if (_arcadeController == null)
-                return;
-
-            SetCurrentArcadeStateInEditorPrefs(arcadeConfiguration.Id, arcadeType);
-            _arcadeController.StartArcade(arcadeConfiguration, arcadeType);
+            ArcadeContext.StartArcade(name, arcadeType, ArcadeMode.Normal);
+            SetCurrentArcadeStateInEditorPrefs(name, arcadeType);
         }
 
         public void ReloadCurrentArcade()

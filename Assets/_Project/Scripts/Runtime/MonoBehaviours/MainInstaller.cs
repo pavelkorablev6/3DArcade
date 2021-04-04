@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
 using Zenject;
 
 namespace Arcade
@@ -48,13 +49,18 @@ namespace Arcade
             _ = Container.Bind<IArcadeSceneAddressesProvider>().To<ArcadeSceneAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<IGamePrefabAddressesProvider>().To<GamePrefabAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<IPropPrefabAddressesProvider>().To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
-            _ = Container.Bind<AddressesProviders>().AsSingle().NonLazy();
+            _ = Container.Bind<AssetAddressesProviders>().AsSingle().NonLazy();
 
-            _ = Container.Bind<ArtworkNameProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<ArtworkFileNamesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<AssetCache<Texture>>().To<TextureCache>().AsSingle().NonLazy();
+            _ = Container.Bind<ArtworkController>().AsSingle().NonLazy();
 
-            _ = Container.Bind<NodeController<MarqueeNodeTag>>().To<MarqueeNodeController>().AsSingle().NonLazy();
-            _ = Container.Bind<NodeController<ScreenNodeTag>>().To<ScreenNodeController>().AsSingle().NonLazy();
-            _ = Container.Bind<NodeController<GenericNodeTag>>().To<GenericNodeController>().AsSingle().NonLazy();
+            _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<MarqueeArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<MarqueeNodeTag>>().NonLazy();
+            _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<ScreenArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<ScreenNodeTag>>().NonLazy();
+            _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<GenericArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<GenericNodeTag>>().NonLazy();
+            _ = Container.Bind<NodeController<MarqueeNodeTag>>().AsSingle().NonLazy();
+            _ = Container.Bind<NodeController<ScreenNodeTag>>().AsSingle().NonLazy();
+            _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
             _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();

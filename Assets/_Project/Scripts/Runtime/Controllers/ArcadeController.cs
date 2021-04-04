@@ -27,8 +27,6 @@ namespace Arcade
 {
     public abstract class ArcadeController
     {
-        public bool ArcadeSceneLoaded { get; private set; }
-
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
@@ -48,25 +46,14 @@ namespace Arcade
 
         public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
-        public void StartArcade(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
+        public void ArcadeSceneLoadCompletedCallback()
         {
-            _arcadeContext.SetCurrentArcadeConfiguration(arcadeConfiguration, arcadeType);
-
-            _arcadeContext.Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
-            IEnumerable<string> namesToTry = _arcadeContext.AddressesProviders.Arcade.GetNamesToTry(arcadeConfiguration, arcadeType);
-            _arcadeContext.Scenes.Arcade.Load(namesToTry, ArcadeSceneLoadCompletedCallback);
-        }
-
-        protected abstract void SetupPlayer();
-
-        private void ArcadeSceneLoadCompletedCallback()
-        {
-            ArcadeSceneLoaded = true;
-
             SetupPlayer();
             SpawnGames();
             SpawProps();
         }
+
+        protected abstract void SetupPlayer();
 
         private void SpawnGames()
         {
@@ -103,23 +90,31 @@ namespace Arcade
 
         private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
         {
-            ModelInstance modelInstance    = new ModelInstance(modelConfiguration, ApplyArtworks);
-            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _arcadeContext.Databases.Platforms.Get(modelConfiguration.Platform) : null;
-            GameConfiguration game         = /*platform != null && !string.IsNullOrEmpty(platform.MasterList) ? _arcadeContext.GameDatabase.Get(platform.MasterList, modelConfiguration.Id) :*/ null;
-            IEnumerable<string> namesToTry = _arcadeContext.AddressesProviders.Game.GetNamesToTry(modelConfiguration, platform, game);
-            modelInstance.SpawnModel(namesToTry, parent, GameModelsSpawnAtPositionWithRotation);
+            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
+
+            GameConfiguration game = null;
+            if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
+            {
+                //_arcadeContext.Databases.Games.TryGet(platform.MasterList, modelConfiguration.Id, out game);
+            }
+
+            IEnumerable<string> namesToTry = _arcadeContext.AssetAddressesProviders.Game.GetNamesToTry(modelConfiguration, platform, game);
+            modelInstance.SpawnModel(namesToTry, parent, GameModelsSpawnAtPositionWithRotation, ApplyArtworks);
+
             return modelInstance;
         }
 
         private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
         {
-            ModelInstance modelInstance    = new ModelInstance(modelConfiguration, ApplyArtworks);
-            IEnumerable<string> namesToTry = _arcadeContext.AddressesProviders.Prop.GetNamesToTry(modelConfiguration);
-            modelInstance.SpawnModel(namesToTry, parent, true);
+            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
+
+            IEnumerable<string> namesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetNamesToTry(modelConfiguration);
+            modelInstance.SpawnModel(namesToTry, parent, true, ApplyArtworks);
+
             return modelInstance;
         }
 
-        private void ApplyArtworks(ModelConfigurationComponent modelConfigurationComponent)
+        private void ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
         {
             // Look for artworks only in play mode / runtime
             if (!Application.isPlaying)
@@ -138,9 +133,9 @@ namespace Arcade
             //    }
             //}
 
-            _arcadeContext.NodeControllers.Marquee.Setup(this, modelConfigurationComponent, RenderSettings.MarqueeIntensity);
-            _arcadeContext.NodeControllers.Screen.Setup(this, modelConfigurationComponent, game != null ? GetScreenIntensity(game.ScreenType, RenderSettings) : 1.4f);
-            _arcadeContext.NodeControllers.Generic.Setup(this, modelConfigurationComponent, 1f);
+            _arcadeContext.NodeControllers.Marquee.Setup(gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
+            _arcadeContext.NodeControllers.Screen.Setup(gameObject, modelConfiguration, GetScreenIntensity(game));
+            _arcadeContext.NodeControllers.Generic.Setup(gameObject, modelConfiguration, 1f);
 
             //if (gameModels)
             //{
@@ -151,13 +146,19 @@ namespace Arcade
             //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
         }
 
-        private static float GetScreenIntensity(GameScreenType screenType, RenderSettings renderSettings) => screenType switch
+        private float GetScreenIntensity(GameConfiguration game)
         {
-            GameScreenType.Raster  => renderSettings.ScreenRasterIntensity,
-            GameScreenType.Vector  => renderSettings.ScreenVectorIntenstity,
-            GameScreenType.Pinball => renderSettings.ScreenPinballIntensity,
-            _                      => 1.4f
-        };
+            if (game == null)
+                return 1.4f;
+
+            return game.ScreenType switch
+            {
+                GameScreenType.Raster  => RenderSettings.ScreenRasterIntensity,
+                GameScreenType.Vector  => RenderSettings.ScreenVectorIntenstity,
+                GameScreenType.Pinball => RenderSettings.ScreenPinballIntensity,
+                _ => 1.4f
+            };
+        }
 
         /*
         public void NavigateForward(float dt)

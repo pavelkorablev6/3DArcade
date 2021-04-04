@@ -78,8 +78,14 @@ namespace Arcade
             return _entries[id];
         }
 
-        public bool Get(string id, out T outResult)
+        public bool TryGet(string id, out T outResult)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                outResult = null;
+                return false;
+            }
+
             outResult = Get(id);
             return outResult != null;
         }

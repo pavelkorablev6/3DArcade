@@ -29,12 +29,12 @@ namespace Arcade
     {
         private readonly ModelConfiguration _modelConfiguration;
         private readonly IModelSpawner _modelSpawner;
-        private readonly System.Action<ModelConfigurationComponent> _onModelSpawned;
 
-        public ModelInstance(ModelConfiguration modelConfiguration, System.Action<ModelConfigurationComponent> onModelSpawned)
+        private System.Action<GameObject, ModelConfiguration> _onModelSpawned;
+
+        public ModelInstance(ModelConfiguration modelConfiguration)
         {
             _modelConfiguration = modelConfiguration;
-            _onModelSpawned     = onModelSpawned;
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -46,8 +46,10 @@ namespace Arcade
             _modelSpawner = new ModelSpawner();
         }
 
-        public void SpawnModel(IEnumerable<string> namesToTry, Transform parent, bool atPositionWithRotation)
+        public void SpawnModel(IEnumerable<string> namesToTry, Transform parent, bool atPositionWithRotation, System.Action<GameObject, ModelConfiguration> onModelSpawned)
         {
+            _onModelSpawned = onModelSpawned;
+
             Vector3 position;
             Quaternion orientation;
 
@@ -70,10 +72,10 @@ namespace Arcade
             gameObject.name                 = _modelConfiguration.Id;
             gameObject.transform.localScale = _modelConfiguration.Scale;
 
-            ModelConfigurationComponent modelConfigurationComponent = gameObject.AddComponent<ModelConfigurationComponent>();
-            modelConfigurationComponent.SetModelConfiguration(_modelConfiguration);
+            gameObject.AddComponent<ModelConfigurationComponent>()
+                      .SetModelConfiguration(_modelConfiguration);
 
-            _onModelSpawned?.Invoke(modelConfigurationComponent);
+            _onModelSpawned?.Invoke(gameObject, _modelConfiguration);
         }
     }
 }

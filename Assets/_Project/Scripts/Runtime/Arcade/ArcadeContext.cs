@@ -21,22 +21,11 @@
  * SOFTWARE. */
 
 using SK.Utilities.StateMachine;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class Scenes
-    {
-        public readonly EntitiesScene Entities;
-        public readonly ArcadeScene Arcade;
-
-        public Scenes(EntitiesScene entitiesScene, ArcadeScene arcadeScene)
-        {
-            Entities = entitiesScene;
-            Arcade   = arcadeScene;
-        }
-    }
-
     public sealed class ArcadeContext : Context<ArcadeState>
     {
         public readonly InputActions InputActions;
@@ -46,8 +35,9 @@ namespace Arcade
 
         public readonly Scenes Scenes;
 
-        public readonly AddressesProviders AddressesProviders;
-        public readonly ArtworkNameProvider ArtworkNameProvider;
+        public readonly AssetAddressesProviders AssetAddressesProviders;
+        public readonly ArtworkFileNamesProvider ArtworkNameProvider;
+        public readonly ArtworkController ArtworkController;
         public readonly NodeControllers NodeControllers;
         public readonly IUIController UIController;
 
@@ -67,63 +57,36 @@ namespace Arcade
                              GeneralConfiguration generalConfiguration,
                              Databases databases,
                              Scenes scenes,
-                             AddressesProviders addressesProviders,
-                             ArtworkNameProvider artworkNameProvider,
+                             AssetAddressesProviders assetAddressesProviders,
+                             ArtworkFileNamesProvider artworkNameProvider,
+                             ArtworkController artworkController,
                              NodeControllers nodeControllers,
                              IUIController uiController)
         {
-            InputActions         = inputActions;
-            Player               = player;
-            GeneralConfiguration = generalConfiguration;
-            Databases            = databases;
-            Scenes               = scenes;
-            AddressesProviders   = addressesProviders;
-            ArtworkNameProvider  = artworkNameProvider;
-            NodeControllers      = nodeControllers;
-            UIController         = uiController;
+            InputActions            = inputActions;
+            Player                  = player;
+            GeneralConfiguration    = generalConfiguration;
+            Databases               = databases;
+            Scenes                  = scenes;
+            AssetAddressesProviders = assetAddressesProviders;
+            ArtworkNameProvider     = artworkNameProvider;
+            ArtworkController       = artworkController;
+            NodeControllers         = nodeControllers;
+            UIController            = uiController;
         }
 
-        public void SetCurrentArcadeConfiguration(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
-        {
-            ArcadeConfiguration = arcadeConfiguration;
-            ArcadeType          = arcadeType;
-        }
-
-        protected override void OnStart()
-        {
-            GeneralConfiguration.Initialize();
-
-            Databases.Initialize();
-
-            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
-        }
-
-        protected override void OnUpdate(float dt)
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-                StartCurrentArcade();
-        }
-
-        private void StartArcade(string id, ArcadeType type, ArcadeMode mode)
+        public void StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
         {
             if (string.IsNullOrEmpty(id))
                 return;
 
-            if (!Databases.Arcades.Get(id, out ArcadeConfiguration configuration))
+            if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
-            if (UIController != null)
-                UIController.InitStatusBar($"Loading arcade: {configuration}...");
+            ArcadeConfiguration = arcadeConfiguration;
+            ArcadeType          = arcadeType;
+            ArcadeMode          = arcadeMode;
 
-            ArcadeConfiguration = configuration;
-            ArcadeType          = type;
-            ArcadeMode          = mode;
-
-            StartCurrentArcade();
-        }
-
-        private void StartCurrentArcade()
-        {
             Player.TransitionTo<PlayerDisabledState>();
             _arcadeController = null;
 
@@ -138,7 +101,6 @@ namespace Arcade
                 case ArcadeType.Cyl:
                 {
                     //VideoPlayerController = null;
-
                     _arcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
@@ -157,16 +119,36 @@ namespace Arcade
             if (_arcadeController == null)
                 return;
 
-            _arcadeController.StartArcade(ArcadeConfiguration, ArcadeType);
-            TransitionTo<ArcadeLoadState>();
+            if (Application.isPlaying)
+                TransitionTo<ArcadeLoadState>();
+
+            Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
+            IEnumerable<string> namesToTry = AssetAddressesProviders.Arcade.GetNamesToTry(arcadeConfiguration, arcadeType);
+            Scenes.Arcade.Load(namesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
+        }
+
+        protected override void OnStart()
+        {
+            GeneralConfiguration.Initialize();
+            Databases.Initialize();
+
+            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
+        }
+
+        protected override void OnUpdate(float dt)
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                StartArcade(ArcadeConfiguration.Id, ArcadeType, ArcadeMode);
         }
 
         public bool SaveCurrentArcade()
         {
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return false;
+
             if (!Databases.Arcades.Save(arcadeConfigurationComponent.GetArcadeConfiguration()))
                 return false;
+
             return Databases.Arcades.LoadAll();
         }
 

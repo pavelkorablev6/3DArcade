@@ -39,6 +39,7 @@ namespace Arcade
             CursorUtils.HideMouseCursor();
 
             _context.UIController.TransitionTo<UILoadingState>();
+            _context.UIController.InitStatusBar($"Loading arcade: {_context.ArcadeConfiguration}...");
         }
 
         public override void OnExit()
