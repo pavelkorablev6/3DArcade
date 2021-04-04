@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Arcade.UnityEditor
 
         public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
 
-        [MenuItem("3DArcade/Arcades", priority = 12)]
+        [MenuItem("3DArcade/Arcades", false, 12)]
         public static void ShowWindow()
         {
             UE_Utilities.OpenMainScene();
@@ -46,5 +47,8 @@ namespace Arcade.UnityEditor
             if (GUILayout.Button(new GUIContent("Load (CYL)", "Load this arcade's cyl scene"), GUILayout.Width(85f)))
                 new ArcadeManager().LoadArcade(entry.Id, ArcadeType.Cyl);
         }
+
+        [MenuItem("3DArcade/Arcades", true), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        private static bool ShowMenuValidation() => !Application.isPlaying;
     }
 }
