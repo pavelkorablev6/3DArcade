@@ -36,12 +36,12 @@ namespace Arcade.UnityEditor
         private static void AddNewPropMenuItem() => ArcadeManager.SpawnProp();
 
         [MenuItem("3DArcade/Reload Arcade", false, 101)]
-        private static void ReloadArcade() => ArcadeManager.Instance.ReloadCurrentArcade();
+        private static void ReloadArcade() => new ArcadeManager().ReloadCurrentArcade();
 
         [MenuItem("3DArcade/Save Arcade", false, 102)]
         private static void SaveArcade()
         {
-            ArcadeManager.Instance.SaveCurrentArcade();
+            new ArcadeManager().SaveCurrentArcade();
             if (EditorWindow.HasOpenInstances<ArcadeDatabaseEditorWindow>())
             {
                 EditorWindow.GetWindow<ArcadeDatabaseEditorWindow>().Close();

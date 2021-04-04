@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using UnityEditor;
+using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
@@ -35,8 +36,11 @@ namespace Arcade.UnityEditor
 
         private static void EditorUpdateCallback()
         {
+            if (Application.isPlaying)
+                return;
+
             EditorApplication.update -= EditorUpdateCallback;
-            ArcadeManager.Instance.ReloadCurrentArcade();
+            new ArcadeManager().ReloadCurrentArcade();
         }
 
         private static void PlayModeStateChangedCallback(PlayModeStateChange state)
@@ -44,7 +48,7 @@ namespace Arcade.UnityEditor
             switch (state)
             {
                 case PlayModeStateChange.EnteredEditMode:
-                    ArcadeManager.Instance.ReloadCurrentArcade();
+                    new ArcadeManager().ReloadCurrentArcade();
                     break;
                 case PlayModeStateChange.ExitingEditMode:
                     ArcadeManager.SaveCurrentArcadeStateInEditorPrefs();

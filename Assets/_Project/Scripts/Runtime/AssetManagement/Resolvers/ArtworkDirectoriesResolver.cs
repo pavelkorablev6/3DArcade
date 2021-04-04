@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using System.IO;
 
 namespace Arcade
@@ -28,7 +29,7 @@ namespace Arcade
     {
         public static string[] GetDirectoriesToTry(string[] gameArtworkDirectories, string[] platformArtworkDirectories, string[] defaultArtworkDirectories)
         {
-            ArtworkDirectories artworkDirectories = new ArtworkDirectories();
+            ArtworkDirectories artworkDirectories = new ArtworkDirectories { Directories = new List<string>() };
             artworkDirectories.TryResolveDirectories(gameArtworkDirectories);
             artworkDirectories.TryResolveDirectories(platformArtworkDirectories);
             artworkDirectories.TryResolveDirectories(defaultArtworkDirectories);

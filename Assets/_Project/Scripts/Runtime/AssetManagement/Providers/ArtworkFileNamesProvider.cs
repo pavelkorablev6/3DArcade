@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
+
 namespace Arcade
 {
     public sealed class ArtworkFileNamesProvider
@@ -38,7 +40,7 @@ namespace Arcade
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            ImageSequence imageSequence = new ImageSequence();
+            ImageSequence imageSequence = new ImageSequence { Images = new List<string>() };
 
             imageSequence.TryAdd(cfg.Id);
 

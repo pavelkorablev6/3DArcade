@@ -29,18 +29,13 @@ namespace Arcade.UnityEditor
 {
     internal sealed class ArcadeManager
     {
-        public static ArcadeManager Instance => _instance ?? new ArcadeManager();
-
         public readonly ArcadeContext ArcadeContext;
 
-        private static ArcadeManager _instance;
         private static GameObject _dummyGamePrefab;
         private static GameObject _dummyPropPrefab;
 
         public ArcadeManager()
         {
-            _instance = this;
-
             string dataPath = SystemUtils.GetDataPath();
             IVirtualFileSystem vfs = new VirtualFileSystem().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
                                                             .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
@@ -80,6 +75,7 @@ namespace Arcade.UnityEditor
             if (ArcadeContext == null)
                 return;
 
+            UE_Utilities.OpenMainScene();
             UE_Utilities.CloseAllScenes();
 
             ArcadeContext.StartArcade(name, arcadeType, ArcadeMode.Normal);

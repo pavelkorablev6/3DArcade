@@ -33,5 +33,11 @@ namespace Arcade.UnityEditor
             while (EditorSceneManager.loadedSceneCount > sceneMax)
                 _ = EditorSceneManager.CloseScene(SceneManager.GetSceneAt(EditorSceneManager.loadedSceneCount - 1), true);
         }
+
+        public static void OpenMainScene()
+        {
+            if (!SceneManager.GetSceneByName("Main").isLoaded)
+                _ = EditorSceneManager.OpenScene("Assets/_Project/Scenes/Main.unity", OpenSceneMode.Single);
+        }
     }
 }

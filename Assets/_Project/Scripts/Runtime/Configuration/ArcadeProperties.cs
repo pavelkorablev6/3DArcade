@@ -46,6 +46,7 @@ namespace Arcade
         public string Model = "";
 
         [XmlArray("props"), XmlArrayItem("prop")]
+        [HideInInspector]
         public ModelConfiguration[] Props = new ModelConfiguration[0];
     }
 }

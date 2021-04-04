@@ -28,12 +28,15 @@ namespace Arcade.UnityEditor
 {
     internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
     {
-        public override MultiFileDatabase<EmulatorConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Emulators;
+        public override MultiFileDatabase<EmulatorConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Emulators;
 
         public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
 
         [MenuItem("3DArcade/Emulators", priority = 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
-            => GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        {
+            UE_Utilities.OpenMainScene();
+            GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        }
     }
 }

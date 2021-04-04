@@ -27,21 +27,24 @@ namespace Arcade.UnityEditor
 {
     internal sealed class ArcadeDatabaseEditorWindow : DatabaseEditorWindowBase<ArcadeConfiguration, ArcadeConfigurationSO>
     {
-        public override MultiFileDatabase<ArcadeConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Arcades;
+        public override MultiFileDatabase<ArcadeConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Arcades;
 
         public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
 
         [MenuItem("3DArcade/Arcades", priority = 12)]
         public static void ShowWindow()
-            => GetWindow<ArcadeDatabaseEditorWindow>("Arcade Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        {
+            UE_Utilities.OpenMainScene();
+            GetWindow<ArcadeDatabaseEditorWindow>("Arcade Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        }
 
         public override void DrawInlineButtons(ArcadeConfiguration entry)
         {
             if (GUILayout.Button(new GUIContent("Load (FPS)", "Load this arcade's fps scene"), GUILayout.Width(85f)))
-                ArcadeManager.Instance.LoadArcade(entry.Id, ArcadeType.Fps);
+                new ArcadeManager().LoadArcade(entry.Id, ArcadeType.Fps);
 
             if (GUILayout.Button(new GUIContent("Load (CYL)", "Load this arcade's cyl scene"), GUILayout.Width(85f)))
-                ArcadeManager.Instance.LoadArcade(entry.Id, ArcadeType.Cyl);
+                new ArcadeManager().LoadArcade(entry.Id, ArcadeType.Cyl);
         }
     }
 }

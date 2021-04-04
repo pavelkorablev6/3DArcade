@@ -28,12 +28,15 @@ namespace Arcade.UnityEditor
 {
     internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration, PlatformConfigurationSO>
     {
-        public override MultiFileDatabase<PlatformConfiguration> Database => ArcadeManager.Instance.ArcadeContext.Databases.Platforms;
+        public override MultiFileDatabase<PlatformConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Platforms;
 
         public override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DefaultPlatform;
 
         [MenuItem("3DArcade/Platforms", priority = 11), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
-            => GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        {
+            UE_Utilities.OpenMainScene();
+            GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        }
     }
 }

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arcade
@@ -30,17 +31,17 @@ namespace Arcade
 
         public static string[] GetDirectories(string[] array)
         {
-            ArtworkDirectories result = new ArtworkDirectories();
-            result.TryAdd(array);
-            return result.Directories.ToArray();
+            ArtworkDirectories artworkDirectories = new ArtworkDirectories { Directories = new List<string>() };
+            artworkDirectories.TryAdd(array);
+            return artworkDirectories.Directories.ToArray();
         }
 
         public static string[] GetDirectories(string[] array1, string[] array2)
         {
-            ArtworkDirectories result = new ArtworkDirectories();
-            result.TryAdd(array1);
-            result.TryAdd(array2);
-            return result.Directories.ToArray();
+            ArtworkDirectories artworkDirectories = new ArtworkDirectories { Directories = new List<string>() };
+            artworkDirectories.TryAdd(array1);
+            artworkDirectories.TryAdd(array2);
+            return artworkDirectories.Directories.ToArray();
         }
 
         public static void TryAdd(this ImageSequence imageSequence, string name)
