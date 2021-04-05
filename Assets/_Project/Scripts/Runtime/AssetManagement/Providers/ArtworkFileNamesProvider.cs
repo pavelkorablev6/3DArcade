@@ -59,7 +59,7 @@ namespace Arcade
                 imageSequence.TryAdd(emulator.Id);
 
             // From platform emulator
-            if (_emulatorDatabase.TryGet(platform.Emulator, out emulator))
+            if (_emulatorDatabase.TryGet(platform?.Emulator, out emulator))
                 imageSequence.TryAdd(emulator.Id);
 
             // From platform id
