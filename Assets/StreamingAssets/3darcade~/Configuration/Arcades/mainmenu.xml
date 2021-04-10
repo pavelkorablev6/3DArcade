@@ -13,11 +13,20 @@
     </camera_settings>
     <render_settings>
       <marquee_intensity>4</marquee_intensity>
+      <screen_lcd_intensity>1.4</screen_lcd_intensity>
       <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_svg_intensity>1.4</screen_svg_intensity>
       <screen_vector_intenstity>8</screen_vector_intenstity>
-      <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
+    <audio_settings>
+      <main_volume>1</main_volume>
+      <music_volume>0.6</music_volume>
+      <ambient_volume>0.4</ambient_volume>
+      <minimum_distance>1</minimum_distance>
+      <maximum_distance>3</maximum_distance>
+    </audio_settings>
     <model />
+    <props />
   </fpsarcade_properties>
   <cylarcade_properties wheel_variant="LineHorizontal" wheel_radius="5" sprockets="5">
     <scene>_empty</scene>
@@ -33,10 +42,18 @@
     </camera_settings>
     <render_settings>
       <marquee_intensity>4</marquee_intensity>
+      <screen_lcd_intensity>1.4</screen_lcd_intensity>
       <screen_raster_intensity>4</screen_raster_intensity>
+      <screen_svg_intensity>1.4</screen_svg_intensity>
       <screen_vector_intenstity>8</screen_vector_intenstity>
-      <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
+    <audio_settings>
+      <main_volume>1</main_volume>
+      <music_volume>0.6</music_volume>
+      <ambient_volume>0.4</ambient_volume>
+      <minimum_distance>1</minimum_distance>
+      <maximum_distance>3</maximum_distance>
+    </audio_settings>
     <model>defaultmenu_sprocket</model>
     <props>
       <prop id="menu_title" description="" platform="">

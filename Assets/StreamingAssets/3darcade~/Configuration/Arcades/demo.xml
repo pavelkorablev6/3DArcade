@@ -12,9 +12,10 @@
     </camera_settings>
     <render_settings>
       <marquee_intensity>1.4</marquee_intensity>
+      <screen_lcd_intensity>1.4</screen_lcd_intensity>
       <screen_raster_intensity>1.8</screen_raster_intensity>
+      <screen_svg_intensity>1.4</screen_svg_intensity>
       <screen_vector_intenstity>2.4</screen_vector_intenstity>
-      <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
     <audio_settings>
       <main_volume>0</main_volume>
@@ -39,9 +40,10 @@
     </camera_settings>
     <render_settings>
       <marquee_intensity>1.4</marquee_intensity>
+      <screen_lcd_intensity>1.4</screen_lcd_intensity>
       <screen_raster_intensity>1.8</screen_raster_intensity>
+      <screen_svg_intensity>1.4</screen_svg_intensity>
       <screen_vector_intenstity>2.4</screen_vector_intenstity>
-      <screen_pinball_intensity>1</screen_pinball_intensity>
     </render_settings>
     <audio_settings>
       <main_volume>0</main_volume>

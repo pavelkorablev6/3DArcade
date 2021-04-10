@@ -56,7 +56,8 @@ namespace Arcade
                                   .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
                                   .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
                                   .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
-                                  .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
+                                  .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
+                                  .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
 
             _sceneContext.Start();
         }

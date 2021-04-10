@@ -46,8 +46,12 @@ namespace Arcade
 
             TryAdd(cfg.Model);
             TryAdd(cfg.Id);
+            TryAdd(cfg.CloneOf);
+            TryAdd(cfg.RomOf);
+
             TryAdd(game?.CloneOf);
             TryAdd(game?.RomOf);
+
             TryAdd(platform?.Model);
 
             // Generic model from orientation/year
@@ -60,13 +64,15 @@ namespace Arcade
                             return assetAddresses.Addresses;
                         break;
                     case GameScreenOrientation.Horizontal:
+                    case GameScreenOrientation.FlippedHorizontal:
                         assetAddresses.Addresses.Add(GetHorizontalModelNameForYear(cfg.Year));
                         return assetAddresses.Addresses;
                     case GameScreenOrientation.Vertical:
+                    case GameScreenOrientation.FlippedVertical:
                         assetAddresses.Addresses.Add(GetVerticalModelNameForYear(cfg.Year));
                         return assetAddresses.Addresses;
                     default:
-                        throw new System.Exception($"Unhandled switch case statement: {cfg.ScreenOrientation}");
+                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
                 }
             }
 
@@ -83,12 +89,18 @@ namespace Arcade
             if (game == null)
                 return null;
 
-            return game.ScreenOrientation switch
+            switch (game.ScreenOrientation)
             {
-                GameScreenOrientation.Horizontal => GetHorizontalModelNameForYear(game.Year),
-                GameScreenOrientation.Vertical   => GetVerticalModelNameForYear(game.Year),
-                _ => throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {game.ScreenOrientation}")
-            };
+                case GameScreenOrientation.Default:
+                case GameScreenOrientation.Horizontal:
+                case GameScreenOrientation.FlippedHorizontal:
+                    return GetHorizontalModelNameForYear(game.Year);
+                case GameScreenOrientation.Vertical:
+                case GameScreenOrientation.FlippedVertical:
+                    return GetVerticalModelNameForYear(game.Year);
+                default:
+                    throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {game.ScreenOrientation}");
+            }
         }
 
         private static string GetHorizontalModelNameForYear(string yearString) => GetModelNameForYear(yearString,

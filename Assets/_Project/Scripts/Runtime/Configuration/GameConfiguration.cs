@@ -22,20 +22,22 @@
 
 namespace Arcade
 {
-    [System.Serializable]
-    public sealed class GameConfiguration : DatabaseEntry
+    public sealed class GameConfiguration : SQLiteDatabase.ReflectedEntry
     {
-        public string CloneOf;
-        public string RomOf;
-        public string Genre;
-        public string Year;
-        public string Manufacturer;
-        public GameScreenType ScreenType;
-        public GameScreenOrientation ScreenOrientation;
-        public bool Mature;
-        public bool Available;
-        public bool Runnable;
-        public int PlayCount;
-        public double PlayTime;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string CloneOf { get; set; }
+        public string RomOf { get; set; }
+        public string Genre { get; set; }
+        public string Year { get; set; }
+        public string Manufacturer { get; set; }
+        public GameScreenType ScreenType { get; set; }
+        public GameScreenOrientation ScreenOrientation { get; set; }
+        public bool Mature { get; set; }
+        public bool Playable { get; set; }
+        public bool IsBios { get; set; }
+        public bool IsDevice { get; set; }
+        public bool IsMechanical { get; set; }
+        public bool Available { get; set; }
     }
 }

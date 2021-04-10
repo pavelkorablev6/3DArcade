@@ -28,15 +28,18 @@ namespace Arcade
     public sealed class RenderSettings
     {
         [XmlElement("marquee_intensity")]
-        public float MarqueeIntensity = 4f;
+        public float MarqueeIntensity = 1.4f;
+
+        [XmlElement("screen_lcd_intensity")]
+        public float ScreenLcdIntensity = 1.4f;
 
         [XmlElement("screen_raster_intensity")]
-        public float ScreenRasterIntensity = 4f;
+        public float ScreenRasterIntensity = 1.4f;
+
+        [XmlElement("screen_svg_intensity")]
+        public float ScreenSvgIntensity = 1.4f;
 
         [XmlElement("screen_vector_intenstity")]
-        public float ScreenVectorIntenstity = 8f;
-
-        [XmlElement("screen_pinball_intensity")]
-        public float ScreenPinballIntensity = 1f;
+        public float ScreenVectorIntenstity = 2.1f;
     }
 }

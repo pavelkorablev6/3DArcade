@@ -25,8 +25,9 @@ namespace Arcade
     public enum GameScreenType
     {
         Default,
+        Lcd,
         Raster,
-        Vector,
-        Pinball
+        Svg,
+        Vector
     }
 }

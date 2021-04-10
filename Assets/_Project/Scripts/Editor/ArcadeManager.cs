@@ -42,7 +42,8 @@ namespace Arcade.UnityEditor
                                                             .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
                                                             .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
                                                             .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
-                                                            .MountDirectory("medias", $"{dataPath}/3darcade~/Media");
+                                                            .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
+                                                            .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
 
             Player player = Object.FindObjectOfType<Player>();
             if (player == null)
@@ -53,7 +54,7 @@ namespace Arcade.UnityEditor
             GeneralConfiguration generalConfiguration = new GeneralConfiguration(vfs);
             generalConfiguration.Initialize();
 
-            Databases databases = new Databases(new EmulatorDatabase(vfs), new PlatformDatabase(vfs), new ArcadeDatabase(vfs));
+            Databases databases = new Databases(new EmulatorDatabase(vfs), new PlatformDatabase(vfs), new ArcadeDatabase(vfs), new GameDatabase(vfs));
             databases.Initialize();
 
             ArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();

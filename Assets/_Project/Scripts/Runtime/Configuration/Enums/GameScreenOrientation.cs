@@ -26,6 +26,8 @@ namespace Arcade
     {
         Default,
         Horizontal,
-        Vertical
+        Vertical,
+        FlippedHorizontal,
+        FlippedVertical
     }
 }

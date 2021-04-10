@@ -153,10 +153,11 @@ namespace Arcade
 
             return game.ScreenType switch
             {
+                GameScreenType.Lcd     => RenderSettings.ScreenLcdIntensity,
                 GameScreenType.Raster  => RenderSettings.ScreenRasterIntensity,
+                GameScreenType.Svg     => RenderSettings.ScreenSvgIntensity,
                 GameScreenType.Vector  => RenderSettings.ScreenVectorIntenstity,
-                GameScreenType.Pinball => RenderSettings.ScreenPinballIntensity,
-                _ => 1.4f
+                _ => 1.0f
             };
         }
 
