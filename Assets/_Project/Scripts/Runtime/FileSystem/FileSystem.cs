@@ -28,19 +28,21 @@ namespace Arcade
     {
         public static string CorrectPath(string path)
         {
-            if (!string.IsNullOrEmpty(path) && path.StartsWith("@"))
-                return PathCombine(SystemUtils.GetDataPath(), path.TrimStart('@'));
-            return path;
+            if (string.IsNullOrEmpty(path) || !path.StartsWith("@"))
+                return path;
+
+            return PathCombine(SystemUtils.GetDataPath(), path.TrimStart('@'));
         }
 
         public static string[] CorrectPaths(string[] paths)
         {
-            if (paths == null || paths.Length == 0)
+            if (paths == null)
                 return null;
 
             for (int i = 0; i < paths.Length; ++i)
                 if (!string.IsNullOrEmpty(paths[i]) && paths[i].StartsWith("@"))
                     paths[i] = PathCombine(SystemUtils.GetDataPath(), paths[i].TrimStart('@'));
+
             return paths;
         }
 

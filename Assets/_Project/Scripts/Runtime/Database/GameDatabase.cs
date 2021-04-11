@@ -80,15 +80,13 @@ namespace Arcade
                 "IsMechanical   INTEGER",
                 "Available      INTEGER",
                 "PRIMARY KEY(Id)",
-               $"FOREIGN KEY(Genre)          REFERENCES {INTERNAL_TABLE_NAME_GENRES}(Id)      ON UPDATE CASCADE ON DELETE RESTRICT",
+               $"FOREIGN KEY(Genre)          REFERENCES {INTERNAL_TABLE_NAME_GENRES}(Id)           ON UPDATE CASCADE ON DELETE RESTRICT",
                $"FOREIGN KEY(Year)           REFERENCES {INTERNAL_TABLE_NAME_YEARS}(Id)            ON UPDATE CASCADE ON DELETE RESTRICT",
                $"FOREIGN KEY(Manufacturer)   REFERENCES {INTERNAL_TABLE_NAME_MANUFACTURERS}(Id)    ON UPDATE CASCADE ON DELETE RESTRICT",
                $"FOREIGN KEY(ScreenType)     REFERENCES {INTERNAL_TABLE_NAME_SCREEN_TYPES}(Id)     ON UPDATE CASCADE ON DELETE RESTRICT",
                $"FOREIGN KEY(ScreenRotation) REFERENCES {INTERNAL_TABLE_NAME_SCREEN_ROTATIONS}(Id) ON UPDATE CASCADE ON DELETE RESTRICT"
             };
         }
-
-        private string[] DBGameColumns { get; }
 
         private readonly IVirtualFileSystem _virtualFileSystem;
 
@@ -101,6 +99,18 @@ namespace Arcade
             string path = _virtualFileSystem.GetFile("game_database");
             _database = new SQLiteDatabase(path);
             CreateInternalTables();
+        }
+
+        public bool TryGet(string gameListName, string gameName, string[] returnFields, string[] searchFields, out GameConfiguration outGame)
+        {
+            if (string.IsNullOrEmpty(gameListName) || string.IsNullOrEmpty(gameName))
+            {
+                outGame = null;
+                return false;
+            }
+
+            outGame = _database.Get<GameConfiguration>(gameListName, returnFields, searchFields, new { Name = gameName });
+            return outGame != null;
         }
 
         public void AddGenre(string value)
@@ -179,7 +189,7 @@ namespace Arcade
                                    .ToArray());
         }
 
-        public void CreateGameList(string name) => _database.CreateTable(name, false, DBGameColumns);
+        public void AddGameList(string name) => _database.CreateTable(name, false, DBGame.Columns);
 
         public void AddGame(string gameListName, GameConfiguration game)
         {
@@ -318,7 +328,7 @@ namespace Arcade
                 _ => throw new System.NotImplementedException($"Unhandled switch case for GameScreenType: {type}")
             };
 
-            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_TYPES, "Type", new DBScreenType { ScreenType = typeString });
+            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_TYPES, "ScreenType", new DBScreenType { ScreenType = typeString });
         }
 
         private int GetScreenRotationId(GameScreenOrientation orientation)
@@ -333,7 +343,7 @@ namespace Arcade
                 _ => throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {orientation}")
             };
 
-            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, "Rotation", new DBScreenRotation { ScreenRotation = rotation });
+            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, "ScreenRotation", new DBScreenRotation { ScreenRotation = rotation });
         }
     }
 }

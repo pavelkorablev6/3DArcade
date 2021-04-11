@@ -21,11 +21,39 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Arcade
 {
-    public struct ArtworkDirectories
+    public sealed class ArtworkDirectories
     {
-        public List<string> Directories;
+        public string[] Directories => _directories.ToArray();
+
+        private readonly List<string> _directories = new List<string>();
+
+        public void TryAdd(string[] directories)
+        {
+            string[] correctedPaths = FileSystem.CorrectPaths(directories)?.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            if (correctedPaths == null || correctedPaths.Length == 0)
+                return;
+
+            _directories.AddRange(correctedPaths);
+        }
+
+        public void TryResolve(string[] directories)
+        {
+            if (directories == null)
+                return;
+
+            foreach (string directory in directories)
+            {
+                string directoryPath = FileSystem.CorrectPath(directory);
+                if (string.IsNullOrEmpty(directoryPath) || !Directory.Exists(directoryPath))
+                    return;
+
+                _directories.Add(directoryPath);
+            }
+        }
     }
 }

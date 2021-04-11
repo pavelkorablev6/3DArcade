@@ -26,16 +26,17 @@ namespace Arcade
 {
     public sealed class ArtworkController
     {
-        public static readonly string DefaultMediaDirectory = $"{SystemUtils.GetDataPath()}/3darcade~/Configuration/Media";
+        public static string DefaultMediaDirectory;
 
         //public event System.Action OnVideoPlayerAdded;
 
         private readonly AssetCache<Texture> _textureCache;
         //private readonly AssetCache<string> _videoCache;
 
-        public ArtworkController(AssetCache<Texture> textureCache)
+        public ArtworkController(AssetCache<Texture> textureCache, IVirtualFileSystem virtualFileSystem)
         {
             _textureCache = textureCache;
+            DefaultMediaDirectory ??= virtualFileSystem.GetDirectory("medias");
             //_videoCache  = videoCache;
         }
 

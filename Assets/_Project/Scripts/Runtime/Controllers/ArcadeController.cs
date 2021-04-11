@@ -95,7 +95,11 @@ namespace Arcade
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
             {
-                //_arcadeContext.Databases.Games.TryGet(platform.MasterList, modelConfiguration.Id, out game);
+                _ = _arcadeContext.Databases.Games.TryGet(platform.MasterList,
+                                                          modelConfiguration.Id,
+                                                          new string[] { "CloneOf", "RomOf" },
+                                                          new string[] { "Name" },
+                                                          out game);
             }
 
             IEnumerable<string> namesToTry = _arcadeContext.AssetAddressesProviders.Game.GetNamesToTry(modelConfiguration, platform, game);

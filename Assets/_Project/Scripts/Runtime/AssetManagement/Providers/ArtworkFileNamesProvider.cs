@@ -20,19 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
     public sealed class ArtworkFileNamesProvider
     {
         private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
         private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        private readonly GameDatabase _gameDatabase;
 
-        public ArtworkFileNamesProvider(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase, MultiFileDatabase<PlatformConfiguration> platformDatabase)
+        public ArtworkFileNamesProvider(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
+                                        MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                                        GameDatabase gameDatabase)
         {
             _emulatorDatabase = emulatorDatabase;
             _platformDatabase = platformDatabase;
+            _gameDatabase     = gameDatabase;
         }
 
         public string[] GetNamesToTry(ModelConfiguration cfg)
@@ -40,18 +42,18 @@ namespace Arcade
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            ImageSequence imageSequence = new ImageSequence { Images = new List<string>() };
+            ImageSequence imageSequence = new ImageSequence();
 
             imageSequence.TryAdd(cfg.Id);
 
+            // From game CloneOf and RomOf in platform's masterlist
             if (_platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform))
             {
-                // TODO: From game CloneOf and RomOf in platform's masterlist
-                //if (_gameDatabase.TryGet(platform.MasterList, cfg.Id, out GameConfiguration game))
-                //{
-                //    imageSequence.TryAdd(game.CloneOf);
-                //    imageSequence.TryAdd(game.RomOf);
-                //}
+                if (_gameDatabase.TryGet(platform.MasterList, cfg.Id, new string[] { "CloneOf", "RomOf" }, new string[] { "Name" }, out GameConfiguration game))
+                {
+                    imageSequence.TryAdd(game.CloneOf);
+                    imageSequence.TryAdd(game.RomOf);
+                }
             }
 
             // From emulator override
@@ -65,7 +67,7 @@ namespace Arcade
             // From platform id
             imageSequence.TryAdd(platform?.Id);
 
-            return imageSequence.Images.ToArray();
+            return imageSequence.Images;
         }
     }
 }

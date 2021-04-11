@@ -32,15 +32,15 @@ namespace Arcade
         string[] IArtworkDirectoryNamesProvider.DefaultVideoDirectories { get; } = new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
 
         string[] IArtworkDirectoryNamesProvider.GetModelImageDirectories(ModelConfiguration modelConfiguration)
-            => ArtworkUtils.GetDirectories(modelConfiguration.MarqueeImageDirectories);
+            => ArtworkUtilities.GetDirectories(modelConfiguration.MarqueeImageDirectories);
 
         string[] IArtworkDirectoryNamesProvider.GetModelVideoDirectories(ModelConfiguration modelConfiguration)
-            => ArtworkUtils.GetDirectories(modelConfiguration.MarqueeVideoDirectories);
+            => ArtworkUtilities.GetDirectories(modelConfiguration.MarqueeVideoDirectories);
 
         string[] IArtworkDirectoryNamesProvider.GetPlatformImageDirectories(PlatformConfiguration platform)
-            => ArtworkUtils.GetDirectories(platform?.MarqueeImagesDirectories);
+            => ArtworkUtilities.GetDirectories(platform?.MarqueeImagesDirectories);
 
         string[] IArtworkDirectoryNamesProvider.GetPlatformVideoDirectories(PlatformConfiguration platform)
-            => ArtworkUtils.GetDirectories(platform?.MarqueeVideosDirectories);
+            => ArtworkUtilities.GetDirectories(platform?.MarqueeVideosDirectories);
     }
 }

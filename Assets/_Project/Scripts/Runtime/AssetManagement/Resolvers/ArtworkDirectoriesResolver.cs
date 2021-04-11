@@ -20,33 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-using System.IO;
-
 namespace Arcade
 {
     public static class ArtworkDirectoriesResolver
     {
-        public static string[] GetDirectoriesToTry(string[] gameArtworkDirectories, string[] platformArtworkDirectories, string[] defaultArtworkDirectories)
+        public static string[] GetDirectoriesToTry(params string[][] directories)
         {
-            ArtworkDirectories artworkDirectories = new ArtworkDirectories { Directories = new List<string>() };
-            artworkDirectories.TryResolveDirectories(gameArtworkDirectories);
-            artworkDirectories.TryResolveDirectories(platformArtworkDirectories);
-            artworkDirectories.TryResolveDirectories(defaultArtworkDirectories);
-            return artworkDirectories.Directories.ToArray();
-        }
+            ArtworkDirectories artworkDirectories = new ArtworkDirectories();
 
-        private static void TryResolveDirectories(this ArtworkDirectories artworkDirectories, string[] directories)
-        {
-            if (directories == null || directories.Length == 0)
-                return;
+            foreach (string[] directory in directories)
+                artworkDirectories.TryResolve(directory);
 
-            foreach (string directory in directories)
-            {
-                string directoryPath = FileSystem.CorrectPath(directory);
-                if (Directory.Exists(directoryPath))
-                    artworkDirectories.Directories.Add(directoryPath);
-            }
+            return artworkDirectories.Directories;
         }
     }
 }

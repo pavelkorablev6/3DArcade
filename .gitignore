@@ -137,5 +137,3 @@ $RECYCLE.BIN/
 # Libretro
 /[Aa]ssets/StreamingAssets/libretro~/**
 !/[Aa]ssets/StreamingAssets/libretro~/core_options.json
-
-Assets/StreamingAssets/3darcade~/GameDatabase.db

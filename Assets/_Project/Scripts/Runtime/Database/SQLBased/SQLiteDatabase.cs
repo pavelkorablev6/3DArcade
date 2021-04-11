@@ -6,6 +6,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using UnityEngine;
 
 namespace Arcade
 {
@@ -26,7 +28,7 @@ namespace Arcade
 
         public void CreateTable(string tableName, bool failsIfExists, params string[] columns)
         {
-            string statement = $"CREATE TABLE {(failsIfExists ? string.Empty : "IF NOT EXISTS ")}'{tableName}'({string.Join(",", columns)});";
+            string statement = $"CREATE TABLE{(failsIfExists ? string.Empty : " IF NOT EXISTS")} '{tableName}'({string.Join(",", columns)});";
 
             using IDbConnection connection = GetConnection();
             _ = connection.Execute(statement);
@@ -34,15 +36,44 @@ namespace Arcade
 
         public bool DropTable(string tableName, bool failsIfNotExists)
         {
-            string statement = $"DROP TABLE {(failsIfNotExists ? string.Empty : "IF EXISTS ")}'{tableName}';";
+            string statement = $"DROP TABLE{(failsIfNotExists ? string.Empty : " IF EXISTS")} '{tableName}';";
 
             using IDbConnection connection = GetConnection();
             return connection.Execute(statement) > 0;
         }
 
+        public T Get<T>(string tableName, string[] columns, string[] parameters, object obj) where T : class
+        {
+            StringBuilder statement = new StringBuilder($"SELECT {JoinWithCommas(columns)} FROM '{tableName}' WHERE ");
+            for (int i = 0; i < parameters.Length; ++i)
+            {
+                string parameter = parameters[i];
+
+                if (i == 0)
+                {
+                    _ = statement.Append($"{parameter} = @{parameter}");
+                    continue;
+                }
+
+                _ = statement.Append($" AND {parameter} = @{parameter}");
+            }
+            _ = statement.Append(';');
+
+            try
+            {
+                using IDbConnection connection = GetConnection();
+                return connection.QueryFirst<T>(statement.ToString(), obj);
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
+        }
+
         public int GetId<TParameter>(string tableName, string where, TParameter parameter) where TParameter : MappedEntry
         {
-            string statement             = $"SELECT Id FROM {tableName} WHERE {where}=@{where};";
+            string statement= $"SELECT (Id) FROM '{tableName}' WHERE {where}=@{where};";
+
             DynamicParameters parameters = new DynamicParameters(parameter);
 
             using IDbConnection connection = GetConnection();
@@ -108,8 +139,8 @@ namespace Arcade
             return propertiesInfo.Select(x => x.Name);
         }
 
-        private static IEnumerable<string> GetParameterNames(IEnumerable<string> columns) => columns.Select(x => $"@{x}");
+        private static IEnumerable<string> GetParameterNames(IEnumerable<string> names) => names.Select(x => $"@{x}");
 
-        private static string JoinWithCommas(IEnumerable<string> values) => string.Join(",", values);
+        private static string JoinWithCommas(IEnumerable<string> values) => string.Join(", ", values);
     }
 }

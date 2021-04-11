@@ -27,17 +27,17 @@ namespace Arcade
         public readonly MultiFileDatabase<EmulatorConfiguration> Emulators;
         public readonly MultiFileDatabase<PlatformConfiguration> Platforms;
         public readonly MultiFileDatabase<ArcadeConfiguration> Arcades;
-        public readonly GameDatabase GameDatabase;
+        public readonly GameDatabase Games;
 
         public Databases(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
                          MultiFileDatabase<PlatformConfiguration> platformDatabase,
                          MultiFileDatabase<ArcadeConfiguration> arcadeDatabase,
                          GameDatabase gameDatabase)
         {
-            Emulators    = emulatorDatabase;
-            Platforms    = platformDatabase;
-            Arcades      = arcadeDatabase;
-            GameDatabase = gameDatabase;
+            Emulators = emulatorDatabase;
+            Platforms = platformDatabase;
+            Arcades   = arcadeDatabase;
+            Games     = gameDatabase;
         }
 
         public void Initialize()
@@ -45,7 +45,7 @@ namespace Arcade
             Emulators.Initialize();
             Platforms.Initialize();
             Arcades.Initialize();
-            GameDatabase.Initialize();
+            Games.Initialize();
         }
     }
 }

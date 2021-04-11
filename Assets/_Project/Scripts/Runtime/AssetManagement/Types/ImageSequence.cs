@@ -24,8 +24,22 @@ using System.Collections.Generic;
 
 namespace Arcade
 {
-    public struct ImageSequence
+    public sealed class ImageSequence
     {
-        public List<string> Images;
+        public string[] Images => _images.ToArray();
+
+        private const int NUM_MAX_VARIANTS = 30;
+
+        private readonly List<string> _images = new List<string>();
+
+        public void TryAdd(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            _images.Add(name);
+            for (int i = 0; i < NUM_MAX_VARIANTS; ++i)
+                _images.Add($"{name}_{i}");
+        }
     }
 }

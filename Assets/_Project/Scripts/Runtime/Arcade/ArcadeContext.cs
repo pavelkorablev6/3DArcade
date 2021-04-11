@@ -80,6 +80,7 @@ namespace Arcade
             if (string.IsNullOrEmpty(id))
                 return;
 
+            Databases.Arcades.Initialize();
             if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
