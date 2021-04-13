@@ -27,7 +27,7 @@ namespace Arcade
     [System.Serializable]
     public abstract class DatabaseEntry
     {
-        [XmlAttribute("id")]
+        [System.NonSerialized, XmlIgnore]
         public string Id;
 
         [XmlAttribute("description")]

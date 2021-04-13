@@ -124,8 +124,8 @@ namespace Arcade
                 TransitionTo<ArcadeLoadState>();
 
             Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
-            IEnumerable<string> namesToTry = AssetAddressesProviders.Arcade.GetNamesToTry(arcadeConfiguration, arcadeType);
-            Scenes.Arcade.Load(namesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
+            IEnumerable<AssetAddress> addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration, arcadeType);
+            Scenes.Arcade.Load(addressesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
         }
 
         protected override void OnStart()
@@ -147,7 +147,15 @@ namespace Arcade
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return false;
 
-            if (!Databases.Arcades.Save(arcadeConfigurationComponent.GetArcadeConfiguration()))
+            ArcadeConfiguration arcadeConfiguration = arcadeConfigurationComponent.ToArcadeConfiguration();
+            foreach (ModelConfiguration game in arcadeConfiguration.Games)
+            {
+                game.Position.RoundValues();
+                game.Rotation.RoundValues();
+                game.Scale.RoundValues();
+            }
+
+            if (!Databases.Arcades.Save(arcadeConfiguration))
                 return false;
 
             return Databases.Arcades.LoadAll();

@@ -27,64 +27,65 @@ namespace Arcade
 {
     public sealed class GamePrefabAddressesProvider : IGamePrefabAddressesProvider
     {
-        private const string GAMES_ADDRESSABLES_PREFIX       = "Games/";
-        private const string DEFAULT_GAME_70_HOR_PREFAB_NAME = "_70_horizontal";
-        private const string DEFAULT_GAME_80_HOR_PREFAB_NAME = "_80_horizontal";
-        private const string DEFAULT_GAME_90_HOR_PREFAB_NAME = "_90_horizontal";
-        private const string DEFAULT_GAME_70_VER_PREFAB_NAME = "_70_vertical";
-        private const string DEFAULT_GAME_80_VER_PREFAB_NAME = "_80_vertical";
-        private const string DEFAULT_GAME_90_VER_PREFAB_NAME = "_90_vertical";
-        private const string DEFAULT_GAME_HOR_PREFAB_NAME    = DEFAULT_GAME_80_HOR_PREFAB_NAME;
-        private const string DEFAULT_GAME_VER_PREFAB_NAME    = DEFAULT_GAME_80_VER_PREFAB_NAME;
+        private const string FILE_EXTENSION             = "prefab";
+        private const string ADDRESSABLES_PREFIX        = "Games/";
+        private const string DEFAULT_70_HOR_PREFAB_NAME = "_70_horizontal";
+        private const string DEFAULT_80_HOR_PREFAB_NAME = "_80_horizontal";
+        private const string DEFAULT_90_HOR_PREFAB_NAME = "_90_horizontal";
+        private const string DEFAULT_70_VER_PREFAB_NAME = "_70_vertical";
+        private const string DEFAULT_80_VER_PREFAB_NAME = "_80_vertical";
+        private const string DEFAULT_90_VER_PREFAB_NAME = "_90_vertical";
+        private const string DEFAULT_HOR_PREFAB_NAME    = DEFAULT_80_HOR_PREFAB_NAME;
+        private const string DEFAULT_VER_PREFAB_NAME    = DEFAULT_80_VER_PREFAB_NAME;
 
-        public IEnumerable<string> GetNamesToTry(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game)
+        public IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            AssetAddresses assetAddresses = new AssetAddresses { Addresses = new List<string>() };
+            AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
 
-            TryAdd(cfg.Model);
-            TryAdd(cfg.Id);
-            TryAdd(cfg.CloneOf);
-            TryAdd(cfg.RomOf);
+            addresses.Add(cfg.Overrides.Model);
+            addresses.Add(cfg.Id);
+            addresses.Add(cfg.Overrides.Game?.CloneOf);
+            addresses.Add(cfg.Overrides.Game?.RomOf);
 
-            TryAdd(game?.CloneOf);
-            TryAdd(game?.RomOf);
+            addresses.Add(game?.CloneOf);
+            addresses.Add(game?.RomOf);
 
-            TryAdd(platform?.Model);
+            addresses.Add(platform?.Model);
 
             // Generic model from orientation/year
-            if (!string.IsNullOrEmpty(cfg.Year))
+            if (cfg.Overrides.Game != null && !string.IsNullOrEmpty(cfg.Overrides.Game.Year))
             {
-                switch (cfg.ScreenOrientation)
+                string year = cfg.Overrides.Game.Year;
+                switch (cfg.Overrides.Game.ScreenOrientation)
                 {
                     case GameScreenOrientation.Default:
-                        if (!string.IsNullOrEmpty(GetModelNameForGame(game)))
-                            return assetAddresses.Addresses;
+                        if (!string.IsNullOrEmpty(GetName(game)))
+                            return addresses.Addresses;
                         break;
                     case GameScreenOrientation.Horizontal:
                     case GameScreenOrientation.FlippedHorizontal:
-                        assetAddresses.Addresses.Add(GetHorizontalModelNameForYear(cfg.Year));
-                        return assetAddresses.Addresses;
+                        addresses.Add(GetHorizontalNameForYear(year));
+                        return addresses.Addresses;
                     case GameScreenOrientation.Vertical:
                     case GameScreenOrientation.FlippedVertical:
-                        assetAddresses.Addresses.Add(GetVerticalModelNameForYear(cfg.Year));
-                        return assetAddresses.Addresses;
+                        addresses.Add(GetVerticalNameForYear(year));
+                        return addresses.Addresses;
                     default:
-                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.ScreenOrientation}");
+                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.Overrides.Game.ScreenOrientation}");
                 }
             }
 
-            TryAdd(GetModelNameForGame(game));
-            TryAdd(DEFAULT_GAME_HOR_PREFAB_NAME);
+            addresses.Add(GetName(game));
 
-            return assetAddresses.Addresses;
+            addresses.Add(DEFAULT_HOR_PREFAB_NAME);
 
-            void TryAdd(string name) => assetAddresses.TryAdd(name, AssetAddressUtilities.PREFAB_FILE_EXTENSION, GAMES_ADDRESSABLES_PREFIX);
+            return addresses.Addresses;
         }
 
-        private static string GetModelNameForGame(GameConfiguration game)
+        private static string GetName(GameConfiguration game)
         {
             if (game == null)
                 return null;
@@ -94,50 +95,50 @@ namespace Arcade
                 case GameScreenOrientation.Default:
                 case GameScreenOrientation.Horizontal:
                 case GameScreenOrientation.FlippedHorizontal:
-                    return GetHorizontalModelNameForYear(game.Year);
+                    return GetHorizontalNameForYear(game.Year);
                 case GameScreenOrientation.Vertical:
                 case GameScreenOrientation.FlippedVertical:
-                    return GetVerticalModelNameForYear(game.Year);
+                    return GetVerticalNameForYear(game.Year);
                 default:
                     throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {game.ScreenOrientation}");
             }
         }
 
-        private static string GetHorizontalModelNameForYear(string yearString) => GetModelNameForYear(yearString,
-                                                                                                      DEFAULT_GAME_70_HOR_PREFAB_NAME,
-                                                                                                      DEFAULT_GAME_80_HOR_PREFAB_NAME,
-                                                                                                      DEFAULT_GAME_90_HOR_PREFAB_NAME,
-                                                                                                      DEFAULT_GAME_HOR_PREFAB_NAME);
+        private static string GetHorizontalNameForYear(string yearString) => GetNameForYear(yearString,
+                                                                                            DEFAULT_70_HOR_PREFAB_NAME,
+                                                                                            DEFAULT_80_HOR_PREFAB_NAME,
+                                                                                            DEFAULT_90_HOR_PREFAB_NAME,
+                                                                                            DEFAULT_HOR_PREFAB_NAME);
 
-        private static string GetVerticalModelNameForYear(string yearString) => GetModelNameForYear(yearString,
-                                                                                                    DEFAULT_GAME_70_VER_PREFAB_NAME,
-                                                                                                    DEFAULT_GAME_80_VER_PREFAB_NAME,
-                                                                                                    DEFAULT_GAME_90_VER_PREFAB_NAME,
-                                                                                                    DEFAULT_GAME_VER_PREFAB_NAME);
+        private static string GetVerticalNameForYear(string yearString) => GetNameForYear(yearString,
+                                                                                          DEFAULT_70_VER_PREFAB_NAME,
+                                                                                          DEFAULT_80_VER_PREFAB_NAME,
+                                                                                          DEFAULT_90_VER_PREFAB_NAME,
+                                                                                          DEFAULT_VER_PREFAB_NAME);
 
-        private static string GetModelNameForYear(string yearString, string model70, string model80, string model90, string modelDefault)
+        private static string GetNameForYear(string yearString, string model70, string model80, string model90, string modelDefault)
         {
             if (string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {
                 if (year >= 1970 && year < 1980)
-                    return GetGameAssetPath(model70);
+                    return GetAssetPath(model70);
 
                 if (year < 1990)
-                    return GetGameAssetPath(model80);
+                    return GetAssetPath(model80);
 
                 if (year < 2000)
-                    return GetGameAssetPath(model90);
+                    return GetAssetPath(model90);
             }
 
-            return GetGameAssetPath(modelDefault);
+            return GetAssetPath(modelDefault);
         }
 
-        private static string GetGameAssetPath(string name)
+        private static string GetAssetPath(string name)
         {
             if (!Application.isPlaying)
-                return $"{AssetAddressUtilities.EDITOR_ADDRESSABLES_PATH}{GAMES_ADDRESSABLES_PREFIX}{name}.{AssetAddressUtilities.PREFAB_FILE_EXTENSION}";
+                return $"{AssetAddresses.EDITOR_ADDRESSABLES_PATH}{ADDRESSABLES_PREFIX}{name}.{FILE_EXTENSION}";
 
-            return $"{GAMES_ADDRESSABLES_PREFIX}/{name}";
+            return $"{ADDRESSABLES_PREFIX}/{name}";
         }
     }
 }

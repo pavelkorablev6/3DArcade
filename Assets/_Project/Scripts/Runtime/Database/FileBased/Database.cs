@@ -111,27 +111,27 @@ namespace Arcade
             return entry;
         }
 
-        public bool Delete(string name)
+        public bool Delete(string id)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(id))
             {
                 Debug.LogWarning($"[{GetType().Name}.Delete] Passed null or empty entry ID");
                 return false;
             }
 
-            if (!Contains(name))
+            if (!Contains(id))
             {
-                Debug.LogWarning($"[{GetType().Name}.Delete] Entry not found: {name}");
+                Debug.LogWarning($"[{GetType().Name}.Delete] Entry not found: {id}");
                 return false;
             }
 
-            if (!_entries.Remove(name))
+            if (!_entries.Remove(id))
             {
                 Debug.LogWarning($"[{GetType().Name}.Delete] Dictionary error");
                 return false;
             }
 
-            PostDelete(name);
+            PostDelete(id);
 
             return true;
         }
@@ -161,7 +161,7 @@ namespace Arcade
 
         protected abstract void PostAdd(T entry);
 
-        protected abstract void PostDelete(string name);
+        protected abstract void PostDelete(string id);
 
         protected abstract bool LoadAllFromDisk();
 

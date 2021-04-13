@@ -1,4 +1,4 @@
-<platform id="pinball" description="Pinball">
+<platform description="Pinball">
   <master_list>pinball</master_list>
   <emulator>pinball</emulator>
   <model>pinball</model>

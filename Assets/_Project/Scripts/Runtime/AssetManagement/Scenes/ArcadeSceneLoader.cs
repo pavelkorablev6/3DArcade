@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -41,13 +42,15 @@ namespace Arcade
         private SceneInstance _sceneInstance;
         private bool _triggerSceneReload;
 
-        public void Load(IEnumerable<string> namesToTry, System.Action onComplete)
+        public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete)
         {
             if (_sceneHandle.IsValid())
                 Addressables.Release(_sceneHandle);
 
             _onComplete = onComplete;
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
+
+            IEnumerable<string> stringAddressesToTry = addressesToTry.Select(x => x.Address);
+            Addressables.LoadResourceLocationsAsync(stringAddressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
                         .Completed += ResourceLocationRetrievedCallback;
         }
 

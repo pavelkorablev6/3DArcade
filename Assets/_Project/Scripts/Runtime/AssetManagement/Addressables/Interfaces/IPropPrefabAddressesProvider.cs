@@ -26,6 +26,6 @@ namespace Arcade
 {
     public interface IPropPrefabAddressesProvider
     {
-        IEnumerable<string> GetNamesToTry(ModelConfiguration cfg);
+        IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg);
     }
 }

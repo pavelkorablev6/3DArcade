@@ -21,11 +21,39 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Arcade
 {
-    public struct AssetAddresses
+    public sealed class AssetAddresses
     {
-        public List<string> Addresses;
+        public const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
+
+        public readonly List<AssetAddress> Addresses = new List<AssetAddress>();
+
+        private readonly string _extension;
+        private readonly string _runtimePrefix;
+
+        public AssetAddresses(string extension, string runtimePrefix)
+        {
+            _extension     = extension;
+            _runtimePrefix = runtimePrefix;
+        }
+
+        public void Add(string name, string editorPrefix = null)
+        {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            if (!Application.isPlaying)
+            {
+                editorPrefix ??= _runtimePrefix;
+                Addresses.Add(new AssetAddress($"{EDITOR_ADDRESSABLES_PATH}{editorPrefix}{name}.{_extension}"));
+                return;
+            }
+
+            Addresses.Add(new AssetAddress($"{_runtimePrefix}{name}"));
+            return;
+        }
     }
 }

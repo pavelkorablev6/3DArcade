@@ -1,4 +1,4 @@
-<platform id="snes" description="Super Nintendo Intertainment System">
+<platform description="Super Nintendo Intertainment System">
   <master_list>snes</master_list>
   <emulator>snes9x</emulator>
   <model>snes</model>

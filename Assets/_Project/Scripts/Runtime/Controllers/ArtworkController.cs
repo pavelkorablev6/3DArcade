@@ -40,12 +40,12 @@ namespace Arcade
             //_videoCache  = videoCache;
         }
 
-        public void SetupImages(string[] directories, string[] namesToTry, Renderer[] renderers, float emissionIntensity)
+        public void SetupImages(string[] directories, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
-            if (directories == null || namesToTry == null || renderers == null)
+            if (directories == null || fileNamesToTry == null || renderers == null)
                 return;
 
-            Texture[] textures = _textureCache.LoadMultiple(directories, namesToTry);
+            Texture[] textures = _textureCache.LoadMultiple(directories, fileNamesToTry);
             if (textures == null || textures.Length == 0)
                 return;
 

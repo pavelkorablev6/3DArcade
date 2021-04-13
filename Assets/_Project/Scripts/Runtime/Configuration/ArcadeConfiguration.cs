@@ -28,7 +28,7 @@ namespace Arcade
     [System.Serializable, XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : DatabaseEntry
     {
-        public static ArcadeConfiguration DefaultArcade => MakeInternalArcade("_default", "InternalDefaultArcade");
+        public static ArcadeConfiguration DefaultArcade => MakeInternalArcade("_default", "Internal Default Arcade");
 
         [XmlElement("fpsarcade_properties")]
         public FpsArcadeProperties FpsArcadeProperties = new FpsArcadeProperties { Scene = "_cylinder" };

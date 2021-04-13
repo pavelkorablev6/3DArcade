@@ -1,4 +1,4 @@
-<platform id="arcade" description="Arcade">
+<platform description="Arcade">
   <master_list>mame2003_plus</master_list>
   <emulator>mame2003_plus</emulator>
   <model />

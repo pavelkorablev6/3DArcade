@@ -1,4 +1,4 @@
-<emulator id="mame2003_plus" description="Libretro: M.A.M.E. 2003+">
+<emulator description="Libretro: M.A.M.E. 2003+">
   <interaction_type>GameInternal</interaction_type>
   <directory />
   <working_directory />

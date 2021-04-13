@@ -27,7 +27,7 @@ namespace Arcade
     [System.Serializable, XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : DatabaseEntry
     {
-        public static EmulatorConfiguration DummyEmulator => MakeInternalEmulator("_default", "InternalDefaultEmulator", InteractionType.Default);
+        public static EmulatorConfiguration DefaultEmulator => MakeInternalEmulator("_default", "Internal Default Emulator", InteractionType.Default);
 
         public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalEmulator("_fps_arcade_launcher", "InternalFpsArcadeLauncher", InteractionType.FpsArcadeConfiguration);
         public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalEmulator("_cyl_arcade_launcher", "InternalCylArcadeLauncher", InteractionType.CylArcadeConfiguration);

@@ -30,11 +30,10 @@ namespace Arcade
     {
         [SerializeField] private ModelConfiguration _modelConfiguration = default;
 
-        public string Id => _modelConfiguration.Id;
-        public string Description => _modelConfiguration.Description;
+        public string Description => _modelConfiguration.Overrides.Description;
         public bool MoveCabMovable => _modelConfiguration.MoveCabMovable;
 
-        public ModelConfiguration GetModelConfiguration()
+        public ModelConfiguration ToModelConfiguration()
         {
             _modelConfiguration.Position = transform.localPosition;
             _modelConfiguration.Rotation = MathUtils.ClampEulerAngles(transform.localEulerAngles);

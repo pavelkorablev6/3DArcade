@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class EmulatorDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
-        protected override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
+        protected override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DefaultEmulator;
 
         public EmulatorDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "emulator_cfgs")

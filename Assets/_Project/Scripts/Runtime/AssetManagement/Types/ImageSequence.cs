@@ -32,7 +32,7 @@ namespace Arcade
 
         private readonly List<string> _images = new List<string>();
 
-        public void TryAdd(string name)
+        public void Add(string name)
         {
             if (string.IsNullOrEmpty(name))
                 return;

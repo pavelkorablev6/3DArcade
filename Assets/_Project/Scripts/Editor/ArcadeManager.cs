@@ -54,13 +54,17 @@ namespace Arcade.UnityEditor
             GeneralConfiguration generalConfiguration = new GeneralConfiguration(vfs);
             generalConfiguration.Initialize();
 
-            Databases databases = new Databases(new EmulatorDatabase(vfs), new PlatformDatabase(vfs), new ArcadeDatabase(vfs), new GameDatabase(vfs));
+            MultiFileDatabase<EmulatorConfiguration> emulatorDatabase = new EmulatorDatabase(vfs);
+            MultiFileDatabase<PlatformConfiguration> platformDatabase = new PlatformDatabase(vfs);
+            MultiFileDatabase<ArcadeConfiguration> arcadeDatabase     = new ArcadeDatabase(vfs);
+            GameDatabase gameDatabase                                 = new GameDatabase(vfs);
+            Databases databases = new Databases(emulatorDatabase, platformDatabase, arcadeDatabase, gameDatabase);
             databases.Initialize();
 
-            ArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();
-            GamePrefabAddressesProvider gameProvider    = new GamePrefabAddressesProvider();
-            PropPrefabAddressesProvider propProvider    = new PropPrefabAddressesProvider();
-            AssetAddressesProviders addressesProviders  = new AssetAddressesProviders(arcadeProvider, gameProvider, propProvider);
+            IArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();
+            IGamePrefabAddressesProvider gameProvider    = new GamePrefabAddressesProvider();
+            IPropPrefabAddressesProvider propProvider    = new PropPrefabAddressesProvider();
+            AssetAddressesProviders addressesProviders   = new AssetAddressesProviders(arcadeProvider, gameProvider, propProvider);
 
             EntitiesSceneCreator entitiesSceneCreator = new EntitiesSceneCreator();
             EntitiesScene entitiesScene               = new EntitiesScene(entitiesSceneCreator);
@@ -163,8 +167,7 @@ namespace Arcade.UnityEditor
 
             ModelConfiguration modelConfiguration = new ModelConfiguration
             {
-                Id          = "id",
-                Description = string.Empty
+                Id = "id"
             };
             gameObject.AddComponent<ModelConfigurationComponent>()
                       .SetModelConfiguration(modelConfiguration);

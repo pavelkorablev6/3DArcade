@@ -102,8 +102,8 @@ namespace Arcade
                                                           out game);
             }
 
-            IEnumerable<string> namesToTry = _arcadeContext.AssetAddressesProviders.Game.GetNamesToTry(modelConfiguration, platform, game);
-            modelInstance.SpawnModel(namesToTry, parent, GameModelsSpawnAtPositionWithRotation, ApplyArtworks);
+            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration, platform, game);
+            modelInstance.SpawnModel(addressesToTry, parent, GameModelsSpawnAtPositionWithRotation, ApplyArtworks);
 
             return modelInstance;
         }
@@ -112,8 +112,8 @@ namespace Arcade
         {
             ModelInstance modelInstance = new ModelInstance(modelConfiguration);
 
-            IEnumerable<string> namesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetNamesToTry(modelConfiguration);
-            modelInstance.SpawnModel(namesToTry, parent, true, ApplyArtworks);
+            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
+            modelInstance.SpawnModel(addressesToTry, parent, true, ApplyArtworks);
 
             return modelInstance;
         }

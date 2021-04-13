@@ -26,6 +26,6 @@ namespace Arcade
 {
     public interface IArcadeSceneAddressesProvider
     {
-        IEnumerable<string> GetNamesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType);
+        IEnumerable<AssetAddress> GetAddressesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType);
     }
 }

@@ -26,23 +26,22 @@ namespace Arcade
 {
     public sealed class PropPrefabAddressesProvider : IPropPrefabAddressesProvider
     {
-        public const string PROPS_ADDRESSABLES_PREFIX = "Props/";
-        public const string DEFAULT_PROP_PREFAB_NAME  = "_pink_cube";
+        private const string FILE_EXTENSION      = "prefab";
+        private const string ADDRESSABLES_PREFIX = "Props/";
+        private const string DEFAULT_PREFAB_NAME = "_pink_cube";
 
-        public IEnumerable<string> GetNamesToTry(ModelConfiguration cfg)
+        public IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            AssetAddresses assetAddresses = new AssetAddresses { Addresses = new List<string>() };
+            AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
 
-            TryAdd(cfg.Model);
-            TryAdd(cfg.Id);
-            TryAdd(DEFAULT_PROP_PREFAB_NAME);
+            addresses.Add(cfg.Overrides.Model);
+            addresses.Add(cfg.Id);
+            addresses.Add(DEFAULT_PREFAB_NAME);
 
-            return assetAddresses.Addresses;
-
-            void TryAdd(string name) => assetAddresses.TryAdd(name, AssetAddressUtilities.PREFAB_FILE_EXTENSION, PROPS_ADDRESSABLES_PREFIX);
+            return addresses.Addresses;
         }
     }
 }

@@ -30,6 +30,6 @@ namespace Arcade
         float LoadPercentCompleted { get; }
         bool Loaded { get; }
 
-        void Load(IEnumerable<string> namesToTry, System.Action onComplete);
+        void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete);
     }
 }

@@ -33,6 +33,6 @@ namespace Arcade
 
         public ArcadeScene(IArcadeSceneLoader sceneLoader) => _sceneLoader = sceneLoader;
 
-        public void Load(IEnumerable<string> namesToTry, System.Action onSceneLoadComplete) => _sceneLoader.Load(namesToTry, onSceneLoadComplete);
+        public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onSceneLoadComplete) => _sceneLoader.Load(addressesToTry, onSceneLoadComplete);
     }
 }

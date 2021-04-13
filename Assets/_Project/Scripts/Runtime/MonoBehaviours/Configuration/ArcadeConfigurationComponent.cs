@@ -34,13 +34,13 @@ namespace Arcade
 
         public string Id => _arcadeConfiguration.Id;
 
-        public ArcadeConfiguration GetArcadeConfiguration()
+        public ArcadeConfiguration ToArcadeConfiguration()
         {
             GamesNodeTag gamesRoot = FindObjectOfType<GamesNodeTag>();
             if (gamesRoot != null)
             {
                 ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                _arcadeConfiguration.Games = components.Select(x => x.GetModelConfiguration()).ToArray();
+                _arcadeConfiguration.Games = components.Select(x => x.ToModelConfiguration()).ToArray();
             }
 
             PropsNodeTag propsRoot = FindObjectOfType<PropsNodeTag>();
@@ -48,9 +48,9 @@ namespace Arcade
             {
                 ModelConfigurationComponent[] components = propsRoot.GetComponentsInChildren<ModelConfigurationComponent>();
                 if (ArcadeType == ArcadeType.Fps)
-                    _arcadeConfiguration.FpsArcadeProperties.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
+                    _arcadeConfiguration.FpsArcadeProperties.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
                 else if (ArcadeType == ArcadeType.Cyl)
-                    _arcadeConfiguration.CylArcadeProperties.Props = components.Select(x => x.GetModelConfiguration()).ToArray();
+                    _arcadeConfiguration.CylArcadeProperties.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
             }
 
             return _arcadeConfiguration;

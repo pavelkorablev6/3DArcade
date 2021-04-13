@@ -26,30 +26,33 @@ namespace Arcade
 {
     public sealed class ArcadeSceneAddressesProvider : IArcadeSceneAddressesProvider
     {
-        private const string ARCADES_ADDRESSABLES_PREFIX = "Arcades/";
-        private const string DEFAULT_ARCADE_SCENE_NAME   = "_cylinder";
+        private const string FILE_EXTENSION      = "unity";
+        private const string ADDRESSABLES_PREFIX = "Arcades/";
+        private const string DEFAULT_SCENE_NAME  = "_cylinder";
 
-        public IEnumerable<string> GetNamesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType)
+        public IEnumerable<AssetAddress> GetAddressesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            AssetAddresses assetAddresses = new AssetAddresses { Addresses = new List<string>() };
+            AssetAddresses assetAddresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
 
-            TryAdd(GetArcadeSceneName(cfg, arcadeType));
-            TryAdd(cfg.Id);
-            TryAdd(DEFAULT_ARCADE_SCENE_NAME);
+            string cfgScene = GetSceneName(cfg, arcadeType);
+
+            string editorPrefix = $"{ADDRESSABLES_PREFIX}{cfgScene}/";
+
+            assetAddresses.Add(cfgScene, editorPrefix);
+            assetAddresses.Add(cfg.Id, editorPrefix);
+            assetAddresses.Add(DEFAULT_SCENE_NAME, editorPrefix);
 
             return assetAddresses.Addresses;
-
-            void TryAdd(string name) => assetAddresses.TryAdd(name, AssetAddressUtilities.SCENE_FILE_EXTENSION, ARCADES_ADDRESSABLES_PREFIX, $"{ARCADES_ADDRESSABLES_PREFIX}{name}/");
         }
 
-        private static string GetArcadeSceneName(ArcadeConfiguration cfg, ArcadeType arcadeType) => arcadeType switch
+        private static string GetSceneName(ArcadeConfiguration cfg, ArcadeType arcadeType) => arcadeType switch
         {
             ArcadeType.Fps => cfg.FpsArcadeProperties.Scene,
             ArcadeType.Cyl => cfg.CylArcadeProperties.Scene,
-            _ => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}")
+            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}")
         };
     }
 }

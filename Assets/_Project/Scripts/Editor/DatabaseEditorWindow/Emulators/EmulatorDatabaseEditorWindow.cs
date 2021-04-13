@@ -30,7 +30,7 @@ namespace Arcade.UnityEditor
     {
         public override MultiFileDatabase<EmulatorConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Emulators;
 
-        public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DummyEmulator;
+        public override EmulatorConfiguration DefaultConfiguration => EmulatorConfiguration.DefaultEmulator;
 
         [MenuItem("3DArcade/Emulators", false, 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()

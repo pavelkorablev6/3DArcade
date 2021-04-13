@@ -25,108 +25,117 @@ using System.Xml.Serialization;
 namespace Arcade
 {
     [System.Serializable]
-    public sealed class ModelConfiguration : DatabaseEntry
+    public sealed class ModelConfigurationOverrides
     {
-        [XmlAttribute("platform")]
-        public string Platform;
+        [System.Serializable]
+        public sealed class Files
+        {
+            [XmlArray("marquee_image_files"), XmlArrayItem("file")]
+            public string[] MarqueeImageFiles = new string[0];
 
-        [XmlElement("grabbable")]
-        public bool Grabbable;
+            [XmlArray("marquee_video_files"), XmlArrayItem("file")]
+            public string[] MarqueeVideoFiles = new string[0];
 
-        [XmlElement("movecab_movable")]
-        public bool MoveCabMovable;
+            [XmlArray("screen_snap_files"), XmlArrayItem("file")]
+            public string[] ScreenSnapFiles = new string[0];
 
-        [XmlElement("movecab_grabbable")]
-        public bool MoveCabGrabbable;
+            [XmlArray("screen_title_files"), XmlArrayItem("file")]
+            public string[] ScreenTitleFiles = new string[0];
+
+            [XmlArray("screen_video_files"), XmlArrayItem("file")]
+            public string[] ScreenVideoFiles = new string[0];
+
+            [XmlArray("generic_image_files"), XmlArrayItem("file")]
+            public string[] GenericImageFiles = new string[0];
+
+            [XmlArray("generic_video_files"), XmlArrayItem("file")]
+            public string[] GenericVideoFiles = new string[0];
+
+            [XmlArray("info_files"), XmlArrayItem("file")]
+            public string[] InfoFiles = new string[0];
+        }
+
+        [System.Serializable]
+        public sealed class Directories
+        {
+            [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
+            public string[] MarqueeImageDirectories = new string[0];
+
+            [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
+            public string[] MarqueeVideoDirectories = new string[0];
+
+            [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]
+            public string[] ScreenSnapDirectories = new string[0];
+
+            [XmlArray("screen_title_directories"), XmlArrayItem("directory")]
+            public string[] ScreenTitleDirectories = new string[0];
+
+            [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
+            public string[] ScreenVideoDirectories = new string[0];
+
+            [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
+            public string[] GenericImageDirectories = new string[0];
+
+            [XmlArray("generic_video_directories"), XmlArrayItem("directory")]
+            public string[] GenericVideoDirectories = new string[0];
+
+            [XmlArray("info_directories"), XmlArrayItem("directory")]
+            public string[] InfoDirectories = new string[0];
+        }
+
+        [XmlAttribute("description")]
+        public string Description = "";
 
         [XmlElement("model")]
-        public string Model;
-
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType;
+        public string Model = "";
 
         [XmlElement("emulator")]
-        public string Emulator;
+        public string Emulator = "";
 
-        [XmlArray("marquee_image_files"), XmlArrayItem("file")]
-        public string[] MarqueeImageFiles;
+        [XmlElement("artwork_files")]
+        public Files ArtworkFiles = new Files();
 
-        [XmlArray("marquee_video_files"), XmlArrayItem("file")]
-        public string[] MarqueeVideoFiles;
+        [XmlElement("artwork_directories")]
+        public Directories ArtworkDirectories = new Directories();
 
-        [XmlArray("screen_snap_files"), XmlArrayItem("file")]
-        public string[] ScreenSnapFiles;
+        [XmlElement("game")]
+        public GameConfiguration Game = new GameConfiguration();
+    }
 
-        [XmlArray("screen_title_files"), XmlArrayItem("file")]
-        public string[] ScreenTitleFiles;
+    [System.Serializable]
+    public sealed class ModelConfiguration
+    {
+        [XmlAttribute("id")]
+        public string Id = "";
 
-        [XmlArray("screen_video_files"), XmlArrayItem("file")]
-        public string[] ScreenVideoFiles;
+        [XmlElement("interaction_type")]
+        public InteractionType InteractionType = InteractionType.Default;
 
-        [XmlArray("generic_image_files"), XmlArrayItem("file")]
-        public string[] GenericImageFiles;
+        [XmlAttribute("platform")]
+        public string Platform = "";
 
-        [XmlArray("genericv_ideo_files"), XmlArrayItem("file")]
-        public string[] GenericVideoFiles;
+        [XmlElement("grabbable")]
+        public bool Grabbable = true;
 
-        [XmlArray("info_files"), XmlArrayItem("file")]
-        public string[] InfoFiles;
+        [XmlElement("movecab_movable")]
+        public bool MoveCabMovable = true;
 
-        [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeImageDirectories;
+        [XmlElement("movecab_grabbable")]
+        public bool MoveCabGrabbable = true;
 
-        [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeVideoDirectories;
-
-        [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]
-        public string[] ScreenSnapDirectories;
-
-        [XmlArray("screen_title_directories"), XmlArrayItem("directory")]
-        public string[] ScreenTitleDirectories;
-
-        [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
-        public string[] ScreenVideoDirectories;
-
-        [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
-        public string[] GenericImageDirectories;
-
-        [XmlArray("generic_video_directories"), XmlArrayItem("directory")]
-        public string[] GenericVideoDirectories;
-
-        [XmlArray("info_directories"), XmlArrayItem("directory")]
-        public string[] InfoDirectories;
-
-        [XmlElement("cloneof")]
-        public string CloneOf;
-
-        [XmlElement("romof")]
-        public string RomOf;
-
-        [XmlElement("genre")]
-        public string Genre;
-
-        [XmlElement("year")]
-        public string Year;
-
-        [XmlElement("manufacturer")]
-        public string Manufacturer;
-
-        [XmlElement("screen_type")]
-        public GameScreenType ScreenType;
-
-        [XmlElement("screen_orientation")]
-        public GameScreenOrientation ScreenOrientation;
-
-        [XmlElement("mature")]
-        public bool Mature;
+        [XmlElement("overrides")]
+        public ModelConfigurationOverrides Overrides = new ModelConfigurationOverrides();
 
         [XmlElement("position")]
-        public DatabaseVector3 Position;
+        [UnityEngine.HideInInspector]
+        public DatabaseVector3 Position = DatabaseVector3.Zero;
 
         [XmlElement("rotation")]
-        public DatabaseVector3 Rotation;
+        [UnityEngine.HideInInspector]
+        public DatabaseVector3 Rotation = DatabaseVector3.Zero;
 
         [XmlElement("scale")]
-        public DatabaseVector3 Scale;
+        [UnityEngine.HideInInspector]
+        public DatabaseVector3 Scale = DatabaseVector3.One;
     }
 }

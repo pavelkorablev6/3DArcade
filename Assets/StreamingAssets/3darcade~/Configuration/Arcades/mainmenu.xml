@@ -1,4 +1,4 @@
-<arcade id="mainmenu" description="Main Menu">
+<arcade description="Main Menu">
   <fpsarcade_properties>
     <scene>_cylinder</scene>
     <camera_settings orthographic="false">
@@ -56,72 +56,102 @@
     </audio_settings>
     <model>defaultmenu_sprocket</model>
     <props>
-      <prop id="menu_title" description="" platform="">
+      <prop id="menu_title" platform="">
+        <interaction_type>Default</interaction_type>
         <grabbable>false</grabbable>
         <movecab_movable>false</movecab_movable>
         <movecab_grabbable>false</movecab_grabbable>
-        <model>_text</model>
-        <interaction_type>Default</interaction_type>
-        <emulator />
-        <marquee_image_files />
-        <marquee_video_files />
-        <screen_snap_files />
-        <screen_title_files />
-        <screen_video_files />
-        <generic_image_files />
-        <genericv_ideo_files />
-        <info_files />
-        <marquee_image_directories />
-        <marquee_video_directories />
-        <screen_snap_directories />
-        <screen_title_directories />
-        <screen_video_directories />
-        <generic_image_directories />
-        <generic_video_directories />
-        <info_directories />
-        <cloneof />
-        <romof />
-        <genre />
-        <year />
-        <manufacturer />
-        <screen_type>Default</screen_type>
-        <screen_orientation>Default</screen_orientation>
-        <mature>false</mature>
+        <overrides description="">
+          <model>_text</model>
+          <emulator />
+          <artwork_files>
+            <marquee_image_files />
+            <marquee_video_files />
+            <screen_snap_files />
+            <screen_title_files />
+            <screen_video_files />
+            <generic_image_files />
+            <generic_video_files />
+            <info_files />
+          </artwork_files>
+          <artwork_directories>
+            <marquee_image_directories />
+            <marquee_video_directories />
+            <screen_snap_directories />
+            <screen_title_directories />
+            <screen_video_directories />
+            <generic_image_directories />
+            <generic_video_directories />
+            <info_directories />
+          </artwork_directories>
+          <game>
+            <Name />
+            <Description />
+            <CloneOf />
+            <RomOf />
+            <Genre />
+            <Year />
+            <Manufacturer />
+            <ScreenType>Default</ScreenType>
+            <ScreenOrientation>Default</ScreenOrientation>
+            <Mature>false</Mature>
+            <Playable>false</Playable>
+            <IsBios>false</IsBios>
+            <IsDevice>false</IsDevice>
+            <IsMechanical>false</IsMechanical>
+            <Available>false</Available>
+          </game>
+        </overrides>
         <position x="0" y="2.2" z="5.1" />
         <rotation x="-0" y="0" z="0" />
         <scale x="1" y="1" z="1" />
       </prop>
-      <prop id="default_mainmenu_background" description="" platform="">
+      <prop id="default_mainmenu_background" platform="">
+        <interaction_type>Default</interaction_type>
         <grabbable>false</grabbable>
         <movecab_movable>false</movecab_movable>
         <movecab_grabbable>false</movecab_grabbable>
-        <model>_plane</model>
-        <interaction_type>Default</interaction_type>
-        <emulator />
-        <marquee_image_files />
-        <marquee_video_files />
-        <screen_snap_files />
-        <screen_title_files />
-        <screen_video_files />
-        <generic_image_files />
-        <genericv_ideo_files />
-        <info_files />
-        <marquee_image_directories />
-        <marquee_video_directories />
-        <screen_snap_directories />
-        <screen_title_directories />
-        <screen_video_directories />
-        <generic_image_directories />
-        <generic_video_directories />
-        <info_directories />
-        <cloneof />
-        <romof />
-        <genre />
-        <year />
-        <manufacturer />
-        <screen_type>Default</screen_type>
-        <screen_orientation>Default</screen_orientation>
-        <mature>false</mature>
+        <overrides description="">
+          <model>_plane</model>
+          <emulator />
+          <artwork_files>
+            <marquee_image_files />
+            <marquee_video_files />
+            <screen_snap_files />
+            <screen_title_files />
+            <screen_video_files />
+            <generic_image_files />
+            <generic_video_files />
+            <info_files />
+          </artwork_files>
+          <artwork_directories>
+            <marquee_image_directories />
+            <marquee_video_directories />
+            <screen_snap_directories />
+            <screen_title_directories />
+            <screen_video_directories />
+            <generic_image_directories />
+            <generic_video_directories />
+            <info_directories />
+          </artwork_directories>
+          <game>
+            <Name />
+            <Description />
+            <CloneOf />
+            <RomOf />
+            <Genre />
+            <Year />
+            <Manufacturer />
+            <ScreenType>Default</ScreenType>
+            <ScreenOrientation>Default</ScreenOrientation>
+            <Mature>false</Mature>
+            <Playable>false</Playable>
+            <IsBios>false</IsBios>
+            <IsDevice>false</IsDevice>
+            <IsMechanical>false</IsMechanical>
+            <Available>false</Available>
+          </game>
+        </overrides>
         <position x="0" y="0" z="5.5" />
         <rotation x="-0" y="0" z="0" />
         <scale x="0.5" y="1" z="1" />
@@ -139,319 +169,603 @@
   </cylarcade_properties>
   <games>
     <game id="demo" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>FpsArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <cloneof />
-      <romof />
-      <genre />
-      <year />
-      <manufacturer />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="toga" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>FpsArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <cloneof />
-      <romof />
-      <genre />
-      <year />
-      <manufacturer />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_flat_right">
+    <game id="cyl_demo_hor_flat_right" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_flat_left">
+    <game id="cyl_demo_hor_flat_left" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_flat_down">
+    <game id="cyl_demo_vert_flat_down" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_flat_up">
+    <game id="cyl_demo_vert_flat_up" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_inside_right">
+    <game id="cyl_demo_hor_inside_right" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_inside_left">
+    <game id="cyl_demo_hor_inside_left" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_inside_down">
+    <game id="cyl_demo_vert_inside_down" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_inside_up">
+    <game id="cyl_demo_vert_inside_up" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_outside_right">
+    <game id="cyl_demo_hor_outside_right" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_hor_outside_left">
+    <game id="cyl_demo_hor_outside_left" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_outside_down">
+    <game id="cyl_demo_vert_outside_down" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="cyl_demo_vert_outside_up">
+    <game id="cyl_demo_vert_outside_up" platform="">
+      <interaction_type>Default</interaction_type>
       <grabbable>false</grabbable>
       <movecab_movable>false</movecab_movable>
       <movecab_grabbable>false</movecab_grabbable>
-      <model />
-      <interaction_type>CylArcadeConfiguration</interaction_type>
-      <emulator />
-      <marquee_image_directories />
-      <marquee_video_directories />
-      <screen_snap_directories />
-      <screen_title_directories />
-      <screen_video_directories />
-      <generic_image_directories />
-      <generic_video_directories />
-      <info_directories />
-      <screen_type>Default</screen_type>
-      <screen_orientation>Default</screen_orientation>
-      <mature>false</mature>
+      <overrides description="">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
       <position x="0" y="0" z="0" />
       <rotation x="-0" y="0" z="0" />
       <scale x="1" y="1" z="1" />

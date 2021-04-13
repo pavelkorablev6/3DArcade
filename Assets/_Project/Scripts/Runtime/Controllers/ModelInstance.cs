@@ -46,7 +46,7 @@ namespace Arcade
             _modelSpawner = new ModelSpawner();
         }
 
-        public void SpawnModel(IEnumerable<string> namesToTry, Transform parent, bool atPositionWithRotation, System.Action<GameObject, ModelConfiguration> onModelSpawned)
+        public void SpawnModel(IEnumerable<AssetAddress> addressesToTry, Transform parent, bool atPositionWithRotation, System.Action<GameObject, ModelConfiguration> onModelSpawned)
         {
             _onModelSpawned = onModelSpawned;
 
@@ -64,7 +64,7 @@ namespace Arcade
                 orientation = Quaternion.identity;
             }
 
-            _modelSpawner.Spawn(namesToTry, position, orientation, parent, SetupModel);
+            _modelSpawner.Spawn(addressesToTry, position, orientation, parent, SetupModel);
         }
 
         private void SetupModel(GameObject gameObject)

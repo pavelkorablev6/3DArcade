@@ -20,29 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public static class AssetAddressUtilities
+    public struct AssetAddress
     {
-        public const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
-        public const string SCENE_FILE_EXTENSION     = "unity";
-        public const string PREFAB_FILE_EXTENSION    = "prefab";
-
-        public static void TryAdd(this AssetAddresses addresses, string name, string extension, string runtimePrefix, string editorPrefix = null)
-        {
-            if (string.IsNullOrEmpty(name))
-                return;
-
-            if (!Application.isPlaying)
-            {
-                editorPrefix ??= runtimePrefix;
-                addresses.Addresses.Add($"{EDITOR_ADDRESSABLES_PATH}{editorPrefix}{name}.{extension}");
-                return;
-            }
-
-            addresses.Addresses.Add($"{runtimePrefix}{name}");
-        }
+        public readonly string Address;
+        public AssetAddress(string address) => Address = address;
     }
 }

@@ -1,4 +1,4 @@
-<emulator id="mame_0228" description="M.A.M.E. 0.228">
+<emulator description="M.A.M.E. 0.228">
   <interaction_type>GameExternal</interaction_type>
   <directory>D:/__Emulators/mame</directory>
   <working_directory />

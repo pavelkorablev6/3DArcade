@@ -29,8 +29,8 @@ namespace Arcade
         private readonly GameDatabase _gameDatabase;
 
         public ArtworkFileNamesProvider(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
-                                        MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                                        GameDatabase gameDatabase)
+                                    MultiFileDatabase<PlatformConfiguration> platformDatabase,
+                                    GameDatabase gameDatabase)
         {
             _emulatorDatabase = emulatorDatabase;
             _platformDatabase = platformDatabase;
@@ -44,28 +44,34 @@ namespace Arcade
 
             ImageSequence imageSequence = new ImageSequence();
 
-            imageSequence.TryAdd(cfg.Id);
+            // From files overrides
+
+
+            // From directories overrides
+
+
+            imageSequence.Add(cfg.Id);
 
             // From game CloneOf and RomOf in platform's masterlist
             if (_platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform))
             {
                 if (_gameDatabase.TryGet(platform.MasterList, cfg.Id, new string[] { "CloneOf", "RomOf" }, new string[] { "Name" }, out GameConfiguration game))
                 {
-                    imageSequence.TryAdd(game.CloneOf);
-                    imageSequence.TryAdd(game.RomOf);
+                    imageSequence.Add(game.CloneOf);
+                    imageSequence.Add(game.RomOf);
                 }
             }
 
             // From emulator override
-            if (_emulatorDatabase.TryGet(cfg.Emulator, out EmulatorConfiguration emulator))
-                imageSequence.TryAdd(emulator.Id);
+            if (_emulatorDatabase.TryGet(cfg.Overrides.Emulator, out EmulatorConfiguration emulator))
+                imageSequence.Add(emulator.Id);
 
             // From platform emulator
             if (_emulatorDatabase.TryGet(platform?.Emulator, out emulator))
-                imageSequence.TryAdd(emulator.Id);
+                imageSequence.Add(emulator.Id);
 
             // From platform id
-            imageSequence.TryAdd(platform?.Id);
+            imageSequence.Add(platform?.Id);
 
             return imageSequence.Images;
         }

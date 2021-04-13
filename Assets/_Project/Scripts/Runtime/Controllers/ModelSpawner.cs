@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -35,14 +36,15 @@ namespace Arcade
         private Transform _parent;
         private System.Action<GameObject> _onComplete;
 
-        void IModelSpawner.Spawn(IEnumerable<string> namesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        void IModelSpawner.Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
             _position    = position;
             _orientation = orientation;
             _parent      = parent;
             _onComplete  = onComplete;
 
-            Addressables.LoadResourceLocationsAsync(namesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
+            IEnumerable<string> stringAddressesToTry = addressesToTry.Select(x => x.Address);
+            Addressables.LoadResourceLocationsAsync(stringAddressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
         }
 
         private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)

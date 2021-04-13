@@ -63,7 +63,7 @@ namespace Arcade
 
         protected sealed override void PostAdd(T entry) => SaveAll();
 
-        protected sealed override void PostDelete(string name) => SaveAll();
+        protected sealed override void PostDelete(string id) => SaveAll();
 
         protected sealed override bool LoadAllFromDisk()
         {

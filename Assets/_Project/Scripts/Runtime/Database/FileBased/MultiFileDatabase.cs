@@ -50,8 +50,8 @@ namespace Arcade
         {
             try
             {
-                foreach (KeyValuePair<string, T> entry in _entries)
-                    _ = Save(entry.Value);
+                foreach (T entry in _entries.Values)
+                    _ = Save(entry);
 
                 return true;
             }
@@ -85,9 +85,9 @@ namespace Arcade
             }
         }
 
-        protected sealed override void PostDelete(string name)
+        protected sealed override void PostDelete(string id)
         {
-            string filePath = Path.Combine(Directory, $"{name}.xml");
+            string filePath = Path.Combine(Directory, $"{id}.xml");
             if (File.Exists(filePath))
                 File.Delete(filePath);
         }
@@ -101,7 +101,10 @@ namespace Arcade
                 {
                     T entry = Deserialize(filePath);
                     if (entry != null)
+                    {
+                        entry.Id = Path.GetFileNameWithoutExtension(filePath);
                         _entries.Add(entry.Id, entry);
+                    }
                 }
 
                 return true;

@@ -27,6 +27,6 @@ namespace Arcade
 {
     public interface IModelSpawner
     {
-        void Spawn(IEnumerable<string> namesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
+        void Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
     }
 }

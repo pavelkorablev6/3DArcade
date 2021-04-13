@@ -28,6 +28,9 @@ namespace Arcade
     [System.Serializable]
     public sealed class DatabaseVector3
     {
+        public static DatabaseVector3 Zero => new DatabaseVector3();
+        public static DatabaseVector3 One => new DatabaseVector3(1f, 1f, 1f);
+
         [XmlAttribute("x")] public float X = 0f;
         [XmlAttribute("y")] public float Y = 0f;
         [XmlAttribute("z")] public float Z = 0f;
@@ -48,6 +51,13 @@ namespace Arcade
             X = v.x;
             Y = v.y;
             Z = v.z;
+        }
+
+        public void RoundValues()
+        {
+            X = Mathf.Round(X * 100f) / 100f;
+            Y = Mathf.Round(Y * 100f) / 100f;
+            Z = Mathf.Round(Z * 100f) / 100f;
         }
 
         public static implicit operator DatabaseVector3(Vector3 v) => new DatabaseVector3(v);

@@ -88,13 +88,24 @@ namespace Arcade.UnityEditor
                 GUI.backgroundColor = originalBackgroundColor;
             }
 
+            GUILayout.Space(8f);
+            using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
+            {
+                _configuration.Id = EditorGUILayout.TextField("Id", _configuration.Id);
+            }
+
+            int indentLevel = EditorGUI.indentLevel;
+            GUILayout.Space(8f);
             using (GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_scrollPosition, EditorStyles.helpBox))
             {
-                _scrollPosition = scrollView.scrollPosition;
+                _scrollPosition       = scrollView.scrollPosition;
+                EditorGUI.indentLevel = -1;
+
                 _ = EditorGUILayout.PropertyField(_context.TempValueProperty, GUIContent.none, true);
                 _context.TempValueProperty.isExpanded = true;
                 _ = _context.TempCfgObject.ApplyModifiedProperties();
             }
+            EditorGUI.indentLevel = indentLevel;
 
             if (!isIdValid)
                 EditorGUILayout.HelpBox("Id must be set", MessageType.Error);

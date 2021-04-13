@@ -28,6 +28,7 @@ namespace Arcade.UnityEditor
     internal sealed class DatabaseEditorWindowEditSelectionState<T> : DatabaseEditorWindowState<T> where T : DatabaseEntry
     {
         private T _configuration;
+        private string _newId;
 
         public DatabaseEditorWindowEditSelectionState(DatabaseEditorWindowContext<T> context)
         : base(context)
@@ -39,6 +40,7 @@ namespace Arcade.UnityEditor
             EditorGUI.FocusTextInControl(null);
             _scrollPosition = Vector2.zero;
             _configuration  = (_context.TempCfgObject.targetObject as ConfigurationSO<T>).Value;
+            _newId          = string.Empty;
         }
 
         public override void OnExit() => _context.ClearSerializedFields();
@@ -47,27 +49,50 @@ namespace Arcade.UnityEditor
         {
             Color originalBackgroundColor = GUI.backgroundColor;
 
-            bool isIdValid          = !string.IsNullOrEmpty(_configuration.Id);
+            bool saveAsNew          = !string.IsNullOrEmpty(_newId);
+            bool isIdValid          = _newId != _configuration.Id;
             bool isDescriptionValid = !string.IsNullOrEmpty(_configuration.Description);
 
             GUILayout.Space(8f);
             using (new GUILayout.HorizontalScope())
             {
-                if (isIdValid && isDescriptionValid)
+                if (saveAsNew)
                 {
-                    GUI.backgroundColor = Color.green;
-                    GUI.enabled         = true;
+                    if (isIdValid && isDescriptionValid)
+                    {
+                        GUI.backgroundColor = Color.green;
+                        GUI.enabled         = true;
+                    }
+                    else
+                    {
+                        GUI.backgroundColor = Color.red;
+                        GUI.enabled         = false;
+                    }
+
+                    if (GUILayout.Button(new GUIContent("Save As...", "Save as a new configuration")))
+                    {
+                        SaveButtonClicked(_newId);
+                        return;
+                    }
                 }
                 else
                 {
-                    GUI.backgroundColor = Color.red;
-                    GUI.enabled         = false;
-                }
+                    if (isDescriptionValid)
+                    {
+                        GUI.backgroundColor = Color.green;
+                        GUI.enabled         = true;
+                    }
+                    else
+                    {
+                        GUI.backgroundColor = Color.red;
+                        GUI.enabled         = false;
+                    }
 
-                if (GUILayout.Button(new GUIContent("Save", "Save this configuration, create a new configuration if 'Id' is changed")))
-                {
-                    SaveButtonClicked();
-                    return;
+                    if (GUILayout.Button(new GUIContent("Save", "Save this configuration")))
+                    {
+                        SaveButtonClicked();
+                        return;
+                    }
                 }
 
                 GUI.backgroundColor = Color.yellow;
@@ -81,23 +106,38 @@ namespace Arcade.UnityEditor
                 GUI.backgroundColor = originalBackgroundColor;
             }
 
+            GUILayout.Space(8f);
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                EditorGUILayout.LabelField($"Editing:                                     {_configuration.Id}");
+                _newId = EditorGUILayout.TextField("Save As:", _newId);
+            }
+
+            int indentLevel = EditorGUI.indentLevel;
             using (GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_scrollPosition, EditorStyles.helpBox))
             {
-                _scrollPosition = scrollView.scrollPosition;
+                _scrollPosition       = scrollView.scrollPosition;
+                EditorGUI.indentLevel = -1;
+
                 _ = EditorGUILayout.PropertyField(_context.TempValueProperty, GUIContent.none, true);
                 _context.TempValueProperty.isExpanded = true;
                 _ = _context.TempCfgObject.ApplyModifiedProperties();
             }
+            EditorGUI.indentLevel = indentLevel;
 
-            if (!isIdValid)
-                EditorGUILayout.HelpBox("Id must be set", MessageType.Error);
+            if (saveAsNew && !isIdValid)
+                EditorGUILayout.HelpBox("The new Id must be of a different value than the current configuration Id", MessageType.Error);
             else if (!isDescriptionValid)
                 EditorGUILayout.HelpBox("Description must be set", MessageType.Error);
         }
 
-        private void SaveButtonClicked()
+        private void SaveButtonClicked(string newId = null)
         {
             EditorGUI.FocusTextInControl(null);
+
+            if (!string.IsNullOrEmpty(newId))
+                _configuration.Id = _newId;
+
             if (_context.SaveEntry(_configuration))
                 _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }

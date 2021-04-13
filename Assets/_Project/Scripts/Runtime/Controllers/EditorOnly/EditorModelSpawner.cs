@@ -28,13 +28,13 @@ namespace Arcade
 {
     public sealed class EditorModelSpawner : IModelSpawner
     {
-        void IModelSpawner.Spawn(IEnumerable<string> namesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        void IModelSpawner.Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
-            foreach (string nameToTry in namesToTry)
+            foreach (AssetAddress addressToTry in addressesToTry)
             {
                 try
                 {
-                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(nameToTry);
+                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(addressToTry.Address);
                     if (prefab != null)
                     {
                         GameObject gameObject = Object.Instantiate(prefab, position, orientation, parent);
