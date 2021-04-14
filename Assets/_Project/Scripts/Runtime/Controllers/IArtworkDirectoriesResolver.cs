@@ -22,7 +22,8 @@
 
 namespace Arcade
 {
-    public interface IGamePrefabAddressesProvider : IPrefabAddressesProvider
+    public interface IArtworkDirectoriesResolver
     {
+        string[] GetDirectoriesToTry(params ArtworkDirectories[] directories);
     }
 }

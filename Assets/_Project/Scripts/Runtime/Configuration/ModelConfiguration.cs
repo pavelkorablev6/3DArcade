@@ -137,5 +137,13 @@ namespace Arcade
         [XmlElement("scale")]
         [UnityEngine.HideInInspector]
         public DatabaseVector3 Scale = DatabaseVector3.One;
+
+        [XmlIgnore]
+        [UnityEngine.HideInInspector]
+        public PlatformConfiguration PlatformConfiguration { get; set; }
+
+        [XmlIgnore]
+        [UnityEngine.HideInInspector]
+        public GameConfiguration GameConfiguration { get; set; }
     }
 }

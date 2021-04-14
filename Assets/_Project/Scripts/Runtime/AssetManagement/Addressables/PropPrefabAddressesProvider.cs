@@ -37,7 +37,7 @@ namespace Arcade
 
             AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
 
-            addresses.Add(cfg.Overrides.Model);
+            addresses.Add(cfg.Overrides?.Model);
             addresses.Add(cfg.Id);
             addresses.Add(DEFAULT_PREFAB_NAME);
 

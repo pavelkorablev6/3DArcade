@@ -30,30 +30,36 @@ namespace Arcade
     {
         public string[] Directories => _directories.ToArray();
 
-        private readonly List<string> _directories = new List<string>();
+        private readonly List<string> _directories;
 
-        public void TryAdd(string[] directories)
+        public ArtworkDirectories(params string[] directories) => _directories = new List<string>(directories);
+
+        public static ArtworkDirectories GetCorrectedDirectories(params string[][] arrays)
         {
-            string[] correctedPaths = FileSystem.CorrectPaths(directories)?.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            if (correctedPaths == null || correctedPaths.Length == 0)
-                return;
-
-            _directories.AddRange(correctedPaths);
+            ArtworkDirectories artworkDirectories = new ArtworkDirectories();
+            foreach (string[] array in arrays)
+                artworkDirectories.TryAdd(array);
+            return artworkDirectories;
         }
 
-        public void TryResolve(string[] directories)
+        public void TryResolve(ArtworkDirectories directories)
         {
             if (directories == null)
                 return;
 
-            foreach (string directory in directories)
+            foreach (string directory in directories.Directories)
             {
                 string directoryPath = FileSystem.CorrectPath(directory);
-                if (string.IsNullOrEmpty(directoryPath) || !Directory.Exists(directoryPath))
-                    return;
-
-                _directories.Add(directoryPath);
+                if (Directory.Exists(directoryPath))
+                    _directories.Add(directoryPath);
             }
+        }
+
+        private void TryAdd(string[] directories)
+        {
+            string[] correctedPaths = FileSystem.CorrectPaths(directories)?.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            if (correctedPaths != null)
+                _directories.AddRange(correctedPaths);
         }
     }
 }

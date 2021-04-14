@@ -26,28 +26,42 @@ namespace Arcade
 {
     public sealed class ArtworkController
     {
-        public static string DefaultMediaDirectory;
-
         //public event System.Action OnVideoPlayerAdded;
 
+        public string DefaultMediaDirectory { get; private set; }
+
+        private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly AssetCache<Texture> _textureCache;
         //private readonly AssetCache<string> _videoCache;
+        private readonly IArtworkDirectoriesResolver _directoriesResolver;
 
-        public ArtworkController(AssetCache<Texture> textureCache, IVirtualFileSystem virtualFileSystem)
+        public ArtworkController(IVirtualFileSystem virtualFileSystem, AssetCache<Texture> textureCache, IArtworkDirectoriesResolver directoriesResolver)
         {
-            _textureCache = textureCache;
-            DefaultMediaDirectory ??= virtualFileSystem.GetDirectory("medias");
-            //_videoCache  = videoCache;
+            _virtualFileSystem   = virtualFileSystem;
+            _textureCache        = textureCache;
+            //_videoCache          = videoCache;
+            _directoriesResolver = directoriesResolver;
         }
 
-        public void SetupImages(string[] directories, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
+        public void Initialize() => DefaultMediaDirectory ??= _virtualFileSystem.GetDirectory("medias");
+
+        public void SetupImages(IArtworkDirectoryNamesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
-            if (directories == null || fileNamesToTry == null || renderers == null)
+            if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
+
+            ArtworkDirectories gameDirectories     = directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
+            ArtworkDirectories platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);
+            ArtworkDirectories defaultDirectories  = directoryNamesProvider.DefaultImageDirectories;
+            string[] directories                   = _directoriesResolver.GetDirectoriesToTry(gameDirectories, platformDirectories, defaultDirectories);
 
             Texture[] textures = _textureCache.LoadMultiple(directories, fileNamesToTry);
             if (textures == null || textures.Length == 0)
+            {
+                if (directoryNamesProvider is GenericArtworkDirectoryNamesProvider)
+                    SetRandomColors(renderers);
                 return;
+            }
 
             for (int i = 0; i < renderers.Length; ++i)
             {
@@ -58,7 +72,7 @@ namespace Arcade
                 renderers[i].SetPropertyBlock(block);
 
                 // Only setup magic pixels for the first Marquee Node found
-                //if (i == 0 && isMarqueeNode)
+                //if (i == 0 && directoryNamesProvider is MarqueeArtworkDirectoryNamesProvider)
                 //    SetupMagicPixels(renderers[i]);
             }
 
@@ -68,57 +82,17 @@ namespace Arcade
             //    SetupImageCycling(renderers, textures);
         }
 
-        //public static void SetupVideos(IEnumerable<string> directories, IEnumerable<string> namesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
-        //{
-        //    string videopath = _videoCache.Load(directories, namesToTry);
-        //    if (string.IsNullOrEmpty(videopath))
-        //        return;
+        private void SetRandomColors(Renderer[] renderers)
+        {
+            Color color = Random.ColorHSV();
 
-        //    foreach (Renderer renderer in renderers)
-        //    {
-        //        AudioSource audioSource  = renderer.gameObject.AddComponentIfNotFound<AudioSource>();
-        //        audioSource.playOnAwake  = false;
-        //        audioSource.dopplerLevel = 0f;
-        //        audioSource.spatialBlend = 1f;
-        //        audioSource.minDistance  = audioMinDistance;
-        //        audioSource.maxDistance  = audioMaxDistance;
-        //        audioSource.volume       = 1f;
-        //        audioSource.rolloffMode  = AudioRolloffMode.Custom;
-        //        audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, volumeCurve);
-
-        //        VideoPlayer videoPlayer               = renderer.gameObject.AddComponentIfNotFound<VideoPlayer>();
-        //        videoPlayer.errorReceived            -= OnVideoPlayerErrorReceived;
-        //        videoPlayer.errorReceived            += OnVideoPlayerErrorReceived;
-        //        videoPlayer.playOnAwake               = false;
-        //        videoPlayer.waitForFirstFrame         = true;
-        //        videoPlayer.isLooping                 = true;
-        //        videoPlayer.skipOnDrop                = true;
-        //        videoPlayer.source                    = VideoSource.Url;
-        //        videoPlayer.url                       = videopath;
-        //        videoPlayer.renderMode                = VideoRenderMode.MaterialOverride;
-        //        videoPlayer.targetMaterialProperty    = MaterialUtils.SHADER_EMISSIVE_TEXTURE_NAME;
-        //        videoPlayer.audioOutputMode           = VideoAudioOutputMode.AudioSource;
-        //        videoPlayer.controlledAudioTrackCount = 1;
-        //        videoPlayer.Stop();
-
-        //        OnVideoPlayerAdded?.Invoke();
-        //    }
-        //}
-
-        //private static void SetupImageCycling(Renderer[] renderers, Texture[] textures)
-        //{
-        //    foreach (Renderer renderer in renderers)
-        //    {
-        //        DynamicArtworkComponent dynamicArtworkComponent = renderer.gameObject.AddComponentIfNotFound<DynamicArtworkComponent>();
-        //        dynamicArtworkComponent.Construct(textures);
-        //    }
-        //}
-
-        //private static void SetupStaticImage(Renderer[] renderers, Texture texture)
-        //{
-        //    foreach (Renderer renderer in renderers)
-        //        renderer.material.SetEmissionTexture(texture);
-        //}
+            foreach (Renderer renderer in renderers)
+            {
+                MaterialPropertyBlock block = new MaterialPropertyBlock();
+                block.SetColor("_BaseColor", color);
+                renderer.SetPropertyBlock(block);
+            }
+        }
 
         //private static void SetupMagicPixels(Renderer sourceRenderer)
         //{
@@ -170,6 +144,58 @@ namespace Arcade
         //        for (int i = 0; i < renderer.materials.Length; ++i)
         //            renderer.SetPropertyBlock(materialPropertyBlock, i);
         //    }
+        //}
+
+        //public static void SetupVideos(IEnumerable<string> directories, IEnumerable<string> namesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
+        //{
+        //    string videopath = _videoCache.Load(directories, namesToTry);
+        //    if (string.IsNullOrEmpty(videopath))
+        //        return;
+
+        //    foreach (Renderer renderer in renderers)
+        //    {
+        //        AudioSource audioSource  = renderer.gameObject.AddComponentIfNotFound<AudioSource>();
+        //        audioSource.playOnAwake  = false;
+        //        audioSource.dopplerLevel = 0f;
+        //        audioSource.spatialBlend = 1f;
+        //        audioSource.minDistance  = audioMinDistance;
+        //        audioSource.maxDistance  = audioMaxDistance;
+        //        audioSource.volume       = 1f;
+        //        audioSource.rolloffMode  = AudioRolloffMode.Custom;
+        //        audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, volumeCurve);
+
+        //        VideoPlayer videoPlayer               = renderer.gameObject.AddComponentIfNotFound<VideoPlayer>();
+        //        videoPlayer.errorReceived            -= OnVideoPlayerErrorReceived;
+        //        videoPlayer.errorReceived            += OnVideoPlayerErrorReceived;
+        //        videoPlayer.playOnAwake               = false;
+        //        videoPlayer.waitForFirstFrame         = true;
+        //        videoPlayer.isLooping                 = true;
+        //        videoPlayer.skipOnDrop                = true;
+        //        videoPlayer.source                    = VideoSource.Url;
+        //        videoPlayer.url                       = videopath;
+        //        videoPlayer.renderMode                = VideoRenderMode.MaterialOverride;
+        //        videoPlayer.targetMaterialProperty    = MaterialUtils.SHADER_EMISSIVE_TEXTURE_NAME;
+        //        videoPlayer.audioOutputMode           = VideoAudioOutputMode.AudioSource;
+        //        videoPlayer.controlledAudioTrackCount = 1;
+        //        videoPlayer.Stop();
+
+        //        OnVideoPlayerAdded?.Invoke();
+        //    }
+        //}
+
+        //private static void SetupImageCycling(Renderer[] renderers, Texture[] textures)
+        //{
+        //    foreach (Renderer renderer in renderers)
+        //    {
+        //        DynamicArtworkComponent dynamicArtworkComponent = renderer.gameObject.AddComponentIfNotFound<DynamicArtworkComponent>();
+        //        dynamicArtworkComponent.Construct(textures);
+        //    }
+        //}
+
+        //private static void SetupStaticImage(Renderer[] renderers, Texture texture)
+        //{
+        //    foreach (Renderer renderer in renderers)
+        //        renderer.material.SetEmissionTexture(texture);
         //}
 
         //private static void OnVideoPlayerErrorReceived(VideoPlayer _, string message)

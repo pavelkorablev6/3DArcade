@@ -25,8 +25,8 @@ namespace Arcade
     public sealed class AssetAddressesProviders
     {
         public readonly IArcadeSceneAddressesProvider Arcade;
-        public readonly IGamePrefabAddressesProvider Game;
-        public readonly IPropPrefabAddressesProvider Prop;
+        public readonly IPrefabAddressesProvider Game;
+        public readonly IPrefabAddressesProvider Prop;
 
         public AssetAddressesProviders(IArcadeSceneAddressesProvider arcadeSceneAddressesProvider,
                                        IGamePrefabAddressesProvider gamePrefabAddressesProvider,

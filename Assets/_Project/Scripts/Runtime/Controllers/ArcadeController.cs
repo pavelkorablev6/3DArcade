@@ -61,7 +61,10 @@ namespace Arcade
                 return;
 
             foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Games)
-                _gameModels.Add(SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform));
+            {
+                ModelInstance modelInstance = SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
+                _gameModels.Add(modelInstance);
+            }
         }
 
         private void SpawProps()
@@ -90,7 +93,6 @@ namespace Arcade
 
         private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
         {
-            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
 
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
@@ -102,19 +104,23 @@ namespace Arcade
                                                           out game);
             }
 
-            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration, platform, game);
-            modelInstance.SpawnModel(addressesToTry, parent, GameModelsSpawnAtPositionWithRotation, ApplyArtworks);
+            modelConfiguration.PlatformConfiguration = platform;
+            modelConfiguration.GameConfiguration     = game;
 
-            return modelInstance;
+            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
+            return SpawnModel(modelConfiguration, parent, GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
         }
 
         private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
         {
-            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
-
             IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
-            modelInstance.SpawnModel(addressesToTry, parent, true, ApplyArtworks);
+            return SpawnModel(modelConfiguration, parent, true, addressesToTry);
+        }
 
+        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, bool spawnAtPositionWithRotation, IEnumerable<AssetAddress> addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
+        {
+            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
+            modelInstance.SpawnModel(addressesToTry, parent, spawnAtPositionWithRotation, onModelSpawned);
             return modelInstance;
         }
 
@@ -124,21 +130,8 @@ namespace Arcade
             if (!Application.isPlaying)
                 return;
 
-            //PlatformConfiguration platform = null;
-            //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
-            //    platform = _platformDatabase.Get(modelConfiguration.Platform);
-
-            GameConfiguration game = null;
-            //if (platform != null && platform.MasterList != null)
-            //{
-            //    game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
-            //    if (game != null)
-            //    {
-            //    }
-            //}
-
             _arcadeContext.NodeControllers.Marquee.Setup(gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
-            _arcadeContext.NodeControllers.Screen.Setup(gameObject, modelConfiguration, GetScreenIntensity(game));
+            _arcadeContext.NodeControllers.Screen.Setup(gameObject, modelConfiguration, GetScreenIntensity(modelConfiguration.GameConfiguration));
             _arcadeContext.NodeControllers.Generic.Setup(gameObject, modelConfiguration, 1f);
 
             //if (gameModels)
@@ -153,15 +146,16 @@ namespace Arcade
         private float GetScreenIntensity(GameConfiguration game)
         {
             if (game == null)
-                return 1.4f;
+                return 1f;
 
             return game.ScreenType switch
             {
+                GameScreenType.Default => 1f,
                 GameScreenType.Lcd     => RenderSettings.ScreenLcdIntensity,
                 GameScreenType.Raster  => RenderSettings.ScreenRasterIntensity,
                 GameScreenType.Svg     => RenderSettings.ScreenSvgIntensity,
                 GameScreenType.Vector  => RenderSettings.ScreenVectorIntenstity,
-                _ => 1.0f
+                _                      => throw new System.NotImplementedException($"Unhandled switch case for GameScreenType: {game.ScreenType}")
             };
         }
 

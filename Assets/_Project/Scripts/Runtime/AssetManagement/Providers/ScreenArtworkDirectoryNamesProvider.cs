@@ -24,27 +24,34 @@ namespace Arcade
 {
     public sealed class ScreenArtworkDirectoryNamesProvider : IArtworkDirectoryNamesProvider
     {
+        public ArtworkDirectories DefaultImageDirectories { get; private set; }
+        public ArtworkDirectories DefaultVideoDirectories { get; private set; }
+
         private const string SNAPS_DIRECTORY_NAME  = "ScreensImages";
         private const string TITLES_DIRECTORY_NAME = "TitlesImages";
         private const string VIDEOS_DIRECTORY_NAME = "ScreensVideos";
 
-        string[] IArtworkDirectoryNamesProvider.DefaultImageDirectories { get; } = new string[]
+        private readonly ArtworkController _artworkController;
+
+        public ScreenArtworkDirectoryNamesProvider(ArtworkController artworkController) => _artworkController = artworkController;
+
+        public void Initialize()
         {
-            $"{ArtworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
-            $"{ArtworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
-        };
-        string[] IArtworkDirectoryNamesProvider.DefaultVideoDirectories { get; } = new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
+            DefaultImageDirectories ??= new ArtworkDirectories($"{_artworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
+                                                               $"{_artworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}");
+            DefaultVideoDirectories ??= new ArtworkDirectories($"{_artworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}");
+        }
 
-        string[] IArtworkDirectoryNamesProvider.GetModelImageDirectories(ModelConfiguration modelConfiguration)
-            => ArtworkUtilities.GetDirectories(modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories, modelConfiguration.Overrides.ArtworkDirectories.ScreenTitleDirectories);
+        public ArtworkDirectories GetModelImageDirectories(ModelConfiguration modelConfiguration)
+            => ArtworkDirectories.GetCorrectedDirectories(modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories, modelConfiguration.Overrides.ArtworkDirectories.ScreenTitleDirectories);
 
-        string[] IArtworkDirectoryNamesProvider.GetModelVideoDirectories(ModelConfiguration modelConfiguration)
-            => ArtworkUtilities.GetDirectories(modelConfiguration.Overrides.ArtworkDirectories.ScreenVideoDirectories);
+        public ArtworkDirectories GetModelVideoDirectories(ModelConfiguration modelConfiguration)
+            => ArtworkDirectories.GetCorrectedDirectories(modelConfiguration.Overrides.ArtworkDirectories.ScreenVideoDirectories);
 
-        string[] IArtworkDirectoryNamesProvider.GetPlatformImageDirectories(PlatformConfiguration platform)
-            => ArtworkUtilities.GetDirectories(platform?.ScreenSnapsDirectories, platform?.ScreenTitlesDirectories);
+        public ArtworkDirectories GetPlatformImageDirectories(PlatformConfiguration platform)
+            => ArtworkDirectories.GetCorrectedDirectories(platform?.ScreenSnapsDirectories, platform?.ScreenTitlesDirectories);
 
-        string[] IArtworkDirectoryNamesProvider.GetPlatformVideoDirectories(PlatformConfiguration platform)
-            => ArtworkUtilities.GetDirectories(platform?.ScreenVideosDirectories);
+        public ArtworkDirectories GetPlatformVideoDirectories(PlatformConfiguration platform)
+            => ArtworkDirectories.GetCorrectedDirectories(platform?.ScreenVideosDirectories);
     }
 }

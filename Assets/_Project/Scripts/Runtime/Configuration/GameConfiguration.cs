@@ -25,6 +25,7 @@ namespace Arcade
     [System.Serializable]
     public sealed class GameConfiguration : SQLiteDatabase.ReflectedEntry
     {
+        [UnityEngine.HideInInspector]
         public string Name;
         public string Description;
         public string CloneOf;

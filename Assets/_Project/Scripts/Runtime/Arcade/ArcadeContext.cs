@@ -36,8 +36,6 @@ namespace Arcade
         public readonly Scenes Scenes;
 
         public readonly AssetAddressesProviders AssetAddressesProviders;
-        public readonly ArtworkFileNamesProvider ArtworkNameProvider;
-        public readonly ArtworkController ArtworkController;
         public readonly NodeControllers NodeControllers;
         public readonly IUIController UIController;
 
@@ -58,8 +56,6 @@ namespace Arcade
                              Databases databases,
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
-                             ArtworkFileNamesProvider artworkNameProvider,
-                             ArtworkController artworkController,
                              NodeControllers nodeControllers,
                              IUIController uiController)
         {
@@ -69,8 +65,6 @@ namespace Arcade
             Databases               = databases;
             Scenes                  = scenes;
             AssetAddressesProviders = assetAddressesProviders;
-            ArtworkNameProvider     = artworkNameProvider;
-            ArtworkController       = artworkController;
             NodeControllers         = nodeControllers;
             UIController            = uiController;
         }

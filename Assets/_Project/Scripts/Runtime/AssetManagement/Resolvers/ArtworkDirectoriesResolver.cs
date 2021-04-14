@@ -22,13 +22,13 @@
 
 namespace Arcade
 {
-    public static class ArtworkDirectoriesResolver
+    public sealed class ArtworkDirectoriesResolver : IArtworkDirectoriesResolver
     {
-        public static string[] GetDirectoriesToTry(params string[][] directories)
+        public string[] GetDirectoriesToTry(params ArtworkDirectories[] directories)
         {
             ArtworkDirectories artworkDirectories = new ArtworkDirectories();
 
-            foreach (string[] directory in directories)
+            foreach (ArtworkDirectories directory in directories)
                 artworkDirectories.TryResolve(directory);
 
             return artworkDirectories.Directories;

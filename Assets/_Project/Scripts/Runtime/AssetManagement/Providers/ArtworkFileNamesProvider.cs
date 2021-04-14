@@ -22,55 +22,47 @@
 
 namespace Arcade
 {
-    public sealed class ArtworkFileNamesProvider
+    public sealed class ArtworkFileNamesProvider : IArtworkFileNamesProvider
     {
-        private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
         private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
+        private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
         private readonly GameDatabase _gameDatabase;
 
-        public ArtworkFileNamesProvider(MultiFileDatabase<EmulatorConfiguration> emulatorDatabase,
-                                    MultiFileDatabase<PlatformConfiguration> platformDatabase,
-                                    GameDatabase gameDatabase)
+        public ArtworkFileNamesProvider(MultiFileDatabase<PlatformConfiguration> platformDatabase, MultiFileDatabase<EmulatorConfiguration> emulatorDatabase, GameDatabase gameDatabase)
         {
-            _emulatorDatabase = emulatorDatabase;
             _platformDatabase = platformDatabase;
+            _emulatorDatabase = emulatorDatabase;
             _gameDatabase     = gameDatabase;
         }
 
         public string[] GetNamesToTry(ModelConfiguration cfg)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
+            if (cfg == null)
                 return null;
+
+            _ = _platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform);
+            _ = _emulatorDatabase.TryGet(cfg.Overrides.Emulator, out EmulatorConfiguration overrideEmulator);
+            _ = _emulatorDatabase.TryGet(platform?.Emulator, out EmulatorConfiguration platformEmulator);
+            _ = _gameDatabase.TryGet(platform?.MasterList, cfg.Id, new string[] { "CloneOf", "RomOf" }, new string[] { "Name" }, out GameConfiguration game);
 
             ImageSequence imageSequence = new ImageSequence();
 
-            // From files overrides
+            // TODO: From files overrides
 
-
-            // From directories overrides
-
+            // TODO: From directories overrides
 
             imageSequence.Add(cfg.Id);
 
-            // From game CloneOf and RomOf in platform's masterlist
-            if (_platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform))
-            {
-                if (_gameDatabase.TryGet(platform.MasterList, cfg.Id, new string[] { "CloneOf", "RomOf" }, new string[] { "Name" }, out GameConfiguration game))
-                {
-                    imageSequence.Add(game.CloneOf);
-                    imageSequence.Add(game.RomOf);
-                }
-            }
+            imageSequence.Add(cfg.Overrides.Game.CloneOf);
+            imageSequence.Add(cfg.Overrides.Game.RomOf);
 
-            // From emulator override
-            if (_emulatorDatabase.TryGet(cfg.Overrides.Emulator, out EmulatorConfiguration emulator))
-                imageSequence.Add(emulator.Id);
+            imageSequence.Add(game?.CloneOf);
+            imageSequence.Add(game?.RomOf);
 
-            // From platform emulator
-            if (_emulatorDatabase.TryGet(platform?.Emulator, out emulator))
-                imageSequence.Add(emulator.Id);
+            imageSequence.Add(overrideEmulator?.Id);
 
-            // From platform id
+            imageSequence.Add(platformEmulator?.Id);
+
             imageSequence.Add(platform?.Id);
 
             return imageSequence.Images;

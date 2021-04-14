@@ -72,7 +72,7 @@ namespace Arcade.UnityEditor
             ArcadeScene arcadeScene                   = new ArcadeScene(arcadeSceneLoader);
             Scenes scenes                             = new Scenes(entitiesScene, arcadeScene);
 
-            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null, null);
+            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)

@@ -432,6 +432,7 @@ GameObject:
   - component: {fileID: 4700356548585780394}
   - component: {fileID: 4114345765039065494}
   - component: {fileID: 5803894112625080320}
+  - component: {fileID: 1399166718024800815}
   m_Layer: 0
   m_Name: _80_horizontal_cab
   m_TagString: Untagged
@@ -503,6 +504,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1399166718024800815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147910364404612716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8929406a885506d4e8a6751e01c3c2e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6538399697053920769
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +608,7 @@ GameObject:
   - component: {fileID: 146200699676077107}
   - component: {fileID: 1692533513137255606}
   - component: {fileID: 5247821831372285463}
+  - component: {fileID: 551048552969556207}
   m_Layer: 0
   m_Name: _80_horizontal_bezel
   m_TagString: Untagged
@@ -666,6 +680,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &551048552969556207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996335175295582704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8929406a885506d4e8a6751e01c3c2e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8033155486698219535
 GameObject:
   m_ObjectHideFlags: 0

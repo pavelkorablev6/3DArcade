@@ -22,16 +22,8 @@
 
 namespace Arcade
 {
-    public static class ArtworkUtilities
+    public interface IArtworkFileNamesProvider
     {
-        public static string[] GetDirectories(params string[][] arrays)
-        {
-            ArtworkDirectories artworkDirectories = new ArtworkDirectories();
-
-            foreach (string[] array in arrays)
-                artworkDirectories.TryAdd(array);
-
-            return artworkDirectories.Directories;
-        }
+        string[] GetNamesToTry(ModelConfiguration cfg);
     }
 }

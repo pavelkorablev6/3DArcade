@@ -27,48 +27,41 @@ namespace Arcade
 {
     public sealed class NodeController<T> where T : NodeTag
     {
+        private readonly IArtworkFileNamesProvider _fileNamesProvider;
+        private readonly IArtworkDirectoryNamesProvider _directoryNamesProvider;
+        private readonly ArtworkController _artworkController;
+
         private readonly System.Threading.SynchronizationContext _mainThread;
 
-        private readonly IArtworkDirectoryNamesProvider _directoryNamesProvider;
-        private readonly ArtworkFileNamesProvider _artworkNameProvider;
-        private readonly ArtworkController _artworkController;
-        private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
-
-        public NodeController(IArtworkDirectoryNamesProvider directoryNamesProvider, ArtworkFileNamesProvider artworkNameProvider, ArtworkController artworkController, MultiFileDatabase<PlatformConfiguration> platformDatabase)
+        public NodeController(IArtworkFileNamesProvider fileNamesProvider,
+                              IArtworkDirectoryNamesProvider directoryNamesProvider,
+                              ArtworkController artworkController)
         {
-            _mainThread = System.Threading.SynchronizationContext.Current;
-
+            _fileNamesProvider      = fileNamesProvider;
             _directoryNamesProvider = directoryNamesProvider;
-            _artworkNameProvider    = artworkNameProvider;
             _artworkController      = artworkController;
-            _platformDatabase       = platformDatabase;
+
+            _mainThread = System.Threading.SynchronizationContext.Current;
         }
 
         public void Setup(GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
-            if (gameObject == null)
+            if (gameObject == null || modelConfiguration == null)
                 return;
 
             Renderer[] renderers = GetNodeRenderers(gameObject);
             if (renderers == null)
                 return;
 
-            string[] namesToTry = _artworkNameProvider.GetNamesToTry(modelConfiguration);
+            _artworkController.Initialize();
+            _directoryNamesProvider.Initialize();
 
-            PlatformConfiguration platform = !string.IsNullOrEmpty(modelConfiguration.Platform) ? _platformDatabase.Get(modelConfiguration.Platform) : null;
-
-            string[] gameArtworkDirectories     = _directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
-            string[] platformArtworkDirectories = _directoryNamesProvider.GetPlatformImageDirectories(platform);
-            string[] defaultArtworkDirectories  = _directoryNamesProvider.DefaultImageDirectories;
-            string[] imagesDirectories          = ArtworkDirectoriesResolver.GetDirectoriesToTry(gameArtworkDirectories, platformArtworkDirectories, defaultArtworkDirectories);
-
-            _mainThread.Post(x => _artworkController.SetupImages(imagesDirectories, namesToTry, renderers, emissionIntensity), this);
-
-            string[] gameVideoDirectories     = _directoryNamesProvider.GetModelVideoDirectories(modelConfiguration);
-            string[] platformVideoDirectories = _directoryNamesProvider.GetPlatformVideoDirectories(platform);
-            string[] defaultVideoDirectories  = _directoryNamesProvider.DefaultVideoDirectories;
-            string[] videosDirectories        = ArtworkDirectoriesResolver.GetDirectoriesToTry(gameVideoDirectories, platformVideoDirectories, defaultVideoDirectories);
-            //_mainThread.Post(x => _artworkController.SetupVideos(directories, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve), this);
+            _mainThread.Post(x =>
+            {
+                string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
+                _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
+                //_artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
+            }, this);
         }
 
         private static Renderer[] GetNodeRenderers(GameObject model)

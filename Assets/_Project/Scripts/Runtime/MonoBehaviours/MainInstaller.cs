@@ -52,10 +52,11 @@ namespace Arcade
             _ = Container.Bind<IPropPrefabAddressesProvider>().To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<AssetAddressesProviders>().AsSingle().NonLazy();
 
-            _ = Container.Bind<ArtworkFileNamesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<AssetCache<Texture>>().To<TextureCache>().AsSingle().NonLazy();
+            _ = Container.Bind<IArtworkDirectoriesResolver>().To<ArtworkDirectoriesResolver>().AsSingle().NonLazy();
             _ = Container.Bind<ArtworkController>().AsSingle().NonLazy();
 
+            _ = Container.Bind<IArtworkFileNamesProvider>().To<ArtworkFileNamesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<MarqueeArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<MarqueeNodeTag>>().NonLazy();
             _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<ScreenArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<ScreenNodeTag>>().NonLazy();
             _ = Container.Bind<IArtworkDirectoryNamesProvider>().To<GenericArtworkDirectoryNamesProvider>().AsSingle().WhenInjectedInto<NodeController<GenericNodeTag>>().NonLazy();

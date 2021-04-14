@@ -38,7 +38,7 @@ namespace Arcade
         private const string DEFAULT_HOR_PREFAB_NAME    = DEFAULT_80_HOR_PREFAB_NAME;
         private const string DEFAULT_VER_PREFAB_NAME    = DEFAULT_80_VER_PREFAB_NAME;
 
-        public IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg, PlatformConfiguration platform, GameConfiguration game)
+        public IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
@@ -50,10 +50,10 @@ namespace Arcade
             addresses.Add(cfg.Overrides.Game?.CloneOf);
             addresses.Add(cfg.Overrides.Game?.RomOf);
 
-            addresses.Add(game?.CloneOf);
-            addresses.Add(game?.RomOf);
+            addresses.Add(cfg.GameConfiguration?.CloneOf);
+            addresses.Add(cfg.GameConfiguration?.RomOf);
 
-            addresses.Add(platform?.Model);
+            addresses.Add(cfg.PlatformConfiguration?.Model);
 
             // Generic model from orientation/year
             if (cfg.Overrides.Game != null && !string.IsNullOrEmpty(cfg.Overrides.Game.Year))
@@ -62,7 +62,7 @@ namespace Arcade
                 switch (cfg.Overrides.Game.ScreenOrientation)
                 {
                     case GameScreenOrientation.Default:
-                        if (!string.IsNullOrEmpty(GetName(game)))
+                        if (!string.IsNullOrEmpty(GetName(cfg.GameConfiguration)))
                             return addresses.Addresses;
                         break;
                     case GameScreenOrientation.Horizontal:
@@ -78,7 +78,7 @@ namespace Arcade
                 }
             }
 
-            addresses.Add(GetName(game));
+            addresses.Add(GetName(cfg.GameConfiguration));
 
             addresses.Add(DEFAULT_HOR_PREFAB_NAME);
 
