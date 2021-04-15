@@ -62,8 +62,8 @@ namespace Arcade.UnityEditor
             databases.Initialize();
 
             IArcadeSceneAddressesProvider arcadeProvider = new ArcadeSceneAddressesProvider();
-            IGamePrefabAddressesProvider gameProvider    = new GamePrefabAddressesProvider();
-            IPropPrefabAddressesProvider propProvider    = new PropPrefabAddressesProvider();
+            IPrefabAddressesProvider gameProvider        = new GamePrefabAddressesProvider();
+            IPrefabAddressesProvider propProvider        = new PropPrefabAddressesProvider();
             AssetAddressesProviders addressesProviders   = new AssetAddressesProviders(arcadeProvider, gameProvider, propProvider);
 
             EntitiesSceneCreator entitiesSceneCreator = new EntitiesSceneCreator();

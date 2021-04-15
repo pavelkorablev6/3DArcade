@@ -20,12 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class GamePrefabAddressesProvider : IGamePrefabAddressesProvider
+    public sealed class GamePrefabAddressesProvider : IPrefabAddressesProvider
     {
         private const string FILE_EXTENSION             = "prefab";
         private const string ADDRESSABLES_PREFIX        = "Games/";
@@ -38,51 +37,28 @@ namespace Arcade
         private const string DEFAULT_HOR_PREFAB_NAME    = DEFAULT_80_HOR_PREFAB_NAME;
         private const string DEFAULT_VER_PREFAB_NAME    = DEFAULT_80_VER_PREFAB_NAME;
 
-        public IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg)
+        public AssetAddresses GetAddressesToTry(ModelConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
             AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
 
-            addresses.Add(cfg.Overrides.Model);
-            addresses.Add(cfg.Id);
-            addresses.Add(cfg.Overrides.Game?.CloneOf);
-            addresses.Add(cfg.Overrides.Game?.RomOf);
+            addresses.TryAdd(cfg.Overrides.Model);
+            addresses.TryAdd(cfg.Id);
+            addresses.TryAdd(cfg.Overrides.Game.CloneOf);
+            addresses.TryAdd(cfg.Overrides.Game.RomOf);
 
-            addresses.Add(cfg.GameConfiguration?.CloneOf);
-            addresses.Add(cfg.GameConfiguration?.RomOf);
+            addresses.TryAdd(cfg.GameConfiguration?.CloneOf);
+            addresses.TryAdd(cfg.GameConfiguration?.RomOf);
 
-            addresses.Add(cfg.PlatformConfiguration?.Model);
+            addresses.TryAdd(cfg.PlatformConfiguration?.Model);
 
-            // Generic model from orientation/year
-            if (cfg.Overrides.Game != null && !string.IsNullOrEmpty(cfg.Overrides.Game.Year))
-            {
-                string year = cfg.Overrides.Game.Year;
-                switch (cfg.Overrides.Game.ScreenOrientation)
-                {
-                    case GameScreenOrientation.Default:
-                        if (!string.IsNullOrEmpty(GetName(cfg.GameConfiguration)))
-                            return addresses.Addresses;
-                        break;
-                    case GameScreenOrientation.Horizontal:
-                    case GameScreenOrientation.FlippedHorizontal:
-                        addresses.Add(GetHorizontalNameForYear(year));
-                        return addresses.Addresses;
-                    case GameScreenOrientation.Vertical:
-                    case GameScreenOrientation.FlippedVertical:
-                        addresses.Add(GetVerticalNameForYear(year));
-                        return addresses.Addresses;
-                    default:
-                        throw new System.Exception($"Unhandled switch case for GameScreenOrientation: {cfg.Overrides.Game.ScreenOrientation}");
-                }
-            }
+            addresses.TryAdd(GetName(cfg.GameConfiguration));
 
-            addresses.Add(GetName(cfg.GameConfiguration));
+            addresses.TryAdd(DEFAULT_HOR_PREFAB_NAME);
 
-            addresses.Add(DEFAULT_HOR_PREFAB_NAME);
-
-            return addresses.Addresses;
+            return addresses;
         }
 
         private static string GetName(GameConfiguration game)
@@ -118,7 +94,7 @@ namespace Arcade
 
         private static string GetNameForYear(string yearString, string model70, string model80, string model90, string modelDefault)
         {
-            if (string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
+            if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {
                 if (year >= 1970 && year < 1980)
                     return GetAssetPath(model70);

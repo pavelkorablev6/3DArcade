@@ -22,7 +22,31 @@
 
 namespace Arcade
 {
-    public interface IGamePrefabAddressesProvider : IPrefabAddressesProvider
+    public abstract class ArtworkDirectoriesProviderBase : IArtworkDirectoriesProvider
     {
+        public string[] DefaultImageDirectories { get; private set; }
+        public string[] DefaultVideoDirectories { get; private set; }
+
+        protected readonly ArtworkController _artworkController;
+
+        public ArtworkDirectoriesProviderBase(ArtworkController artworkController) => _artworkController = artworkController;
+
+        public void Initialize()
+        {
+            DefaultImageDirectories ??= GetDefaultImageDirectories();
+            DefaultVideoDirectories ??= GetDefaultVideoDirectories();
+        }
+
+        public abstract string[] GetModelImageDirectories(ModelConfiguration modelConfiguration);
+
+        public abstract string[] GetPlatformImageDirectories(PlatformConfiguration platform);
+
+        public abstract string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration);
+
+        public abstract string[] GetPlatformVideoDirectories(PlatformConfiguration platform);
+
+        protected abstract string[] GetDefaultImageDirectories();
+
+        protected abstract string[] GetDefaultVideoDirectories();
     }
 }

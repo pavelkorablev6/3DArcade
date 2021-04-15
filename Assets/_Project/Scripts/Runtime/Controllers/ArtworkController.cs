@@ -26,125 +26,81 @@ namespace Arcade
 {
     public sealed class ArtworkController
     {
-        //public event System.Action OnVideoPlayerAdded;
+        public static event System.Action OnVideoPlayerAdded;
 
         public string DefaultMediaDirectory { get; private set; }
 
         private readonly IVirtualFileSystem _virtualFileSystem;
         private readonly AssetCache<Texture> _textureCache;
         //private readonly AssetCache<string> _videoCache;
-        private readonly IArtworkDirectoriesResolver _directoriesResolver;
 
-        public ArtworkController(IVirtualFileSystem virtualFileSystem, AssetCache<Texture> textureCache, IArtworkDirectoriesResolver directoriesResolver)
+        public ArtworkController(IVirtualFileSystem virtualFileSystem, AssetCache<Texture> textureCache)
         {
-            _virtualFileSystem   = virtualFileSystem;
-            _textureCache        = textureCache;
-            //_videoCache          = videoCache;
-            _directoriesResolver = directoriesResolver;
+            _virtualFileSystem = virtualFileSystem;
+            _textureCache      = textureCache;
+            //_videoCache        = videoCache;
         }
 
         public void Initialize() => DefaultMediaDirectory ??= _virtualFileSystem.GetDirectory("medias");
 
-        public void SetupImages(IArtworkDirectoryNamesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
+        public void SetupImages(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
             if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
 
-            ArtworkDirectories gameDirectories     = directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
-            ArtworkDirectories platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);
-            ArtworkDirectories defaultDirectories  = directoryNamesProvider.DefaultImageDirectories;
-            string[] directories                   = _directoriesResolver.GetDirectoriesToTry(gameDirectories, platformDirectories, defaultDirectories);
+            string[] gameDirectories     = directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
+            string[] platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);
+            Directories directories      = new Directories(gameDirectories, platformDirectories);
 
-            Texture[] textures = _textureCache.LoadMultiple(directories, fileNamesToTry);
+            Files files = new Files(new[] { "png", "jpg", "jpeg" }, directories, fileNamesToTry);
+
+            if (files.Count == 0)
+            {
+                directories = new Directories(directoryNamesProvider.DefaultImageDirectories);
+                files       = new Files(new[] { "png", "jpg", "jpeg" }, directories, fileNamesToTry);
+            }
+
+            if (files.Count == 0)
+                return;
+
+            Texture[] textures = _textureCache.LoadMultiple(files.ToArray());
             if (textures == null || textures.Length == 0)
             {
-                if (directoryNamesProvider is GenericArtworkDirectoryNamesProvider)
+                if (directoryNamesProvider is GenericArtworkDirectoriesProvider)
                     SetRandomColors(renderers);
                 return;
             }
 
+            if (textures.Length == 1)
+            {
+                SetupStaticImage(renderers, textures[0], emissionIntensity);
+                return;
+            }
+
+            SetupImageCycling(renderers, textures, emissionIntensity);
+        }
+
+        private static void SetupStaticImage(Renderer[] renderers, Texture texture, float emissionIntensity)
+        {
             for (int i = 0; i < renderers.Length; ++i)
             {
                 MaterialPropertyBlock block = new MaterialPropertyBlock();
                 block.SetColor("_BaseColor", Color.black);
                 block.SetColor("_EmissionColor", Color.white * emissionIntensity);
-                block.SetTexture("_EmissionMap", textures[0]);
+                block.SetTexture("_EmissionMap", texture);
                 renderers[i].SetPropertyBlock(block);
-
-                // Only setup magic pixels for the first Marquee Node found
-                //if (i == 0 && directoryNamesProvider is MarqueeArtworkDirectoryNamesProvider)
-                //    SetupMagicPixels(renderers[i]);
             }
-
-            //if (textures.Length == 1)
-            //    SetupStaticImage(renderers, textures[0]);
-            //else if (textures.Length > 1)
-            //    SetupImageCycling(renderers, textures);
         }
 
-        private void SetRandomColors(Renderer[] renderers)
+        private static void SetupImageCycling(Renderer[] renderers, Texture[] textures, float emissionIntensity)
         {
-            Color color = Random.ColorHSV();
-
             foreach (Renderer renderer in renderers)
             {
-                MaterialPropertyBlock block = new MaterialPropertyBlock();
-                block.SetColor("_BaseColor", color);
-                renderer.SetPropertyBlock(block);
+                if (!renderer.gameObject.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+                    dynamicArtworkComponent = renderer.gameObject.AddComponent<DynamicArtworkComponent>();
+                dynamicArtworkComponent.SetImageCyclingTextures(textures, emissionIntensity);
             }
         }
-
-        //private static void SetupMagicPixels(Renderer sourceRenderer)
-        //{
-        //    Transform parentTransform = sourceRenderer.transform.parent;
-        //    if (parentTransform == null)
-        //        return;
-
-        //    IEnumerable<Renderer> renderers = parentTransform.GetComponentsInChildren<Renderer>()
-        //                                                     .Where(r => r.GetComponent<NodeTag>() == null
-        //                                                              && sourceRenderer.sharedMaterial.name.StartsWith(r.sharedMaterial.name));
-
-        //    Color color;
-        //    Texture texture;
-
-        //    bool sourceIsEmissive = sourceRenderer.IsEmissive();
-
-        //    if (sourceIsEmissive)
-        //    {
-        //        color = sourceRenderer.material.GetEmissionColor();
-        //        texture = sourceRenderer.material.GetEmissionTexture();
-        //    }
-        //    else
-        //    {
-        //        color = sourceRenderer.material.GetBaseColor();
-        //        texture = sourceRenderer.material.GetBaseTexture();
-        //    }
-
-        //    if (texture == null)
-        //        return;
-
-        //    MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
-
-        //    foreach (Renderer renderer in renderers)
-        //    {
-        //        renderer.GetPropertyBlock(materialPropertyBlock);
-
-        //        if (renderer.IsEmissive())
-        //        {
-        //            materialPropertyBlock.SetColor(MaterialUtils.SHADER_EMISSIVE_COLOR_ID, color);
-        //            materialPropertyBlock.SetTexture(MaterialUtils.SHADER_EMISSIVE_TEXTURE_ID, texture);
-        //        }
-        //        else
-        //        {
-        //            color = sourceIsEmissive ? Color.white : color;
-        //            materialPropertyBlock.SetColor(MaterialUtils.SHADER_BASE_COLOR_ID, color);
-        //            materialPropertyBlock.SetTexture(MaterialUtils.SHADER_BASE_TEXTURE_ID, texture);
-        //        }
-
-        //        for (int i = 0; i < renderer.materials.Length; ++i)
-        //            renderer.SetPropertyBlock(materialPropertyBlock, i);
-        //    }
-        //}
 
         //public static void SetupVideos(IEnumerable<string> directories, IEnumerable<string> namesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
         //{
@@ -183,22 +139,19 @@ namespace Arcade
         //    }
         //}
 
-        //private static void SetupImageCycling(Renderer[] renderers, Texture[] textures)
-        //{
-        //    foreach (Renderer renderer in renderers)
-        //    {
-        //        DynamicArtworkComponent dynamicArtworkComponent = renderer.gameObject.AddComponentIfNotFound<DynamicArtworkComponent>();
-        //        dynamicArtworkComponent.Construct(textures);
-        //    }
-        //}
-
-        //private static void SetupStaticImage(Renderer[] renderers, Texture texture)
-        //{
-        //    foreach (Renderer renderer in renderers)
-        //        renderer.material.SetEmissionTexture(texture);
-        //}
-
         //private static void OnVideoPlayerErrorReceived(VideoPlayer _, string message)
         //    => Debug.LogError($"OnVideoPlayerErrorReceived: {message}");
+
+        private static void SetRandomColors(Renderer[] renderers)
+        {
+            Color color = new Color(Random.value, Random.value, Random.value);
+
+            foreach (Renderer renderer in renderers)
+            {
+                MaterialPropertyBlock block = new MaterialPropertyBlock();
+                block.SetColor("_BaseColor", color);
+                renderer.SetPropertyBlock(block);
+            }
+        }
     }
 }

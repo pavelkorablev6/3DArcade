@@ -20,46 +20,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace Arcade
 {
-    public sealed class ArtworkDirectories
+    public sealed class Directories : IEnumerable<string>
     {
-        public string[] Directories => _directories.ToArray();
+        private readonly List<string> _paths = new List<string>();
 
-        private readonly List<string> _directories;
-
-        public ArtworkDirectories(params string[] directories) => _directories = new List<string>(directories);
-
-        public static ArtworkDirectories GetCorrectedDirectories(params string[][] arrays)
+        public Directories(params string[] paths)
         {
-            ArtworkDirectories artworkDirectories = new ArtworkDirectories();
-            foreach (string[] array in arrays)
-                artworkDirectories.TryAdd(array);
-            return artworkDirectories;
+            TryAdd(paths);
+            Resolve();
         }
 
-        public void TryResolve(ArtworkDirectories directories)
+        public Directories(params string[][] pathsArray)
         {
-            if (directories == null)
-                return;
-
-            foreach (string directory in directories.Directories)
-            {
-                string directoryPath = FileSystem.CorrectPath(directory);
-                if (Directory.Exists(directoryPath))
-                    _directories.Add(directoryPath);
-            }
+            TryAdd(pathsArray);
+            Resolve();
         }
 
-        private void TryAdd(string[] directories)
+        private void TryAdd(params string[] paths)
         {
-            string[] correctedPaths = FileSystem.CorrectPaths(directories)?.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            string[] correctedPaths = FileSystem.CorrectPaths(paths);
             if (correctedPaths != null)
-                _directories.AddRange(correctedPaths);
+                _paths.AddRange(correctedPaths.Where(x => !string.IsNullOrEmpty(x)));
         }
+
+        private void TryAdd(params string[][] pathsArray)
+        {
+            foreach (string[] pathArray in pathsArray)
+                TryAdd(pathArray);
+        }
+
+        private void Resolve()
+        {
+            for (int i = _paths.Count - 1; i >= 0; --i)
+                if (!Directory.Exists(_paths[i]))
+                    _paths.RemoveAt(i);
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            foreach (string path in _paths)
+                yield return path;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

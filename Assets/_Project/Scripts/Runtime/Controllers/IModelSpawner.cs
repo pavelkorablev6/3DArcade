@@ -20,13 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
     public interface IModelSpawner
     {
-        void Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
+        void Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
     }
 }

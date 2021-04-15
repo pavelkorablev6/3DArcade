@@ -21,14 +21,13 @@
  * SOFTWARE. */
 
 #if UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
     public sealed class EditorModelSpawner : IModelSpawner
     {
-        void IModelSpawner.Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        void IModelSpawner.Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
             foreach (AssetAddress addressToTry in addressesToTry)
             {

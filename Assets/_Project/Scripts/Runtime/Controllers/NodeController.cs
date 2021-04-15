@@ -28,13 +28,13 @@ namespace Arcade
     public sealed class NodeController<T> where T : NodeTag
     {
         private readonly IArtworkFileNamesProvider _fileNamesProvider;
-        private readonly IArtworkDirectoryNamesProvider _directoryNamesProvider;
+        private readonly IArtworkDirectoriesProvider _directoryNamesProvider;
         private readonly ArtworkController _artworkController;
 
         private readonly System.Threading.SynchronizationContext _mainThread;
 
         public NodeController(IArtworkFileNamesProvider fileNamesProvider,
-                              IArtworkDirectoryNamesProvider directoryNamesProvider,
+                              IArtworkDirectoriesProvider directoryNamesProvider,
                               ArtworkController artworkController)
         {
             _fileNamesProvider      = fileNamesProvider;

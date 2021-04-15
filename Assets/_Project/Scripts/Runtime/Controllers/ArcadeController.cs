@@ -107,17 +107,17 @@ namespace Arcade
             modelConfiguration.PlatformConfiguration = platform;
             modelConfiguration.GameConfiguration     = game;
 
-            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
+            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
             return SpawnModel(modelConfiguration, parent, GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
         }
 
         private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
         {
-            IEnumerable<AssetAddress> addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
+            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
             return SpawnModel(modelConfiguration, parent, true, addressesToTry);
         }
 
-        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, bool spawnAtPositionWithRotation, IEnumerable<AssetAddress> addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
+        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
         {
             ModelInstance modelInstance = new ModelInstance(modelConfiguration);
             modelInstance.SpawnModel(addressesToTry, parent, spawnAtPositionWithRotation, onModelSpawned);

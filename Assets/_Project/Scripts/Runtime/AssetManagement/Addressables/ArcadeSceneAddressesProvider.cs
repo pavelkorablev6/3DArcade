@@ -41,9 +41,9 @@ namespace Arcade
 
             string editorPrefix = $"{ADDRESSABLES_PREFIX}{cfgScene}/";
 
-            assetAddresses.Add(cfgScene, editorPrefix);
-            assetAddresses.Add(cfg.Id, editorPrefix);
-            assetAddresses.Add(DEFAULT_SCENE_NAME, editorPrefix);
+            assetAddresses.TryAdd(cfgScene, editorPrefix);
+            assetAddresses.TryAdd(cfg.Id, editorPrefix);
+            assetAddresses.TryAdd(DEFAULT_SCENE_NAME, editorPrefix);
 
             return assetAddresses.Addresses;
         }

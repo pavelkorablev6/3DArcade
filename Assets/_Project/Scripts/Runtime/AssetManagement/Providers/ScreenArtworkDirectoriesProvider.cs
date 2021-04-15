@@ -20,32 +20,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Linq;
+
 namespace Arcade
 {
-    public sealed class MarqueeArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
+    public sealed class ScreenArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
     {
-        private const string IMAGES_DIRECTORY_NAME = "MarqueesImages";
-        private const string VIDEOS_DIRECTORY_NAME = "MarqueesVideos";
+        private const string SNAPS_DIRECTORY_NAME  = "ScreensImages";
+        private const string TITLES_DIRECTORY_NAME = "TitlesImages";
+        private const string VIDEOS_DIRECTORY_NAME = "ScreensVideos";
 
-        public MarqueeArtworkDirectoriesProvider(ArtworkController artworkController)
+        public ScreenArtworkDirectoriesProvider(ArtworkController artworkController)
         : base(artworkController)
         {
         }
 
         public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
-            => modelConfiguration.Overrides.ArtworkDirectories.MarqueeImageDirectories;
+        {
+            string[] screenSnapDirectories  = modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories;
+            string[] screenTitleDirectories = modelConfiguration.Overrides.ArtworkDirectories.ScreenTitleDirectories;
+            return screenSnapDirectories.Concat(screenTitleDirectories).ToArray();
+        }
 
         public override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
-            => platform?.MarqueeImagesDirectories;
+        {
+            if (platform == null)
+                return null;
+
+            string[] screenSnapsDirectories  = platform.ScreenSnapsDirectories;
+            string[] screenTitlesDirectories = platform.ScreenTitlesDirectories;
+            return screenSnapsDirectories.Concat(screenTitlesDirectories).ToArray();
+        }
 
         public override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
-            => modelConfiguration.Overrides.ArtworkDirectories.MarqueeVideoDirectories;
+            => modelConfiguration.Overrides.ArtworkDirectories.ScreenVideoDirectories;
 
         public override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
-            => platform?.MarqueeVideosDirectories;
+            => platform?.ScreenVideosDirectories;
 
         protected override string[] GetDefaultImageDirectories()
-            => new string[] { $"{_artworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}" };
+            => new string[]
+            {
+                $"{_artworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
+                $"{_artworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
+            };
 
         protected override string[] GetDefaultVideoDirectories()
             => new string[] { $"{_artworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };

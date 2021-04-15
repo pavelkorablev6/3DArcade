@@ -22,19 +22,16 @@
 
 namespace Arcade
 {
-    public interface IArtworkDirectoryNamesProvider
+    public interface IArtworkDirectoriesProvider
     {
-        ArtworkDirectories DefaultImageDirectories { get; }
-        ArtworkDirectories DefaultVideoDirectories { get; }
+        string[] DefaultImageDirectories { get; }
+        string[] DefaultVideoDirectories { get; }
 
         void Initialize();
 
-        ArtworkDirectories GetModelImageDirectories(ModelConfiguration modelConfiguration);
-
-        ArtworkDirectories GetModelVideoDirectories(ModelConfiguration modelConfiguration);
-
-        ArtworkDirectories GetPlatformImageDirectories(PlatformConfiguration platform);
-
-        ArtworkDirectories GetPlatformVideoDirectories(PlatformConfiguration platform);
+        string[] GetModelImageDirectories(ModelConfiguration modelConfiguration);
+        string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration);
+        string[] GetPlatformImageDirectories(PlatformConfiguration platform);
+        string[] GetPlatformVideoDirectories(PlatformConfiguration platform);
     }
 }

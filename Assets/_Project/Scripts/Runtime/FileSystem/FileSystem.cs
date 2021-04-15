@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using System.IO;
 
 namespace Arcade
@@ -28,7 +29,10 @@ namespace Arcade
     {
         public static string CorrectPath(string path)
         {
-            if (string.IsNullOrEmpty(path) || !path.StartsWith("@"))
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            if (!path.StartsWith("@"))
                 return path;
 
             return PathCombine(SystemUtils.GetDataPath(), path.TrimStart('@'));
@@ -40,8 +44,12 @@ namespace Arcade
                 return null;
 
             for (int i = 0; i < paths.Length; ++i)
-                if (!string.IsNullOrEmpty(paths[i]) && paths[i].StartsWith("@"))
+            {
+                if (string.IsNullOrEmpty(paths[i]))
+                    paths[i] = null;
+                else if (paths[i].StartsWith("@"))
                     paths[i] = PathCombine(SystemUtils.GetDataPath(), paths[i].TrimStart('@'));
+            }
 
             return paths;
         }

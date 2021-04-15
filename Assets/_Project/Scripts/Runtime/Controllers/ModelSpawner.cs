@@ -36,7 +36,7 @@ namespace Arcade
         private Transform _parent;
         private System.Action<GameObject> _onComplete;
 
-        void IModelSpawner.Spawn(IEnumerable<AssetAddress> addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        void IModelSpawner.Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
             _position    = position;
             _orientation = orientation;

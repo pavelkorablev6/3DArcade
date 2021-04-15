@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Zenject;
+
 namespace Arcade
 {
     public sealed class AssetAddressesProviders
@@ -29,8 +31,8 @@ namespace Arcade
         public readonly IPrefabAddressesProvider Prop;
 
         public AssetAddressesProviders(IArcadeSceneAddressesProvider arcadeSceneAddressesProvider,
-                                       IGamePrefabAddressesProvider gamePrefabAddressesProvider,
-                                       IPropPrefabAddressesProvider propPrefabAddressesProvider)
+                 [Inject(Id = "game")] IPrefabAddressesProvider gamePrefabAddressesProvider,
+                 [Inject(Id = "prop")] IPrefabAddressesProvider propPrefabAddressesProvider)
         {
             Arcade = arcadeSceneAddressesProvider;
             Game   = gamePrefabAddressesProvider;

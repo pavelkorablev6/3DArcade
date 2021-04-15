@@ -20,12 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
     public interface IPrefabAddressesProvider
     {
-        IEnumerable<AssetAddress> GetAddressesToTry(ModelConfiguration cfg);
+        AssetAddresses GetAddressesToTry(ModelConfiguration cfg);
     }
 }

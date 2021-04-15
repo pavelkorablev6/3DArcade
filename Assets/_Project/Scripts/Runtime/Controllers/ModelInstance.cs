@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
@@ -46,7 +45,7 @@ namespace Arcade
             _modelSpawner = new ModelSpawner();
         }
 
-        public void SpawnModel(IEnumerable<AssetAddress> addressesToTry, Transform parent, bool atPositionWithRotation, System.Action<GameObject, ModelConfiguration> onModelSpawned)
+        public void SpawnModel(AssetAddresses addressesToTry, Transform parent, bool atPositionWithRotation, System.Action<GameObject, ModelConfiguration> onModelSpawned)
         {
             _onModelSpawned = onModelSpawned;
 

@@ -22,27 +22,27 @@
 
 namespace Arcade
 {
-    public sealed class MarqueeArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
+    public sealed class GenericArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
     {
-        private const string IMAGES_DIRECTORY_NAME = "MarqueesImages";
-        private const string VIDEOS_DIRECTORY_NAME = "MarqueesVideos";
+        private const string IMAGES_DIRECTORY_NAME = "GenericsImages";
+        private const string VIDEOS_DIRECTORY_NAME = "GenericsVideos";
 
-        public MarqueeArtworkDirectoriesProvider(ArtworkController artworkController)
+        public GenericArtworkDirectoriesProvider(ArtworkController artworkController)
         : base(artworkController)
         {
         }
 
         public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
-            => modelConfiguration.Overrides.ArtworkDirectories.MarqueeImageDirectories;
+            => modelConfiguration.Overrides.ArtworkDirectories.GenericImageDirectories;
 
         public override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
-            => platform?.MarqueeImagesDirectories;
+            => platform?.GenericImagesDirectories;
 
         public override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
-            => modelConfiguration.Overrides.ArtworkDirectories.MarqueeVideoDirectories;
+            => modelConfiguration.Overrides.ArtworkDirectories.GenericVideoDirectories;
 
         public override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
-            => platform?.MarqueeVideosDirectories;
+            => platform?.GenericVideosDirectories;
 
         protected override string[] GetDefaultImageDirectories()
             => new string[] { $"{_artworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}" };

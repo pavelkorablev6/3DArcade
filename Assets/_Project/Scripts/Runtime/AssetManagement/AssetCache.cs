@@ -74,16 +74,16 @@ namespace Arcade
 
         //public T Load(IEnumerable<string> directories, IEnumerable<string> namesToTry) => Load(directories, namesToTry.ToArray());
 
-        public T[] LoadMultiple(string directory, params string[] fileNamesToTry)
+        public T[] LoadMultiple(params string[] filePaths)
         {
-            if (string.IsNullOrEmpty(directory) || fileNamesToTry == null || fileNamesToTry.Length == 0)
+            if (filePaths == null || filePaths.Length == 0)
                 return null;
 
             List<T> result = new List<T>();
 
-            foreach (string fileName in fileNamesToTry)
+            foreach (string filePath in filePaths)
             {
-                string filePathNoExt = Path.Combine(directory, fileName);
+                string filePathNoExt = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath));
                 if (Get(filePathNoExt, out T foundAsset))
                 {
                     result.Add(foundAsset);
@@ -95,20 +95,6 @@ namespace Arcade
                     _loadedAssets[filePathNoExt] = newAsset;
                     result.Add(newAsset);
                 }
-            }
-
-            return result.ToArray();
-        }
-
-        public T[] LoadMultiple(string[] directories, params string[] fileNamesToTry)
-        {
-            List<T> result = new List<T>();
-
-            foreach (string directory in directories)
-            {
-                T[] assets = LoadMultiple(directory, fileNamesToTry);
-                if (assets != null)
-                    result.AddRange(assets);
             }
 
             return result.ToArray();

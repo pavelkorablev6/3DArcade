@@ -20,12 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class AssetAddresses
+    public sealed class AssetAddresses : IEnumerable<AssetAddress>
     {
         public const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
 
@@ -40,7 +41,7 @@ namespace Arcade
             _runtimePrefix = runtimePrefix;
         }
 
-        public void Add(string name, string editorPrefix = null)
+        public void TryAdd(string name, string editorPrefix = null)
         {
             if (string.IsNullOrEmpty(name))
                 return;
@@ -55,5 +56,13 @@ namespace Arcade
             Addresses.Add(new AssetAddress($"{_runtimePrefix}{name}"));
             return;
         }
+
+        public IEnumerator<AssetAddress> GetEnumerator()
+        {
+            foreach (AssetAddress address in Addresses)
+                yield return address;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
