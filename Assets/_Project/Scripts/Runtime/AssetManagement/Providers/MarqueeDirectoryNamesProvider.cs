@@ -27,11 +27,6 @@ namespace Arcade
         private const string IMAGES_DIRECTORY_NAME = "MarqueesImages";
         private const string VIDEOS_DIRECTORY_NAME = "MarqueesVideos";
 
-        public MarqueeArtworkDirectoriesProvider(ArtworkController artworkController)
-        : base(artworkController)
-        {
-        }
-
         public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
             => modelConfiguration.Overrides.ArtworkDirectories.MarqueeImageDirectories;
 
@@ -45,9 +40,9 @@ namespace Arcade
             => platform?.MarqueeVideosDirectories;
 
         protected override string[] GetDefaultImageDirectories()
-            => new string[] { $"{_artworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}" };
+            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}" };
 
         protected override string[] GetDefaultVideoDirectories()
-            => new string[] { $"{_artworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
+            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
     }
 }

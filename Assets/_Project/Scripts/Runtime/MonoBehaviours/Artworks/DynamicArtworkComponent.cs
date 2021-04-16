@@ -28,9 +28,6 @@ namespace Arcade
     [DisallowMultipleComponent, RequireComponent(typeof(Renderer))]
     public sealed class DynamicArtworkComponent : MonoBehaviour
     {
-        private const float DEFAULT_MIN_DELAY = 0.8f;
-        private const float DEFAULT_MAX_DELAY = 1.8f;
-
         [SerializeField] private bool _enableCycling                   = true;
         [SerializeField] private bool _useRandomDelay                  = true;
         [SerializeField] private bool _changeRandomDelayAfterTimerEnds = true;
@@ -57,6 +54,9 @@ namespace Arcade
             set => _changeRandomDelayAfterTimerEnds = value;
         }
 
+        private const float DEFAULT_MIN_DELAY = 0.4f;
+        private const float DEFAULT_MAX_DELAY = 1.6f;
+
         private bool VideoIsPlaying => _videoPlayer != null && _videoPlayer.enabled && _videoPlayer.isPlaying;
 
         private Texture[] _imageCyclingTextures;
@@ -69,84 +69,67 @@ namespace Arcade
         private Renderer _renderer;
         private VideoPlayer _videoPlayer;
 
-        private void Awake()
-        {
-            _renderer    = GetComponent<Renderer>();
-            _videoPlayer = GetComponent<VideoPlayer>();
-        }
+        private void Awake() => _renderer = GetComponent<Renderer>();
 
-        private void OnEnable()
-        {
-            ArtworkController.OnVideoPlayerAdded += OnVideoPlayerAdded;
+        private void OnEnable() => ArtworkController.OnVideoPlayerAdded += VideoPlayerAddedCallback;
 
-            _imageCyclingIndex = 0;
-            _imageCyclingTimer = 0f;
-
-            if (_useRandomDelay)
-                _imageCyclingDelay = Random.Range(DEFAULT_MIN_DELAY, DEFAULT_MAX_DELAY);
-        }
-
-        private void OnDisable() => ArtworkController.OnVideoPlayerAdded -= OnVideoPlayerAdded;
+        private void OnDisable() => ArtworkController.OnVideoPlayerAdded -= VideoPlayerAddedCallback;
 
         private void Update()
         {
             if (VideoIsPlaying || !_enableCycling)
                 return;
 
-            if (_imageCyclingTextures.Length < 2)
-                return;
-
             if ((_imageCyclingTimer += Time.deltaTime) >= _imageCyclingDelay)
             {
-                CycleTexture();
-                if (_changeRandomDelayAfterTimerEnds)
-                    _imageCyclingDelay = Random.Range(DEFAULT_MIN_DELAY, DEFAULT_MAX_DELAY);
+                SwapTexture();
+
+                if (_useRandomDelay && _changeRandomDelayAfterTimerEnds)
+                    RandomizeDelay();
+
                 _imageCyclingTimer = 0f;
             }
         }
 
         public void SetImageCyclingTextures(Texture[] textures, float emissionIntensity)
         {
-            _emissionIntensity = emissionIntensity;
+            _emissionIntensity    = emissionIntensity;
+            _imageCyclingTextures = textures;
+            _imageCyclingIndex    = 0;
+            _imageCyclingTimer    = 0f;
 
-            if (textures != null)
-                _imageCyclingTextures = textures;
+             if (_useRandomDelay)
+                RandomizeDelay();
 
-            if (_renderer.enabled && _imageCyclingTextures != null && _imageCyclingTextures.Length > 0)
-                SwapTexture();
-        }
-
-        public void SetImageCyclingDelay(float delay) => _imageCyclingDelay = Mathf.Max(0.01f, delay);
-
-        private void CycleTexture()
-        {
-            if (_imageCyclingIndex++ >= _imageCyclingTextures.Length - 1)
-                _imageCyclingIndex = 0;
-
-            SwapTexture();
+           SwapTexture();
         }
 
         private void SwapTexture()
         {
-            if (_imageCyclingTextures.Length < 1)
+            if (!_renderer.enabled)
                 return;
+
+            _imageCyclingIndex++;
+            _imageCyclingIndex %= _imageCyclingTextures.Length;
 
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             _renderer.GetPropertyBlock(block);
-            if (_renderer.material.IsKeywordEnabled("_EMISSION"))
+            if (_renderer.material.IsKeywordEnabled(ArtworkController.ShaderEmissionKeyword))
             {
-                block.SetColor("_BaseColor", Color.black);
-                block.SetColor("_EmissionColor", Color.white * _emissionIntensity);
-                block.SetTexture("_EmissionMap", _imageCyclingTextures[_imageCyclingIndex]);
+                block.SetColor(ArtworkController.ShaderBaseColorId, Color.black);
+                block.SetColor(ArtworkController.ShaderEmissionColorId, Color.white * _emissionIntensity);
+                block.SetTexture(ArtworkController.ShaderEmissionMapId, _imageCyclingTextures[_imageCyclingIndex]);
             }
             else
             {
-                block.SetColor("_BaseColor", Color.white);
-                block.SetTexture("_BaseMap", _imageCyclingTextures[_imageCyclingIndex]);
+                block.SetColor(ArtworkController.ShaderBaseColorId, Color.white);
+                block.SetTexture(ArtworkController.ShaderBaseMapId, _imageCyclingTextures[_imageCyclingIndex]);
             }
             _renderer.SetPropertyBlock(block);
         }
 
-        private void OnVideoPlayerAdded() => _videoPlayer = GetComponent<VideoPlayer>();
+        private void RandomizeDelay() => _imageCyclingDelay = Random.Range(DEFAULT_MIN_DELAY, DEFAULT_MAX_DELAY);
+
+        private void VideoPlayerAddedCallback() => _videoPlayer = GetComponent<VideoPlayer>();
     }
 }

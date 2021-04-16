@@ -29,38 +29,31 @@ namespace Arcade
 {
     public sealed class Directories : IEnumerable<string>
     {
+        public int Count => _paths.Count;
+
         private readonly List<string> _paths = new List<string>();
 
-        public Directories(params string[] paths)
-        {
-            TryAdd(paths);
-            Resolve();
-        }
+        public Directories(params string[] paths) => TryAdd(paths);
 
         public Directories(params string[][] pathsArray)
         {
-            TryAdd(pathsArray);
-            Resolve();
+            foreach (string[] pathArray in pathsArray)
+                TryAdd(pathArray);
+        }
+
+        public string[] ToArray() => _paths.ToArray();
+
+        public string this[int i]
+        {
+            get => _paths[i];
+            set => _paths[i] = value;
         }
 
         private void TryAdd(params string[] paths)
         {
             string[] correctedPaths = FileSystem.CorrectPaths(paths);
             if (correctedPaths != null)
-                _paths.AddRange(correctedPaths.Where(x => !string.IsNullOrEmpty(x)));
-        }
-
-        private void TryAdd(params string[][] pathsArray)
-        {
-            foreach (string[] pathArray in pathsArray)
-                TryAdd(pathArray);
-        }
-
-        private void Resolve()
-        {
-            for (int i = _paths.Count - 1; i >= 0; --i)
-                if (!Directory.Exists(_paths[i]))
-                    _paths.RemoveAt(i);
+                _paths.AddRange(correctedPaths.Where(x => Directory.Exists(x)));
         }
 
         public IEnumerator<string> GetEnumerator()

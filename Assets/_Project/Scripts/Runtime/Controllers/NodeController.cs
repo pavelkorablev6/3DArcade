@@ -31,8 +31,6 @@ namespace Arcade
         private readonly IArtworkDirectoriesProvider _directoryNamesProvider;
         private readonly ArtworkController _artworkController;
 
-        private readonly System.Threading.SynchronizationContext _mainThread;
-
         public NodeController(IArtworkFileNamesProvider fileNamesProvider,
                               IArtworkDirectoriesProvider directoryNamesProvider,
                               ArtworkController artworkController)
@@ -40,11 +38,9 @@ namespace Arcade
             _fileNamesProvider      = fileNamesProvider;
             _directoryNamesProvider = directoryNamesProvider;
             _artworkController      = artworkController;
-
-            _mainThread = System.Threading.SynchronizationContext.Current;
         }
 
-        public void Setup(GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
+        public void Setup(ArcadeController arcadeController, GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
             if (gameObject == null || modelConfiguration == null)
                 return;
@@ -56,12 +52,9 @@ namespace Arcade
             _artworkController.Initialize();
             _directoryNamesProvider.Initialize();
 
-            _mainThread.Post(x =>
-            {
-                string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
-                _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
-                //_artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
-            }, this);
+            string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
+            _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
+            _artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
         }
 
         private static Renderer[] GetNodeRenderers(GameObject model)

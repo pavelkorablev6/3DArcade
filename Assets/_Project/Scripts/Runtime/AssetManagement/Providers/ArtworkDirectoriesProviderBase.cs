@@ -27,10 +27,6 @@ namespace Arcade
         public string[] DefaultImageDirectories { get; private set; }
         public string[] DefaultVideoDirectories { get; private set; }
 
-        protected readonly ArtworkController _artworkController;
-
-        public ArtworkDirectoriesProviderBase(ArtworkController artworkController) => _artworkController = artworkController;
-
         public void Initialize()
         {
             DefaultImageDirectories ??= GetDefaultImageDirectories();

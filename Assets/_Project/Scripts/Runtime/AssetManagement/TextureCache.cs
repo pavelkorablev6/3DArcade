@@ -20,42 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.IO;
 using UnityEngine;
 
 namespace Arcade
 {
-    public class TextureCache : AssetCache<Texture>
+    public sealed class TextureCache : AssetCache<Texture>
     {
-        private static readonly string[] _imageExtensions = new string[] { "png", "jpg", "jpeg" };
+        protected override bool TryLoadAsset(string filePath, out Texture outAsset) => TryLoadFromFile(filePath, true, out outAsset);
 
-        protected override bool TryLoadAsset(string filePathNoExt, out Texture outTexture)
+        private static bool TryLoadFromFile(string filePath, bool filtering, out Texture outTexture)
         {
-            foreach (string extension in _imageExtensions)
+            byte[] data = FileSystem.ReadAllBytes(filePath);
+            if (data.Length > 0)
             {
-                string imagePath = $"{filePathNoExt}.{extension}";
-                if (TryLoadFromFile(imagePath, true, out outTexture))
-                    return true;
-            }
-
-            outTexture = null;
-            return false;
-        }
-
-        private bool TryLoadFromFile(string filePath, bool filtering, out Texture outTexture)
-        {
-            if (File.Exists(filePath))
-            {
-                byte[] data = FileSystem.ReadAllBytes(filePath);
-                if (data.Length > 0)
+                Texture2D texture = new Texture2D(2, 2, TextureFormat.RGB24, false);
+                if (texture.LoadImage(data))
                 {
-                    Texture2D texture = new Texture2D(2, 2, TextureFormat.RGB24, false);
-                    if (texture.LoadImage(data))
-                    {
-                        texture.filterMode = filtering ? FilterMode.Bilinear : FilterMode.Point;
-                        outTexture = texture;
-                        return true;
-                    }
+                    texture.filterMode = filtering ? FilterMode.Bilinear : FilterMode.Point;
+                    outTexture = texture;
+                    return true;
                 }
             }
 

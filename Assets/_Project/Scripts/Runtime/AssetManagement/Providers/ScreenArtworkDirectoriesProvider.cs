@@ -30,11 +30,6 @@ namespace Arcade
         private const string TITLES_DIRECTORY_NAME = "TitlesImages";
         private const string VIDEOS_DIRECTORY_NAME = "ScreensVideos";
 
-        public ScreenArtworkDirectoriesProvider(ArtworkController artworkController)
-        : base(artworkController)
-        {
-        }
-
         public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
         {
             string[] screenSnapDirectories  = modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories;
@@ -61,11 +56,11 @@ namespace Arcade
         protected override string[] GetDefaultImageDirectories()
             => new string[]
             {
-                $"{_artworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
-                $"{_artworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
+                $"{ArtworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
+                $"{ArtworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
             };
 
         protected override string[] GetDefaultVideoDirectories()
-            => new string[] { $"{_artworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
+            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
     }
 }

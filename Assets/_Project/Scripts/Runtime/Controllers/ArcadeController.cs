@@ -130,9 +130,9 @@ namespace Arcade
             if (!Application.isPlaying)
                 return;
 
-            _arcadeContext.NodeControllers.Marquee.Setup(gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
-            _arcadeContext.NodeControllers.Screen.Setup(gameObject, modelConfiguration, GetScreenIntensity(modelConfiguration.GameConfiguration));
-            _arcadeContext.NodeControllers.Generic.Setup(gameObject, modelConfiguration, 1f);
+            _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
+            _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, GetScreenIntensity(modelConfiguration.GameConfiguration));
+            _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
 
             //if (gameModels)
             //{

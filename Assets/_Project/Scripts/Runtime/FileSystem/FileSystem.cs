@@ -61,7 +61,7 @@ namespace Arcade
                 path2 = path2.TrimStart(Path.DirectorySeparatorChar);
                 path2 = path2.TrimStart(Path.AltDirectorySeparatorChar);
             }
-            return Path.Combine(path1, path2);
+            return Path.GetFullPath(Path.Combine(path1, path2));
         }
 
         public static bool FileExists(string filePath) => File.Exists(Path.GetFullPath(filePath));

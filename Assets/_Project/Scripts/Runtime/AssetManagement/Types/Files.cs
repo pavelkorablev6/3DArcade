@@ -30,40 +30,38 @@ namespace Arcade
     {
         public int Count => _paths.Count;
 
-        private readonly Directories _directories;
-        private readonly string[] _extensions;
-
         private readonly List<string> _paths = new List<string>();
 
-        public Files(string[] extensions, Directories directories, params string[] fileNames)
-        : this(extensions, directories)
-        {
-            TryAdd(fileNames);
-            Resolve();
-        }
-
-        private Files(string[] extensions, Directories directories)
-        {
-            _extensions  = extensions;
-            _directories = directories;
-        }
+        public Files(string[] extensions, Directories directories, params string[] fileNames) => TryAdd(extensions, directories, fileNames);
 
         public string[] ToArray() => _paths.ToArray();
 
-        private void TryAdd(params string[] names)
+        public string this[int i]
         {
-            foreach (string directory in _directories)
-                foreach (string extension in _extensions)
-                    foreach (string name in names)
-                        if (!string.IsNullOrEmpty(name))
-                            _paths.Add(Path.Combine(directory, $"{name}.{extension}"));
+            get => _paths[i];
+            set => _paths[i] = value;
         }
 
-        private void Resolve()
+        private void TryAdd(string[] extensions, Directories directories, params string[] names)
         {
-            for (int i = _paths.Count - 1; i >= 0; --i)
-                if (!File.Exists(_paths[i]))
-                    _paths.RemoveAt(i);
+            foreach (string directory in directories)
+            {
+                foreach (string name in names)
+                {
+                    if (string.IsNullOrEmpty(name))
+                        System.Diagnostics.Debugger.Break();
+
+                    foreach (string extension in extensions)
+                    {
+                        string path = Path.GetFullPath(Path.Combine(directory, $"{name}.{extension}"));
+                        if (File.Exists(path))
+                        {
+                            _paths.Add(path);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public IEnumerator<string> GetEnumerator()

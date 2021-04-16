@@ -21,58 +21,28 @@
  * SOFTWARE. */
 
 using System.Collections.Generic;
-using System.IO;
 
 namespace Arcade
 {
     public abstract class AssetCache<T> where T : class
     {
-        protected readonly Dictionary<string, T> _loadedAssets = new Dictionary<string, T>();
+        private readonly Dictionary<string, T> _loadedAssets = new Dictionary<string, T>();
 
-        public bool Get(string filePathNoExt, out T asset) => _loadedAssets.TryGetValue(filePathNoExt, out asset);
+        public bool Get(string filePath, out T asset) => _loadedAssets.TryGetValue(filePath, out asset);
 
-        //public T Load(string directory, params string[] namesToTry)
-        //{
-        //    if (string.IsNullOrEmpty(directory))
-        //        return null;
+        public T Load(string filePath)
+        {
+            if (Get(filePath, out T foundAsset))
+                return foundAsset;
 
-        //    foreach (string name in namesToTry)
-        //    {
-        //        if (string.IsNullOrEmpty(name))
-        //            continue;
+            if (TryLoadAsset(filePath, out T newAsset))
+            {
+                _loadedAssets[filePath] = newAsset;
+                return newAsset;
+            }
 
-        //        string filePathNoExt = Path.Combine(directory, name);
-        //        if (_loadedAssets.TryGetValue(filePathNoExt, out T foundAsset))
-        //            return foundAsset;
-        //        else
-        //        {
-        //            T newAsset = LoadAsset(filePathNoExt);
-        //            if (newAsset != null)
-        //            {
-        //                _loadedAssets[filePathNoExt] = newAsset;
-        //                return newAsset;
-        //            }
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        //public T Load(string directory, IEnumerable<string> namesToTry) => Load(directory, namesToTry.ToArray());
-
-        //public T Load(IEnumerable<string> directories, params string[] namesToTry)
-        //{
-        //    foreach (string directory in directories)
-        //    {
-        //        T result = Load(directory, namesToTry);
-        //        if (result != null)
-        //            return result;
-        //    }
-
-        //    return null;
-        //}
-
-        //public T Load(IEnumerable<string> directories, IEnumerable<string> namesToTry) => Load(directories, namesToTry.ToArray());
+            return null;
+        }
 
         public T[] LoadMultiple(params string[] filePaths)
         {
@@ -83,23 +53,14 @@ namespace Arcade
 
             foreach (string filePath in filePaths)
             {
-                string filePathNoExt = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath));
-                if (Get(filePathNoExt, out T foundAsset))
-                {
-                    result.Add(foundAsset);
-                    continue;
-                }
-
-                if (TryLoadAsset(filePathNoExt, out T newAsset))
-                {
-                    _loadedAssets[filePathNoExt] = newAsset;
-                    result.Add(newAsset);
-                }
+                T asset = Load(filePath);
+                if (asset != null)
+                    result.Add(asset);
             }
 
             return result.ToArray();
         }
 
-        protected abstract bool TryLoadAsset(string filePathNoExt, out T outAsset);
+        protected abstract bool TryLoadAsset(string filePath, out T outAsset);
     }
 }
