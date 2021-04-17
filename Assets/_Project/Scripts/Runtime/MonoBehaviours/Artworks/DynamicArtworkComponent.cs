@@ -28,15 +28,8 @@ namespace Arcade
     [DisallowMultipleComponent, RequireComponent(typeof(Renderer))]
     public sealed class DynamicArtworkComponent : MonoBehaviour
     {
-        [SerializeField] private bool _enableCycling                   = true;
         [SerializeField] private bool _useRandomDelay                  = true;
         [SerializeField] private bool _changeRandomDelayAfterTimerEnds = true;
-
-        public bool EnableCycling
-        {
-            get => _enableCycling;
-            set => _enableCycling = value;
-        }
 
         public bool UseRandomDelay
         {
@@ -77,8 +70,11 @@ namespace Arcade
 
         private void Update()
         {
-            if (VideoIsPlaying || !_enableCycling)
+            if (VideoIsPlaying)
+            {
+                _imageCyclingTimer = _imageCyclingDelay;
                 return;
+            }
 
             if ((_imageCyclingTimer += Time.deltaTime) >= _imageCyclingDelay)
             {

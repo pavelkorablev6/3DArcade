@@ -20,38 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+using UnityEngine.Video;
 
 namespace Arcade
 {
-    public sealed class PlayerControls : MonoBehaviour
+    public abstract class VideoPlayerControllerBase
     {
-        [SerializeField] private GameObject _fpsController;
-        [SerializeField] private GameObject _cylController;
-
-        public Transform GetActiveTransform(ArcadeType arcadeType) => arcadeType switch
+        public virtual void SetPlayer(ArcadeType arcadeType, Player player)
         {
-            ArcadeType.Fps => _fpsController.transform,
-            ArcadeType.Cyl => _cylController.transform,
-            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}"),
-        };
-
-        public void EnableFpsController()
-        {
-            _cylController.SetActive(false);
-            _fpsController.SetActive(true);
         }
 
-        public void EnableCylController()
+        public virtual void UpdateVideosState()
         {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(true);
         }
 
-        public void Disable()
+        public virtual void StopAllVideos()
         {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(false);
+        }
+
+        public static void PlayVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, true);
+
+        public static void StopVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, false);
+
+        private static void VideoSetPlayingState(VideoPlayer videoPlayer, bool state)
+        {
+            if (!videoPlayer.enabled)
+                return;
+
+            videoPlayer.EnableAudioTrack(0, state);
+
+            if (state)
+                videoPlayer.Play();
+            else
+                videoPlayer.Stop();
         }
     }
 }

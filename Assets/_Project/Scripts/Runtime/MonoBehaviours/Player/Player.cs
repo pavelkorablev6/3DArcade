@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -32,18 +31,33 @@ namespace Arcade
         [SerializeField] private PlayerControls _virtualRealityControls;
 
         private PlayerContext _playerContext;
+        private object _currentState;
 
         [Inject]
         public void Construct(PlayerContext context) => _playerContext = context;
 
         private void Start() => TransitionTo<PlayerDisabledState>();
 
-        public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
+        public Transform GetActiveTransform(ArcadeType arcadeType)
+        {
+            if (_playerContext.CurrentState is PlayerNormalFpsState || _playerContext.CurrentState is PlayerNormalCylState)
+                return _normalControls.GetActiveTransform(arcadeType);
+
+            if (_playerContext.CurrentState is PlayerVirtualRealityFpsState || _playerContext.CurrentState is PlayerVirtualRealityCylState)
+                return _virtualRealityControls.GetActiveTransform(arcadeType);
+
+            return null;
+        }
+
+        public void TransitionTo<T>() where T : PlayerState
+        {
+            _currentState = typeof(T);
+            _playerContext.TransitionTo<T>();
+        }
 
         public void EnableNormalFpsControls() => _normalControls.EnableFpsController();
         public void EnableNormalCylControls() => _normalControls.EnableCylController();
         public void DisableNormalControls()   => _normalControls.Disable();
-
         public void EnableVirtualRealityFpsControls() => _virtualRealityControls.EnableFpsController();
         public void EnableVirtualRealityCylControls() => _virtualRealityControls.EnableCylController();
         public void DisableVirtualRealityControls()   => _virtualRealityControls.Disable();

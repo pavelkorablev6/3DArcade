@@ -79,13 +79,7 @@ namespace Arcade
                 return;
             }
 
-            if (textures.Length == 1)
-            {
-                SetupStaticImage(renderers, textures[0], emissionIntensity);
-                return;
-            }
-
-            SetupImageCycling(renderers, textures, emissionIntensity);
+            SetupDynamicArtworkComponents(renderers, textures, emissionIntensity);
         }
 
         public void SetupVideos(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
@@ -153,19 +147,7 @@ namespace Arcade
             }
         }
 
-        private static void SetupStaticImage(Renderer[] renderers, Texture texture, float emissionIntensity)
-        {
-            for (int i = 0; i < renderers.Length; ++i)
-            {
-                MaterialPropertyBlock block = new MaterialPropertyBlock();
-                block.SetColor(ShaderBaseColorId, Color.black);
-                block.SetColor(ShaderEmissionColorId, Color.white * emissionIntensity);
-                block.SetTexture(ShaderEmissionMapId, texture);
-                renderers[i].SetPropertyBlock(block);
-            }
-        }
-
-        private static void SetupImageCycling(Renderer[] renderers, Texture[] textures, float emissionIntensity)
+        private static void SetupDynamicArtworkComponents(Renderer[] renderers, Texture[] textures, float emissionIntensity)
         {
             foreach (Renderer renderer in renderers)
             {

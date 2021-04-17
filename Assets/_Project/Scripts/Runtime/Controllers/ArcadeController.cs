@@ -108,18 +108,18 @@ namespace Arcade
             modelConfiguration.GameConfiguration     = game;
 
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return SpawnModel(modelConfiguration, parent, GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
+            return SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer,GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
         }
 
         private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
         {
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
-            return SpawnModel(modelConfiguration, parent, true, addressesToTry);
+            return SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry);
         }
 
-        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
+        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
         {
-            ModelInstance modelInstance = new ModelInstance(modelConfiguration);
+            ModelInstance modelInstance = new ModelInstance(modelConfiguration, layer);
             modelInstance.SpawnModel(addressesToTry, parent, spawnAtPositionWithRotation, onModelSpawned);
             return modelInstance;
         }

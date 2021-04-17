@@ -48,7 +48,7 @@ namespace Arcade
 
             //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
 
-            //_context.VideoPlayerController.SetPlayer(_context.Main.PlayerFpsControls.transform);
+            _context.VideoPlayerController.SetPlayer(_context.ArcadeType, _context.Player);
         }
 
         public override void OnExit()
@@ -74,18 +74,18 @@ namespace Arcade
                     _context.InputActions.FpsArcade.Look.Disable();
             }
 
-            //    InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,
-            //                                           _context.Main.PlayerFpsControls.Camera,
-            //                                           INTERACT_MAX_DISTANCE,
-            //                                           _context.RaycastLayers);
+            //InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,
+            //                                       _context.Main.PlayerFpsControls.Camera,
+            //                                       INTERACT_MAX_DISTANCE,
+            //                                       _context.RaycastLayers);
 
-            //    _context.VideoPlayerController.UpdateVideosState();
+            _context.VideoPlayerController.UpdateVideosState();
 
-            //    if (Cursor.lockState == CursorLockMode.Locked && _context.Main.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
-            //        HandleInteraction();
+            //if (Cursor.lockState == CursorLockMode.Locked && _context.Main.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
+            //    HandleInteraction();
 
-            //    if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
-            //        _context.TransitionTo<FpsMoveCabState>();
+            //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
+            //    _context.TransitionTo<FpsMoveCabState>();
         }
 
         //private void HandleInteraction()

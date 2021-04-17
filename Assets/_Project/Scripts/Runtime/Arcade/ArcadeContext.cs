@@ -47,7 +47,7 @@ namespace Arcade
 
         //public PlayerControls CurrentPlayerControls;
         //public ModelConfigurationComponent CurrentModelConfiguration;
-        //public VideoPlayerController VideoPlayerController { get; private set; }
+        public VideoPlayerControllerBase VideoPlayerController { get; private set; }
         //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
 
         public ArcadeContext(InputActions inputActions,
@@ -82,6 +82,7 @@ namespace Arcade
             ArcadeType          = arcadeType;
             ArcadeMode          = arcadeMode;
 
+            VideoPlayerController?.StopAllVideos();
             Player.TransitionTo<PlayerDisabledState>();
             _arcadeController = null;
 
@@ -89,14 +90,14 @@ namespace Arcade
             {
                 case ArcadeType.Fps:
                 {
-                    //VideoPlayerController = new VideoPlayerControllerFps(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
-                    _arcadeController = new FpsArcadeController(this);
+                    VideoPlayerController = new FpsArcadeVideoPlayerController(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
+                    _arcadeController     = new FpsArcadeController(this);
                 }
                 break;
                 case ArcadeType.Cyl:
                 {
-                    //VideoPlayerController = null;
-                    _arcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
+                    VideoPlayerController = null;
+                    _arcadeController     = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),

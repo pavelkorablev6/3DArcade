@@ -62,7 +62,7 @@ namespace Arcade
 		private Vector3 _moveThrottle = Vector3.zero;
 		private float _fallSpeed = 0f;
 		private OVRPose? _initialPose;
-		private float _moveScaleMultiplier = 1f;
+		private float _moveScaleMultiplier = 0.5f;
 		private float _rotationScaleMultiplier = 1f;
 		private bool _skipMouseRotation = true;
 		private bool _haltUpdateMovement = false;

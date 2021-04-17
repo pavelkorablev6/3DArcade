@@ -27,13 +27,15 @@ namespace Arcade
     public sealed class ModelInstance
     {
         private readonly ModelConfiguration _modelConfiguration;
+        private readonly int _layer;
         private readonly IModelSpawner _modelSpawner;
 
         private System.Action<GameObject, ModelConfiguration> _onModelSpawned;
 
-        public ModelInstance(ModelConfiguration modelConfiguration)
+        public ModelInstance(ModelConfiguration modelConfiguration, int layer)
         {
             _modelConfiguration = modelConfiguration;
+            _layer              = layer;
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -70,6 +72,7 @@ namespace Arcade
         {
             gameObject.name                 = _modelConfiguration.Id;
             gameObject.transform.localScale = _modelConfiguration.Scale;
+            gameObject.layer                = _layer;
 
             gameObject.AddComponent<ModelConfigurationComponent>()
                       .SetModelConfiguration(_modelConfiguration);
