@@ -91,7 +91,7 @@ namespace Arcade
             }
         }
 
-        public void SetImageCyclingTextures(Texture[] textures, float emissionIntensity)
+        public void Construct(Texture[] textures, float emissionIntensity)
         {
             _emissionIntensity    = emissionIntensity;
             _imageCyclingTextures = textures;

@@ -27,8 +27,6 @@ namespace Arcade
     [System.Serializable, XmlRoot("platform")]
     public sealed class PlatformConfiguration : DatabaseEntry
     {
-        public static PlatformConfiguration DefaultPlatform => MakeInternalPlatform("_default", "Internal Default Platform");
-
         [XmlElement("master_list")]
         public string MasterList = "";
 
@@ -61,11 +59,5 @@ namespace Arcade
 
         [XmlArray("info_directories"), XmlArrayItem("directory")]
         public string[] InfoDirectories = new string[0];
-
-        private static PlatformConfiguration MakeInternalPlatform(string id, string description) => new PlatformConfiguration
-        {
-            Id          = id,
-            Description = description
-        };
     }
 }

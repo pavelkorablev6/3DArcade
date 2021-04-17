@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace Arcade
 {
@@ -28,12 +29,15 @@ namespace Arcade
     public sealed class AudioSettings
     {
         [XmlElement("main_volume")]
+        [Range(0f, 1f)]
         public float MainVolume = 1f;
 
         [XmlElement("music_volume")]
+        [Range(0f, 1f)]
         public float MusicVolume = 0.6f;
 
         [XmlElement("ambient_volume")]
+        [Range(0f, 1f)]
         public float AmbientVolume = 0.4f;
 
         [XmlElement("minimum_distance")]

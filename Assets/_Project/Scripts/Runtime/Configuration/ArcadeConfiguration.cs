@@ -28,22 +28,14 @@ namespace Arcade
     [System.Serializable, XmlRoot("arcade")]
     public sealed class ArcadeConfiguration : DatabaseEntry
     {
-        public static ArcadeConfiguration DefaultArcade => MakeInternalArcade("_default", "Internal Default Arcade");
-
         [XmlElement("fpsarcade_properties")]
-        public FpsArcadeProperties FpsArcadeProperties = new FpsArcadeProperties { Scene = "_cylinder" };
+        public FpsArcadeProperties FpsArcadeProperties = new FpsArcadeProperties();
 
         [XmlElement("cylarcade_properties")]
-        public CylArcadeProperties CylArcadeProperties = new CylArcadeProperties { Scene = "_empty" };
+        public CylArcadeProperties CylArcadeProperties = new CylArcadeProperties();
 
         [XmlArray("games"), XmlArrayItem("game")]
         [HideInInspector]
-        public ModelConfiguration[] Games = new ModelConfiguration[0];
-
-        private static ArcadeConfiguration MakeInternalArcade(string id, string description) => new ArcadeConfiguration
-        {
-            Id          = id,
-            Description = description
-        };
+        public ModelConfiguration[] Games/* = new ModelConfiguration[0]*/;
     }
 }

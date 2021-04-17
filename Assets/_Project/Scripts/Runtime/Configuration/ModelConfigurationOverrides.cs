@@ -24,29 +24,25 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable, XmlRoot("emulator")]
-    public sealed class EmulatorConfiguration : DatabaseEntry
+    [System.Serializable]
+    public sealed class ModelConfigurationOverrides
     {
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType = InteractionType.Default;
+        [XmlAttribute("description")]
+        public string Description = "";
 
-        [XmlElement("directory")]
-        public string Directory = "";
+        [XmlElement("model")]
+        public string Model = "";
 
-        [XmlElement("working_directory")]
-        public string WorkingDirectory = "";
+        [XmlElement("emulator")]
+        public string Emulator = "";
 
-        [XmlElement("executable")]
-        public string Executable = "";
+        [XmlElement("artwork_files")]
+        public FilesOverrides ArtworkFiles = new FilesOverrides();
 
-        [XmlElement("arguments")]
-        public string Arguments = "";
+        [XmlElement("artwork_directories")]
+        public DirectoriesOverrides ArtworkDirectories = new DirectoriesOverrides();
 
-        [XmlArray("supported_extensions"), XmlArrayItem("extension")]
-        public string[] SupportedExtensions = new string[0];
-
-        [XmlArray("games_directories"), XmlArrayItem("directory")]
-        public string[] GamesDirectories = new string[0];
+        [XmlElement("game")]
+        public GameConfiguration Game = new GameConfiguration();
     }
-
 }

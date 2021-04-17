@@ -24,29 +24,31 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable, XmlRoot("emulator")]
-    public sealed class EmulatorConfiguration : DatabaseEntry
+    [System.Serializable]
+    public sealed class DirectoriesOverrides
     {
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType = InteractionType.Default;
+        [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
+        public string[] MarqueeImageDirectories = new string[0];
 
-        [XmlElement("directory")]
-        public string Directory = "";
+        [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
+        public string[] MarqueeVideoDirectories = new string[0];
 
-        [XmlElement("working_directory")]
-        public string WorkingDirectory = "";
+        [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]
+        public string[] ScreenSnapDirectories = new string[0];
 
-        [XmlElement("executable")]
-        public string Executable = "";
+        [XmlArray("screen_title_directories"), XmlArrayItem("directory")]
+        public string[] ScreenTitleDirectories = new string[0];
 
-        [XmlElement("arguments")]
-        public string Arguments = "";
+        [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
+        public string[] ScreenVideoDirectories = new string[0];
 
-        [XmlArray("supported_extensions"), XmlArrayItem("extension")]
-        public string[] SupportedExtensions = new string[0];
+        [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
+        public string[] GenericImageDirectories = new string[0];
 
-        [XmlArray("games_directories"), XmlArrayItem("directory")]
-        public string[] GamesDirectories = new string[0];
+        [XmlArray("generic_video_directories"), XmlArrayItem("directory")]
+        public string[] GenericVideoDirectories = new string[0];
+
+        [XmlArray("info_directories"), XmlArrayItem("directory")]
+        public string[] InfoDirectories = new string[0];
     }
-
 }

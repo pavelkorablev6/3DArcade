@@ -27,7 +27,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class SingleFileDatabase<T, U> : Database<T> where T : DatabaseEntry where U : DatabaseEntries<T>, new()
+    public abstract class SingleFileDatabase<T, U> : Database<T> where T : DatabaseEntry, new() where U : DatabaseEntries<T>, new()
     {
         protected string FilePath { get; private set; }
 

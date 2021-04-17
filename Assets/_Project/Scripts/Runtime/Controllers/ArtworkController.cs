@@ -171,7 +171,7 @@ namespace Arcade
             {
                 if (!renderer.gameObject.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
                     dynamicArtworkComponent = renderer.gameObject.AddComponent<DynamicArtworkComponent>();
-                dynamicArtworkComponent.SetImageCyclingTextures(textures, emissionIntensity);
+                dynamicArtworkComponent.Construct(textures, emissionIntensity);
             }
         }
 

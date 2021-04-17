@@ -28,10 +28,10 @@ namespace Arcade
     public sealed class CameraSettings
     {
         [XmlElement("position")]
-        public DatabaseVector3 Position = default;
+        public DatabaseVector3 Position = DatabaseVector3.Zero;
 
         [XmlElement("rotation")]
-        public DatabaseVector3 Rotation = default;
+        public DatabaseVector3 Rotation = DatabaseVector3.Zero;
 
         [XmlElement("height")]
         public float Height = 0.6f;
@@ -52,6 +52,6 @@ namespace Arcade
         public float FarClipPlane = 300f;
 
         [XmlElement("viewport_rect")]
-        public DatabaseRect ViewportRect = default;
+        public DatabaseRect ViewportRect = new DatabaseRect();
     }
 }

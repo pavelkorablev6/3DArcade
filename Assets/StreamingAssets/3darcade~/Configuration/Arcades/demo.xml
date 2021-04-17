@@ -9,20 +9,21 @@
       <aspect_ratio>1</aspect_ratio>
       <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
+      <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
       <marquee_intensity>1.4</marquee_intensity>
       <screen_lcd_intensity>1.4</screen_lcd_intensity>
-      <screen_raster_intensity>1.8</screen_raster_intensity>
+      <screen_raster_intensity>1.4</screen_raster_intensity>
       <screen_svg_intensity>1.4</screen_svg_intensity>
-      <screen_vector_intenstity>2.4</screen_vector_intenstity>
+      <screen_vector_intenstity>2.1</screen_vector_intenstity>
     </render_settings>
     <audio_settings>
-      <main_volume>0</main_volume>
-      <music_volume>0</music_volume>
-      <ambient_volume>0</ambient_volume>
-      <minimum_distance>0</minimum_distance>
-      <maximum_distance>0</maximum_distance>
+      <main_volume>1</main_volume>
+      <music_volume>0.6</music_volume>
+      <ambient_volume>0.4</ambient_volume>
+      <minimum_distance>1</minimum_distance>
+      <maximum_distance>3</maximum_distance>
     </audio_settings>
     <model />
     <props />
@@ -37,20 +38,21 @@
       <aspect_ratio>2</aspect_ratio>
       <near_clip>0.01</near_clip>
       <far_clip>300</far_clip>
+      <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
       <marquee_intensity>1.4</marquee_intensity>
       <screen_lcd_intensity>1.4</screen_lcd_intensity>
-      <screen_raster_intensity>1.8</screen_raster_intensity>
+      <screen_raster_intensity>1.4</screen_raster_intensity>
       <screen_svg_intensity>1.4</screen_svg_intensity>
-      <screen_vector_intenstity>2.4</screen_vector_intenstity>
+      <screen_vector_intenstity>2.1</screen_vector_intenstity>
     </render_settings>
     <audio_settings>
-      <main_volume>0</main_volume>
-      <music_volume>0</music_volume>
-      <ambient_volume>0</ambient_volume>
-      <minimum_distance>0</minimum_distance>
-      <maximum_distance>0</maximum_distance>
+      <main_volume>1</main_volume>
+      <music_volume>0.6</music_volume>
+      <ambient_volume>0.4</ambient_volume>
+      <minimum_distance>1</minimum_distance>
+      <maximum_distance>3</maximum_distance>
     </audio_settings>
     <model />
     <props />

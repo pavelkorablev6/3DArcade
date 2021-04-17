@@ -24,7 +24,7 @@ using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    internal abstract class DatabaseEditorWindowBase<T, U> : EditorWindow, IDatabaseEditorWindow<T> where T : DatabaseEntry, new() where U : ConfigurationSO<T>
+    internal abstract class DatabaseEditorWindowBase<T, U> : EditorWindow, IDatabaseEditorWindow<T> where T : DatabaseEntry where U : ConfigurationSO<T>, new()
     {
         public abstract MultiFileDatabase<T> Database { get; }
         public abstract T DefaultConfiguration { get; }
@@ -42,16 +42,7 @@ namespace Arcade.UnityEditor
         public SerializedObject GetSerializedObject(T cfg)
         {
             _tempCfg = CreateInstance<U>();
-
-            if (cfg == null)
-            {
-                _tempCfg.Value             = DefaultConfiguration;
-                _tempCfg.Value.Id          = string.Empty;
-                _tempCfg.Value.Description = string.Empty;
-            }
-            else
-                _tempCfg.Value = cfg;
-
+            _tempCfg.Value = cfg ?? DefaultConfiguration;
             return new SerializedObject(_tempCfg);
         }
 

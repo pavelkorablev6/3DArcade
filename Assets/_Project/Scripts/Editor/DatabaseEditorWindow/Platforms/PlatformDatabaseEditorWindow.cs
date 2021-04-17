@@ -30,7 +30,7 @@ namespace Arcade.UnityEditor
     {
         public override MultiFileDatabase<PlatformConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Platforms;
 
-        public override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DefaultPlatform;
+        public override PlatformConfiguration DefaultConfiguration => Database.DefaultValues;
 
         [MenuItem("3DArcade/Platforms", false, 11), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()

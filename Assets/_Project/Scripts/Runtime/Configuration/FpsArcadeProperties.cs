@@ -25,5 +25,6 @@ namespace Arcade
     [System.Serializable]
     public sealed class FpsArcadeProperties : ArcadeProperties
     {
+        public FpsArcadeProperties() => Scene = "_cylinder";
     }
 }

@@ -24,29 +24,31 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
-    [System.Serializable, XmlRoot("emulator")]
-    public sealed class EmulatorConfiguration : DatabaseEntry
+    [System.Serializable]
+    public sealed class FilesOverrides
     {
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType = InteractionType.Default;
+        [XmlArray("marquee_image_files"), XmlArrayItem("file")]
+        public string[] MarqueeImageFiles = new string[0];
 
-        [XmlElement("directory")]
-        public string Directory = "";
+        [XmlArray("marquee_video_files"), XmlArrayItem("file")]
+        public string[] MarqueeVideoFiles = new string[0];
 
-        [XmlElement("working_directory")]
-        public string WorkingDirectory = "";
+        [XmlArray("screen_snap_files"), XmlArrayItem("file")]
+        public string[] ScreenSnapFiles = new string[0];
 
-        [XmlElement("executable")]
-        public string Executable = "";
+        [XmlArray("screen_title_files"), XmlArrayItem("file")]
+        public string[] ScreenTitleFiles = new string[0];
 
-        [XmlElement("arguments")]
-        public string Arguments = "";
+        [XmlArray("screen_video_files"), XmlArrayItem("file")]
+        public string[] ScreenVideoFiles = new string[0];
 
-        [XmlArray("supported_extensions"), XmlArrayItem("extension")]
-        public string[] SupportedExtensions = new string[0];
+        [XmlArray("generic_image_files"), XmlArrayItem("file")]
+        public string[] GenericImageFiles = new string[0];
 
-        [XmlArray("games_directories"), XmlArrayItem("directory")]
-        public string[] GamesDirectories = new string[0];
+        [XmlArray("generic_video_files"), XmlArrayItem("file")]
+        public string[] GenericVideoFiles = new string[0];
+
+        [XmlArray("info_files"), XmlArrayItem("file")]
+        public string[] InfoFiles = new string[0];
     }
-
 }

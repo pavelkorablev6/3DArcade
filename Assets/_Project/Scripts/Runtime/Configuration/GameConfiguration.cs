@@ -20,26 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
     [System.Serializable]
     public sealed class GameConfiguration : SQLiteDatabase.ReflectedEntry
     {
-        [UnityEngine.HideInInspector]
-        public string Name;
-        public string Description;
-        public string CloneOf;
-        public string RomOf;
-        public string Genre;
-        public string Year;
-        public string Manufacturer;
-        public GameScreenType ScreenType;
-        public GameScreenOrientation ScreenOrientation;
-        public bool Mature;
-        public bool Playable;
-        public bool IsBios;
-        public bool IsDevice;
-        public bool IsMechanical;
-        public bool Available;
+        [HideInInspector] public string Name           = "";
+        public string Description                      = "";
+        public string CloneOf                          = "";
+        public string RomOf                            = "";
+        public string Genre                            = "";
+        public string Year                             = "";
+        public string Manufacturer                     = "";
+        public GameScreenType ScreenType               = GameScreenType.Default;
+        public GameScreenOrientation ScreenOrientation = GameScreenOrientation.Default;
+        public bool Mature                             = false;
+        public bool Playable                           = false;
+        public bool IsBios                             = false;
+        public bool IsDevice                           = false;
+        public bool IsMechanical                       = false;
+        public bool Available                          = false;
     }
 }

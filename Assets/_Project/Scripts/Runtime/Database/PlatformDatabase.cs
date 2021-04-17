@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class PlatformDatabase : MultiFileDatabase<PlatformConfiguration>
     {
-        protected override PlatformConfiguration DefaultConfiguration => PlatformConfiguration.DefaultPlatform;
+        public override PlatformConfiguration DefaultValues => new PlatformConfiguration();
 
         public PlatformDatabase(IVirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "platform_cfgs")

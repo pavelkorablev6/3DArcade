@@ -30,7 +30,7 @@ namespace Arcade.UnityEditor
     {
         public override MultiFileDatabase<ArcadeConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Arcades;
 
-        public override ArcadeConfiguration DefaultConfiguration => ArcadeConfiguration.DefaultArcade;
+        public override ArcadeConfiguration DefaultConfiguration => Database.DefaultValues;
 
         [MenuItem("3DArcade/Arcades", false, 12)]
         public static void ShowWindow()

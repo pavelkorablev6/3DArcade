@@ -62,5 +62,7 @@ namespace Arcade
 
         [XmlElement("line_angle")]
         public float LineAngle = -5f;
+
+        public CylArcadeProperties() => Scene = "_empty";
     }
 }

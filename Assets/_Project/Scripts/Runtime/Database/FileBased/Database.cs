@@ -28,9 +28,9 @@ namespace Arcade
 {
     public abstract class Database<T> where T : DatabaseEntry
     {
-        public string Directory { get; private set; }
+        public abstract T DefaultValues { get; }
 
-        protected abstract T DefaultConfiguration { get; }
+        protected string Directory { get; private set; }
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 
@@ -72,7 +72,7 @@ namespace Arcade
             if (!_entries.ContainsKey(id))
             {
                 Debug.LogWarning($"[{GetType().Name}.Get] Configuration not found: {id}");
-                return DefaultConfiguration;
+                return null;
             }
 
             return _entries[id];

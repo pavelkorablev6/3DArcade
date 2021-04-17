@@ -28,10 +28,10 @@ namespace Arcade
     public abstract class DatabaseEntry
     {
         [System.NonSerialized, XmlIgnore]
-        public string Id;
+        public string Id = "";
 
         [XmlAttribute("description")]
-        public string Description;
+        public string Description = "";
 
         public override string ToString() => $"{Description} ({Id})";
     }

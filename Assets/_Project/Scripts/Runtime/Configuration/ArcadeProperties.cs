@@ -33,13 +33,13 @@ namespace Arcade
         public string Scene = "";
 
         [XmlElement("camera_settings")]
-        public CameraSettings CameraSettings = default;
+        public CameraSettings CameraSettings = new CameraSettings();
 
         [XmlElement("render_settings")]
-        public RenderSettings RenderSettings = default;
+        public RenderSettings RenderSettings = new RenderSettings();
 
         [XmlElement("audio_settings")]
-        public AudioSettings AudioSettings = default;
+        public AudioSettings AudioSettings = new AudioSettings();
 
         [Tooltip("If this is set, all games in the arcade will use this.")]
         [XmlElement("model")]
