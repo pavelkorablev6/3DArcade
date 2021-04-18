@@ -29,6 +29,6 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.UIController.DisableAll();
+        public override void OnEnter() => _context.UIManager.Disable();
     }
 }

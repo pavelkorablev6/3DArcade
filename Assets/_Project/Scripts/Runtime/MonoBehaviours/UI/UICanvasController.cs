@@ -20,49 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIController : MonoBehaviour, IUIController
+    public sealed class UICanvasController : MonoBehaviour
     {
-        [SerializeField] private GameObject _loadingCanvas;
-        [SerializeField] private GameObject _normalCanvas;
-        [SerializeField] private GameObject _moveCabCanvas;
-        [SerializeField] private GameObject _configurationCanvas;
+        [SerializeField] private GameObject _loadingUI;
+        [SerializeField] private GameObject _normalUI;
+        [SerializeField] private GameObject _moveCabUI;
+        [SerializeField] private GameObject _configurationUI;
 
-        [SerializeField] private TMP_Text _progressMessage;
         [SerializeField] private RectTransform _progressTransform;
-        [SerializeField] private TMP_Text _progressPercent;
+        [SerializeField] private TMP_Text _progressMessageText;
+        [SerializeField] private TMP_Text _progressPercentText;
 
-        public UIContext UIContext { get; private set; }
+        public void EnableSceneLoadingUI() => _loadingUI.SetActive(true);
 
-        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(UIContext uiContext) => UIContext = uiContext;
+        public void EnableSceneNormalUI() => _normalUI.SetActive(true);
 
-        public void TransitionTo<T>() where T : UIState => UIContext.TransitionTo<T>();
+        public void EnableSceneEditModeUI() => _moveCabUI.SetActive(true);
 
-        public void EnableSceneLoadingUI() => _loadingCanvas.SetActive(true);
+        public void EnableConfigurationUI() => _configurationUI.SetActive(true);
 
-        public void EnableSceneNormalUI() => _normalCanvas.SetActive(true);
+        public void DisableSceneLoadingUI() => _loadingUI.SetActive(false);
 
-        public void EnableSceneEditModeUI() => _moveCabCanvas.SetActive(true);
+        public void DisableSceneNormalUI() => _normalUI.SetActive(false);
 
-        public void EnableConfigurationUI() => _configurationCanvas.SetActive(true);
+        public void DisableSceneEditModeUI() => _moveCabUI.SetActive(false);
 
-        public void DisableSceneLoadingUI() => _loadingCanvas.SetActive(false);
+        public void DisableConfigurationUI() => _configurationUI.SetActive(false);
 
-        public void DisableSceneNormalUI() => _normalCanvas.SetActive(false);
-
-        public void DisableSceneEditModeUI() => _moveCabCanvas.SetActive(false);
-
-        public void DisableConfigurationUI() => _configurationCanvas.SetActive(false);
-
-        public void DisableAll()
+        public void Disable()
         {
             DisableSceneLoadingUI();
             DisableSceneNormalUI();
@@ -72,22 +63,28 @@ namespace Arcade
 
         public void InitStatusBar(string message)
         {
-            _progressMessage.SetText(message);
+            if (!_loadingUI.activeInHierarchy)
+                return;
+
             _progressTransform.localScale = new Vector3(0f, 1f, 1f);
-            _progressPercent.SetText("0%");
+            _progressMessageText.SetText(message);
+            _progressPercentText.SetText("0%");
         }
 
         public void UpdateStatusBar(float percentComplete)
         {
+            if (!_loadingUI.activeInHierarchy)
+                return;
+
             _progressTransform.localScale = new Vector3(percentComplete, 1f, 1f);
-            _progressPercent.SetText($"{percentComplete * 100:0}%");
+            _progressPercentText.SetText($"{percentComplete * 100:0}%");
         }
 
         public void ResetStatusBar()
         {
-            _progressMessage.Clear();
             _progressTransform.localScale = new Vector3(0f, 1f, 1f);
-            _progressPercent.Clear();
+            _progressMessageText.Clear();
+            _progressPercentText.Clear();
         }
 
 #if UNITY_EDITOR
@@ -132,7 +129,7 @@ namespace Arcade
         }
 
         [ContextMenu("Disabled State")]
-        private void Context_DisableAll() => DisableAll();
+        private void Context_Disable() => Disable();
 #endif
     }
 }

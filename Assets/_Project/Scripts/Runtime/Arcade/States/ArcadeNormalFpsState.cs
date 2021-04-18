@@ -25,13 +25,13 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeFpsNormalState : ArcadeState
+    public sealed class ArcadeNormalFpsState : ArcadeState
     {
         private const float INTERACTION_MAX_DISTANCE = 2.5f;
 
         private static readonly LayerMask _interactionLayerMask = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels");
 
-        public ArcadeFpsNormalState(ArcadeContext context)
+        public ArcadeNormalFpsState(ArcadeContext context)
         : base(context)
         {
         }
@@ -44,7 +44,7 @@ namespace Arcade
             if (Cursor.lockState != CursorLockMode.Locked)
                 _context.InputActions.FpsArcade.Look.Disable();
 
-            _context.UIController.TransitionTo<UINormalState>();
+            _context.UIManager.TransitionTo<UINormalSceneNormalState>();
             _context.VideoPlayerController.SetPlayer(_context.ArcadeType, _context.Player);
         }
 
@@ -54,7 +54,7 @@ namespace Arcade
 
             _context.InputActions.FpsArcade.Disable();
 
-            _context.UIController.TransitionTo<UIDisabledState>();
+            _context.UIManager.TransitionTo<UIDisabledState>();
         }
 
         public override void OnUpdate(float dt)

@@ -20,36 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using TMPro;
-using UnityEngine;
-
 namespace Arcade
 {
-    [RequireComponent(typeof(TextMeshProUGUI)), DisallowMultipleComponent]
-    public sealed class UINormalCurrentInteractableText : MonoBehaviour
+    public sealed class UINormalSceneNormalState : UIState
     {
-        private TextMeshProUGUI _text;
-
-        private void Awake() => _text = GetComponent<TextMeshProUGUI>();
-
-        private void OnEnable()
+        public UINormalSceneNormalState(UIContext context)
+        : base(context)
         {
-            _text.Clear();
-            //InteractionController.OnCurrentModelConfigurationChanged += OnTargetChange;
         }
 
-        private void OnDisable()
-        {
-            _text.Clear();
-            //InteractionController.OnCurrentModelConfigurationChanged -= OnTargetChange;
-        }
+        public override void OnEnter() => _context.UIManager.EnableNormalSceneNormalUI();
 
-        private void OnTargetChange(ModelConfigurationComponent modelConfigurationComponent)
-        {
-            if (modelConfigurationComponent != null)
-                _text.SetText(modelConfigurationComponent.Description);
-            else
-                _text.Clear();
-        }
+        public override void OnExit() => _context.UIManager.DisableNormalUI();
     }
 }

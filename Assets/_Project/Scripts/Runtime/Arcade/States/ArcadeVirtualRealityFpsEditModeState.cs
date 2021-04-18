@@ -24,11 +24,11 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeFpsEditModeState : ArcadeState
+    public sealed class ArcadeVirtualRealityFpsEditModeState : ArcadeState
     {
         private readonly ArcadeEditModeContext _editModeContext;
 
-        public ArcadeFpsEditModeState(ArcadeContext context)
+        public ArcadeVirtualRealityFpsEditModeState(ArcadeContext context)
         : base(context)
             => _editModeContext = new ArcadeEditModeContext(/*_context.Main.PlayerFpsControls*/);
 

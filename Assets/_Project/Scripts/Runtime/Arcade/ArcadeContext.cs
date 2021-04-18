@@ -38,7 +38,7 @@ namespace Arcade
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
         public readonly InteractionController InteractionController;
-        public readonly IUIController UIController;
+        public readonly UIManager UIManager;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeType ArcadeType { get; private set; }
@@ -56,7 +56,7 @@ namespace Arcade
                              AssetAddressesProviders assetAddressesProviders,
                              NodeControllers nodeControllers,
                              InteractionController interactionController,
-                             IUIController uiController)
+                             UIManager uiManager)
         {
             InputActions            = inputActions;
             Player                  = player;
@@ -66,7 +66,7 @@ namespace Arcade
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
             InteractionController   = interactionController;
-            UIController            = uiController;
+            UIManager               = uiManager;
         }
 
         public void StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
@@ -83,8 +83,11 @@ namespace Arcade
             ArcadeMode          = arcadeMode;
 
             VideoPlayerController?.StopAllVideos();
+
+            VideoPlayerController = null;
+            _arcadeController     = null;
+
             Player.TransitionTo<PlayerDisabledState>();
-            _arcadeController = null;
 
             switch (ArcadeType)
             {
@@ -96,8 +99,7 @@ namespace Arcade
                 break;
                 case ArcadeType.Cyl:
                 {
-                    VideoPlayerController = null;
-                    _arcadeController     = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
+                    _arcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
@@ -116,7 +118,12 @@ namespace Arcade
                 return;
 
             if (Application.isPlaying)
-                TransitionTo<ArcadeLoadState>();
+            {
+                if (GeneralConfiguration.EnableVR)
+                    TransitionTo<ArcadeVirtualRealityLoadState>();
+                else
+                    TransitionTo<ArcadeNormalLoadState>();
+            }
 
             Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
             IEnumerable<AssetAddress> addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration, arcadeType);

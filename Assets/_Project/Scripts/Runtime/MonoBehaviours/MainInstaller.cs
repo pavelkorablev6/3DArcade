@@ -66,7 +66,7 @@ namespace Arcade
 
             _ = Container.Bind<InteractionController>().AsSingle().NonLazy();
 
-            _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
+            _ = Container.Bind<UIManager>().FromComponentInHierarchy(true).AsSingle();
             _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();

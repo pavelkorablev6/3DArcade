@@ -20,36 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using TMPro;
-using UnityEngine;
-
 namespace Arcade
 {
-    [RequireComponent(typeof(TextMeshProUGUI)), DisallowMultipleComponent]
-    public sealed class UIMoveCabCurrentModelText : MonoBehaviour
+    public sealed class UIVirtualRealitySceneNormalState : UIState
     {
-        private TextMeshProUGUI _text;
-
-        private void Awake() => _text = GetComponent<TextMeshProUGUI>();
-
-        private void OnEnable()
+        public UIVirtualRealitySceneNormalState(UIContext context)
+        : base(context)
         {
-            _text.Clear();
-            SceneEditModeController.OnCurrentModelChanged += OnTargetChange;
         }
 
-        private void OnDisable()
-        {
-            _text.Clear();
-            SceneEditModeController.OnCurrentModelChanged -= OnTargetChange;
-        }
+        public override void OnEnter() => _context.UIManager.EnableVirtualRealitySceneNormalUI();
 
-        private void OnTargetChange(ModelConfigurationComponent modelConfigurationComponent)
-        {
-            if (modelConfigurationComponent != null)
-                _text.SetText(modelConfigurationComponent.Description);
-            else
-                _text.Clear();
-        }
+        public override void OnExit() => _context.UIManager.DisableVirtualRealityUI();
     }
 }

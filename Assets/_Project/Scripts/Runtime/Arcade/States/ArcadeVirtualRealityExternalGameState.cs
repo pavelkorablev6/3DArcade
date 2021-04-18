@@ -26,12 +26,12 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeExternalGameState : ArcadeState
+    public sealed class ArcadeVirtualRealityExternalGameState : ArcadeState
     {
         private readonly ExternalAppController _externalAppController;
         private bool _isGameRunning;
 
-        public ArcadeExternalGameState(ArcadeContext context)
+        public ArcadeVirtualRealityExternalGameState(ArcadeContext context)
         : base(context)
         {
             _externalAppController = new ExternalAppController();
@@ -58,7 +58,7 @@ namespace Arcade
                 }
             }
 
-            _context.TransitionTo<ArcadeFpsNormalState>();
+            _context.TransitionTo<ArcadeNormalFpsState>();
         }
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");

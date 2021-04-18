@@ -101,10 +101,10 @@ namespace Arcade
             switch (CurrentTarget.EmulatorConfiguration.InteractionType)
             {
                 case InteractionType.GameInternal:
-                    arcadeContext.TransitionTo<ArcadeInternalGameState>();
+                    arcadeContext.TransitionTo<ArcadeNormalInternalGameState>();
                     break;
                 case InteractionType.GameExternal:
-                    arcadeContext.TransitionTo<ArcadeExternalGameState>();
+                    arcadeContext.TransitionTo<ArcadeNormalExternalGameState>();
                     break;
                 case InteractionType.FpsArcadeConfiguration:
                     arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.Normal);

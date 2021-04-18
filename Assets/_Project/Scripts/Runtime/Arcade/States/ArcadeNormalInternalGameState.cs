@@ -24,11 +24,11 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeInternalGameState : ArcadeState
+    public sealed class ArcadeNormalInternalGameState : ArcadeState
     {
         //private readonly InternalGameController _libretroController;
 
-        public ArcadeInternalGameState(ArcadeContext context)
+        public ArcadeNormalInternalGameState(ArcadeContext context)
         : base(context)
         {
             //_libretroController = new InternalGameController(_context.CurrentPlayerControls.transform);

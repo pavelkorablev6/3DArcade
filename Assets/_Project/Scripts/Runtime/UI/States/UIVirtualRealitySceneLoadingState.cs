@@ -22,24 +22,15 @@
 
 namespace Arcade
 {
-    public interface IUIController
+    public sealed class UIVirtualRealitySceneLoadingState : UIState
     {
-        void TransitionTo<T>() where T : UIState;
+        public UIVirtualRealitySceneLoadingState(UIContext context)
+        : base(context)
+        {
+        }
 
-        void EnableSceneLoadingUI();
-        void EnableSceneNormalUI();
-        void EnableSceneEditModeUI();
-        void EnableConfigurationUI();
+        public override void OnEnter() => _context.UIManager.EnableVirtualRealitySceneLoadingUI();
 
-        void DisableSceneLoadingUI();
-        void DisableSceneNormalUI();
-        void DisableSceneEditModeUI();
-        void DisableConfigurationUI();
-
-        void DisableAll();
-
-        void InitStatusBar(string message);
-        void UpdateStatusBar(float percentComplete);
-        void ResetStatusBar();
+        public override void OnExit() => _context.UIManager.DisableVirtualRealityUI();
     }
 }

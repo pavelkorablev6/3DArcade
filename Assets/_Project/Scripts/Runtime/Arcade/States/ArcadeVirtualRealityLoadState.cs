@@ -25,9 +25,9 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeLoadState : ArcadeState
+    public sealed class ArcadeVirtualRealityLoadState : ArcadeState
     {
-        public ArcadeLoadState(ArcadeContext context)
+        public ArcadeVirtualRealityLoadState(ArcadeContext context)
         : base(context)
         {
         }
@@ -38,15 +38,15 @@ namespace Arcade
 
             CursorUtils.HideMouseCursor();
 
-            _context.UIController.TransitionTo<UILoadingState>();
-            _context.UIController.InitStatusBar($"Loading arcade: {_context.ArcadeConfiguration}...");
+            _context.UIManager.TransitionTo<UIVirtualRealitySceneLoadingState>();
+            _context.UIManager.InitStatusBar($"Loading arcade: {_context.ArcadeConfiguration}...");
         }
 
         public override void OnExit()
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.UIController.TransitionTo<UIDisabledState>();
+            _context.UIManager.TransitionTo<UIDisabledState>();
         }
 
         public override void OnUpdate(float dt)
@@ -54,17 +54,17 @@ namespace Arcade
             if (!_context.Scenes.Arcade.Loaded)
             {
                 float percentComplete = _context.Scenes.Arcade.LoadingPercentCompleted;
-                _context.UIController.UpdateStatusBar(percentComplete);
+                _context.UIManager.UpdateStatusBar(percentComplete);
                 return;
             }
 
             switch (_context.ArcadeType)
             {
                 case ArcadeType.Fps:
-                    _context.TransitionTo<ArcadeFpsNormalState>();
+                    _context.TransitionTo<ArcadeVirtualRealityFpsState>();
                     break;
                 case ArcadeType.Cyl:
-                    _context.TransitionTo<ArcadeCylNormalState>();
+                    _context.TransitionTo<ArcadeVirtualRealityCylState>();
                     break;
                 default:
                     break;

@@ -22,15 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class UIMoveCabState : UIState
+    public sealed class UINormalConfigurationState : UIState
     {
-        public UIMoveCabState(UIContext context)
+        public UINormalConfigurationState(UIContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter() => _context.UIController.EnableSceneEditModeUI();
+        public override void OnEnter() => _context.UIManager.EnableNormalConfigurationUI();
 
-        public override void OnExit() => _context.UIController.DisableSceneEditModeUI();
+        public override void OnExit() => _context.UIManager.DisableNormalUI();
     }
 }

@@ -20,19 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class ArcadeFpsGrabState : ArcadeState
+    public sealed class UIVirtualRealityConfigurationState : UIState
     {
-        public ArcadeFpsGrabState(ArcadeContext context)
+        public UIVirtualRealityConfigurationState(UIContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter() => Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
+        public override void OnEnter() => _context.UIManager.EnableVirtualRealityConfigurationUI();
 
-        public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+        public override void OnExit() => _context.UIManager.DisableVirtualRealityUI();
     }
 }

@@ -57,14 +57,15 @@ namespace Arcade
         public void EnableNormalFpsControls() => _normalControls.EnableFpsController();
         public void EnableNormalCylControls() => _normalControls.EnableCylController();
         public void DisableNormalControls()   => _normalControls.Disable();
+
         public void EnableVirtualRealityFpsControls() => _virtualRealityControls.EnableFpsController();
         public void EnableVirtualRealityCylControls() => _virtualRealityControls.EnableCylController();
         public void DisableVirtualRealityControls()   => _virtualRealityControls.Disable();
 
         public void Disable()
         {
-            _normalControls.Disable();
-            _virtualRealityControls.Disable();
+            DisableNormalControls();
+            DisableVirtualRealityControls();
         }
     }
 }

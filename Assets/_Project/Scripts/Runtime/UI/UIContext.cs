@@ -26,8 +26,8 @@ namespace Arcade
 {
     public sealed class UIContext : Context<UIState>
     {
-        public readonly IUIController UIController;
+        public readonly UIManager UIManager;
 
-        public UIContext(IUIController uiController) => UIController = uiController;
+        public UIContext(UIManager uiManager) => UIManager = uiManager;
     }
 }

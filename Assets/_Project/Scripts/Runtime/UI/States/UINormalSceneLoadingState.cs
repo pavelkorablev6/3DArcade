@@ -22,15 +22,15 @@
 
 namespace Arcade
 {
-    public sealed class UINormalState : UIState
+    public sealed class UINormalSceneLoadingState : UIState
     {
-        public UINormalState(UIContext context)
+        public UINormalSceneLoadingState(UIContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter() => _context.UIController.EnableSceneNormalUI();
+        public override void OnEnter() => _context.UIManager.EnableNormalSceneLoadingUI();
 
-        public override void OnExit() => _context.UIController.DisableSceneNormalUI();
+        public override void OnExit() => _context.UIManager.DisableNormalUI();
     }
 }
