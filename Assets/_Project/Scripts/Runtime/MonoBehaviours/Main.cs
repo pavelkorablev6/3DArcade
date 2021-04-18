@@ -30,6 +30,8 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
+        [SerializeField] private Material _uddMaterial;
+
         private InputActions _inputActions;
         private IVirtualFileSystem _virtualFileSystem;
         private ArcadeContext _sceneContext;
@@ -58,6 +60,8 @@ namespace Arcade
                                   .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
                                   .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
                                   .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
+
+            ArcadeVirtualRealityExternalGameState.UDDMaterial = _uddMaterial;
 
             _sceneContext.Start();
 

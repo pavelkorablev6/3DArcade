@@ -26,10 +26,10 @@ namespace Arcade
 {
     public sealed class InteractionController
     {
+        public ModelConfigurationComponent CurrentTargetComponent { get; private set; }
         public ModelConfiguration CurrentTarget { get; private set; }
 
         private Camera _camera;
-        private ModelConfigurationComponent _modelConfiguration;
 
         public void Initialize(Camera camera) => _camera = camera;
 
@@ -41,21 +41,21 @@ namespace Arcade
             Ray ray = _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, raycastMaxDistance, raycastLayers))
             {
-                _modelConfiguration = null;
+                CurrentTargetComponent = null;
                 return;
             }
 
             ModelConfigurationComponent currentTarget = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
-            if (currentTarget != _modelConfiguration)
-                _modelConfiguration = currentTarget;
+            if (currentTarget != CurrentTargetComponent)
+                CurrentTargetComponent = currentTarget;
         }
 
         public void HandleInteraction(ArcadeContext arcadeContext)
         {
-            if (_modelConfiguration == null)
+            if (CurrentTargetComponent == null)
                 return;
 
-            CurrentTarget = _modelConfiguration.ToModelConfiguration();
+            CurrentTarget = CurrentTargetComponent.ToModelConfiguration();
 
             switch (CurrentTarget.InteractionType)
             {
@@ -101,11 +101,21 @@ namespace Arcade
             switch (CurrentTarget.EmulatorConfiguration.InteractionType)
             {
                 case InteractionType.GameInternal:
-                    arcadeContext.TransitionTo<ArcadeNormalInternalGameState>();
-                    break;
+                {
+                    if (arcadeContext.GeneralConfiguration.EnableVR)
+                        arcadeContext.TransitionTo<ArcadeVirtualRealityInternalGameState>();
+                    else
+                        arcadeContext.TransitionTo<ArcadeNormalInternalGameState>();
+                }
+                break;
                 case InteractionType.GameExternal:
-                    arcadeContext.TransitionTo<ArcadeNormalExternalGameState>();
-                    break;
+                {
+                    if (arcadeContext.GeneralConfiguration.EnableVR)
+                        arcadeContext.TransitionTo<ArcadeVirtualRealityExternalGameState>();
+                    else
+                        arcadeContext.TransitionTo<ArcadeNormalExternalGameState>();
+                }
+                break;
                 case InteractionType.FpsArcadeConfiguration:
                     arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.Normal);
                     break;

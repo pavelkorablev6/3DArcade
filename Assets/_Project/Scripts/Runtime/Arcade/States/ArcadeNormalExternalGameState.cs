@@ -29,43 +29,46 @@ namespace Arcade
     public sealed class ArcadeNormalExternalGameState : ArcadeState
     {
         private readonly ExternalAppController _externalAppController;
-        private bool _isGameRunning;
+
+        private bool _appRunning;
 
         public ArcadeNormalExternalGameState(ArcadeContext context)
         : base(context)
-        {
-            _externalAppController = new ExternalAppController();
-
-            _externalAppController.OnAppStarted += OnAppStarted;
-            _externalAppController.OnAppExited  += OnAppExited;
-        }
+            => _externalAppController = new ExternalAppController();
 
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
+            _context.VideoPlayerController.StopAllVideos();
+
+            _externalAppController.OnAppStarted += OnAppStarted;
+            _externalAppController.OnAppExited  += OnAppExited;
+
 #if UNITY_EDITOR_WIN
             SaveUnityWindow();
 #endif
             EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (emulator != null)
+            if (!_externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
             {
-                _isGameRunning = _externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id);
-                if (_isGameRunning)
-                {
-                    _context.VideoPlayerController.StopAllVideos();
-                    return;
-                }
+                _context.TransitionToPrevious();
+                return;
             }
 
-            _context.TransitionTo<ArcadeNormalFpsState>();
+            _appRunning = true;
         }
 
-        public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+        public override void OnExit()
+        {
+            Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+
+            _externalAppController.OnAppStarted -= OnAppStarted;
+            _externalAppController.OnAppExited  -= OnAppExited;
+        }
 
         public override void OnUpdate(float dt)
         {
-            if (_isGameRunning)
+            if (_appRunning)
                 return;
 
             _externalAppController.StopCurrent();
@@ -79,7 +82,7 @@ namespace Arcade
         {
         }
 
-        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _isGameRunning = false;
+        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _appRunning = false;
 
 #if UNITY_EDITOR_WIN
         [System.Runtime.InteropServices.DllImport("user32")] static extern uint GetActiveWindow();

@@ -1211,6 +1211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37759dc78eb60ea459298efca2997ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uddMaterial: {fileID: 2100000, guid: c181d333a7bee7a44b94c0f4e02c4bd4, type: 2}
 --- !u!4 &1203112236
 Transform:
   m_ObjectHideFlags: 0
@@ -1641,7 +1642,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.8119954, y: 1}
+    m_SensorSize: {x: 0.90581393, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -1898,7 +1899,6 @@ GameObject:
   - component: {fileID: 1860245297}
   - component: {fileID: 1860245300}
   - component: {fileID: 1860245299}
-  - component: {fileID: 1860245298}
   m_Layer: 0
   m_Name: OVRCameraRig
   m_TagString: Untagged
@@ -1921,23 +1921,6 @@ Transform:
   m_Father: {fileID: 760113831}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1860245298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1860245296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5178bc8574ce2bf4388e787a2e2af326, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opMode: 1
-  resetHmdPoseOnRelease: 1
-  resetHmdPoseByMiddleMouseButton: 1
-  activateKeys: 3201000031010000
-  pitchKeys: 3401000033010000
 --- !u!114 &1860245299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2817,7 +2800,6 @@ GameObject:
   - component: {fileID: 299866397395647571}
   - component: {fileID: 299866397389624719}
   - component: {fileID: 299866397389624729}
-  - component: {fileID: 413961928087175231}
   m_Layer: 0
   m_Name: OVRCameraRig
   m_TagString: Untagged
@@ -3161,23 +3143,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &413961928087175231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299866397395148927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5178bc8574ce2bf4388e787a2e2af326, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opMode: 1
-  resetHmdPoseOnRelease: 1
-  resetHmdPoseByMiddleMouseButton: 1
-  activateKeys: 3201000031010000
-  pitchKeys: 3401000033010000
 --- !u!114 &4720070918826908351
 MonoBehaviour:
   m_ObjectHideFlags: 0

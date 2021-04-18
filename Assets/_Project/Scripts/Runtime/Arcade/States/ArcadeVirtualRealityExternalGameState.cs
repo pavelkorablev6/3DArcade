@@ -22,76 +22,101 @@
 
 using SK.Utilities;
 using SK.Utilities.Unity;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcade
 {
     public sealed class ArcadeVirtualRealityExternalGameState : ArcadeState
     {
+        public static Material UDDMaterial;
+
         private readonly ExternalAppController _externalAppController;
-        private bool _isGameRunning;
+
+        private ScreenNodeTag[] _screenNodes;
+        private Queue<Material> _savedMaterials;
+        private bool _appRunning;
 
         public ArcadeVirtualRealityExternalGameState(ArcadeContext context)
         : base(context)
-        {
-            _externalAppController = new ExternalAppController();
-
-            _externalAppController.OnAppStarted += OnAppStarted;
-            _externalAppController.OnAppExited  += OnAppExited;
-        }
+            => _externalAppController = new ExternalAppController();
 
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-#if UNITY_EDITOR_WIN
-            SaveUnityWindow();
-#endif
-            EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (emulator != null)
+            _context.VideoPlayerController.StopAllVideos();
+
+            _externalAppController.OnAppStarted += OnAppStarted;
+            _externalAppController.OnAppExited  += OnAppExited;
+
+            _screenNodes = _context.InteractionController.CurrentTargetComponent.GetComponentsInChildren<ScreenNodeTag>();
+
+            if (_screenNodes == null)
+                return;
+
+            _savedMaterials = new Queue<Material>();
+
+            foreach (ScreenNodeTag screenNode in _screenNodes)
             {
-                _isGameRunning = _externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id);
-                if (_isGameRunning)
-                {
-                    _context.VideoPlayerController.StopAllVideos();
-                    return;
-                }
+                if (screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+                    dynamicArtworkComponent.enabled = false;
+
+                Renderer renderer = screenNode.GetComponent<Renderer>();
+                _savedMaterials.Enqueue(renderer.material);
+                renderer.material = UDDMaterial;
+
+                uDesktopDuplication.Texture uddComponent = screenNode.gameObject.AddComponent<uDesktopDuplication.Texture>();
+                uddComponent.invertY = true;
             }
 
-            _context.TransitionTo<ArcadeNormalFpsState>();
-        }
+            EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
+            if (!_externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
+            {
+                _context.TransitionToPrevious();
+                return;
+            }
 
-        public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+            _appRunning = true;
+        }
 
         public override void OnUpdate(float dt)
         {
-            if (_isGameRunning)
+            if (_appRunning)
                 return;
 
             _externalAppController.StopCurrent();
-#if UNITY_EDITOR_WIN
-            RestoreUnityWindow();
-#endif
+
+            if (_screenNodes == null)
+                return;
+
+            foreach (ScreenNodeTag screenNode in _screenNodes)
+            {
+                if (screenNode.TryGetComponent(out uDesktopDuplication.Texture texture))
+                    ObjectUtils.DestroyObject(texture);
+
+                Renderer renderer = screenNode.GetComponent<Renderer>();
+                renderer.material = _savedMaterials.Dequeue();
+
+                if (screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+                    dynamicArtworkComponent.enabled = true;
+            }
+
             _context.TransitionToPrevious();
+        }
+
+        public override void OnExit()
+        {
+            Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+
+            _externalAppController.OnAppStarted -= OnAppStarted;
+            _externalAppController.OnAppExited  -= OnAppExited;
         }
 
         private void OnAppStarted(OSUtils.ProcessStartedData data, EmulatorConfiguration emulator, string game)
         {
         }
 
-        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _isGameRunning = false;
-
-#if UNITY_EDITOR_WIN
-        [System.Runtime.InteropServices.DllImport("user32")] static extern uint GetActiveWindow();
-        [System.Runtime.InteropServices.DllImport("user32")] static extern bool SetForegroundWindow(System.IntPtr hWnd);
-        private System.IntPtr _editorHwnd;
-        private void SaveUnityWindow() => _editorHwnd = (System.IntPtr)GetActiveWindow();
-        private void RestoreUnityWindow()
-        {
-            _ = SetForegroundWindow(_editorHwnd);
-            CursorUtils.ToggleMouseCursor();
-            CursorUtils.ToggleMouseCursor();
-        }
-#endif
+        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _appRunning = false;
     }
 }
