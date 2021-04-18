@@ -32,7 +32,7 @@ namespace Arcade
 
         public static readonly int ArcadeLayer = LayerMask.NameToLayer("Arcade");
         public static readonly int GamesLayer = LayerMask.NameToLayer("Arcade/GameModels");
-        public static readonly int PropsLayer = LayerMask.NameToLayer("Arcade/PropsModels");
+        public static readonly int PropsLayer = LayerMask.NameToLayer("Arcade/PropModels");
 
         public Transform GamesNodeTransform { get; private set; }
         public Transform PropsNodeTransform { get; private set; }

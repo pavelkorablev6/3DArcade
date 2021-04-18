@@ -64,6 +64,8 @@ namespace Arcade
             _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
+            _ = Container.Bind<InteractionController>().AsSingle().NonLazy();
+
             _ = Container.Bind<IUIController>().To<UIController>().FromComponentInHierarchy(true).AsSingle();
             _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 

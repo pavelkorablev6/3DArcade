@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -36,7 +36,7 @@ namespace Arcade
     {
         public abstract class MappedEntry
         {
-            [Key] public string Id { get; set; }
+            [Key] public int Id { get; set; }
         }
 
         public abstract class ReflectedEntry

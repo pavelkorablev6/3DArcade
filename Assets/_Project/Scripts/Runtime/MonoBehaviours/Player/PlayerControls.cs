@@ -36,6 +36,13 @@ namespace Arcade
             _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}"),
         };
 
+        public Camera GetActiveCamera(ArcadeType arcadeType) => arcadeType switch
+        {
+            ArcadeType.Fps => _fpsController.GetComponent<PlayerFpsController>().Camera,
+            ArcadeType.Cyl => _cylController.GetComponent<PlayerCylController>().Camera,
+            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}"),
+        };
+
         public void EnableFpsController()
         {
             _cylController.SetActive(false);

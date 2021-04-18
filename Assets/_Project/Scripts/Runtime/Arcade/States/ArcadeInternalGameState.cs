@@ -64,17 +64,12 @@ namespace Arcade
             //_libretroController.StopGame();
         }
 
-        //public override void Update(float dt)
-        //{
-        //    _libretroController.UpdateGame();
+        public override void OnUpdate(float dt)
+        {
+            //_libretroController.UpdateGame();
 
-        //    if (_context.CurrentPlayerControls.GlobalActions.Quit.triggered)
-        //    {
-        //        if (_context.CurrentArcadeType == ArcadeType.Fps)
-        //            _context.TransitionTo<FpsNormalState>();
-        //        else if (_context.CurrentArcadeType == ArcadeType.Cyl)
-        //            _context.TransitionTo<CylNormalState>();
-        //    }
-        //}
+            if (_context.InputActions.Global.Quit.triggered)
+                _context.TransitionToPrevious();
+        }
     }
 }

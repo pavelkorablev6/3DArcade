@@ -66,6 +66,10 @@ namespace Arcade
 
         [XmlIgnore]
         [UnityEngine.HideInInspector]
+        public EmulatorConfiguration EmulatorConfiguration { get; set; }
+
+        [XmlIgnore]
+        [UnityEngine.HideInInspector]
         public GameConfiguration GameConfiguration { get; set; }
     }
 }

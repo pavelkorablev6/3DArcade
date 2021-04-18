@@ -31,7 +31,6 @@ namespace Arcade
         [SerializeField] private PlayerControls _virtualRealityControls;
 
         private PlayerContext _playerContext;
-        private object _currentState;
 
         [Inject]
         public void Construct(PlayerContext context) => _playerContext = context;
@@ -49,11 +48,11 @@ namespace Arcade
             return null;
         }
 
-        public void TransitionTo<T>() where T : PlayerState
-        {
-            _currentState = typeof(T);
-            _playerContext.TransitionTo<T>();
-        }
+        public Camera GetNormalCamera(ArcadeType arcadeType) => _normalControls.GetActiveCamera(arcadeType);
+
+        public Camera GetVirtualRealityCamera() => _virtualRealityControls.GetComponentInChildren<Camera>(false);
+
+        public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 
         public void EnableNormalFpsControls() => _normalControls.EnableFpsController();
         public void EnableNormalCylControls() => _normalControls.EnableCylController();

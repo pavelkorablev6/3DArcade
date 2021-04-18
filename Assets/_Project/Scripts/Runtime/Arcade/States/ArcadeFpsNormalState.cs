@@ -27,7 +27,9 @@ namespace Arcade
 {
     public sealed class ArcadeFpsNormalState : ArcadeState
     {
-        //private const float INTERACT_MAX_DISTANCE = 2.5f;
+        private const float INTERACTION_MAX_DISTANCE = 2.5f;
+
+        private static readonly LayerMask _interactionLayerMask = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels");
 
         public ArcadeFpsNormalState(ArcadeContext context)
         : base(context)
@@ -42,12 +44,7 @@ namespace Arcade
             if (Cursor.lockState != CursorLockMode.Locked)
                 _context.InputActions.FpsArcade.Look.Disable();
 
-            //_context.CurrentModelConfiguration = null;
-
             _context.UIController.TransitionTo<UINormalState>();
-
-            //_context.CurrentPlayerControls = _context.Main.PlayerFpsControls;
-
             _context.VideoPlayerController.SetPlayer(_context.ArcadeType, _context.Player);
         }
 
@@ -74,83 +71,15 @@ namespace Arcade
                     _context.InputActions.FpsArcade.Look.Disable();
             }
 
-            //InteractionController.FindInteractable(ref _context.CurrentModelConfiguration,
-            //                                       _context.Main.PlayerFpsControls.Camera,
-            //                                       INTERACT_MAX_DISTANCE,
-            //                                       _context.RaycastLayers);
-
             _context.VideoPlayerController.UpdateVideosState();
 
-            //if (Cursor.lockState == CursorLockMode.Locked && _context.Main.PlayerFpsControls.FpsArcadeActions.Interact.triggered)
-            //    HandleInteraction();
+            _context.InteractionController.FindInteractable(_interactionLayerMask, INTERACTION_MAX_DISTANCE);
+
+            if (Cursor.lockState == CursorLockMode.Locked && _context.InputActions.FpsArcade.Interact.triggered)
+                _context.InteractionController.HandleInteraction(_context);
 
             //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
             //    _context.TransitionTo<FpsMoveCabState>();
         }
-
-        //private void HandleInteraction()
-        //{
-        //    if (_context.CurrentModelConfiguration == null)
-        //        return;
-
-        //    switch (_context.CurrentModelConfiguration.InteractionType)
-        //    {
-        //        case InteractionType.Undefined:
-        //        case InteractionType.Inherited:
-        //        {
-        //            if (!string.IsNullOrEmpty(_context.CurrentModelConfiguration.Emulator)
-        //             && _context.EmulatorDatabase.Get(_context.CurrentModelConfiguration.Emulator, out EmulatorConfiguration emulator))
-        //                HandleEmulatorInteraction(emulator.InteractionType);
-        //            else if (!string.IsNullOrEmpty(_context.CurrentModelConfiguration.Platform)
-        //                  && _context.PlatformDatabase.Get(_context.CurrentModelConfiguration.Platform, out PlatformConfiguration platform)
-        //                  && _context.EmulatorDatabase.Get(platform.Emulator, out emulator))
-        //                HandleEmulatorInteraction(emulator.InteractionType);
-        //        }
-        //        break;
-        //        case InteractionType.GameInternal:
-        //            _context.TransitionTo<SceneInternalGameState>();
-        //            break;
-        //        case InteractionType.GameExternal:
-        //            _context.TransitionTo<ExternalGameState>();
-        //            break;
-        //        case InteractionType.FpsArcadeConfiguration:
-        //            _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Fps);
-        //            break;
-        //        case InteractionType.CylArcadeConfiguration:
-        //            _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Cyl);
-        //            break;
-        //        case InteractionType.FpsMenuConfiguration:
-        //        case InteractionType.CylMenuConfiguration:
-        //        case InteractionType.URL:
-        //        default:
-        //            break;
-        //    }
-        //}
-
-        //private void HandleEmulatorInteraction(InteractionType interactionType)
-        //{
-        //    switch (interactionType)
-        //    {
-        //        case InteractionType.GameInternal:
-        //            _context.TransitionTo<SceneInternalGameState>();
-        //            break;
-        //        case InteractionType.GameExternal:
-        //            _context.TransitionTo<ExternalGameState>();
-        //            break;
-        //        case InteractionType.FpsArcadeConfiguration:
-        //            _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Fps);
-        //            break;
-        //        case InteractionType.CylArcadeConfiguration:
-        //            _context.SetAndStartCurrentArcadeConfiguration(_context.CurrentModelConfiguration.Id, ArcadeType.Cyl);
-        //            break;
-        //        case InteractionType.Undefined:
-        //        case InteractionType.Inherited:
-        //        case InteractionType.URL:
-        //        case InteractionType.FpsMenuConfiguration:
-        //        case InteractionType.CylMenuConfiguration:
-        //        default:
-        //            break;
-        //    }
-        //}
     }
 }

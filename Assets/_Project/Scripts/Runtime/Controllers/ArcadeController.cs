@@ -93,13 +93,12 @@ namespace Arcade
 
         private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
         {
-
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
             {
                 _ = _arcadeContext.Databases.Games.TryGet(platform.MasterList,
                                                           modelConfiguration.Id,
-                                                          new string[] { "CloneOf", "RomOf" },
+                                                          new string[] { "CloneOf", "RomOf", "Year", "ScreenType", "ScreenRotation" },
                                                           new string[] { "Name" },
                                                           out game);
             }
@@ -131,7 +130,10 @@ namespace Arcade
                 return;
 
             _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
-            _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, GetScreenIntensity(modelConfiguration.GameConfiguration));
+
+            float screenIntensity = GetScreenIntensity(modelConfiguration.GameConfiguration);
+            _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
+
             _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
 
             //if (gameModels)

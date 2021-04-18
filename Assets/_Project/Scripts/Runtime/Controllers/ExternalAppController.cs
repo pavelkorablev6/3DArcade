@@ -34,17 +34,17 @@ namespace Arcade
 
         public ExternalAppController() => _processLauncher = new OSUtils.ProcessLauncher(Debug.Log, Debug.LogWarning, Debug.LogError);
 
-        public bool StartGame(EmulatorConfiguration emulator, string game, bool persistent = false)
+        public bool StartGame(EmulatorConfiguration emulator, string gameName, bool persistent = false)
         {
-            if (string.IsNullOrEmpty(game))
+            if (string.IsNullOrEmpty(gameName))
             {
-                UnityEngine.Debug.LogError("[ExternalGameController.StartGame] game is null or empty.");
+                Debug.LogError("[ExternalGameController.StartGame] game is null or empty.");
                 return false;
             }
 
             if (emulator == null)
             {
-                UnityEngine.Debug.LogError("[ExternalGameController.StartGame] emulator is null.");
+                Debug.LogError("[ExternalGameController.StartGame] emulator is null.");
                 return false;
             }
 
@@ -55,7 +55,7 @@ namespace Arcade
                 {
                     foreach (string gameDirectory in emulator.GamesDirectories)
                     {
-                        if (FileSystem.FileExists($"{gameDirectory}/{game}.{supportedExtension}"))
+                        if (FileSystem.FileExists($"{gameDirectory}/{gameName}.{supportedExtension}"))
                         {
                             extension = supportedExtension;
                             break;
@@ -72,13 +72,13 @@ namespace Arcade
                 WorkingDirectory = emulator.WorkingDirectory,
                 Extension        = extension,
                 CommandLine      = emulator.Arguments,
-                CommandId        = game
+                CommandId        = gameName
             };
 
             _processLauncher.StartProcess(command,
                                           persistent,
-                                          (OSUtils.ProcessStartedData processStartedData) => OnAppStarted?.Invoke(processStartedData, emulator, game),
-                                          (OSUtils.ProcessExitedData processExitedData)   => OnAppExited?.Invoke(processExitedData, emulator, game));
+                                          (OSUtils.ProcessStartedData processStartedData) => OnAppStarted?.Invoke(processStartedData, emulator, gameName),
+                                          (OSUtils.ProcessExitedData processExitedData)   => OnAppExited?.Invoke(processExitedData, emulator, gameName));
 
             return true;
         }

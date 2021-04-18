@@ -44,19 +44,19 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
+#if UNITY_EDITOR_WIN
             SaveUnityWindow();
-
-            //EmulatorConfiguration emulator = _context.GetEmulatorForCurrentModelConfiguration();
-            //if (emulator != null)
-            //{
-
-            //    _isGameRunning = _externalAppController.StartGame(emulator, _context.CurrentModelConfiguration.Id);
-            //    if (_isGameRunning)
-            //    {
-            //        _context.VideoPlayerController.StopAllVideos();
-            //        return;
-            //    }
-            //}
+#endif
+            EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
+            if (emulator != null)
+            {
+                _isGameRunning = _externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id);
+                if (_isGameRunning)
+                {
+                    _context.VideoPlayerController.StopAllVideos();
+                    return;
+                }
+            }
 
             _context.TransitionTo<ArcadeFpsNormalState>();
         }
@@ -69,12 +69,10 @@ namespace Arcade
                 return;
 
             _externalAppController.StopCurrent();
+#if UNITY_EDITOR_WIN
             RestoreUnityWindow();
-
-            //if (_context.CurrentArcadeType == ArcadeType.Fps)
-            //    _context.TransitionTo<SceneFpsNormalState>();
-            //else if (_context.CurrentArcadeType == ArcadeType.Cyl)
-            //    _context.TransitionTo<SceneCylNormalState>();
+#endif
+            _context.TransitionToPrevious();
         }
 
         private void OnAppStarted(OSUtils.ProcessStartedData data, EmulatorConfiguration emulator, string game)
@@ -93,13 +91,6 @@ namespace Arcade
             _ = SetForegroundWindow(_editorHwnd);
             CursorUtils.ToggleMouseCursor();
             CursorUtils.ToggleMouseCursor();
-        }
-#else
-        private void SaveUnityWindow()
-        {
-        }
-        private void RestoreUnityWindow()
-        {
         }
 #endif
     }

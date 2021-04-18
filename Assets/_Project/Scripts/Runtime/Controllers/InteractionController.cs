@@ -20,48 +20,111 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-/*
-using System;
 using UnityEngine;
 
 namespace Arcade
 {
-    public static class InteractionController
+    public sealed class InteractionController
     {
-        public static event Action<ModelConfigurationComponent> OnCurrentModelConfigurationChanged;
+        public ModelConfiguration CurrentTarget { get; private set; }
 
-        public static void FindInteractable(ref ModelConfigurationComponent modelConfigurationComponent, Camera camera, float maxDistance, LayerMask layers)
+        private Camera _camera;
+        private ModelConfigurationComponent _modelConfiguration;
+
+        public void Initialize(Camera camera) => _camera = camera;
+
+        public void FindInteractable(LayerMask raycastLayers, float raycastMaxDistance)
         {
-            Ray ray = camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layers))
+            if (_camera == null)
+                return;
+
+            Ray ray = _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, raycastMaxDistance, raycastLayers))
             {
-                ModelConfigurationComponent hitModelConfigurationComponent = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
-                if (hitModelConfigurationComponent != null)
-                {
-                    if (hitModelConfigurationComponent != modelConfigurationComponent)
-                    {
-                        modelConfigurationComponent = hitModelConfigurationComponent;
-                        OnCurrentModelConfigurationChanged?.Invoke(modelConfigurationComponent);
-                    }
-                }
-                else
-                {
-                    modelConfigurationComponent = null;
-                    OnCurrentModelConfigurationChanged?.Invoke(null);
-                }
+                _modelConfiguration = null;
+                return;
             }
-            else
-            {
-                modelConfigurationComponent = null;
-                OnCurrentModelConfigurationChanged?.Invoke(null);
-            }
+
+            ModelConfigurationComponent currentTarget = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
+            if (currentTarget != _modelConfiguration)
+                _modelConfiguration = currentTarget;
         }
 
-        public static void FindInteractable(ref ModelConfigurationComponent modelConfigurationComponent, ArcadeController arcadeController)
+        public void HandleInteraction(ArcadeContext arcadeContext)
         {
-            modelConfigurationComponent = arcadeController.CurrentGame;
-            OnCurrentModelConfigurationChanged?.Invoke(modelConfigurationComponent);
+            if (_modelConfiguration == null)
+                return;
+
+            CurrentTarget = _modelConfiguration.ToModelConfiguration();
+
+            switch (CurrentTarget.InteractionType)
+            {
+                case InteractionType.Default:
+                case InteractionType.GameInternal:
+                case InteractionType.GameExternal:
+                {
+                    bool foundPlatform         = arcadeContext.Databases.Platforms.TryGet(CurrentTarget.Platform, out PlatformConfiguration platform);
+                    bool foundEmulatorOverride = arcadeContext.Databases.Emulators.TryGet(CurrentTarget.Overrides.Emulator, out EmulatorConfiguration emulator);
+                    if (foundPlatform && !foundEmulatorOverride)
+                        _ = arcadeContext.Databases.Emulators.TryGet(platform.Emulator, out emulator);
+
+                    CurrentTarget.EmulatorConfiguration = emulator;
+
+                    HandleEmulatorInteraction(arcadeContext);
+                }
+                break;
+                case InteractionType.FpsArcadeConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.Normal);
+                    break;
+                case InteractionType.CylArcadeConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Cyl, ArcadeMode.Normal);
+                    break;
+                case InteractionType.FpsMenuConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.RenderTexture);
+                    break;
+                case InteractionType.CylMenuConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Cyl, ArcadeMode.RenderTexture);
+                    break;
+                case InteractionType.URL:
+                default:
+                    break;
+            }
+
+            CurrentTarget = null;
+        }
+
+        private void HandleEmulatorInteraction(ArcadeContext arcadeContext)
+        {
+            if (CurrentTarget.EmulatorConfiguration == null)
+                return;
+
+            switch (CurrentTarget.EmulatorConfiguration.InteractionType)
+            {
+                case InteractionType.GameInternal:
+                    arcadeContext.TransitionTo<ArcadeInternalGameState>();
+                    break;
+                case InteractionType.GameExternal:
+                    arcadeContext.TransitionTo<ArcadeExternalGameState>();
+                    break;
+                case InteractionType.FpsArcadeConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.Normal);
+                    break;
+                case InteractionType.CylArcadeConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Cyl, ArcadeMode.Normal);
+                    break;
+                case InteractionType.FpsMenuConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Fps, ArcadeMode.RenderTexture);
+                    break;
+                case InteractionType.CylMenuConfiguration:
+                    arcadeContext.StartArcade(CurrentTarget.Id, ArcadeType.Cyl, ArcadeMode.RenderTexture);
+                    break;
+                case InteractionType.Default:
+                case InteractionType.URL:
+                default:
+                    break;
+            }
+
+            CurrentTarget = null;
         }
     }
 }
-*/

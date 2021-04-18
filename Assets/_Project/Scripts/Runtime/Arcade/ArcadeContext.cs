@@ -37,6 +37,7 @@ namespace Arcade
 
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
+        public readonly InteractionController InteractionController;
         public readonly IUIController UIController;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
@@ -45,10 +46,7 @@ namespace Arcade
 
         private ArcadeController _arcadeController;
 
-        //public PlayerControls CurrentPlayerControls;
-        //public ModelConfigurationComponent CurrentModelConfiguration;
         public VideoPlayerControllerBase VideoPlayerController { get; private set; }
-        //public LayerMask RaycastLayers => LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Selection");
 
         public ArcadeContext(InputActions inputActions,
                              Player player,
@@ -57,6 +55,7 @@ namespace Arcade
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
                              NodeControllers nodeControllers,
+                             InteractionController interactionController,
                              IUIController uiController)
         {
             InputActions            = inputActions;
@@ -66,6 +65,7 @@ namespace Arcade
             Scenes                  = scenes;
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
+            InteractionController   = interactionController;
             UIController            = uiController;
         }
 

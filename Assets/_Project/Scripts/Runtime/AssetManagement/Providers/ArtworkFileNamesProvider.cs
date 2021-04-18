@@ -43,7 +43,11 @@ namespace Arcade
             _ = _platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform);
             _ = _emulatorDatabase.TryGet(cfg.Overrides.Emulator, out EmulatorConfiguration overrideEmulator);
             _ = _emulatorDatabase.TryGet(platform?.Emulator, out EmulatorConfiguration platformEmulator);
-            _ = _gameDatabase.TryGet(platform?.MasterList, cfg.Id, new string[] { "CloneOf", "RomOf" }, new string[] { "Name" }, out GameConfiguration game);
+
+            string[] gameReturnFields = new string[] { "CloneOf", "RomOf" };
+            string[] gameSearchFields = new string[] { "Name" };
+            if (!_gameDatabase.TryGet(platform?.MasterList, cfg.Overrides.Game.Name, gameReturnFields, gameSearchFields, out GameConfiguration game))
+                _ = _gameDatabase.TryGet(platform?.MasterList, cfg.Id, gameReturnFields, gameSearchFields, out game);
 
             ImageSequence imageSequence = new ImageSequence();
 
