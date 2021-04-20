@@ -29,36 +29,35 @@ namespace Arcade
         [SerializeField] private GameObject _fpsController;
         [SerializeField] private GameObject _cylController;
 
-        public Transform GetActiveTransform(ArcadeType arcadeType) => arcadeType switch
-        {
-            ArcadeType.Fps => _fpsController.transform,
-            ArcadeType.Cyl => _cylController.transform,
-            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}"),
-        };
+        public bool Active { get; private set; }
 
-        public Camera GetActiveCamera(ArcadeType arcadeType) => arcadeType switch
-        {
-            ArcadeType.Fps => _fpsController.GetComponent<PlayerFpsController>().Camera,
-            ArcadeType.Cyl => _cylController.GetComponent<PlayerCylController>().Camera,
-            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}"),
-        };
+        public Transform ActiveTransform => _fpsController.activeInHierarchy
+                                          ? _fpsController.transform
+                                          : _cylController.transform;
+
+        public Camera ActiveCamera => _fpsController.activeInHierarchy
+                                    ? _fpsController.GetComponent<CameraReference>().Camera
+                                    : _cylController.GetComponent<CameraReference>().Camera;
 
         public void EnableFpsController()
         {
             _cylController.SetActive(false);
             _fpsController.SetActive(true);
+            Active = true;
         }
 
         public void EnableCylController()
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(true);
+            Active = true;
         }
 
         public void Disable()
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(false);
+             Active = false;
         }
     }
 }

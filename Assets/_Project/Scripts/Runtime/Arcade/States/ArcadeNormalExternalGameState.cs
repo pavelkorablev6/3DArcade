@@ -28,13 +28,12 @@ namespace Arcade
 {
     public sealed class ArcadeNormalExternalGameState : ArcadeState
     {
-        private readonly ExternalAppController _externalAppController;
-
         private bool _appRunning;
 
         public ArcadeNormalExternalGameState(ArcadeContext context)
         : base(context)
-            => _externalAppController = new ExternalAppController();
+        {
+        }
 
         public override void OnEnter()
         {
@@ -42,18 +41,15 @@ namespace Arcade
 
             _context.VideoPlayerController.StopAllVideos();
 
-            _externalAppController.OnAppStarted += OnAppStarted;
-            _externalAppController.OnAppExited  += OnAppExited;
+            _context.ExternalGameController.OnAppStarted += OnAppStarted;
+            _context.ExternalGameController.OnAppExited  += OnAppExited;
 
 #if UNITY_EDITOR_WIN
             SaveUnityWindow();
 #endif
             EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (!_externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
-            {
+            if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
                 _context.TransitionToPrevious();
-                return;
-            }
 
             _appRunning = true;
         }
@@ -62,8 +58,8 @@ namespace Arcade
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            _externalAppController.OnAppStarted -= OnAppStarted;
-            _externalAppController.OnAppExited  -= OnAppExited;
+            _context.ExternalGameController.OnAppStarted -= OnAppStarted;
+            _context.ExternalGameController.OnAppExited  -= OnAppExited;
         }
 
         public override void OnUpdate(float dt)
@@ -71,7 +67,7 @@ namespace Arcade
             if (_appRunning)
                 return;
 
-            _externalAppController.StopCurrent();
+            _context.ExternalGameController.StopCurrent();
 #if UNITY_EDITOR_WIN
             RestoreUnityWindow();
 #endif

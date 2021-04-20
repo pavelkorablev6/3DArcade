@@ -23,65 +23,55 @@
 using SK.Libretro.Unity;
 using SK.Utilities.Unity;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Video;
+using Zenject;
 
 namespace Arcade
 {
     public sealed class InternalGameController
     {
-        private static Material _screenMaterial;
+        public readonly Material ScreenMaterial;
 
-        private readonly Transform _player;
+        private readonly Player _player;
 
-        private LibretroBridge _libretroBridge                   = null;
-        private ScreenNodeTag _screenNode                        = null;
-        //private DynamicArtworkComponent _dynamicArtworkComponent = null;
-        private VideoRenderMode _originalVideoRenderMode         = VideoRenderMode.MaterialOverride;
+        private LibretroBridge _libretroBridge;
+        private ScreenNodeTag _screenNode;
 
-        public InternalGameController(Transform player)
+        public InternalGameController(Player player, [Inject(Id = "LibretroScreenMaterial")] Material screenMaterial)
         {
-            Assert.IsNotNull(player);
-            if (_player == null)
-                _player = player;
-
-            if (_screenMaterial == null)
-                _screenMaterial = Resources.Load<Material>("Materials/ScreenMaterial");
+            _player        = player;
+            ScreenMaterial = screenMaterial;
         }
 
-        public bool StartGame(ScreenNodeTag screenNodeTag, string core, string[] gameDirectories, string gameName)
+        public bool StartGame(ScreenNodeTag screenNodeTag, ModelConfiguration modelConfiguration)
         {
             ResetFields();
 
-            Assert.IsNotNull(screenNodeTag);
+            if (screenNodeTag == null)
+                return false;
+
+            if (modelConfiguration == null)
+                return false;
+
+            EmulatorConfiguration emulator = modelConfiguration.EmulatorConfiguration;
+            if (emulator == null)
+                return false;
+
             _screenNode = screenNodeTag;
 
-            if (!_screenNode.TryGetComponent(out Renderer _))
-                return false;
-
-            if (string.IsNullOrEmpty(core) || gameDirectories == null || gameDirectories.Length < 1 || string.IsNullOrEmpty(gameName))
-                return false;
-
-            //if (_screenNode.TryGetComponent(out _dynamicArtworkComponent))
-            //    _dynamicArtworkComponent.EnableCycling = false;
-
             LibretroScreenNode screenNode = screenNodeTag.gameObject.AddComponentIfNotFound<LibretroScreenNode>();
-            _libretroBridge = new LibretroBridge(screenNode, _player);
+            _libretroBridge = new LibretroBridge(screenNode, _player.ActiveTransform);
 
-            foreach (string gameDirectory in gameDirectories)
+            foreach (string gameDirectory in emulator.GamesDirectories)
             {
-                if (_libretroBridge.Start(core, gameDirectory, gameName))
+                if (!_libretroBridge.Start(emulator.Id, gameDirectory, modelConfiguration.Id))
                 {
-                    _screenNode.GetComponent<Renderer>().material = _screenMaterial;
-                    _libretroBridge.InputEnabled = true;
-
-                    SaveVideoPlayerRenderMode();
-                    SetVideoPlayerRenderState(false);
-
-                    return true;
+                    _libretroBridge.Stop();
+                    continue;
                 }
-                else
-                    StopGame();
+
+                _libretroBridge.InputEnabled = true;
+
+                return true;
             }
 
             StopGame();
@@ -93,46 +83,19 @@ namespace Arcade
 
         public void StopGame()
         {
-            RestoreVideoPlayerRenderMode();
-
             _libretroBridge?.Stop();
             _libretroBridge = null;
 
-            if (_screenNode != null && _screenNode.gameObject.TryGetComponent(out LibretroScreenNode screenNode))
-                Object.Destroy(screenNode);
-
-            //if (_dynamicArtworkComponent != null)
-            //    _dynamicArtworkComponent.EnableCycling = true;
+            if (_screenNode != null && _screenNode.gameObject.TryGetComponent(out LibretroScreenNode libretroScreenNode))
+                Object.Destroy(libretroScreenNode);
 
             ResetFields();
         }
 
-        private void SaveVideoPlayerRenderMode()
-        {
-            if (_screenNode != null && _screenNode.TryGetComponent(out VideoPlayer videoPlayer))
-                _originalVideoRenderMode = videoPlayer.renderMode;
-            else
-                _originalVideoRenderMode = VideoRenderMode.MaterialOverride;
-        }
-
-        private void SetVideoPlayerRenderState(bool enabled)
-        {
-            if (_screenNode != null && _screenNode.TryGetComponent(out VideoPlayer videoPlayer))
-                videoPlayer.renderMode = enabled ? VideoRenderMode.MaterialOverride : VideoRenderMode.APIOnly;
-        }
-
-        private void RestoreVideoPlayerRenderMode()
-        {
-            if (_screenNode != null && _screenNode.TryGetComponent(out VideoPlayer videoPlayer))
-                videoPlayer.renderMode = _originalVideoRenderMode;
-        }
-
         private void ResetFields()
         {
-            _libretroBridge          = null;
-            _screenNode              = null;
-            //_dynamicArtworkComponent = null;
-            _originalVideoRenderMode = VideoRenderMode.MaterialOverride;
+            _libretroBridge = null;
+            _screenNode     = null;
         }
     }
 }

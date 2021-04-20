@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,13 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class ArcadeNormalInternalGameState : ArcadeInternalGameState
+    public sealed class CameraReference : MonoBehaviour
     {
-        public ArcadeNormalInternalGameState(ArcadeContext context)
-        : base(context)
-        {
-        }
+        [SerializeField] private Camera _camera;
+
+        public Camera Camera => _camera;
     }
 }

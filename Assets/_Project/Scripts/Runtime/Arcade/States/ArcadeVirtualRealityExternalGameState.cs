@@ -31,31 +31,29 @@ namespace Arcade
     {
         public static Material UDDMaterial;
 
-        private readonly ExternalAppController _externalAppController;
-
         private ScreenNodeTag[] _screenNodes;
         private Queue<Material> _savedMaterials;
-        private bool _appRunning;
+        private bool _gameRunning;
 
         public ArcadeVirtualRealityExternalGameState(ArcadeContext context)
         : base(context)
-            => _externalAppController = new ExternalAppController();
+        {
+        }
 
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            _context.VideoPlayerController.StopAllVideos();
+            _context.VideoPlayerController.StopCurrentVideo();
 
-            _externalAppController.OnAppStarted += OnAppStarted;
-            _externalAppController.OnAppExited  += OnAppExited;
-
-            _screenNodes = _context.InteractionController.CurrentTargetComponent.GetComponentsInChildren<ScreenNodeTag>();
-
-            if (_screenNodes == null)
-                return;
+            _context.ExternalGameController.OnAppStarted += OnAppStarted;
+            _context.ExternalGameController.OnAppExited  += OnAppExited;
 
             _savedMaterials = new Queue<Material>();
+
+            _screenNodes = _context.InteractionController.CurrentTargetComponent.GetComponentsInChildren<ScreenNodeTag>();
+            if (_screenNodes == null)
+                return;
 
             foreach (ScreenNodeTag screenNode in _screenNodes)
             {
@@ -71,21 +69,21 @@ namespace Arcade
             }
 
             EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (!_externalAppController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
+            if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
             {
                 _context.TransitionToPrevious();
                 return;
             }
 
-            _appRunning = true;
+            _gameRunning = true;
         }
 
         public override void OnUpdate(float dt)
         {
-            if (_appRunning)
+            if (_gameRunning)
                 return;
 
-            _externalAppController.StopCurrent();
+            _context.ExternalGameController.StopCurrent();
 
             if (_screenNodes == null)
                 return;
@@ -109,14 +107,14 @@ namespace Arcade
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            _externalAppController.OnAppStarted -= OnAppStarted;
-            _externalAppController.OnAppExited  -= OnAppExited;
+            _context.ExternalGameController.OnAppStarted -= OnAppStarted;
+            _context.ExternalGameController.OnAppExited  -= OnAppExited;
         }
 
         private void OnAppStarted(OSUtils.ProcessStartedData data, EmulatorConfiguration emulator, string game)
         {
         }
 
-        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _appRunning = false;
+        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _gameRunning = false;
     }
 }

@@ -69,6 +69,11 @@ namespace Arcade
             _ = Container.Bind<UIManager>().FromComponentInHierarchy(true).AsSingle();
             _ = Container.Bind<UIContext>().AsSingle().NonLazy();
 
+            _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
+
+            _ = Container.Bind<Material>().WithId("LibretroScreenMaterial").FromResource("Materials/_screen").AsSingle();
+            _ = Container.Bind<InternalGameController>().AsSingle().NonLazy();
+
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }
     }

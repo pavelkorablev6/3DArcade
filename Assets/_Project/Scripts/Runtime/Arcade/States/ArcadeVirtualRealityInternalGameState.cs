@@ -20,56 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityInternalGameState : ArcadeState
+    public sealed class ArcadeVirtualRealityInternalGameState : ArcadeInternalGameState
     {
-        //private readonly InternalGameController _libretroController;
-
         public ArcadeVirtualRealityInternalGameState(ArcadeContext context)
         : base(context)
         {
-            //_libretroController = new InternalGameController(_context.CurrentPlayerControls.transform);
-        }
-
-        public override void OnEnter()
-        {
-            Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-
-            //ScreenNodeTag screenNodeTag = _context.CurrentModelConfiguration.GetComponentInChildren<ScreenNodeTag>(true);
-            //if (screenNodeTag != null)
-            //{
-            //    EmulatorConfiguration emulator = _context.GetEmulatorForCurrentModelConfiguration();
-            //    if (emulator != null)
-            //    {
-            //        if (_libretroController.StartGame(screenNodeTag, emulator.Executable, emulator.GamesDirectories, _context.CurrentModelConfiguration.Id))
-            //        {
-            //            _context.VideoPlayerController?.StopAllVideos();
-            //            return;
-            //        }
-            //    }
-            //}
-
-            //if (_context.CurrentArcadeType == ArcadeType.Fps)
-            //    _context.TransitionTo<FpsNormalState>();
-            //else if (_context.CurrentArcadeType == ArcadeType.Cyl)
-            //    _context.TransitionTo<CylNormalState>();
-        }
-
-        public override void OnExit()
-        {
-            Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
-            //_libretroController.StopGame();
-        }
-
-        public override void OnUpdate(float dt)
-        {
-            //_libretroController.UpdateGame();
-
-            if (_context.InputActions.Global.Quit.triggered)
-                _context.TransitionToPrevious();
         }
     }
 }

@@ -53,15 +53,11 @@ namespace Arcade
         protected override void SetupPlayer()
         {
             if (_arcadeContext.GeneralConfiguration.EnableVR)
-            {
                 _arcadeContext.Player.TransitionTo<PlayerVirtualRealityFpsState>();
-                _arcadeContext.InteractionController?.Initialize(_arcadeContext.Player.GetVirtualRealityCamera());
-            }
             else
-            {
                 _arcadeContext.Player.TransitionTo<PlayerNormalFpsState>();
-                _arcadeContext.InteractionController?.Initialize(_arcadeContext.Player.GetNormalCamera(_arcadeContext.ArcadeType));
-            }
+
+            _arcadeContext.InteractionController?.Initialize(_arcadeContext.Player.ActiveCamera);
 
             //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
 

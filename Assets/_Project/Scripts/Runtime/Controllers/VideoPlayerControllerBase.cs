@@ -20,27 +20,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.Video;
 
 namespace Arcade
 {
     public abstract class VideoPlayerControllerBase
     {
-        public virtual void SetPlayer(ArcadeType arcadeType, Player player)
+        protected const int NUM_CABS_WITH_VIDEOS_PLAYING = 3;
+
+        protected readonly List<VideoPlayer> _activeVideos = new List<VideoPlayer>();
+
+        protected readonly Player _player;
+
+        protected VideoPlayerControllerBase(Player player) => _player = player;
+
+        public void UpdateVideosState()
         {
+            VideoPlayer[] toEnable = GetVideosToEnable();
+
+            foreach (VideoPlayer videoPlayer in toEnable)
+            {
+                if (!_activeVideos.Contains(videoPlayer))
+                    _activeVideos.Add(videoPlayer);
+
+                PlayVideo(videoPlayer);
+            }
+
+            VideoPlayer[] toDisable = _activeVideos.Except(toEnable).ToArray();
+            foreach (VideoPlayer videoPlayer in toDisable)
+            {
+                StopVideo(videoPlayer);
+                _ = _activeVideos.Remove(videoPlayer);
+            }
         }
 
-        public virtual void UpdateVideosState()
+        public virtual void StopCurrentVideo()
         {
+            if (_activeVideos.Count == 0)
+                return;
+
+            StopVideo(_activeVideos[0]);
         }
 
-        public virtual void StopAllVideos()
+        public void StopAllVideos()
         {
+            foreach (VideoPlayer videoPlayer in _activeVideos)
+                StopVideo(videoPlayer);
+            _activeVideos.Clear();
         }
 
         public static void PlayVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, true);
 
         public static void StopVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, false);
+
+        protected abstract VideoPlayer[] GetVideosToEnable();
 
         private static void VideoSetPlayingState(VideoPlayer videoPlayer, bool state)
         {

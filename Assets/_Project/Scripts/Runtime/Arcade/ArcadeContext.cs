@@ -32,13 +32,13 @@ namespace Arcade
         public readonly Player Player;
         public readonly GeneralConfiguration GeneralConfiguration;
         public readonly Databases Databases;
-
         public readonly Scenes Scenes;
-
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
         public readonly InteractionController InteractionController;
         public readonly UIManager UIManager;
+        public readonly ExternalGameController ExternalGameController;
+        public readonly InternalGameController InternalGameController;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeType ArcadeType { get; private set; }
@@ -56,8 +56,11 @@ namespace Arcade
                              AssetAddressesProviders assetAddressesProviders,
                              NodeControllers nodeControllers,
                              InteractionController interactionController,
-                             UIManager uiManager)
+                             UIManager uiManager,
+                             ExternalGameController externalGameController,
+                             InternalGameController internalGameController)
         {
+
             InputActions            = inputActions;
             Player                  = player;
             GeneralConfiguration    = generalConfiguration;
@@ -67,6 +70,8 @@ namespace Arcade
             NodeControllers         = nodeControllers;
             InteractionController   = interactionController;
             UIManager               = uiManager;
+            ExternalGameController  = externalGameController;
+            InternalGameController  = internalGameController;
         }
 
         public void StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
@@ -93,7 +98,7 @@ namespace Arcade
             {
                 case ArcadeType.Fps:
                 {
-                    VideoPlayerController = new FpsArcadeVideoPlayerController(LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
+                    VideoPlayerController = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
                     _arcadeController     = new FpsArcadeController(this);
                 }
                 break;

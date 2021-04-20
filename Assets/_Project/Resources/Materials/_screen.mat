@@ -257,7 +257,7 @@ Material:
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
     - _ImageType: 0
-    - _Intensity: 1.8
+    - _Intensity: 1.14
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1

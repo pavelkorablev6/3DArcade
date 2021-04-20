@@ -665,6 +665,7 @@ GameObject:
   - component: {fileID: 760113835}
   - component: {fileID: 760113834}
   - component: {fileID: 760113832}
+  - component: {fileID: 760113833}
   m_Layer: 0
   m_Name: CylControls_VR
   m_TagString: Untagged
@@ -700,6 +701,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71d1996d67004241a3b69960856ffcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &760113833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760113830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9d9a6f748ac9d4092081909c6991c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 1935067665}
 --- !u!114 &760113834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1465,7 @@ GameObject:
   - component: {fileID: 1457968337}
   m_Layer: 0
   m_Name: MainCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1642,7 +1656,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.90581393, y: 1}
+    m_SensorSize: {x: 0.8176101, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -1758,6 +1772,7 @@ GameObject:
   - component: {fileID: 1613447069}
   - component: {fileID: 1613447071}
   - component: {fileID: 1613447070}
+  - component: {fileID: 1613447072}
   m_Layer: 0
   m_Name: CylControls
   m_TagString: Untagged
@@ -1817,6 +1832,19 @@ CharacterController:
   m_SkinWidth: 0.04
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1613447072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613447068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9d9a6f748ac9d4092081909c6991c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 1457968340}
 --- !u!1 &1640022273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,6 +1856,7 @@ GameObject:
   - component: {fileID: 1640022277}
   - component: {fileID: 1640022276}
   - component: {fileID: 1640022274}
+  - component: {fileID: 1640022275}
   m_Layer: 0
   m_Name: FpsControls
   m_TagString: Untagged
@@ -1855,6 +1884,19 @@ MonoBehaviour:
   _runSpeed: 6
   _jumpForce: 10
   _extraGravity: 40
+--- !u!114 &1640022275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640022273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9d9a6f748ac9d4092081909c6991c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 1457968340}
 --- !u!143 &1640022276
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2598,6 +2640,7 @@ GameObject:
   - component: {fileID: 299866397382268347}
   - component: {fileID: 299866397395148921}
   - component: {fileID: 299866397389784205}
+  - component: {fileID: 299866397395148916}
   m_Layer: 0
   m_Name: FpsControls_VR
   m_TagString: Untagged
@@ -2605,6 +2648,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &299866397395148916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299866397395148915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9d9a6f748ac9d4092081909c6991c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 299866397395068619}
 --- !u!1 &299866397395148917
 GameObject:
   m_ObjectHideFlags: 0

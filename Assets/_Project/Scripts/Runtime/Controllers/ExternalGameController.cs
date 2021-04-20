@@ -25,17 +25,17 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ExternalAppController
+    public sealed class ExternalGameController
     {
         public event System.Action<OSUtils.ProcessStartedData, EmulatorConfiguration, string> OnAppStarted;
         public event System.Action<OSUtils.ProcessExitedData, EmulatorConfiguration, string> OnAppExited;
 
-        private readonly OSUtils.ProcessLauncher _processLauncher;
-
-        public ExternalAppController() => _processLauncher = new OSUtils.ProcessLauncher(Debug.Log, Debug.LogWarning, Debug.LogError);
+        private OSUtils.ProcessLauncher _processLauncher;
 
         public bool StartGame(EmulatorConfiguration emulator, string gameName, bool persistent = false)
         {
+            _processLauncher ??= new OSUtils.ProcessLauncher(Debug.Log, Debug.LogWarning, Debug.LogError);
+
             if (string.IsNullOrEmpty(gameName))
             {
                 Debug.LogError("[ExternalGameController.StartGame] game is null or empty.");

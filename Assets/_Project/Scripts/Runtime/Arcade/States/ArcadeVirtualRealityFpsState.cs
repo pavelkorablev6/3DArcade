@@ -45,7 +45,6 @@ namespace Arcade
                 _context.InputActions.FpsArcade.Look.Disable();
 
             _context.UIManager.TransitionTo<UIVirtualRealitySceneNormalState>();
-            _context.VideoPlayerController.SetPlayer(_context.ArcadeType, _context.Player);
         }
 
         public override void OnExit()

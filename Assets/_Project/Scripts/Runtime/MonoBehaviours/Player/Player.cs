@@ -37,20 +37,29 @@ namespace Arcade
 
         private void Start() => TransitionTo<PlayerDisabledState>();
 
-        public Transform GetActiveTransform(ArcadeType arcadeType)
+        public Transform ActiveTransform
         {
-            if (_playerContext.CurrentState is PlayerNormalFpsState || _playerContext.CurrentState is PlayerNormalCylState)
-                return _normalControls.GetActiveTransform(arcadeType);
-
-            if (_playerContext.CurrentState is PlayerVirtualRealityFpsState || _playerContext.CurrentState is PlayerVirtualRealityCylState)
-                return _virtualRealityControls.GetActiveTransform(arcadeType);
-
-            return null;
+            get
+            {
+                if (_normalControls.Active)
+                    return _normalControls.ActiveTransform;
+                if (_virtualRealityControls.Active)
+                    return _virtualRealityControls.ActiveTransform;
+                return null;
+            }
         }
 
-        public Camera GetNormalCamera(ArcadeType arcadeType) => _normalControls.GetActiveCamera(arcadeType);
-
-        public Camera GetVirtualRealityCamera() => _virtualRealityControls.GetComponentInChildren<Camera>(false);
+        public Camera ActiveCamera
+        {
+            get
+            {
+                if (_normalControls.Active)
+                    return _normalControls.ActiveCamera;
+                if (_virtualRealityControls.Active)
+                    return _virtualRealityControls.ActiveCamera;
+                return null;
+            }
+        }
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 
