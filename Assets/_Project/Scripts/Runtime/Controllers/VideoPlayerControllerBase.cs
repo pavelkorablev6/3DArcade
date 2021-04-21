@@ -56,14 +56,6 @@ namespace Arcade
             }
         }
 
-        public virtual void StopCurrentVideo()
-        {
-            if (_activeVideos.Count == 0)
-                return;
-
-            StopVideo(_activeVideos[0]);
-        }
-
         public void StopAllVideos()
         {
             foreach (VideoPlayer videoPlayer in _activeVideos)
@@ -71,9 +63,9 @@ namespace Arcade
             _activeVideos.Clear();
         }
 
-        public static void PlayVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, true);
+        public void PlayVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, true);
 
-        public static void StopVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, false);
+        public void StopVideo(VideoPlayer videoPlayer) => VideoSetPlayingState(videoPlayer, false);
 
         protected abstract VideoPlayer[] GetVideosToEnable();
 

@@ -20,65 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities;
 using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalExternalGameState : ArcadeState
+    public sealed class ArcadeNormalExternalGameState : ArcadeExternalGameStateBase
     {
-        private bool _appRunning;
-
         public ArcadeNormalExternalGameState(ArcadeContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter()
+        protected override void OnEnterState()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
             _context.VideoPlayerController.StopAllVideos();
 
-            _context.ExternalGameController.OnAppStarted += OnAppStarted;
-            _context.ExternalGameController.OnAppExited  += OnAppExited;
-
 #if UNITY_EDITOR_WIN
             SaveUnityWindow();
 #endif
-            EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
-                _context.TransitionToPrevious();
-
-            _appRunning = true;
         }
 
-        public override void OnExit()
+        protected override void OnExitState()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.ExternalGameController.OnAppStarted -= OnAppStarted;
-            _context.ExternalGameController.OnAppExited  -= OnAppExited;
-        }
-
-        public override void OnUpdate(float dt)
-        {
-            if (_appRunning)
-                return;
-
-            _context.ExternalGameController.StopCurrent();
 #if UNITY_EDITOR_WIN
             RestoreUnityWindow();
 #endif
-            _context.TransitionToPrevious();
         }
-
-        private void OnAppStarted(OSUtils.ProcessStartedData data, EmulatorConfiguration emulator, string game)
-        {
-        }
-
-        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _appRunning = false;
 
 #if UNITY_EDITOR_WIN
         [System.Runtime.InteropServices.DllImport("user32")] static extern uint GetActiveWindow();

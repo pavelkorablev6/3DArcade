@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalInternalGameState : ArcadeInternalGameState
+    public sealed class ArcadeNormalInternalGameState : ArcadeInternalGameStateBase
     {
         public ArcadeNormalInternalGameState(ArcadeContext context)
         : base(context)

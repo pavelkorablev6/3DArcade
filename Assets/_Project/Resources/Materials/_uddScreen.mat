@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: uDD_Screen_Standard
+  m_Name: _uddScreen
   m_Shader: {fileID: 4800000, guid: 2ca7b38c676bddd439a77a646a279a54, type: 3}
-  m_ShaderKeywords: INVERT_X _CULL_BACK _EMISSION _FORWARD_Y
-  m_LightmapFlags: 1
+  m_ShaderKeywords: _CULL_BACK _EMISSION _FORWARD_Y _USEBEND_ON
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Bend: 0
-    - _ColorScale: 1
+    - _ColorScale: 4
     - _Cull: 2
     - _Forward: 0
     - _Radius: 30

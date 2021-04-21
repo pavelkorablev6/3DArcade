@@ -21,17 +21,18 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace Arcade
 {
-    public abstract class ArcadeInternalGameState : ArcadeState
+    public abstract class ArcadeInternalGameStateBase : ArcadeState
     {
         private ScreenNodeTag _screenNode;
         private Renderer _screenRenderer;
         private Material _savedMaterial;
         private DynamicArtworkComponent _dynamicArtworkComponent;
 
-        public ArcadeInternalGameState(ArcadeContext context)
+        public ArcadeInternalGameStateBase(ArcadeContext context)
         : base(context)
         {
         }
@@ -47,7 +48,8 @@ namespace Arcade
             if (screenNodeTag == null)
                 _context.TransitionToPrevious();
 
-            _context.VideoPlayerController.StopCurrentVideo();
+            if (screenNodeTag.TryGetComponent(out VideoPlayer videoPlayer))
+                _context.VideoPlayerController.StopVideo(videoPlayer);
 
             if (!_context.InternalGameController.StartGame(screenNodeTag, _context.InteractionController.CurrentTarget))
                 _context.TransitionToPrevious();

@@ -20,101 +20,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities;
-using SK.Utilities.Unity;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityExternalGameState : ArcadeState
+    public sealed class ArcadeVirtualRealityExternalGameState : ArcadeExternalGameStateBase
     {
-        public static Material UDDMaterial;
-
-        private ScreenNodeTag[] _screenNodes;
-        private Queue<Material> _savedMaterials;
-        private bool _gameRunning;
+        private ScreenNodeTag _screenNode;
+        private Material _savedMaterial;
 
         public ArcadeVirtualRealityExternalGameState(ArcadeContext context)
         : base(context)
         {
         }
 
-        public override void OnEnter()
+        protected override void OnEnterState()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            _context.VideoPlayerController.StopCurrentVideo();
-
-            _context.ExternalGameController.OnAppStarted += OnAppStarted;
-            _context.ExternalGameController.OnAppExited  += OnAppExited;
-
-            _savedMaterials = new Queue<Material>();
-
-            _screenNodes = _context.InteractionController.CurrentTargetComponent.GetComponentsInChildren<ScreenNodeTag>();
-            if (_screenNodes == null)
-                return;
-
-            foreach (ScreenNodeTag screenNode in _screenNodes)
-            {
-                if (screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
-                    dynamicArtworkComponent.enabled = false;
-
-                Renderer renderer = screenNode.GetComponent<Renderer>();
-                _savedMaterials.Enqueue(renderer.material);
-                renderer.material = UDDMaterial;
-
-                uDesktopDuplication.Texture uddComponent = screenNode.gameObject.AddComponent<uDesktopDuplication.Texture>();
-                uddComponent.invertY = true;
-            }
-
-            EmulatorConfiguration emulator = _context.InteractionController.CurrentTarget.EmulatorConfiguration;
-            if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.CurrentTarget.Id))
-            {
+            _screenNode = _context.InteractionController.CurrentTargetComponent.GetComponentInChildren<ScreenNodeTag>();
+            if (_screenNode == null)
                 _context.TransitionToPrevious();
-                return;
-            }
 
-            _gameRunning = true;
+            if (_screenNode.TryGetComponent(out VideoPlayer videoPlayer))
+                _context.VideoPlayerController.StopVideo(videoPlayer);
+
+            if (_screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+                dynamicArtworkComponent.enabled = false;
+
+            Renderer renderer = _screenNode.GetComponent<Renderer>();
+            _savedMaterial    = renderer.material;
+            renderer.material = _context.ExternalGameController.ScreenMaterial;
+
+            uDesktopDuplication.Texture uddTexture = _screenNode.gameObject.AddComponent<uDesktopDuplication.Texture>();
+            uddTexture.invertY = true;
         }
 
-        public override void OnUpdate(float dt)
-        {
-            if (_gameRunning)
-                return;
-
-            _context.ExternalGameController.StopCurrent();
-
-            if (_screenNodes == null)
-                return;
-
-            foreach (ScreenNodeTag screenNode in _screenNodes)
-            {
-                if (screenNode.TryGetComponent(out uDesktopDuplication.Texture texture))
-                    ObjectUtils.DestroyObject(texture);
-
-                Renderer renderer = screenNode.GetComponent<Renderer>();
-                renderer.material = _savedMaterials.Dequeue();
-
-                if (screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
-                    dynamicArtworkComponent.enabled = true;
-            }
-
-            _context.TransitionToPrevious();
-        }
-
-        public override void OnExit()
+        protected override void OnExitState()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.ExternalGameController.OnAppStarted -= OnAppStarted;
-            _context.ExternalGameController.OnAppExited  -= OnAppExited;
-        }
+            if (_screenNode == null)
+                return;
 
-        private void OnAppStarted(OSUtils.ProcessStartedData data, EmulatorConfiguration emulator, string game)
-        {
-        }
+            if (_screenNode.TryGetComponent(out uDesktopDuplication.Texture uddTexture))
+                Object.Destroy(uddTexture);
 
-        private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game) => _gameRunning = false;
+            Renderer renderer = _screenNode.GetComponent<Renderer>();
+            renderer.material = _savedMaterial;
+
+            if (_screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+                dynamicArtworkComponent.enabled = true;
+        }
     }
 }

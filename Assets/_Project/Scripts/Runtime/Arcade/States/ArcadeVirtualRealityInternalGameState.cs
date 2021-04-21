@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityInternalGameState : ArcadeInternalGameState
+    public sealed class ArcadeVirtualRealityInternalGameState : ArcadeInternalGameStateBase
     {
         public ArcadeVirtualRealityInternalGameState(ArcadeContext context)
         : base(context)

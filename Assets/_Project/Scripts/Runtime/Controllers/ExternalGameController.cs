@@ -22,15 +22,20 @@
 
 using SK.Utilities;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
     public sealed class ExternalGameController
     {
-        public event System.Action<OSUtils.ProcessStartedData, EmulatorConfiguration, string> OnAppStarted;
-        public event System.Action<OSUtils.ProcessExitedData, EmulatorConfiguration, string> OnAppExited;
+        public readonly Material ScreenMaterial;
+
+        public event System.Action<OSUtils.ProcessStartedData, EmulatorConfiguration, string> OnGameStarted;
+        public event System.Action<OSUtils.ProcessExitedData, EmulatorConfiguration, string> OnGameExited;
 
         private OSUtils.ProcessLauncher _processLauncher;
+
+        public ExternalGameController([Inject(Id = "UDDScreenMaterial")] Material screenMaterial) => ScreenMaterial = screenMaterial;
 
         public bool StartGame(EmulatorConfiguration emulator, string gameName, bool persistent = false)
         {
@@ -48,21 +53,7 @@ namespace Arcade
                 return false;
             }
 
-            string extension = string.Empty;
-            if (emulator.SupportedExtensions != null)
-            {
-                foreach (string supportedExtension in emulator.SupportedExtensions)
-                {
-                    foreach (string gameDirectory in emulator.GamesDirectories)
-                    {
-                        if (FileSystem.FileExists($"{gameDirectory}/{gameName}.{supportedExtension}"))
-                        {
-                            extension = supportedExtension;
-                            break;
-                        }
-                    }
-                }
-            }
+            string extension = GetFileExtension(emulator, gameName);
 
             OSUtils.ProcessCommand command = new OSUtils.ProcessCommand
             {
@@ -75,16 +66,37 @@ namespace Arcade
                 CommandId        = gameName
             };
 
-            _processLauncher.StartProcess(command,
-                                          persistent,
-                                          (OSUtils.ProcessStartedData processStartedData) => OnAppStarted?.Invoke(processStartedData, emulator, gameName),
-                                          (OSUtils.ProcessExitedData processExitedData)   => OnAppExited?.Invoke(processExitedData, emulator, gameName));
+            return _processLauncher.StartProcess(command, persistent, processStartedCallback, processExitedCallback);
 
-            return true;
+            void processStartedCallback(OSUtils.ProcessStartedData processStartedData) => OnGameStarted?.Invoke(processStartedData, emulator, gameName);
+            void processExitedCallback(OSUtils.ProcessExitedData processExitedData) => OnGameExited?.Invoke(processExitedData, emulator, gameName);
         }
 
         public void StopCurrent() => _processLauncher.StopCurrentProcess();
 
         public void StopAll() => _processLauncher.StopAllProcesses();
+
+        private static string GetFileExtension(EmulatorConfiguration emulator, string gameName)
+        {
+            if (emulator.SupportedExtensions == null || emulator.GamesDirectories == null)
+                return null;
+            return ProcessExtensions(emulator.SupportedExtensions, emulator.GamesDirectories, gameName);
+        }
+
+        private static string ProcessExtensions(string[] extensions, string[] directories, string gameName)
+        {
+            foreach (string extension in extensions)
+                if (FoundGame(directories, gameName, extension))
+                    return extension;
+            return null;
+        }
+
+        private static bool FoundGame(string[] directories, string gameName, string extension)
+        {
+            foreach (string directory in directories)
+                if (FileSystem.FileExists($"{directory}/{gameName}.{extension}"))
+                    return true;
+            return false;
+        }
     }
 }

@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Bend: 0
-    - _ColorScale: 4
+    - _ColorScale: 1
     - _Cull: 2
     - _Forward: 0
     - _Radius: 30

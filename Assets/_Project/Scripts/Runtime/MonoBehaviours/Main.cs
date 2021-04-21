@@ -61,8 +61,6 @@ namespace Arcade
                                   .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
                                   .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
 
-            ArcadeVirtualRealityExternalGameState.UDDMaterial = _uddMaterial;
-
             _sceneContext.Start();
 
             //string mameSupportDirectory = $"{Application.streamingAssetsPath}/3darcade~/Dats";
