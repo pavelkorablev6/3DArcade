@@ -27,7 +27,7 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    public sealed class ArcadeSceneLoader : IArcadeSceneLoader
+    public sealed class EditorArcadeSceneLoader : IArcadeSceneLoader
     {
         public bool Loaded { get; set; } = false;
         public bool Loading => false;

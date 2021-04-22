@@ -21,18 +21,14 @@
  * SOFTWARE. */
 
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    public sealed class EntitiesSceneCreator : IEntititesSceneCreator
+    public sealed class EditorEntitiesSceneCreator : IEntititesSceneCreator
     {
         public Scene Create(string name)
         {
-            if (Application.isPlaying)
-                return SceneManager.CreateScene(name);
-
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             scene.name  = name;
             return scene;

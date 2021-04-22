@@ -35,11 +35,8 @@ namespace Arcade
         private readonly LayerMask _layerMask;
 
         public FpsArcadeVideoPlayerController(Player player, LayerMask layerMask)
-        : this(player) => _layerMask = layerMask;
-
-        private FpsArcadeVideoPlayerController(Player player) : base(player)
-        {
-        }
+        : base(player)
+            => _layerMask = layerMask;
 
         protected override VideoPlayer[] GetVideosToEnable()
         {

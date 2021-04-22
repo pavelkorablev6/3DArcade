@@ -66,11 +66,11 @@ namespace Arcade.UnityEditor
             IPrefabAddressesProvider propProvider        = new PropPrefabAddressesProvider();
             AssetAddressesProviders addressesProviders   = new AssetAddressesProviders(arcadeProvider, gameProvider, propProvider);
 
-            EntitiesSceneCreator entitiesSceneCreator = new EntitiesSceneCreator();
-            EntitiesScene entitiesScene               = new EntitiesScene(entitiesSceneCreator);
-            ArcadeSceneLoader arcadeSceneLoader       = new ArcadeSceneLoader();
-            ArcadeScene arcadeScene                   = new ArcadeScene(arcadeSceneLoader);
-            Scenes scenes                             = new Scenes(entitiesScene, arcadeScene);
+            EditorEntitiesSceneCreator entitiesSceneCreator = new EditorEntitiesSceneCreator();
+            EntitiesScene entitiesScene                     = new EntitiesScene(entitiesSceneCreator);
+            EditorArcadeSceneLoader arcadeSceneLoader       = new EditorArcadeSceneLoader();
+            ArcadeScene arcadeScene                         = new ArcadeScene(arcadeSceneLoader);
+            Scenes scenes                                   = new Scenes(entitiesScene, arcadeScene);
 
             ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null, null, null);
         }

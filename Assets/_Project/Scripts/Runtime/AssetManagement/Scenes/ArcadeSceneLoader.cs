@@ -32,7 +32,7 @@ namespace Arcade
 {
     public sealed class ArcadeSceneLoader : IArcadeSceneLoader
     {
-        public bool Loaded => _sceneInstance.Scene.IsValid() && _sceneInstance.Scene.isLoaded;
+        public bool Loaded { get; private set; }
         public bool Loading => _sceneHandle.IsValid() && !_sceneHandle.IsDone;
         public float LoadPercentCompleted => Loading ? _sceneHandle.PercentComplete : 0f;
 
@@ -44,6 +44,8 @@ namespace Arcade
 
         public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete)
         {
+            Loaded = false;
+
             if (_sceneHandle.IsValid())
                 Addressables.Release(_sceneHandle);
 
@@ -68,13 +70,15 @@ namespace Arcade
             if (_sceneInstance.Scene.isLoaded)
             {
                 _triggerSceneReload = true;
-                Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
+                UnloadScene();
                 return;
             }
 
             _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
             _sceneHandle.Completed += SceneLoadedCallback;
         }
+
+        private void UnloadScene() => Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
 
         private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
         {
@@ -86,12 +90,16 @@ namespace Arcade
             _onComplete?.Invoke();
 
             _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
+
+            Loaded = true;
         }
 
         private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
         {
-            if (_triggerSceneReload)
-                LoadScene();
+            if (!_triggerSceneReload)
+                return;
+
+            LoadScene();
             _triggerSceneReload = false;
         }
     }

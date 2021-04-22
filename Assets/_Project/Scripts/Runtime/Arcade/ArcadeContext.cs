@@ -79,7 +79,8 @@ namespace Arcade
             if (string.IsNullOrEmpty(id))
                 return;
 
-            Databases.Arcades.Initialize();
+            GeneralConfiguration.Initialize();
+            Databases.Initialize();
             if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
@@ -131,6 +132,7 @@ namespace Arcade
             }
 
             Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
+
             IEnumerable<AssetAddress> addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration, arcadeType);
             Scenes.Arcade.Load(addressesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
         }
