@@ -140,8 +140,6 @@ namespace Arcade
         protected override void OnStart()
         {
             GeneralConfiguration.Initialize();
-            Databases.Initialize();
-
             StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
         }
 

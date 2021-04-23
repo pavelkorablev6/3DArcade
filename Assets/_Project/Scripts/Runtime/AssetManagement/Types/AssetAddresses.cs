@@ -34,22 +34,23 @@ namespace Arcade
 
         private readonly string _extension;
         private readonly string _runtimePrefix;
+        private readonly string _editorPrefix;
 
-        public AssetAddresses(string extension, string runtimePrefix)
+        public AssetAddresses(string extension, string runtimePrefix, string editorPrefix = null)
         {
             _extension     = extension;
             _runtimePrefix = runtimePrefix;
+            _editorPrefix  = editorPrefix ?? _runtimePrefix;
         }
 
-        public void TryAdd(string name, string editorPrefix = null)
+        public void TryAdd(string name)
         {
             if (string.IsNullOrEmpty(name))
                 return;
 
             if (!Application.isPlaying)
             {
-                editorPrefix ??= _runtimePrefix;
-                Addresses.Add(new AssetAddress($"{EDITOR_ADDRESSABLES_PATH}{editorPrefix}{name}.{_extension}"));
+                Addresses.Add(new AssetAddress($"{EDITOR_ADDRESSABLES_PATH}{_editorPrefix}{name}.{_extension}"));
                 return;
             }
 

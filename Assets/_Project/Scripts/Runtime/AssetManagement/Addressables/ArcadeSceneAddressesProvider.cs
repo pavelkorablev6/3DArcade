@@ -35,16 +35,13 @@ namespace Arcade
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            AssetAddresses assetAddresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
-
             string cfgScene = GetSceneName(cfg, arcadeType);
-
             string editorPrefix = $"{ADDRESSABLES_PREFIX}{cfgScene}/";
 
-            assetAddresses.TryAdd(cfgScene, editorPrefix);
-            assetAddresses.TryAdd(cfg.Id, editorPrefix);
-            assetAddresses.TryAdd(DEFAULT_SCENE_NAME, editorPrefix);
-
+            AssetAddresses assetAddresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX, editorPrefix);
+            assetAddresses.TryAdd(cfgScene);
+            assetAddresses.TryAdd(cfg.Id);
+            assetAddresses.TryAdd(DEFAULT_SCENE_NAME);
             return assetAddresses.Addresses;
         }
 
