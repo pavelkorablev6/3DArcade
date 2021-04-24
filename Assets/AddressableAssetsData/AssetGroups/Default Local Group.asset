@@ -81,6 +81,10 @@ MonoBehaviour:
     m_Address: Props/_pink_cube
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 4670e51116b2334488fcea51409183fb
+    m_Address: Arcades/spaceport
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:

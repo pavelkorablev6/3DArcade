@@ -27,8 +27,11 @@ namespace Arcade
 {
     public sealed class Player : MonoBehaviour
     {
+        [SerializeField] private Camera _mainCamera;
         [SerializeField] private PlayerControls _normalControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
+
+        public Camera Camera => _mainCamera;
 
         private PlayerContext _playerContext;
 
@@ -45,18 +48,6 @@ namespace Arcade
                     return _normalControls.ActiveTransform;
                 if (_virtualRealityControls.Active)
                     return _virtualRealityControls.ActiveTransform;
-                return null;
-            }
-        }
-
-        public Camera ActiveCamera
-        {
-            get
-            {
-                if (_normalControls.Active)
-                    return _normalControls.ActiveCamera;
-                if (_virtualRealityControls.Active)
-                    return _virtualRealityControls.ActiveCamera;
                 return null;
             }
         }

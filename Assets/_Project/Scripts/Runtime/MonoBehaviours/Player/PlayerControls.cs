@@ -35,9 +35,9 @@ namespace Arcade
                                           ? _fpsController.transform
                                           : _cylController.transform;
 
-        public Camera ActiveCamera => _fpsController.activeInHierarchy
-                                    ? _fpsController.GetComponent<CameraReference>().Camera
-                                    : _cylController.GetComponent<CameraReference>().Camera;
+        //public Camera ActiveCamera => _fpsController.activeInHierarchy
+        //                            ? _fpsController.GetComponent<CameraReference>().Camera
+        //                            : _cylController.GetComponent<CameraReference>().Camera;
 
         public void EnableFpsController()
         {

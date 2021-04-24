@@ -20,35 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.IO;
-using UnityEditor;
-using UnityEditor.Presets;
+//using System.IO;
+//using UnityEditor;
+//using UnityEditor.Presets;
 
-namespace Arcade.UnityEditor
-{
-    internal sealed class UE_AutoApplyPresets : AssetPostprocessor
-    {
-        private void OnPreprocessModel()
-        {
-            if (assetImporter.importSettingsMissing)
-            {
-                string assetDirectory = Path.GetDirectoryName(assetPath);
-                while (!string.IsNullOrEmpty(assetDirectory))
-                {
-                    string[] presetGuids = AssetDatabase.FindAssets("t:Preset", new[] { assetDirectory });
-                    foreach (string presetGuid in presetGuids)
-                    {
-                        string presetPath = AssetDatabase.GUIDToAssetPath(presetGuid);
-                        if (Path.GetDirectoryName(presetPath) == assetDirectory)
-                        {
-                            Preset preset = AssetDatabase.LoadAssetAtPath<Preset>(presetPath);
-                            if (preset.ApplyTo(assetImporter))
-                                return;
-                        }
-                    }
-                    assetDirectory = Path.GetDirectoryName(assetDirectory);
-                }
-            }
-        }
-    }
-}
+//namespace Arcade.UnityEditor
+//{
+//    internal sealed class UE_AutoApplyPresets : AssetPostprocessor
+//    {
+//        private void OnPreprocessModel()
+//        {
+//            if (assetImporter.importSettingsMissing)
+//            {
+//                string assetDirectory = Path.GetDirectoryName(assetPath);
+//                while (!string.IsNullOrEmpty(assetDirectory))
+//                {
+//                    string[] presetGuids = AssetDatabase.FindAssets("t:Preset", new[] { assetDirectory });
+//                    foreach (string presetGuid in presetGuids)
+//                    {
+//                        string presetPath = AssetDatabase.GUIDToAssetPath(presetGuid);
+//                        if (Path.GetDirectoryName(presetPath) == assetDirectory)
+//                        {
+//                            Preset preset = AssetDatabase.LoadAssetAtPath<Preset>(presetPath);
+//                            if (preset.ApplyTo(assetImporter))
+//                                return;
+//                        }
+//                    }
+//                    assetDirectory = Path.GetDirectoryName(assetDirectory);
+//                }
+//            }
+//        }
+//    }
+//}
