@@ -49,9 +49,6 @@ namespace Arcade
             if (renderers == null)
                 return;
 
-            _artworkController.Initialize();
-            _directoryNamesProvider.Initialize();
-
             string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
             _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
             _artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);

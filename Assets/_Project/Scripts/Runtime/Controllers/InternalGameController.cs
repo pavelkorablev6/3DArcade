@@ -44,7 +44,7 @@ namespace Arcade
 
         public bool StartGame(ScreenNodeTag screenNodeTag, ModelConfiguration modelConfiguration)
         {
-            ResetFields();
+            StopGame();
 
             if (screenNodeTag == null)
                 return false;

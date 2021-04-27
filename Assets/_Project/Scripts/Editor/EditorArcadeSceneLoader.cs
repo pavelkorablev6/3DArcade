@@ -33,16 +33,14 @@ namespace Arcade.UnityEditor
         public bool Loading => false;
         public float LoadPercentCompleted => 100f;
 
-        public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete)
+        public void Load(AssetAddresses addressesToTry, System.Action onComplete)
         {
-            foreach (AssetAddress addressToTry in addressesToTry)
+            foreach (string addressToTry in addressesToTry)
             {
-                string address = addressToTry.Address;
-
-                System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(address);
+                System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(addressToTry);
                 if (assetType == typeof(SceneAsset))
                 {
-                    Scene scene = EditorSceneManager.OpenScene(address, OpenSceneMode.Additive);
+                    Scene scene = EditorSceneManager.OpenScene(addressToTry, OpenSceneMode.Additive);
                     onComplete?.Invoke();
                     _ = SceneManager.SetActiveScene(scene);
                     SceneVisibilityManager.instance.DisablePicking(scene);

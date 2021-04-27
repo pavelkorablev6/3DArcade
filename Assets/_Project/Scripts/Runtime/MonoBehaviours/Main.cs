@@ -30,16 +30,12 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
-        [SerializeField] private Material _uddMaterial;
-
-        private InputActions _inputActions;
         private IVirtualFileSystem _virtualFileSystem;
         private ArcadeContext _sceneContext;
 
         [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(InputActions inputActions, IVirtualFileSystem virtualFileSystem, ArcadeContext sceneContext)
+        private void Construct(IVirtualFileSystem virtualFileSystem, ArcadeContext sceneContext)
         {
-            _inputActions      = inputActions;
             _virtualFileSystem = virtualFileSystem;
             _sceneContext      = sceneContext;
         }
@@ -77,10 +73,6 @@ namespace Arcade
             //    Debug.LogException(e);
             //}
         }
-
-        private void OnEnable() => _inputActions.Global.Enable();
-
-        private void OnDisable() => _inputActions.Global.Disable();
 
 #if !UNITY_EDITOR
         private const int SLEEP_TIME = 200;

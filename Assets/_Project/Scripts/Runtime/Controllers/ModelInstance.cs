@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
@@ -76,6 +77,8 @@ namespace Arcade
 
             gameObject.AddComponent<ModelConfigurationComponent>()
                       .SetModelConfiguration(_modelConfiguration);
+
+            gameObject.AddComponent<XRSimpleInteractable>();
 
             _onModelSpawned?.Invoke(gameObject, _modelConfiguration);
         }

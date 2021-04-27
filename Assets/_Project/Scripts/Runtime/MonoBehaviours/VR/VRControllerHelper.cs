@@ -14,9 +14,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    /// <summary>
-    /// Simple helper script that conditionally enables rendering of a controller if it is connected.
-    /// </summary>
     public sealed class VRControllerHelper : MonoBehaviour
     {
         private enum ControllerType
@@ -26,39 +23,12 @@ namespace Arcade
             Quest2        = 3,
         }
 
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Quest And RiftS Controller model (Left).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchQuestAndRiftSLeftController;
-
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Quest And RiftS Controller model (Right).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchQuestAndRiftSRightController;
-
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Rift Controller model (Left).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchRiftLeftController;
-
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Rift Controller model (Right).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchRiftRightController;
-
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Quest 2 Controller model (Left).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchQuest2LeftController;
-
-        /// <summary>
-        /// The root GameObject that represents the Oculus Touch for Quest 2 Controller model (Right).
-        /// </summary>
         [SerializeField] private GameObject _modelOculusTouchQuest2RightController;
-
-        /// <summary>
-        /// The controller that determines whether or not to enable rendering of the controller model.
-        /// </summary>
         [SerializeField] private OVRInput.Controller _controller;
 
         private const string ANIMATOR_BUTTON_1_STRING   = "Button 1";
@@ -78,12 +48,9 @@ namespace Arcade
         private static int _animatorTriggerId;
         private static int _animatorGripId;
 
-        /// <summary>
-        /// The animator component that contains the controller animation controller for animating buttons and triggers.
-        /// </summary>
         private ControllerType _activeControllerType = ControllerType.Rift;
-        private bool _prevControllerConnected = false;
-        private bool _prevControllerConnectedCached = false;
+        private bool _prevControllerConnected        = false;
+        private bool _prevControllerConnectedCached  = false;
         private Animator _animator;
 
         private void Awake()
@@ -122,7 +89,6 @@ namespace Arcade
 
             Debug.LogFormat("OVRControllerHelp: Active controller type: {0} for product {1}", _activeControllerType, OVRPlugin.productName);
 
-            // Hide all controller models until controller get connected
             _modelOculusTouchQuestAndRiftSLeftController.SetActive(false);
             _modelOculusTouchQuestAndRiftSRightController.SetActive(false);
             _modelOculusTouchRiftLeftController.SetActive(false);
@@ -139,62 +105,65 @@ namespace Arcade
 
             if ((controllerConnected != _prevControllerConnected) || !_prevControllerConnectedCached)
             {
-                if (_activeControllerType == ControllerType.Rift)
-                {
-                    _modelOculusTouchQuestAndRiftSLeftController.SetActive(false);
-                    _modelOculusTouchQuestAndRiftSRightController.SetActive(false);
-                    _modelOculusTouchRiftLeftController.SetActive(controllerConnected && (_controller == OVRInput.Controller.LTouch));
-                    _modelOculusTouchRiftRightController.SetActive(controllerConnected && (_controller == OVRInput.Controller.RTouch));
-                    _modelOculusTouchQuest2LeftController.SetActive(false);
-                    _modelOculusTouchQuest2RightController.SetActive(false);
+                _modelOculusTouchQuestAndRiftSLeftController.SetActive(false);
+                _modelOculusTouchQuestAndRiftSRightController.SetActive(false);
+                _modelOculusTouchRiftLeftController.SetActive(false);
+                _modelOculusTouchRiftRightController.SetActive(false);
+                _modelOculusTouchQuest2LeftController.SetActive(false);
+                _modelOculusTouchQuest2RightController.SetActive(false);
 
-                    _animator = _controller == OVRInput.Controller.LTouch
-                        ? _modelOculusTouchRiftLeftController.GetComponent<Animator>()
-                        : _modelOculusTouchRiftRightController.GetComponent<Animator>();
-                }
-                else if (_activeControllerType == ControllerType.Quest2)
+                switch (_activeControllerType)
                 {
-                    _modelOculusTouchQuestAndRiftSLeftController.SetActive(false);
-                    _modelOculusTouchQuestAndRiftSRightController.SetActive(false);
-                    _modelOculusTouchRiftLeftController.SetActive(false);
-                    _modelOculusTouchRiftRightController.SetActive(false);
-                    _modelOculusTouchQuest2LeftController.SetActive(controllerConnected && (_controller == OVRInput.Controller.LTouch));
-                    _modelOculusTouchQuest2RightController.SetActive(controllerConnected && (_controller == OVRInput.Controller.RTouch));
+                    case ControllerType.QuestAndRiftS:
+                    {
+                        _modelOculusTouchQuestAndRiftSLeftController.SetActive(controllerConnected && _controller == OVRInput.Controller.LTouch);
+                        _modelOculusTouchQuestAndRiftSRightController.SetActive(controllerConnected && _controller == OVRInput.Controller.RTouch);
 
-                    _animator = _controller == OVRInput.Controller.LTouch
-                        ? _modelOculusTouchQuest2LeftController.GetComponent<Animator>()
-                        : _modelOculusTouchQuest2RightController.GetComponent<Animator>();
-                }
-                else /*if (activeControllerType == ControllerType.QuestAndRiftS)*/
-                {
-                    _modelOculusTouchQuestAndRiftSLeftController.SetActive(controllerConnected && (_controller == OVRInput.Controller.LTouch));
-                    _modelOculusTouchQuestAndRiftSRightController.SetActive(controllerConnected && (_controller == OVRInput.Controller.RTouch));
-                    _modelOculusTouchRiftLeftController.SetActive(false);
-                    _modelOculusTouchRiftRightController.SetActive(false);
-                    _modelOculusTouchQuest2LeftController.SetActive(false);
-                    _modelOculusTouchQuest2RightController.SetActive(false);
+                        _animator = _controller == OVRInput.Controller.LTouch
+                                  ? _modelOculusTouchQuestAndRiftSLeftController.GetComponent<Animator>()
+                                  : _modelOculusTouchQuestAndRiftSRightController.GetComponent<Animator>();
+                    }
+                    break;
+                    case ControllerType.Rift:
+                    {
+                        _modelOculusTouchRiftLeftController.SetActive(controllerConnected && _controller == OVRInput.Controller.LTouch);
+                        _modelOculusTouchRiftRightController.SetActive(controllerConnected && _controller == OVRInput.Controller.RTouch);
 
-                    _animator = _controller == OVRInput.Controller.LTouch
-                            ? _modelOculusTouchQuestAndRiftSLeftController.GetComponent<Animator>()
-                            : _modelOculusTouchQuestAndRiftSRightController.GetComponent<Animator>();
+                        _animator = _controller == OVRInput.Controller.LTouch
+                                  ? _modelOculusTouchRiftLeftController.GetComponent<Animator>()
+                                  : _modelOculusTouchRiftRightController.GetComponent<Animator>();
+                    }
+                    break;
+                    case ControllerType.Quest2:
+                    {
+                        _modelOculusTouchQuest2LeftController.SetActive(controllerConnected && _controller == OVRInput.Controller.LTouch);
+                        _modelOculusTouchQuest2RightController.SetActive(controllerConnected && _controller == OVRInput.Controller.RTouch);
+
+                        _animator = _controller == OVRInput.Controller.LTouch
+                                  ? _modelOculusTouchQuest2LeftController.GetComponent<Animator>()
+                                  : _modelOculusTouchQuest2RightController.GetComponent<Animator>();
+                    }
+                    break;
+                    default:
+                        throw new System.Exception($"Unhandled switch case for ControllerType: {_activeControllerType}");
                 }
 
                 _prevControllerConnected       = controllerConnected;
                 _prevControllerConnectedCached = true;
             }
 
-            if (_animator != null)
-            {
-                _animator.SetFloat(_animatorButton1Id, OVRInput.Get(OVRInput.Button.One, _controller) ? 1.0f : 0.0f);
-                _animator.SetFloat(_animatorButton2Id, OVRInput.Get(OVRInput.Button.Two, _controller) ? 1.0f : 0.0f);
-                _animator.SetFloat(_animatorButton3Id, OVRInput.Get(OVRInput.Button.Start, _controller) ? 1.0f : 0.0f);
+            if (_animator == null)
+                return;
 
-                _animator.SetFloat(_animatorJoystickXId, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, _controller).x);
-                _animator.SetFloat(_animatorJoystickYId, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, _controller).y);
+            _animator.SetFloat(_animatorButton1Id, OVRInput.Get(OVRInput.Button.One, _controller) ? 1.0f : 0.0f);
+            _animator.SetFloat(_animatorButton2Id, OVRInput.Get(OVRInput.Button.Two, _controller) ? 1.0f : 0.0f);
+            _animator.SetFloat(_animatorButton3Id, OVRInput.Get(OVRInput.Button.Start, _controller) ? 1.0f : 0.0f);
 
-                _animator.SetFloat(_animatorTriggerId, OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, _controller));
-                _animator.SetFloat(_animatorGripId, OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, _controller));
-            }
+            _animator.SetFloat(_animatorJoystickXId, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, _controller).x);
+            _animator.SetFloat(_animatorJoystickYId, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, _controller).y);
+
+            _animator.SetFloat(_animatorTriggerId, OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, _controller));
+            _animator.SetFloat(_animatorGripId, OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, _controller));
         }
     }
 }

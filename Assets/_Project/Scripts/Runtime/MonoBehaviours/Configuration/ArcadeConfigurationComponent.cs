@@ -28,29 +28,29 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class ArcadeConfigurationComponent : MonoBehaviour
     {
-        public ArcadeType ArcadeType;
-
         [SerializeField] private ArcadeConfiguration _arcadeConfiguration;
 
-        public string Id => _arcadeConfiguration.Id;
+        public ArcadeConfiguration Configuration => _arcadeConfiguration;
 
-        public ArcadeConfiguration ToArcadeConfiguration()
+        public ArcadeConfiguration GetArcadeConfigurationWithUpdatedEntries()
         {
             GamesNodeTag gamesRoot = FindObjectOfType<GamesNodeTag>();
             if (gamesRoot != null)
             {
                 ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                _arcadeConfiguration.Games = components.Select(x => x.ToModelConfiguration()).ToArray();
+                _arcadeConfiguration.Games = components.Select(x => x.GetModelConfigurationWithUpdatedTransforms()).ToArray();
             }
 
             PropsNodeTag propsRoot = FindObjectOfType<PropsNodeTag>();
             if (propsRoot != null)
             {
                 ModelConfigurationComponent[] components = propsRoot.GetComponentsInChildren<ModelConfigurationComponent>();
-                if (ArcadeType == ArcadeType.Fps)
-                    _arcadeConfiguration.FpsArcadeProperties.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
-                else if (ArcadeType == ArcadeType.Cyl)
-                    _arcadeConfiguration.CylArcadeProperties.Props = components.Select(x => x.ToModelConfiguration()).ToArray();
+                if (_arcadeConfiguration.ArcadeType == ArcadeType.Fps)
+                    _arcadeConfiguration.FpsArcadeProperties.Props = components.Select(x => x.GetModelConfigurationWithUpdatedTransforms())
+                                                                               .ToArray();
+                else if (_arcadeConfiguration.ArcadeType == ArcadeType.Cyl)
+                    _arcadeConfiguration.CylArcadeProperties.Props = components.Select(x => x.GetModelConfigurationWithUpdatedTransforms())
+                                                                               .ToArray();
             }
 
             return _arcadeConfiguration;

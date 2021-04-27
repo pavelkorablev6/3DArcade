@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: GamePrefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: GamePrefabs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 3c21fcbf819d89d4fb35040f839abbf1
+  m_SerializeEntries:
+  - m_GUID: d78b79c35072c8d4eb917546a38b1364
+    m_Address: Games/_80_horizontal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8e38ea18ffbe3c048a0fba8f4c779367
+    m_Address: Games/1942
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2c570628fdd6510418e8fc41843d3441
+    m_Address: Games/defaultmenu_sprocket
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 25bb0008b18189442b6983056f9ed215, type: 2}
+    - {fileID: 11400000, guid: 417956b8bd7a0644f93db627751362f7, type: 2}

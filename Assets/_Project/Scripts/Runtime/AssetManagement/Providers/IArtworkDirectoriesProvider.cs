@@ -27,8 +27,6 @@ namespace Arcade
         string[] DefaultImageDirectories { get; }
         string[] DefaultVideoDirectories { get; }
 
-        void Initialize();
-
         string[] GetModelImageDirectories(ModelConfiguration modelConfiguration);
         string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration);
         string[] GetPlatformImageDirectories(PlatformConfiguration platform);

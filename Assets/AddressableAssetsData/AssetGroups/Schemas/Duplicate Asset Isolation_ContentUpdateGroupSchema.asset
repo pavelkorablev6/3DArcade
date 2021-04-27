@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Duplicate Asset Isolation_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
   m_Group: {fileID: 11400000, guid: adfae1ef90400ff4fba0a5be46dff3cf, type: 2}
-  m_StaticContent: 1
+  m_StaticContent: 0

@@ -22,27 +22,48 @@
 
 namespace Arcade
 {
-    public sealed class GenericArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
+    public sealed class GenericArtworkDirectoriesProvider : IArtworkDirectoriesProvider
     {
         private const string IMAGES_DIRECTORY_NAME = "GenericsImages";
         private const string VIDEOS_DIRECTORY_NAME = "GenericsVideos";
 
-        public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
+        private string[] _defaultImageDirectories;
+        private string[] _defaultVideoDirectories;
+
+        public string[] DefaultImageDirectories
+        {
+            get
+            {
+                _defaultImageDirectories ??= new string[]
+                {
+                    $"{ArtworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}"
+                };
+                return _defaultImageDirectories;
+            }
+        }
+
+        public string[] DefaultVideoDirectories
+        {
+            get
+            {
+                _defaultVideoDirectories ??= new string[]
+                {
+                    $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}"
+                };
+                return _defaultVideoDirectories;
+            }
+        }
+
+        public string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
             => modelConfiguration.Overrides.ArtworkDirectories.GenericImageDirectories;
 
-        public override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
+        public string[] GetPlatformImageDirectories(PlatformConfiguration platform)
             => platform?.GenericImagesDirectories;
 
-        public override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
+        public string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
             => modelConfiguration.Overrides.ArtworkDirectories.GenericVideoDirectories;
 
-        public override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
+        public string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
             => platform?.GenericVideosDirectories;
-
-        protected override string[] GetDefaultImageDirectories()
-            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{IMAGES_DIRECTORY_NAME}" };
-
-        protected override string[] GetDefaultVideoDirectories()
-            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
     }
 }

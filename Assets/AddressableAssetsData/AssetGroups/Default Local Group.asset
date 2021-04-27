@@ -16,78 +16,10 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 958f619e5fe085c4298cc410d58d968e
-  m_SerializeEntries:
-  - m_GUID: 0ddf96e3f788c3d4daffc8ff6c372313
-    m_Address: Arcades/_empty
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: c7e2229a4c3af3a4aad085ebc220366d
-    m_Address: Arcades/_cylinder
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: d78b79c35072c8d4eb917546a38b1364
-    m_Address: Games/_80_horizontal
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 0edce053b8b684879b6d1aa64bfda02f
-    m_Address: Props/_text
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 47c7e736a745547bb84d8f7c68b1b955
-    m_Address: Props/_plane
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 082a2b6c50b074d76aef888a6495a4f8
-    m_Address: Textures/_default_marquee_03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 89cc81baf6f574e69a4dc410d4d60aaa
-    m_Address: Textures/_default_marquee_02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: ef60e340b974643029d36ddba4a92477
-    m_Address: Textures/_default_marquee_06
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: e414cf77a61944ec881371ed944fe4ad
-    m_Address: Textures/_default_marquee_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 5449564b5482f41c6940d28afe8bf22c
-    m_Address: Textures/_default_marquee_07
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 470d3cdc797194f4abb638eab4ed44db
-    m_Address: Textures/_default_marquee_05
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 35893b120b4284b48b172e5c3cb265da
-    m_Address: Textures/_default_marquee_00
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: c1ccbafb552484a2aaf79eae7efa5f9a
-    m_Address: Textures/_default_marquee_04
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 2c570628fdd6510418e8fc41843d3441
-    m_Address: Games/defaultmenu_sprocket
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 8e38ea18ffbe3c048a0fba8f4c779367
-    m_Address: Games/1942
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 42f0f4fd09ddc7d4783e8b55ebc5d55b
-    m_Address: Props/_pink_cube
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 4670e51116b2334488fcea51409183fb
-    m_Address: Arcades/spaceport
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 9c609bc3957983a409eb20fbc71bd6d4, type: 2}
     - {fileID: 11400000, guid: 53eb484f35020be49860f4efbb0d2c62, type: 2}
+    - {fileID: 11400000, guid: 9c609bc3957983a409eb20fbc71bd6d4, type: 2}

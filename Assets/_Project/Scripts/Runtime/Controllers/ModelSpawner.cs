@@ -43,8 +43,7 @@ namespace Arcade
             _parent      = parent;
             _onComplete  = onComplete;
 
-            IEnumerable<string> stringAddressesToTry = addressesToTry.Select(x => x.Address);
-            Addressables.LoadResourceLocationsAsync(stringAddressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
+            Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
         }
 
         private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)

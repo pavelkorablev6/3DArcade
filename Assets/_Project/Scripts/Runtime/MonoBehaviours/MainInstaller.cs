@@ -27,11 +27,15 @@ namespace Arcade
 {
     public sealed class MainInstaller : MonoInstaller<MainInstaller>
     {
+        [SerializeField] private Player _player;
+        [SerializeField] private InteractableRaycaster _interactableRaycaster;
+        [SerializeField] private InteractionController _interactionController;
+        [SerializeField] private UIManager _uiManager;
+
         public override void InstallBindings()
         {
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
-            _ = Container.Bind<Player>().FromComponentInHierarchy(true).AsSingle();
-            _ = Container.Bind<PlayerContext>().AsSingle().NonLazy();
+            _ = Container.Bind<Player>().FromInstance(_player).AsSingle();
 
             _ = Container.Bind<IVirtualFileSystem>().To<VirtualFileSystem>().AsSingle().NonLazy();
             _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
@@ -47,9 +51,9 @@ namespace Arcade
             _ = Container.Bind<ArcadeScene>().AsSingle().NonLazy();
             _ = Container.Bind<Scenes>().AsSingle().NonLazy();
 
-            _ = Container.Bind<IArcadeSceneAddressesProvider>().To<ArcadeSceneAddressesProvider>().AsSingle().NonLazy();
-            _ = Container.Bind<IPrefabAddressesProvider>().WithId("game").To<GamePrefabAddressesProvider>().AsSingle().NonLazy();
-            _ = Container.Bind<IPrefabAddressesProvider>().WithId("prop").To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IAssetAddressesProvider<ArcadeConfiguration>>().To<ArcadeSceneAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IAssetAddressesProvider<ModelConfiguration>>().WithId("game").To<GamePrefabAddressesProvider>().AsSingle().NonLazy();
+            _ = Container.Bind<IAssetAddressesProvider<ModelConfiguration>>().WithId("prop").To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<AssetAddressesProviders>().AsSingle().NonLazy();
 
             _ = Container.Bind<AssetCache<Texture>>().To<TextureCache>().AsSingle().NonLazy();
@@ -64,10 +68,10 @@ namespace Arcade
             _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
-            _ = Container.Bind<InteractionController>().AsSingle().NonLazy();
+            _ = Container.Bind<InteractableRaycaster>().FromInstance(_interactableRaycaster).AsSingle();
+            _ = Container.Bind<InteractionController>().FromInstance(_interactionController).AsSingle();
 
-            _ = Container.Bind<UIManager>().FromComponentInHierarchy(true).AsSingle();
-            _ = Container.Bind<UIContext>().AsSingle().NonLazy();
+            _ = Container.Bind<UIManager>().FromInstance(_uiManager).AsSingle();
 
             _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
 

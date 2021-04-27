@@ -110,7 +110,7 @@ namespace Arcade.UnityEditor
             EditorGUI.FocusTextInControl(null);
 
             if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent, false)
-                && arcadeConfigurationComponent.Id.Equals(entry.Id, System.StringComparison.OrdinalIgnoreCase))
+                && arcadeConfigurationComponent.Configuration.Id.Equals(entry.Id, System.StringComparison.OrdinalIgnoreCase))
             {
                 ArcadeManager.ClearCurrentArcadeStateFromEditorPrefs();
                 UE_Utilities.CloseAllScenes();

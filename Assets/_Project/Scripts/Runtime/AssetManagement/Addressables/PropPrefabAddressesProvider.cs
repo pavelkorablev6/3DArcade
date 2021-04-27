@@ -20,28 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
-    public sealed class PropPrefabAddressesProvider : IPrefabAddressesProvider
+    public sealed class PropPrefabAddressesProvider : PrefabAddressesProvider
     {
-        private const string FILE_EXTENSION      = "prefab";
-        private const string ADDRESSABLES_PREFIX = "Props/";
+        protected override string AddressablesPrefix { get; } = "Props/";
+
         private const string DEFAULT_PREFAB_NAME = "_pink_cube";
 
-        public AssetAddresses GetAddressesToTry(ModelConfiguration cfg)
+        protected override void AddValues(AssetAddresses addresses, ModelConfiguration cfg)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
-                return null;
-
-            AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
-
             addresses.TryAdd(cfg.Overrides?.Model);
             addresses.TryAdd(cfg.Id);
             addresses.TryAdd(DEFAULT_PREFAB_NAME);
-
-            return addresses;
         }
     }
 }

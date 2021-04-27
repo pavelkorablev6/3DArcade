@@ -37,21 +37,22 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter()
+        public sealed override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            if (_context.InteractionController.CurrentTargetComponent == null)
+            ModelConfigurationComponent currentTarget = _context.InteractionController.InteractionData.CurrentTarget;
+            if (currentTarget == null)
                 _context.TransitionToPrevious();
 
-            ScreenNodeTag screenNodeTag = _context.InteractionController.CurrentTargetComponent.GetComponentInChildren<ScreenNodeTag>(true);
+            ScreenNodeTag screenNodeTag = currentTarget.GetComponentInChildren<ScreenNodeTag>(true);
             if (screenNodeTag == null)
                 _context.TransitionToPrevious();
 
             if (screenNodeTag.TryGetComponent(out VideoPlayer videoPlayer))
                 _context.VideoPlayerController.StopVideo(videoPlayer);
 
-            if (!_context.InternalGameController.StartGame(screenNodeTag, _context.InteractionController.CurrentTarget))
+            if (!_context.InternalGameController.StartGame(screenNodeTag, currentTarget.Configuration))
                 _context.TransitionToPrevious();
 
             _screenNode = screenNodeTag;
@@ -64,20 +65,20 @@ namespace Arcade
             _screenRenderer.material = _context.InternalGameController.ScreenMaterial;
         }
 
-        public override void OnExit()
+        public sealed override void OnExit()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+
+            _context.InternalGameController.StopGame();
 
             if (_screenRenderer != null)
                 _screenRenderer.material = _savedMaterial;
 
             if (_dynamicArtworkComponent != null)
                 _dynamicArtworkComponent.enabled = true;
-
-            _context.InternalGameController.StopGame();
         }
 
-        public override void OnUpdate(float dt)
+        public sealed override void OnUpdate(float dt)
         {
             if (_context.InputActions.Global.Quit.triggered)
                 _context.TransitionToPrevious();

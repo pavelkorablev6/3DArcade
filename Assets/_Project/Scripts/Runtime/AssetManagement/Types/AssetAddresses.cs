@@ -26,11 +26,11 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class AssetAddresses : IEnumerable<AssetAddress>
+    public sealed class AssetAddresses : IEnumerable<string>
     {
-        public const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
+        public readonly List<string> Addresses = new List<string>();
 
-        public readonly List<AssetAddress> Addresses = new List<AssetAddress>();
+        private const string EDITOR_ADDRESSABLES_PATH = "Assets/_Project/Addressables/";
 
         private readonly string _extension;
         private readonly string _runtimePrefix;
@@ -50,17 +50,17 @@ namespace Arcade
 
             if (!Application.isPlaying)
             {
-                Addresses.Add(new AssetAddress($"{EDITOR_ADDRESSABLES_PATH}{_editorPrefix}{name}.{_extension}"));
+                Addresses.Add($"{EDITOR_ADDRESSABLES_PATH}{_editorPrefix}{name}.{_extension}");
                 return;
             }
 
-            Addresses.Add(new AssetAddress($"{_runtimePrefix}{name}"));
+            Addresses.Add($"{_runtimePrefix}{name}");
             return;
         }
 
-        public IEnumerator<AssetAddress> GetEnumerator()
+        public IEnumerator<string> GetEnumerator()
         {
-            foreach (AssetAddress address in Addresses)
+            foreach (string address in Addresses)
                 yield return address;
         }
 

@@ -69,7 +69,7 @@ namespace Arcade
 
         private void SpawProps()
         {
-            switch (_arcadeContext.ArcadeType)
+            switch (_arcadeContext.ArcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
                     SpawnProps(_arcadeContext.ArcadeConfiguration.FpsArcadeProperties.Props);
@@ -78,7 +78,7 @@ namespace Arcade
                     SpawnProps(_arcadeContext.ArcadeConfiguration.CylArcadeProperties.Props);
                     break;
                 default:
-                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeType}");
+                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeConfiguration.ArcadeType}");
             }
         }
 
@@ -107,7 +107,7 @@ namespace Arcade
             modelConfiguration.GameConfiguration     = game;
 
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer,GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
+            return SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
         }
 
         private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)

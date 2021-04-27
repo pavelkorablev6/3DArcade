@@ -20,8 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
     public sealed class ArcadeScene
@@ -33,6 +31,6 @@ namespace Arcade
 
         public ArcadeScene(IArcadeSceneLoader sceneLoader) => _sceneLoader = sceneLoader;
 
-        public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onSceneLoadComplete) => _sceneLoader.Load(addressesToTry, onSceneLoadComplete);
+        public void Load(AssetAddresses addressesToTry, System.Action onSceneLoadComplete) => _sceneLoader.Load(addressesToTry, onSceneLoadComplete);
     }
 }

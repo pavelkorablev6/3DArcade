@@ -27,10 +27,6 @@ namespace Arcade
 {
     public sealed class ArcadeVirtualRealityFpsState : ArcadeState
     {
-        private const float INTERACTION_MAX_DISTANCE = 2.5f;
-
-        private static readonly LayerMask _interactionLayerMask = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels");
-
         public ArcadeVirtualRealityFpsState(ArcadeContext context)
         : base(context)
         {
@@ -40,18 +36,12 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.InputActions.FpsArcade.Enable();
-            if (Cursor.lockState != CursorLockMode.Locked)
-                _context.InputActions.FpsArcade.Look.Disable();
-
             _context.UIManager.TransitionTo<UIVirtualRealitySceneNormalState>();
         }
 
         public override void OnExit()
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            _context.InputActions.FpsArcade.Disable();
 
             _context.UIManager.TransitionTo<UIDisabledState>();
         }
@@ -61,24 +51,7 @@ namespace Arcade
             if (_context.InputActions.Global.Quit.triggered)
                 ApplicationUtils.ExitApp();
 
-            if (_context.InputActions.Global.ToggleCursor.triggered)
-            {
-                CursorUtils.ToggleMouseCursor();
-                if (Cursor.lockState == CursorLockMode.Locked)
-                    _context.InputActions.FpsArcade.Look.Enable();
-                else
-                    _context.InputActions.FpsArcade.Look.Disable();
-            }
-
             _context.VideoPlayerController.UpdateVideosState();
-
-            _context.InteractionController.FindInteractable(_interactionLayerMask, INTERACTION_MAX_DISTANCE);
-
-            if (Cursor.lockState == CursorLockMode.Locked && _context.InputActions.FpsArcade.Interact.triggered)
-                _context.InteractionController.HandleInteraction(_context);
-
-            //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
-            //    _context.TransitionTo<FpsMoveCabState>();
         }
     }
 }

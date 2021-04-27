@@ -24,20 +24,48 @@ using System.Linq;
 
 namespace Arcade
 {
-    public sealed class ScreenArtworkDirectoriesProvider : ArtworkDirectoriesProviderBase
+    public sealed class ScreenArtworkDirectoriesProvider : IArtworkDirectoriesProvider
     {
         private const string SNAPS_DIRECTORY_NAME  = "ScreensImages";
         private const string TITLES_DIRECTORY_NAME = "TitlesImages";
         private const string VIDEOS_DIRECTORY_NAME = "ScreensVideos";
 
-        public override string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
+        private string[] _defaultImageDirectories;
+        private string[] _defaultVideoDirectories;
+
+        public string[] DefaultImageDirectories
+        {
+            get
+            {
+                _defaultImageDirectories ??= new string[]
+                {
+                    $"{ArtworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
+                    $"{ArtworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
+                };
+                return _defaultImageDirectories;
+            }
+        }
+
+        public string[] DefaultVideoDirectories
+        {
+            get
+            {
+                _defaultVideoDirectories ??= new string[]
+                {
+                    $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}"
+                };
+                return _defaultVideoDirectories;
+            }
+        }
+
+        public string[] GetModelImageDirectories(ModelConfiguration modelConfiguration)
         {
             string[] screenSnapDirectories  = modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories;
             string[] screenTitleDirectories = modelConfiguration.Overrides.ArtworkDirectories.ScreenTitleDirectories;
             return screenSnapDirectories.Concat(screenTitleDirectories).ToArray();
         }
 
-        public override string[] GetPlatformImageDirectories(PlatformConfiguration platform)
+        public string[] GetPlatformImageDirectories(PlatformConfiguration platform)
         {
             if (platform == null)
                 return null;
@@ -47,20 +75,10 @@ namespace Arcade
             return screenSnapsDirectories.Concat(screenTitlesDirectories).ToArray();
         }
 
-        public override string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
+        public string[] GetModelVideoDirectories(ModelConfiguration modelConfiguration)
             => modelConfiguration.Overrides.ArtworkDirectories.ScreenVideoDirectories;
 
-        public override string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
+        public string[] GetPlatformVideoDirectories(PlatformConfiguration platform)
             => platform?.ScreenVideosDirectories;
-
-        protected override string[] GetDefaultImageDirectories()
-            => new string[]
-            {
-                $"{ArtworkController.DefaultMediaDirectory}/{SNAPS_DIRECTORY_NAME}",
-                $"{ArtworkController.DefaultMediaDirectory}/{TITLES_DIRECTORY_NAME}"
-            };
-
-        protected override string[] GetDefaultVideoDirectories()
-            => new string[] { $"{ArtworkController.DefaultMediaDirectory}/{VIDEOS_DIRECTORY_NAME}" };
     }
 }

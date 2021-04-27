@@ -20,9 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
@@ -34,8 +32,7 @@ namespace Arcade
 
         private UIContext _uiContext;
 
-        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(UIContext uiContext) => _uiContext = uiContext;
+        private void Awake() => _uiContext = new UIContext(this);
 
         private void Start() => TransitionTo<UIDisabledState>();
 

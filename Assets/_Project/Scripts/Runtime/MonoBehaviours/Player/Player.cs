@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
@@ -35,8 +34,7 @@ namespace Arcade
 
         private PlayerContext _playerContext;
 
-        [Inject]
-        public void Construct(PlayerContext context) => _playerContext = context;
+        private void Awake() => Initialize();
 
         private void Start() => TransitionTo<PlayerDisabledState>();
 
@@ -51,6 +49,8 @@ namespace Arcade
                 return null;
             }
         }
+
+        public void Initialize() => _playerContext = new PlayerContext(this);
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 

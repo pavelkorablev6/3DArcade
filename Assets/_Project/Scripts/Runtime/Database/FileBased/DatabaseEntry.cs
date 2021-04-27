@@ -25,11 +25,8 @@ using System.Xml.Serialization;
 namespace Arcade
 {
     [System.Serializable]
-    public abstract class DatabaseEntry
+    public abstract class DatabaseEntry : ArcadeObject
     {
-        [System.NonSerialized, XmlIgnore]
-        public string Id = "";
-
         [XmlAttribute("description")]
         public string Description = "";
 

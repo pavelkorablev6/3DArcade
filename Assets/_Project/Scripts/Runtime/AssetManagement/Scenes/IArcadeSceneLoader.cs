@@ -20,8 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
     public interface IArcadeSceneLoader
@@ -30,6 +28,6 @@ namespace Arcade
         bool Loading { get; }
         float LoadPercentCompleted { get; }
 
-        void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete);
+        void Load(AssetAddresses addressesToTry, System.Action onComplete);
     }
 }

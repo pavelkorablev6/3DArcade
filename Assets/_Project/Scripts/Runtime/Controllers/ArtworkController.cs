@@ -49,12 +49,12 @@ namespace Arcade
             _textureCache      = textureCache;
         }
 
-        public void Initialize() => DefaultMediaDirectory ??= _virtualFileSystem.GetDirectory("medias");
-
         public void SetupImages(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
             if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
+
+            DefaultMediaDirectory ??= _virtualFileSystem.GetDirectory("medias");
 
             string[] gameDirectories     = directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
             string[] platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);

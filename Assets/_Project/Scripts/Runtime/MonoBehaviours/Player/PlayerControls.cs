@@ -28,6 +28,7 @@ namespace Arcade
     {
         [SerializeField] private GameObject _fpsController;
         [SerializeField] private GameObject _cylController;
+        [SerializeField] private GameObject _interactionManager;
 
         public bool Active { get; private set; }
 
@@ -35,14 +36,11 @@ namespace Arcade
                                           ? _fpsController.transform
                                           : _cylController.transform;
 
-        //public Camera ActiveCamera => _fpsController.activeInHierarchy
-        //                            ? _fpsController.GetComponent<CameraReference>().Camera
-        //                            : _cylController.GetComponent<CameraReference>().Camera;
-
         public void EnableFpsController()
         {
             _cylController.SetActive(false);
             _fpsController.SetActive(true);
+            _interactionManager.SetActive(true);
             Active = true;
         }
 
@@ -50,6 +48,7 @@ namespace Arcade
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(true);
+            _interactionManager.SetActive(true);
             Active = true;
         }
 
@@ -57,6 +56,7 @@ namespace Arcade
         {
             _fpsController.SetActive(false);
             _cylController.SetActive(false);
+            _interactionManager.SetActive(false);
              Active = false;
         }
     }

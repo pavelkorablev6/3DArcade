@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -35,8 +34,6 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
-
-            CursorUtils.HideMouseCursor();
 
             _context.UIManager.TransitionTo<UIVirtualRealitySceneLoadingState>();
             _context.UIManager.InitStatusBar($"Loading arcade: {_context.ArcadeConfiguration}...");
@@ -58,7 +55,7 @@ namespace Arcade
                 return;
             }
 
-            switch (_context.ArcadeType)
+            switch (_context.ArcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
                     _context.TransitionTo<ArcadeVirtualRealityFpsState>();

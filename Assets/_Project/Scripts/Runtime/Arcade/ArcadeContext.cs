@@ -23,6 +23,7 @@
 using SK.Utilities.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Arcade
 {
@@ -35,14 +36,13 @@ namespace Arcade
         public readonly Scenes Scenes;
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
+        public readonly InteractableRaycaster InteractableRaycaster;
         public readonly InteractionController InteractionController;
         public readonly UIManager UIManager;
         public readonly ExternalGameController ExternalGameController;
         public readonly InternalGameController InternalGameController;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
-        public ArcadeType ArcadeType { get; private set; }
-        public ArcadeMode ArcadeMode { get; private set; }
 
         private ArcadeController _arcadeController;
 
@@ -55,12 +55,12 @@ namespace Arcade
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
                              NodeControllers nodeControllers,
+                             InteractableRaycaster interactableRaycaster,
                              InteractionController interactionController,
                              UIManager uiManager,
                              ExternalGameController externalGameController,
                              InternalGameController internalGameController)
         {
-
             InputActions            = inputActions;
             Player                  = player;
             GeneralConfiguration    = generalConfiguration;
@@ -68,10 +68,25 @@ namespace Arcade
             Scenes                  = scenes;
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
+            InteractableRaycaster   = interactableRaycaster;
             InteractionController   = interactionController;
             UIManager               = uiManager;
             ExternalGameController  = externalGameController;
             InternalGameController  = internalGameController;
+        }
+
+        protected override void OnStart()
+        {
+            InputActions.Enable();
+            GeneralConfiguration.Initialize();
+            InteractionController.Initialize(this);
+            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
+        }
+
+        protected override void OnUpdate(float dt)
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode);
         }
 
         public void StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
@@ -84,9 +99,10 @@ namespace Arcade
             if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
 
+            arcadeConfiguration.ArcadeType = arcadeType;
+            arcadeConfiguration.ArcadeMode = arcadeMode;
+
             ArcadeConfiguration = arcadeConfiguration;
-            ArcadeType          = arcadeType;
-            ArcadeMode          = arcadeMode;
 
             VideoPlayerController?.StopAllVideos();
 
@@ -95,7 +111,7 @@ namespace Arcade
 
             Player.TransitionTo<PlayerDisabledState>();
 
-            switch (ArcadeType)
+            switch (arcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
                 {
@@ -125,28 +141,21 @@ namespace Arcade
 
             if (Application.isPlaying)
             {
+                List<InputDevice> devices = new List<InputDevice>();
+                InputDevices.GetDevices(devices);
+                if (devices.Count == 0)
+                    GeneralConfiguration.EnableVR = false;
+
                 if (GeneralConfiguration.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();
                 else
                     TransitionTo<ArcadeNormalLoadState>();
             }
 
-            Scenes.Entities.Initialize(arcadeConfiguration, arcadeType);
+            Scenes.Entities.Initialize(arcadeConfiguration);
 
-            IEnumerable<AssetAddress> addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration, arcadeType);
+            AssetAddresses addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration);
             Scenes.Arcade.Load(addressesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
-        }
-
-        protected override void OnStart()
-        {
-            GeneralConfiguration.Initialize();
-            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
-        }
-
-        protected override void OnUpdate(float dt)
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-                StartArcade(ArcadeConfiguration.Id, ArcadeType, ArcadeMode);
         }
 
         public bool SaveCurrentArcade()
@@ -154,7 +163,7 @@ namespace Arcade
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return false;
 
-            ArcadeConfiguration arcadeConfiguration = arcadeConfigurationComponent.ToArcadeConfiguration();
+            ArcadeConfiguration arcadeConfiguration = arcadeConfigurationComponent.GetArcadeConfigurationWithUpdatedEntries();
             foreach (ModelConfiguration game in arcadeConfiguration.Games)
             {
                 game.Position.RoundValues();

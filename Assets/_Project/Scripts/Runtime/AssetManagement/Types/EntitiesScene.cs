@@ -44,14 +44,14 @@ namespace Arcade
 
         public EntitiesScene(IEntititesSceneCreator sceneCreator) => _sceneCreator = sceneCreator;
 
-        public void Initialize(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
+        public void Initialize(ArcadeConfiguration arcadeConfiguration)
         {
             if (_scene.IsValid() && _scene.isLoaded)
                 ObjectUtils.DestroyObject(_arcadeNodeTransform.gameObject);
             else
                 _scene = _sceneCreator.Create(ARCADE_SETUP_SCENE_NAME);
 
-            SetupArcadeNode(arcadeConfiguration, arcadeType);
+            SetupArcadeNode(arcadeConfiguration);
             SetupGamesNode();
             SetupPropsNode();
         }
@@ -82,7 +82,7 @@ namespace Arcade
 
         public static bool TryGetPropsNode(out Transform outTransform) => TryGetNode<PropsNodeTag>(out outTransform);
 
-        private void SetupArcadeNode(ArcadeConfiguration arcadeConfiguration, ArcadeType arcadeType)
+        private void SetupArcadeNode(ArcadeConfiguration arcadeConfiguration)
         {
             GameObject arcadeGameObject = new GameObject("Arcade")
             {
@@ -91,7 +91,6 @@ namespace Arcade
 
             ArcadeConfigurationComponent arcadeConfigurationComponent = arcadeGameObject.AddComponent<ArcadeConfigurationComponent>();
             arcadeConfigurationComponent.SetArcadeConfiguration(arcadeConfiguration);
-            arcadeConfigurationComponent.ArcadeType = arcadeType;
 
             SceneManager.MoveGameObjectToScene(arcadeGameObject, _scene);
             _arcadeNodeTransform = arcadeGameObject.transform;

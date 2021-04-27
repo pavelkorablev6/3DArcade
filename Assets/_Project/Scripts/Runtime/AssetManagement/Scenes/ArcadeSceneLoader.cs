@@ -42,7 +42,7 @@ namespace Arcade
         private SceneInstance _sceneInstance;
         private bool _triggerSceneReload;
 
-        public void Load(IEnumerable<AssetAddress> addressesToTry, System.Action onComplete)
+        public void Load(AssetAddresses addressesToTry, System.Action onComplete)
         {
             Loaded = false;
 
@@ -51,8 +51,7 @@ namespace Arcade
 
             _onComplete = onComplete;
 
-            IEnumerable<string> stringAddressesToTry = addressesToTry.Select(x => x.Address);
-            Addressables.LoadResourceLocationsAsync(stringAddressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
+            Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
                         .Completed += ResourceLocationRetrievedCallback;
         }
 

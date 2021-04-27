@@ -20,14 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class GamePrefabAddressesProvider : IPrefabAddressesProvider
+    public sealed class GamePrefabAddressesProvider : PrefabAddressesProvider
     {
-        private const string FILE_EXTENSION             = "prefab";
-        private const string ADDRESSABLES_PREFIX        = "Games/";
+        protected override string AddressablesPrefix { get; } = "Games/";
+
         private const string DEFAULT_70_HOR_PREFAB_NAME = "_70_horizontal";
         private const string DEFAULT_80_HOR_PREFAB_NAME = "_80_horizontal";
         private const string DEFAULT_90_HOR_PREFAB_NAME = "_90_horizontal";
@@ -37,13 +35,8 @@ namespace Arcade
         private const string DEFAULT_HOR_PREFAB_NAME    = DEFAULT_80_HOR_PREFAB_NAME;
         private const string DEFAULT_VER_PREFAB_NAME    = DEFAULT_80_VER_PREFAB_NAME;
 
-        public AssetAddresses GetAddressesToTry(ModelConfiguration cfg)
+        protected override void AddValues(AssetAddresses addresses, ModelConfiguration cfg)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
-                return null;
-
-            AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX);
-
             addresses.TryAdd(cfg.Overrides.Model);
             addresses.TryAdd(cfg.Id);
             addresses.TryAdd(cfg.Overrides.Game.CloneOf);
@@ -57,8 +50,6 @@ namespace Arcade
             addresses.TryAdd(GetName(cfg.GameConfiguration));
 
             addresses.TryAdd(DEFAULT_HOR_PREFAB_NAME);
-
-            return addresses;
         }
 
         private static string GetName(GameConfiguration game)
@@ -97,24 +88,16 @@ namespace Arcade
             if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {
                 if (year >= 1970 && year < 1980)
-                    return GetAssetPath(model70);
+                    return model70;
 
                 if (year < 1990)
-                    return GetAssetPath(model80);
+                    return model80;
 
                 if (year < 2000)
-                    return GetAssetPath(model90);
+                    return model90;
             }
 
-            return GetAssetPath(modelDefault);
-        }
-
-        private static string GetAssetPath(string name)
-        {
-            if (!Application.isPlaying)
-                return $"{AssetAddresses.EDITOR_ADDRESSABLES_PATH}{ADDRESSABLES_PREFIX}{name}.{FILE_EXTENSION}";
-
-            return $"{ADDRESSABLES_PREFIX}/{name}";
+            return modelDefault;
         }
     }
 }

@@ -25,10 +25,10 @@ using System.Xml.Serialization;
 namespace Arcade
 {
     [System.Serializable]
-    public sealed class ModelConfiguration
+    public sealed class ModelConfiguration : ArcadeObject
     {
         [XmlAttribute("id")]
-        public string Id = "";
+        public new string Id = "";
 
         [XmlElement("interaction_type")]
         public InteractionType InteractionType = InteractionType.Default;
@@ -61,15 +61,12 @@ namespace Arcade
         public DatabaseVector3 Scale = DatabaseVector3.One;
 
         [XmlIgnore]
-        [UnityEngine.HideInInspector]
         public PlatformConfiguration PlatformConfiguration { get; set; }
 
         [XmlIgnore]
-        [UnityEngine.HideInInspector]
         public EmulatorConfiguration EmulatorConfiguration { get; set; }
 
         [XmlIgnore]
-        [UnityEngine.HideInInspector]
         public GameConfiguration GameConfiguration { get; set; }
     }
 }

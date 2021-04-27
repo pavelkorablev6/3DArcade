@@ -20,36 +20,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
-
 namespace Arcade
 {
-    public sealed class ArcadeSceneAddressesProvider : IArcadeSceneAddressesProvider
+    public sealed class ArcadeSceneAddressesProvider : IAssetAddressesProvider<ArcadeConfiguration>
     {
         private const string FILE_EXTENSION      = "unity";
         private const string ADDRESSABLES_PREFIX = "Arcades/";
-        private const string DEFAULT_SCENE_NAME  = "_cylinder";
+        private const string DEFAULT_SCENE_NAME = "_cylinder";
 
-        public IEnumerable<AssetAddress> GetAddressesToTry(ArcadeConfiguration cfg, ArcadeType arcadeType)
+        public AssetAddresses GetAddressesToTry(ArcadeConfiguration cfg)
         {
             if (cfg == null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
-            string cfgScene = GetSceneName(cfg, arcadeType);
-            string editorPrefix = $"{ADDRESSABLES_PREFIX}{cfgScene}/";
+            string sceneName    = GetSceneName(cfg);
+            string editorPrefix = $"{ADDRESSABLES_PREFIX}{sceneName}/";
 
-            AssetAddresses assetAddresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX, editorPrefix);
-            assetAddresses.TryAdd(cfgScene);
-            assetAddresses.TryAdd(cfg.Id);
-            assetAddresses.TryAdd(DEFAULT_SCENE_NAME);
-            return assetAddresses.Addresses;
+            AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, ADDRESSABLES_PREFIX, editorPrefix);
+
+            addresses.TryAdd(sceneName);
+            addresses.TryAdd(cfg.Id);
+            addresses.TryAdd(DEFAULT_SCENE_NAME);
+
+            return addresses;
         }
 
-        private static string GetSceneName(ArcadeConfiguration cfg, ArcadeType arcadeType) => arcadeType switch
+        private static string GetSceneName(ArcadeConfiguration cfg) => cfg.ArcadeType switch
         {
             ArcadeType.Fps => cfg.FpsArcadeProperties.Scene,
             ArcadeType.Cyl => cfg.CylArcadeProperties.Scene,
-            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {arcadeType}")
+            _              => throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {cfg.ArcadeType}")
         };
     }
 }

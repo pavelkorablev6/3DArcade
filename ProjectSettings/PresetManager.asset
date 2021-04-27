@@ -7,6 +7,16 @@ PresetManager:
   m_DefaultPresets:
   - first:
       m_NativeTypeID: 114
+      m_ManagedTypePPtr: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927,
+        type: 3}
+      m_ManagedTypeFallback: 
+    second:
+    - m_Preset: {fileID: 2655988077585873504, guid: 0caad3af14f9a414dbdf25ed41e5aa47,
+        type: 2}
+      m_Filter: 
+      m_Disabled: 0
+  - first:
+      m_NativeTypeID: 114
       m_ManagedTypePPtr: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221,
         type: 3}
       m_ManagedTypeFallback: 
@@ -18,16 +28,6 @@ PresetManager:
     - m_Preset: {fileID: 2655988077585873504, guid: ffd8268f7307a0c48a067dad4a8fe060,
         type: 2}
       m_Filter: Left
-      m_Disabled: 0
-  - first:
-      m_NativeTypeID: 114
-      m_ManagedTypePPtr: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927,
-        type: 3}
-      m_ManagedTypeFallback: 
-    second:
-    - m_Preset: {fileID: 2655988077585873504, guid: 0caad3af14f9a414dbdf25ed41e5aa47,
-        type: 2}
-      m_Filter: 
       m_Disabled: 0
   - first:
       m_NativeTypeID: 114
@@ -56,13 +56,13 @@ PresetManager:
     second:
     - m_Preset: {fileID: 2655988077585873504, guid: 650e05e943cb73d40a3c133ba272b98b,
         type: 2}
-      m_Filter: glob:"*ModelResources/Arcades**.fbx"
+      m_Filter: glob:"*AddressablesResources/Arcades**.fbx"
       m_Disabled: 0
     - m_Preset: {fileID: 2655988077585873504, guid: 6017cdef03376ee4aa793cbe978a0921,
         type: 2}
-      m_Filter: glob:"*ModelResources/Games**.fbx"
+      m_Filter: glob:"*AddressablesResources/Games**.fbx"
       m_Disabled: 0
     - m_Preset: {fileID: 2655988077585873504, guid: 3e157b8fb4a9cb443a04daa592f11455,
         type: 2}
-      m_Filter: glob:"*ModelResources/Props**.fbx"
+      m_Filter: glob:"*AddressablesResources/Props**.fbx"
       m_Disabled: 0

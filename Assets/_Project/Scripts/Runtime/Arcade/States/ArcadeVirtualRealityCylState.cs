@@ -98,18 +98,6 @@ namespace Arcade
             if (_context.InputActions.Global.Quit.triggered)
                 ApplicationUtils.ExitApp();
 
-            if (_context.InputActions.Global.ToggleCursor.triggered)
-            {
-                CursorUtils.ToggleMouseCursor();
-                //if (_context.Main.PlayerCylControls.MouseLookEnabled)
-                //{
-                //    if (Cursor.lockState == CursorLockMode.Locked)
-                //        _context.Main.PlayerCylControls.CylArcadeActions.Look.Enable();
-                //    else
-                //        _context.Main.PlayerCylControls.CylArcadeActions.Look.Disable();
-                //}
-            }
-
             //    HandleNavigation(dt);
 
             //    if (_context.CurrentModelConfiguration != _context.ArcadeController.CurrentGame)

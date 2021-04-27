@@ -29,11 +29,11 @@ namespace Arcade
     {
         void IModelSpawner.Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
         {
-            foreach (AssetAddress addressToTry in addressesToTry)
+            foreach (string addressToTry in addressesToTry)
             {
                 try
                 {
-                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(addressToTry.Address);
+                    GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(addressToTry);
                     if (prefab != null)
                     {
                         GameObject gameObject = Object.Instantiate(prefab, position, orientation, parent);

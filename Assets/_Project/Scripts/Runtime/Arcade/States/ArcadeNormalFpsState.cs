@@ -27,10 +27,6 @@ namespace Arcade
 {
     public sealed class ArcadeNormalFpsState : ArcadeState
     {
-        private const float INTERACTION_MAX_DISTANCE = 2.5f;
-
-        private static readonly LayerMask _interactionLayerMask = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels");
-
         public ArcadeNormalFpsState(ArcadeContext context)
         : base(context)
         {
@@ -72,10 +68,10 @@ namespace Arcade
 
             _context.VideoPlayerController.UpdateVideosState();
 
-            _context.InteractionController.FindInteractable(_interactionLayerMask, INTERACTION_MAX_DISTANCE);
+            _context.InteractableRaycaster.FindInteractable();
 
             if (Cursor.lockState == CursorLockMode.Locked && _context.InputActions.FpsArcade.Interact.triggered)
-                _context.InteractionController.HandleInteraction(_context);
+                _context.InteractionController.HandleInteraction();
 
             //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
             //    _context.TransitionTo<FpsMoveCabState>();

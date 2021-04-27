@@ -57,8 +57,6 @@ namespace Arcade
             else
                 _arcadeContext.Player.TransitionTo<PlayerNormalFpsState>();
 
-            _arcadeContext.InteractionController?.Initialize(_arcadeContext.Player.Camera);
-
             //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
 
             //PlayerControls.Camera.rect = CameraSettings.ViewportRect;

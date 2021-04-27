@@ -21,14 +21,21 @@ MonoBehaviour:
   m_UniqueBundleIds: 0
   m_maxConcurrentWebRequests: 500
   m_ContiguousBundles: 0
+  m_ShaderBundleNaming: 0
+  m_ShaderBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
+  m_ContentStateBuildPath: 
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: e8fc7711f795dd946b229618146bdbed, type: 2}
   - {fileID: 11400000, guid: 90fc83d8c1644804dab29cdc260a7bfd, type: 2}
+  - {fileID: 11400000, guid: f3f124576c536594782b0533b971cef3, type: 2}
+  - {fileID: 11400000, guid: bcdbdf409b9147546864f0384ba664ad, type: 2}
+  - {fileID: 11400000, guid: ad577b98586b98b499a7c1ea995f43fd, type: 2}
+  - {fileID: 11400000, guid: 7dec522b38f614241aacae2e25b5f8a6, type: 2}
   - {fileID: 11400000, guid: adfae1ef90400ff4fba0a5be46dff3cf, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
@@ -87,5 +94,6 @@ MonoBehaviour:
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}
-    m_NextInstanceId: 0
-    m_RegisteredServiceTypeRefs: []
+    m_NextInstanceId: 1
+    m_RegisteredServiceTypeRefs:
+    - UnityEditor.AddressableAssets.HostingServices.HttpHostingService, Unity.Addressables.Editor

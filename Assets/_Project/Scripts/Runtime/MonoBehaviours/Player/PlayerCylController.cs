@@ -57,9 +57,9 @@ namespace Arcade
         private InputAction _movementAction;
         private float _movementInputValue;
 
-        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylArcade.NavigationUpDown;
+        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylArcade.NavigationVertical;
 
-        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylArcade.NavigationLeftRight;
+        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylArcade.NavigationHorizontal;
 
         public void SetHorizontalLookLimits(float min, float max)
         {
