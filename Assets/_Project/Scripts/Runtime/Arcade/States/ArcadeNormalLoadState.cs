@@ -51,7 +51,7 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            if (!_context.Scenes.Arcade.Loaded)
+            if (!_context.ArcadeController.Loaded)
             {
                 float percentComplete = _context.Scenes.Arcade.LoadingPercentCompleted;
                 _context.UIManager.UpdateStatusBar(percentComplete);

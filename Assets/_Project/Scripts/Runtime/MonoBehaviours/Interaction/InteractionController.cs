@@ -120,16 +120,16 @@ namespace Arcade
             switch (interactionType)
             {
                 case InteractionType.FpsArcadeConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.Normal);
+                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.Normal).Forget();
                     break;
                 case InteractionType.CylArcadeConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.Normal);
+                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.Normal).Forget();
                     break;
                 case InteractionType.FpsMenuConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.RenderTexture);
+                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.RenderTexture).Forget();
                     break;
                 case InteractionType.CylMenuConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.RenderTexture);
+                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.RenderTexture).Forget();
                     break;
                 case InteractionType.Default:
                 case InteractionType.None:

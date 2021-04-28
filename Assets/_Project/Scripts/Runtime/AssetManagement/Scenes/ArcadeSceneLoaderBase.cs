@@ -20,14 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
+
 namespace Arcade
 {
-    public interface IArcadeSceneLoader
+    public abstract class ArcadeSceneLoaderBase
     {
-        bool Loaded { get; }
-        bool Loading { get; }
-        float LoadPercentCompleted { get; }
+        public virtual float LoadPercentCompleted { get; }
 
-        void Load(AssetAddresses addressesToTry, System.Action onComplete);
+        public abstract UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload);
     }
 }

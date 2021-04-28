@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -30,76 +30,94 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade
 {
-    public sealed class ArcadeSceneLoader : IArcadeSceneLoader
+    public sealed class ArcadeSceneLoader : ArcadeSceneLoaderBase
     {
-        public bool Loaded { get; private set; }
-        public bool Loading => _sceneHandle.IsValid() && !_sceneHandle.IsDone;
-        public float LoadPercentCompleted => Loading ? _sceneHandle.PercentComplete : 0f;
+        public override float LoadPercentCompleted => _sceneHandle.IsValid() && !_sceneHandle.IsDone ? _sceneHandle.PercentComplete : 0f;
 
-        private System.Action _onComplete;
-        private IResourceLocation _sceneResourceLocation;
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private SceneInstance _sceneInstance;
-        private bool _triggerSceneReload;
 
-        public void Load(AssetAddresses addressesToTry, System.Action onComplete)
+        public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)
         {
-            Loaded = false;
+            IList<IResourceLocation> resourceLocations = await Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance));
+            if (resourceLocations.Count == 0)
+                return false;
 
-            if (_sceneHandle.IsValid())
-                Addressables.Release(_sceneHandle);
-
-            _onComplete = onComplete;
-
-            Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
-                        .Completed += ResourceLocationRetrievedCallback;
-        }
-
-        private void ResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
-        {
-            if (aoHandle.Result.Count == 0)
-                return;
-
-            _sceneResourceLocation = aoHandle.Result[0];
-            LoadScene();
-        }
-
-        private void LoadScene()
-        {
-            if (_sceneInstance.Scene.isLoaded)
+            if (_sceneInstance.Scene.IsValid() && _sceneInstance.Scene.isLoaded)
             {
-                _triggerSceneReload = true;
-                UnloadScene();
-                return;
+                _ = await Addressables.UnloadSceneAsync(_sceneInstance);
+                if (triggerReload)
+                    return await Load(addressesToTry, false);
             }
 
-            _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
-            _sceneHandle.Completed += SceneLoadedCallback;
+            _sceneHandle   = Addressables.LoadSceneAsync(resourceLocations[0], LoadSceneMode.Additive);
+            _sceneInstance = await _sceneHandle;
+
+            if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
+                return false;
+
+            await _sceneInstance.ActivateAsync();
+            return true;
         }
 
-        private void UnloadScene() => Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
+        //public override void Load(AssetAddresses addressesToTry, System.Action onComplete)
+        //{
+        //    Loaded = false;
 
-        private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
-        {
-            if (aoHandle.Status != AsyncOperationStatus.Succeeded)
-                return;
+        //    if (_sceneHandle.IsValid())
+        //        Addressables.Release(_sceneHandle);
 
-            _sceneInstance = aoHandle.Result;
+        //    _onComplete = onComplete;
 
-            _onComplete?.Invoke();
+        //    Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
+        //                .Completed += ResourceLocationRetrievedCallback;
+        //}
 
-            _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
+        //private void ResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
+        //{
+        //    if (aoHandle.Result.Count == 0)
+        //        return;
 
-            Loaded = true;
-        }
+        //    _sceneResourceLocation = aoHandle.Result[0];
+        //    LoadScene();
+        //}
 
-        private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
-        {
-            if (!_triggerSceneReload)
-                return;
+        //private void LoadScene()
+        //{
+        //    if (_sceneInstance.Scene.isLoaded)
+        //    {
+        //        _triggerSceneReload = true;
+        //        UnloadScene();
+        //        return;
+        //    }
 
-            LoadScene();
-            _triggerSceneReload = false;
-        }
+        //    _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
+        //    _sceneHandle.Completed += SceneLoadedCallback;
+        //}
+
+        //private void UnloadScene() => Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
+
+        //private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
+        //{
+        //    if (aoHandle.Status != AsyncOperationStatus.Succeeded)
+        //        return;
+
+        //    _sceneInstance = aoHandle.Result;
+
+        //    _onComplete?.Invoke();
+
+        //    _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
+
+        //    Loaded = true;
+        //}
+
+        //private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
+        //{
+        //    if (!_triggerSceneReload)
+        //        return;
+
+        //    LoadScene();
+        //    _triggerSceneReload = false;
+        //}
     }
 }

@@ -20,13 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
     public abstract class ArcadeController
     {
+        public bool Loaded { get; private set; } = false;
+
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
@@ -37,61 +41,72 @@ namespace Arcade
 
         protected readonly ArcadeContext _arcadeContext;
 
-        private readonly List<ModelInstance> _gameModels = new List<ModelInstance>();
-        private readonly List<ModelInstance> _propModels = new List<ModelInstance>();
+        private readonly List<GameObject> _gameModels = new List<GameObject>();
+        private readonly List<GameObject> _propModels = new List<GameObject>();
 
-        //public ModelConfigurationComponent CurrentGame { get; protected set; }
-        //protected const string CYLARCADE_PIVOT_POINT_GAMEOBJECT_NAME = "InternalCylArcadeWheelPivotPoint";
-        //protected bool _animating;
+        private IModelSpawner _modelSpawner;
 
         public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
-        public void ArcadeSceneLoadCompletedCallback()
+        public async UniTask Initialize()
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                _modelSpawner = new EditorModelSpawner();
+            else
+                _modelSpawner = new ModelSpawner();
+#else
+            _modelSpawner = new ModelSpawner();
+#endif
             SetupPlayer();
-            SpawnGames();
-            SpawProps();
+            await SpawnGames();
+            await SpawProps();
+
+            Loaded = true;
         }
 
         protected abstract void SetupPlayer();
 
-        private void SpawnGames()
+        private async UniTask SpawnGames()
         {
             if (_arcadeContext.ArcadeConfiguration.Games == null)
                 return;
 
             foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Games)
             {
-                ModelInstance modelInstance = SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
-                _gameModels.Add(modelInstance);
+                GameObject go = await SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
+                _gameModels.Add(go);
             }
         }
 
-        private void SpawProps()
+        private async UniTask SpawProps()
         {
             switch (_arcadeContext.ArcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
-                    SpawnProps(_arcadeContext.ArcadeConfiguration.FpsArcadeProperties.Props);
+                    await SpawnProps(_arcadeContext.ArcadeConfiguration.FpsArcadeProperties.Props);
                     break;
                 case ArcadeType.Cyl:
-                    SpawnProps(_arcadeContext.ArcadeConfiguration.CylArcadeProperties.Props);
+                    await SpawnProps(_arcadeContext.ArcadeConfiguration.CylArcadeProperties.Props);
                     break;
                 default:
                     throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeConfiguration.ArcadeType}");
             }
         }
 
-        private void SpawnProps(ModelConfiguration[] modelConfigurations)
+        private async UniTask SpawnProps(ModelConfiguration[] modelConfigurations)
         {
             if (modelConfigurations == null)
                 return;
 
             foreach (ModelConfiguration modelConfiguration in modelConfigurations)
-                _propModels.Add(SpawnProp(modelConfiguration, _arcadeContext.Scenes.Entities.PropsNodeTransform));
+            {
+                GameObject go = await SpawnProp(modelConfiguration, _arcadeContext.Scenes.Entities.PropsNodeTransform);
+                _propModels.Add(go);
+            }
         }
 
-        private ModelInstance SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
+        private async UniTask<GameObject> SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
         {
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
@@ -107,40 +122,66 @@ namespace Arcade
             modelConfiguration.GameConfiguration     = game;
 
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, ApplyArtworks);
+            return await SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, true);
         }
 
-        private ModelInstance SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
+        private async UniTask<GameObject> SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
         {
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
-            return SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry);
+            return await SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry, false);
         }
 
-        private ModelInstance SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, System.Action<GameObject, ModelConfiguration> onModelSpawned = null)
+        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, bool applyArtworks)
         {
-            ModelInstance modelInstance = new ModelInstance(modelConfiguration, layer);
-            modelInstance.SpawnModel(addressesToTry, parent, spawnAtPositionWithRotation, onModelSpawned);
-            return modelInstance;
+            Vector3 position;
+            Quaternion orientation;
+
+            if (spawnAtPositionWithRotation)
+            {
+                position    = modelConfiguration.Position;
+                orientation = Quaternion.Euler(modelConfiguration.Rotation);
+            }
+            else
+            {
+                position    = Vector3.zero;
+                orientation = Quaternion.identity;
+            }
+
+            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, orientation, parent);
+            if (go == null)
+                return null;
+
+            go.name                 = modelConfiguration.Id;
+            go.transform.localScale = modelConfiguration.Scale;
+            go.layer                = layer;
+
+            ModelConfigurationComponent modelConfigurationComponent = go.AddComponent<ModelConfigurationComponent>();
+            modelConfigurationComponent.SetModelConfiguration(modelConfiguration);
+
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
+                _ = go.AddComponent<XRSimpleInteractable>();
+
+            if (applyArtworks)
+                await ApplyArtworks(go, modelConfiguration);
+
+            return go;
         }
 
-        private void ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
+        private async UniTask ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
         {
             // Look for artworks only in play mode / runtime
             if (!Application.isPlaying)
                 return;
 
-            _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
+            await _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
 
             float screenIntensity = GetScreenIntensity(modelConfiguration.GameConfiguration);
-            _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
+            await _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
 
-            _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
+            await _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
 
             //if (gameModels)
-            //{
-            //    _allGames.Add(instantiatedModel.transform);
             //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-            //}
             //else
             //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
         }

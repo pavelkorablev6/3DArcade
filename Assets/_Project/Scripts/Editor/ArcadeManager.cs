@@ -54,18 +54,29 @@ namespace Arcade.UnityEditor
             GeneralConfiguration generalConfiguration = new GeneralConfiguration(vfs);
             generalConfiguration.Initialize();
 
-            Databases databases = new Databases(new EmulatorDatabase(vfs),
-                                                new PlatformDatabase(vfs),
-                                                new ArcadeDatabase(vfs),
-                                                new GameDatabase(vfs));
+            EmulatorDatabase emulatorDatabase = new EmulatorDatabase(vfs);
+            PlatformDatabase platformDatabase = new PlatformDatabase(vfs);
+            ArcadeDatabase arcadeDatabase     = new ArcadeDatabase(vfs);
+            GameDatabase gameDatabase         = new GameDatabase(vfs);
+            Databases databases               = new Databases(emulatorDatabase,
+                                                              platformDatabase,
+                                                              arcadeDatabase,
+                                                              gameDatabase);
             databases.Initialize();
 
-            Scenes scenes = new Scenes(new EntitiesScene(new EditorEntitiesSceneCreator()),
-                                       new ArcadeScene(new EditorArcadeSceneLoader()));
+            EditorEntitiesSceneCreator sceneCreator = new EditorEntitiesSceneCreator();
+            EntitiesScene entitiesScene             = new EntitiesScene(sceneCreator);
+            EditorArcadeSceneLoader sceneLoader     = new EditorArcadeSceneLoader();
+            ArcadeScene arcadeScene                 = new ArcadeScene(sceneLoader);
+            Scenes scenes                           = new Scenes(entitiesScene,
+                                                                 arcadeScene);
 
-            AssetAddressesProviders addressesProviders = new AssetAddressesProviders(new ArcadeSceneAddressesProvider(),
-                                                                                     new GamePrefabAddressesProvider(),
-                                                                                     new PropPrefabAddressesProvider());
+            ArcadeSceneAddressesProvider arcadeSceneAddressesProvider = new ArcadeSceneAddressesProvider();
+            GamePrefabAddressesProvider gamePrefabAddressesProvider   = new GamePrefabAddressesProvider();
+            PropPrefabAddressesProvider propPrefabAddressesProvider   = new PropPrefabAddressesProvider();
+            AssetAddressesProviders addressesProviders                = new AssetAddressesProviders(arcadeSceneAddressesProvider,
+                                                                                                    gamePrefabAddressesProvider,
+                                                                                                    propPrefabAddressesProvider);
 
             ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders, null, null, null, null, null, null);
         }

@@ -20,20 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    public sealed class EditorArcadeSceneLoader : IArcadeSceneLoader
+    public sealed class EditorArcadeSceneLoader : ArcadeSceneLoaderBase
     {
-        public bool Loaded { get; set; } = false;
-        public bool Loading => false;
-        public float LoadPercentCompleted => 100f;
-
-        public void Load(AssetAddresses addressesToTry, System.Action onComplete)
+        public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)
         {
             foreach (string addressToTry in addressesToTry)
             {
@@ -41,13 +37,15 @@ namespace Arcade.UnityEditor
                 if (assetType == typeof(SceneAsset))
                 {
                     Scene scene = EditorSceneManager.OpenScene(addressToTry, OpenSceneMode.Additive);
-                    onComplete?.Invoke();
                     _ = SceneManager.SetActiveScene(scene);
                     SceneVisibilityManager.instance.DisablePicking(scene);
-                    Loaded = true;
-                    return;
+                    return true;
                 }
+
+                await UniTask.Yield();
             }
+
+            return false;
         }
     }
 }

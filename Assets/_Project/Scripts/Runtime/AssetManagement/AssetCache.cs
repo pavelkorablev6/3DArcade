@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace Arcade
@@ -30,21 +31,20 @@ namespace Arcade
 
         public bool Get(string filePath, out T asset) => _loadedAssets.TryGetValue(filePath, out asset);
 
-        public T Load(string filePath)
+        public async UniTask<T> Load(string filePath)
         {
             if (Get(filePath, out T foundAsset))
                 return foundAsset;
 
-            if (TryLoadAsset(filePath, out T newAsset))
-            {
-                _loadedAssets[filePath] = newAsset;
-                return newAsset;
-            }
+            T newAsset = await TryLoadAsset(filePath);
+            if (newAsset == null)
+                return null;
 
-            return null;
+            _loadedAssets[filePath] = newAsset;
+            return newAsset;
         }
 
-        public T[] LoadMultiple(params string[] filePaths)
+        public async UniTask<T[]> LoadMultipleAsync(params string[] filePaths)
         {
             if (filePaths == null || filePaths.Length == 0)
                 return null;
@@ -53,7 +53,7 @@ namespace Arcade
 
             foreach (string filePath in filePaths)
             {
-                T asset = Load(filePath);
+                T asset = await Load(filePath);
                 if (asset != null)
                     result.Add(asset);
             }
@@ -61,6 +61,6 @@ namespace Arcade
             return result.ToArray();
         }
 
-        protected abstract bool TryLoadAsset(string filePath, out T outAsset);
+        protected abstract UniTask<T> TryLoadAsset(string filePath);
     }
 }

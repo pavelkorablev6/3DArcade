@@ -20,17 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
+
 namespace Arcade
 {
     public sealed class ArcadeScene
     {
-        public bool Loaded => _sceneLoader.Loaded;
         public float LoadingPercentCompleted => _sceneLoader.LoadPercentCompleted;
 
-        private readonly IArcadeSceneLoader _sceneLoader;
+        private readonly ArcadeSceneLoaderBase _sceneLoader;
 
-        public ArcadeScene(IArcadeSceneLoader sceneLoader) => _sceneLoader = sceneLoader;
+        public ArcadeScene(ArcadeSceneLoaderBase sceneLoader) => _sceneLoader = sceneLoader;
 
-        public void Load(AssetAddresses addressesToTry, System.Action onSceneLoadComplete) => _sceneLoader.Load(addressesToTry, onSceneLoadComplete);
+        public async UniTask<bool> Load(AssetAddresses addressesToTry) => await _sceneLoader.Load(addressesToTry, true);
     }
 }

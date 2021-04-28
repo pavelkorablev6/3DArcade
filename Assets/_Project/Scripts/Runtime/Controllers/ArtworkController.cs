@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -49,7 +50,7 @@ namespace Arcade
             _textureCache      = textureCache;
         }
 
-        public void SetupImages(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
+        public async UniTask SetupImages(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
             if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
@@ -71,7 +72,7 @@ namespace Arcade
             if (files.Count == 0)
                 return;
 
-            Texture[] textures = _textureCache.LoadMultiple(files.ToArray());
+            Texture[] textures = await _textureCache.LoadMultipleAsync(files.ToArray());
             if (textures == null || textures.Length == 0)
             {
                 if (directoryNamesProvider is GenericArtworkDirectoriesProvider)
@@ -82,7 +83,7 @@ namespace Arcade
             SetupDynamicArtworkComponents(renderers, textures, emissionIntensity);
         }
 
-        public void SetupVideos(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
+        public async UniTask SetupVideos(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
         {
             if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
@@ -132,6 +133,8 @@ namespace Arcade
                 videoPlayer.Stop();
 
                 OnVideoPlayerAdded?.Invoke();
+
+                await UniTask.Yield();
             }
         }
 

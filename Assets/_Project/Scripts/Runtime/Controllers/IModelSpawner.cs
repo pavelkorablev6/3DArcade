@@ -20,12 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Arcade
 {
     public interface IModelSpawner
     {
-        void Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete);
+        UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent);
     }
 }

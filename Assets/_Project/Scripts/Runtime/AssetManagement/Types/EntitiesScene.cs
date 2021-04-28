@@ -82,6 +82,29 @@ namespace Arcade
 
         public static bool TryGetPropsNode(out Transform outTransform) => TryGetNode<PropsNodeTag>(out outTransform);
 
+        private static bool TryGetNode<T>(out Transform outTransform) where T : Component
+        {
+            outTransform = null;
+
+            if (!TryGetArcadeConfiguration(out ArcadeConfigurationComponent parent))
+                return false;
+
+            T[] components = parent.GetComponentsInChildren<T>();
+            if (components.Length > 1)
+            {
+                Debug.LogError($"Multiple {typeof(T).Name} components found! Only one can be present in the scene.");
+                return false;
+            }
+            else if (components.Length < 1)
+            {
+                Debug.LogError($"No {typeof(T).Name} component found! Current arcade setup is not valid.");
+                return false;
+            }
+
+            outTransform = components[0].transform;
+            return true;
+        }
+
         private void SetupArcadeNode(ArcadeConfiguration arcadeConfiguration)
         {
             GameObject arcadeGameObject = new GameObject("Arcade")
@@ -105,29 +128,6 @@ namespace Arcade
             GameObject nodeGameObject = new GameObject(name, typeof(T));
             nodeGameObject.transform.SetParent(_arcadeNodeTransform);
             return nodeGameObject.transform;
-        }
-
-        private static bool TryGetNode<T>(out Transform outTransform) where T : Component
-        {
-            outTransform = null;
-
-            if (!TryGetArcadeConfiguration(out ArcadeConfigurationComponent parent))
-                return false;
-
-            T[] components = parent.GetComponentsInChildren<T>();
-            if (components.Length > 1)
-            {
-                Debug.LogError($"Multiple {typeof(T).Name} components found! Only one can be present in the scene.");
-                return false;
-            }
-            else if (components.Length < 1)
-            {
-                Debug.LogError($"No {typeof(T).Name} component found! Current arcade setup is not valid.");
-                return false;
-            }
-
-            outTransform = components[0].transform;
-            return true;
         }
     }
 }

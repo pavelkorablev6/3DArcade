@@ -2265,7 +2265,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.9476678, y: 1}
+    m_SensorSize: {x: 0.8486759, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -2954,9 +2954,6 @@ MonoBehaviour:
   _interactableRaycaster: {fileID: 1134910263}
   _interactionController: {fileID: 302012187}
   _uiManager: {fileID: 4945186971106309493}
-  _libretroScreenMaterial: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f,
-    type: 2}
-  _uddScreenMaterial: {fileID: 2100000, guid: 1882637da6cf2e342911093f399b38d8, type: 2}
 --- !u!114 &1203112238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3752,7 +3749,7 @@ MonoBehaviour:
     ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.9325153, y: 1}
+    m_SensorSize: {x: 0.88709676, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -5677,22 +5674,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1457968340}
     - target: {fileID: 3161162309392775110, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1457968340}
     - target: {fileID: 4677859600817907601, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1457968340}
     - target: {fileID: 4677859600978499443, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1457968340}
     - target: {fileID: 4945186969597389410, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_Name

@@ -21,13 +21,14 @@
  * SOFTWARE. */
 
 #if UNITY_EDITOR
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Arcade
 {
     public sealed class EditorModelSpawner : IModelSpawner
     {
-        void IModelSpawner.Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        public async UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
         {
             foreach (string addressToTry in addressesToTry)
             {
@@ -35,16 +36,15 @@ namespace Arcade
                 {
                     GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(addressToTry);
                     if (prefab != null)
-                    {
-                        GameObject gameObject = Object.Instantiate(prefab, position, orientation, parent);
-                        onComplete?.Invoke(gameObject);
-                        return;
-                    }
+                        return Object.Instantiate(prefab, position, orientation, parent);
                 }
                 catch
                 {
                 }
+                await UniTask.Yield();
             }
+
+            return null;
         }
     }
 }

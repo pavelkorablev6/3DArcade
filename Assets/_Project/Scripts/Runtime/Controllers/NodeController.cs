@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ namespace Arcade
             _artworkController      = artworkController;
         }
 
-        public void Setup(ArcadeController arcadeController, GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
+        public async UniTask Setup(ArcadeController arcadeController, GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
             if (gameObject == null || modelConfiguration == null)
                 return;
@@ -50,8 +51,10 @@ namespace Arcade
                 return;
 
             string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
-            _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
-            _artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
+
+            await _artworkController.SetupImages(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, emissionIntensity);
+
+            await _artworkController.SetupVideos(_directoryNamesProvider, modelConfiguration, namesToTry, renderers, arcadeController.AudioMinDistance, arcadeController.AudioMaxDistance, arcadeController.VolumeCurve);
         }
 
         private static Renderer[] GetNodeRenderers(GameObject model)

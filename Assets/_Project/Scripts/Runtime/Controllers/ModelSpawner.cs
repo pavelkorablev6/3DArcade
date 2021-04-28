@@ -20,44 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Arcade
 {
     public sealed class ModelSpawner : IModelSpawner
     {
-        private Vector3 _position;
-        private Quaternion _orientation;
-        private Transform _parent;
-        private System.Action<GameObject> _onComplete;
-
-        void IModelSpawner.Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent, System.Action<GameObject> onComplete)
+        public async UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
         {
-            _position    = position;
-            _orientation = orientation;
-            _parent      = parent;
-            _onComplete  = onComplete;
+            IList<IResourceLocation> resourceLocations = await Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject));
+            if (resourceLocations.Count == 0)
+                return null;
 
-            Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject)).Completed += ResourceLocationsRetrievedCallback;
-        }
-
-        private void ResourceLocationsRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
-        {
-            if (aoHandle.Result.Count == 0)
-                return;
-
-            Addressables.InstantiateAsync(aoHandle.Result[0], _position, _orientation, _parent).Completed += InstantiatedCallback;
-        }
-
-        private void InstantiatedCallback(AsyncOperationHandle<GameObject> aoHandle)
-        {
-            if (aoHandle.Status == AsyncOperationStatus.Succeeded)
-                _onComplete?.Invoke(aoHandle.Result);
+            return await Addressables.InstantiateAsync(resourceLocations[0], position, orientation, parent);
         }
     }
 }

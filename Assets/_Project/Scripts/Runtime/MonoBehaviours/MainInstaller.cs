@@ -46,7 +46,7 @@ namespace Arcade
             _ = Container.Bind<Databases>().AsSingle().NonLazy();
 
             _ = Container.Bind<IEntititesSceneCreator>().To<EntitiesSceneCreator>().AsSingle().NonLazy();
-            _ = Container.Bind<IArcadeSceneLoader>().To<ArcadeSceneLoader>().AsSingle().NonLazy();
+            _ = Container.Bind<ArcadeSceneLoaderBase>().To<ArcadeSceneLoader>().AsSingle().NonLazy();
             _ = Container.Bind<EntitiesScene>().AsSingle().NonLazy();
             _ = Container.Bind<ArcadeScene>().AsSingle().NonLazy();
             _ = Container.Bind<Scenes>().AsSingle().NonLazy();

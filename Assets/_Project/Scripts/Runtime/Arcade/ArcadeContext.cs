@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using SK.Utilities.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,9 +44,7 @@ namespace Arcade
         public readonly InternalGameController InternalGameController;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
-
-        private ArcadeController _arcadeController;
-
+        public ArcadeController ArcadeController { get; private set; }
         public VideoPlayerControllerBase VideoPlayerController { get; private set; }
 
         public ArcadeContext(InputActions inputActions,
@@ -80,16 +79,16 @@ namespace Arcade
             InputActions.Enable();
             GeneralConfiguration.Initialize();
             InteractionController.Initialize(this);
-            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal);
+            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal).Forget();
         }
 
         protected override void OnUpdate(float dt)
         {
             if (Input.GetKeyDown(KeyCode.Backspace))
-                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode);
+                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode).Forget();
         }
 
-        public void StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
+        public async UniTaskVoid StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
         {
             if (string.IsNullOrEmpty(id))
                 return;
@@ -107,7 +106,7 @@ namespace Arcade
             VideoPlayerController?.StopAllVideos();
 
             VideoPlayerController = null;
-            _arcadeController     = null;
+            ArcadeController      = null;
 
             Player.TransitionTo<PlayerDisabledState>();
 
@@ -116,18 +115,18 @@ namespace Arcade
                 case ArcadeType.Fps:
                 {
                     VideoPlayerController = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
-                    _arcadeController     = new FpsArcadeController(this);
+                    ArcadeController      = new FpsArcadeController(this);
                 }
                 break;
                 case ArcadeType.Cyl:
                 {
-                    _arcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
+                    ArcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraInsideVertical    => new CylArcadeControllerWheel3DCameraInsideVertical(ArcadeContext),
                         //WheelVariant.CameraOutsideVertical   => new CylArcadeControllerWheel3DCameraOutsideVertical(ArcadeContext),
-                        CylArcadeWheelVariant.LineHorizontal   => new CylArcadeControllerLineHorizontal(this),
+                        CylArcadeWheelVariant.LineHorizontal => new CylArcadeControllerLineHorizontal(this),
                         //WheelVariant.LineVertical            => new CylArcadeControllerLineVertical(ArcadeContext),
                         CylArcadeWheelVariant.LineCustom     => new CylArcadeControllerLine(this),
                         _                                    => new CylArcadeControllerLineHorizontal(this)
@@ -136,7 +135,7 @@ namespace Arcade
                 break;
             }
 
-            if (_arcadeController == null)
+            if (ArcadeController == null)
                 return;
 
             if (Application.isPlaying)
@@ -155,7 +154,10 @@ namespace Arcade
             Scenes.Entities.Initialize(arcadeConfiguration);
 
             AssetAddresses addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration);
-            Scenes.Arcade.Load(addressesToTry, _arcadeController.ArcadeSceneLoadCompletedCallback);
+
+            bool success = await Scenes.Arcade.Load(addressesToTry);
+            if (success)
+                await ArcadeController.Initialize();
         }
 
         public bool SaveCurrentArcade()

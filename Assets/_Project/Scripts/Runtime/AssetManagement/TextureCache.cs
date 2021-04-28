@@ -20,30 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
+using System.IO;
 using UnityEngine;
 
 namespace Arcade
 {
     public sealed class TextureCache : AssetCache<Texture>
     {
-        protected override bool TryLoadAsset(string filePath, out Texture outAsset) => TryLoadFromFile(filePath, true, out outAsset);
-
-        private static bool TryLoadFromFile(string filePath, bool filtering, out Texture outTexture)
+        protected override async UniTask<Texture> TryLoadAsset(string filePath)
         {
-            byte[] data = FileSystem.ReadAllBytes(filePath);
-            if (data.Length > 0)
+            byte[] data;
+            using (FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.RGB24, false);
-                if (texture.LoadImage(data))
-                {
-                    texture.filterMode = filtering ? FilterMode.Bilinear : FilterMode.Point;
-                    outTexture = texture;
-                    return true;
-                }
+                data = new byte[stream.Length];
+                _ = await stream.ReadAsync(data, 0, (int)stream.Length);
             }
 
-            outTexture = null;
-            return false;
+            if (data.Length == 0)
+                return null;
+
+            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGB24, false, true);
+            if (!texture.LoadImage(data))
+                return null;
+
+            return texture;
         }
     }
 }
