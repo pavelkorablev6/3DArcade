@@ -12,11 +12,11 @@
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
-      <marquee_intensity>1.4</marquee_intensity>
-      <screen_lcd_intensity>1.4</screen_lcd_intensity>
-      <screen_raster_intensity>1.4</screen_raster_intensity>
-      <screen_svg_intensity>1.4</screen_svg_intensity>
-      <screen_vector_intenstity>2.1</screen_vector_intenstity>
+      <marquee_intensity>1.2</marquee_intensity>
+      <screen_lcd_intensity>1.2</screen_lcd_intensity>
+      <screen_raster_intensity>1.2</screen_raster_intensity>
+      <screen_svg_intensity>1.2</screen_svg_intensity>
+      <screen_vector_intenstity>1.8</screen_vector_intenstity>
     </render_settings>
     <audio_settings>
       <main_volume>1</main_volume>
@@ -41,11 +41,11 @@
       <viewport_rect x="0" y="0" width="1" height="1" />
     </camera_settings>
     <render_settings>
-      <marquee_intensity>1.4</marquee_intensity>
-      <screen_lcd_intensity>1.4</screen_lcd_intensity>
-      <screen_raster_intensity>1.4</screen_raster_intensity>
-      <screen_svg_intensity>1.4</screen_svg_intensity>
-      <screen_vector_intenstity>2.1</screen_vector_intenstity>
+      <marquee_intensity>1.2</marquee_intensity>
+      <screen_lcd_intensity>1.2</screen_lcd_intensity>
+      <screen_raster_intensity>1.2</screen_raster_intensity>
+      <screen_svg_intensity>1.2</screen_svg_intensity>
+      <screen_vector_intenstity>1.8</screen_vector_intenstity>
     </render_settings>
     <audio_settings>
       <main_volume>1</main_volume>

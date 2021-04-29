@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalExternalGameState : ArcadeExternalGameStateBase
+    public sealed class ArcadeNormalExternalGameState : ArcadeExternalGameState
     {
         public ArcadeNormalExternalGameState(ArcadeContext context)
         : base(context)

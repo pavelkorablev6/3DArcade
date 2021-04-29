@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230e19e9e119a954cb5d83a29661029d, type: 3}
   m_Name: InteractionData
   m_EditorClassIdentifier: 
+  _selectionLayer: 10

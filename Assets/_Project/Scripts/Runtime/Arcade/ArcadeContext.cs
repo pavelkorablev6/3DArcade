@@ -114,7 +114,7 @@ namespace Arcade
             {
                 case ArcadeType.Fps:
                 {
-                    VideoPlayerController = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels"));
+                    VideoPlayerController = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection"));
                     ArcadeController      = new FpsArcadeController(this);
                 }
                 break;

@@ -25,7 +25,7 @@ using UnityEngine.Video;
 
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityExternalGameState : ArcadeExternalGameStateBase
+    public sealed class ArcadeVirtualRealityExternalGameState : ArcadeExternalGameState
     {
         private ScreenNodeTag _screenNode;
         private Material _savedMaterial;

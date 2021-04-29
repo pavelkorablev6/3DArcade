@@ -89,7 +89,7 @@ namespace Arcade.UnityEditor
             UE_Utilities.OpenMainScene();
             UE_Utilities.CloseAllScenes();
 
-            ArcadeContext.StartArcade(name, arcadeType, ArcadeMode.Normal);
+            ArcadeContext.StartArcade(name, arcadeType, ArcadeMode.Normal).Forget();
             SetCurrentArcadeStateInEditorPrefs(name, arcadeType);
         }
 

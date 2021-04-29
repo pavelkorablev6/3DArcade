@@ -24,11 +24,11 @@ using SK.Utilities;
 
 namespace Arcade
 {
-    public abstract class ArcadeExternalGameStateBase : ArcadeState
+    public abstract class ArcadeExternalGameState : ArcadeState
     {
         private bool _gameRunning;
 
-        public ArcadeExternalGameStateBase(ArcadeContext context)
+        public ArcadeExternalGameState(ArcadeContext context)
         : base(context)
         {
         }

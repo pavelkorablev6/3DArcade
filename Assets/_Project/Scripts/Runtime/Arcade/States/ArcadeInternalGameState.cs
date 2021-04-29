@@ -25,14 +25,14 @@ using UnityEngine.Video;
 
 namespace Arcade
 {
-    public abstract class ArcadeInternalGameStateBase : ArcadeState
+    public abstract class ArcadeInternalGameState : ArcadeState
     {
         private ScreenNodeTag _screenNode;
         private Renderer _screenRenderer;
         private Material _savedMaterial;
         private DynamicArtworkComponent _dynamicArtworkComponent;
 
-        public ArcadeInternalGameStateBase(ArcadeContext context)
+        public ArcadeInternalGameState(ArcadeContext context)
         : base(context)
         {
         }
@@ -63,11 +63,15 @@ namespace Arcade
             _screenRenderer = _screenNode.GetComponent<Renderer>();
             _savedMaterial  = _screenRenderer.material;
             _screenRenderer.material = _context.InternalGameController.ScreenMaterial;
+
+            OnStateEnter();
         }
 
         public sealed override void OnExit()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+
+            OnStateExit();
 
             _context.InternalGameController.StopGame();
 
@@ -84,6 +88,14 @@ namespace Arcade
                 _context.TransitionToPrevious();
 
             _context.InternalGameController.UpdateGame();
+        }
+
+        protected virtual void OnStateEnter()
+        {
+        }
+
+        protected virtual void OnStateExit()
+        {
         }
     }
 }

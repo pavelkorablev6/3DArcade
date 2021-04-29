@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -28,12 +29,32 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/InteractionData", fileName = "InteractionData")]
     public sealed class InteractionData : ScriptableObject
     {
-        [System.NonSerialized] public ModelConfigurationComponent CurrentTarget;
+        [SerializeField, Layer] private int _selectionLayer;
 
-        public void HoverEnteredEventCallback(HoverEnterEventArgs args) => CurrentTarget = args.interactable.GetComponent<ModelConfigurationComponent>();
+        public ModelConfigurationComponent CurrentTarget { get; private set; }
+        [System.NonSerialized] private int _savedLayer;
+
+        public void Set(ModelConfigurationComponent target)
+        {
+            CurrentTarget = target;
+            if (CurrentTarget != null)
+            {
+                _savedLayer                    = CurrentTarget.gameObject.layer;
+                CurrentTarget.gameObject.layer = _selectionLayer;
+            }
+        }
+
+        public void Reset()
+        {
+            if (CurrentTarget != null)
+                CurrentTarget.gameObject.layer = _savedLayer;
+
+            CurrentTarget = null;
+            _savedLayer   = 0;
+        }
+
+        public void HoverEnteredEventCallback(HoverEnterEventArgs args) => Set(args.interactable.GetComponent<ModelConfigurationComponent>());
 
         public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
-
-        public void Reset() => CurrentTarget = null;
     }
 }

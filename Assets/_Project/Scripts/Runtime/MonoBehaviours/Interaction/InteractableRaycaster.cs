@@ -47,7 +47,7 @@ namespace Arcade
             ModelConfigurationComponent currentTarget = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
             if (currentTarget != _interactionData.CurrentTarget)
             {
-                _interactionData.CurrentTarget = currentTarget;
+                _interactionData.Set(currentTarget);
                 _onHoverEnter.Invoke(currentTarget.Configuration.Id);
             }
         }

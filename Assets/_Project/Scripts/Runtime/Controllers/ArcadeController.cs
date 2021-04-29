@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cinemachine;
+using Cinemachine.PostFX;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
@@ -160,6 +162,22 @@ namespace Arcade
 
             if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
+            else
+            {
+                CinemachineVirtualCamera vCam = go.GetComponentInChildren<CinemachineVirtualCamera>();
+                if (vCam != null)
+                {
+                    vCam.Priority = 0;
+
+                    CinemachineVolumeSettings currentVolumeSettings = _arcadeContext.Player.Camera.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVolumeSettings>();
+                    if (currentVolumeSettings != null)
+                    {
+                        CinemachineVolumeSettings volumeSettings = vCam.gameObject.AddComponent<CinemachineVolumeSettings>();
+                        volumeSettings.m_Profile = currentVolumeSettings.m_Profile;
+                        vCam.AddExtension(volumeSettings);
+                    }
+                }
+            }
 
             if (applyArtworks)
                 await ApplyArtworks(go, modelConfiguration);
