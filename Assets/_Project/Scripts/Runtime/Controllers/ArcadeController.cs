@@ -169,13 +169,13 @@ namespace Arcade
                 {
                     vCam.Priority = 0;
 
-                    CinemachineVolumeSettings currentVolumeSettings = _arcadeContext.Player.Camera.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVolumeSettings>();
-                    if (currentVolumeSettings != null)
-                    {
-                        CinemachineVolumeSettings volumeSettings = vCam.gameObject.AddComponent<CinemachineVolumeSettings>();
-                        volumeSettings.m_Profile = currentVolumeSettings.m_Profile;
-                        vCam.AddExtension(volumeSettings);
-                    }
+                    //CinemachineVolumeSettings currentVolumeSettings = _arcadeContext.Player.Camera.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVolumeSettings>();
+                    //if (currentVolumeSettings != null)
+                    //{
+                    //    CinemachineVolumeSettings volumeSettings = vCam.gameObject.AddComponent<CinemachineVolumeSettings>();
+                    //    volumeSettings.m_Profile = currentVolumeSettings.m_Profile;
+                    //    vCam.AddExtension(volumeSettings);
+                    //}
                 }
             }
 

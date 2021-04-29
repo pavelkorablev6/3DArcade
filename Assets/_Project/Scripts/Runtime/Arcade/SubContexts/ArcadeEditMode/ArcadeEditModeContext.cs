@@ -27,21 +27,22 @@ namespace Arcade
 {
     public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
-        //public readonly PlayerFpsControls PlayerFpsControls;
-
+        public readonly Player Player;
+        public readonly InputActions InputActions;
         public readonly SceneEditModeController EditModeController;
         public readonly ArcadeEditModeData Data;
         public readonly LayerMask RaycastLayers;
 
-        public ArcadeEditModeContext(/*PlayerFpsControls playerFpsControls*/)
+        public ArcadeEditModeContext(Player player, InputActions inputActions)
         {
-            //PlayerFpsControls = playerFpsControls;
-
+            Player             = player;
+            InputActions       = inputActions;
             EditModeController = new SceneEditModeController();
             Data               = new ArcadeEditModeData();
             RaycastLayers      = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection");
 
             TransitionTo<ArcadeEditModeNullState>();
         }
+
     }
 }

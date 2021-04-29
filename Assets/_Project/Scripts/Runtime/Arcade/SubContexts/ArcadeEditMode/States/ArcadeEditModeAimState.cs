@@ -21,14 +21,15 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     public sealed class ArcadeEditModeAimState : ArcadeEditModeState
     {
-        //private static readonly float _raycastMaxDistance      = 22.0f;
-        //private static readonly float _movementSpeedMultiplier = 0.8f;
-        //private static readonly float _rotationSpeedMultiplier = 0.8f;
+        private static readonly float _raycastMaxDistance = 22.0f;
+        private static readonly float _movementSpeedMultiplier = 0.8f;
+        private static readonly float _rotationSpeedMultiplier = 0.8f;
 
         public ArcadeEditModeAimState(ArcadeEditModeContext context)
         : base(context)
@@ -39,28 +40,28 @@ namespace Arcade
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-        //public override void Update(float dt)
-        //{
-        //    Vector2 rayPosition;
-        //    if (Cursor.lockState != CursorLockMode.Locked && Mouse.current != null)
-        //        rayPosition = Mouse.current.position.ReadValue();
-        //    else
-        //        rayPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+        public override void OnUpdate(float dt)
+        {
+            Vector2 rayPosition;
+            if (Cursor.lockState != CursorLockMode.Locked && Mouse.current != null)
+                rayPosition = Mouse.current.position.ReadValue();
+            else
+                rayPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
-        //    Ray ray = _context.PlayerFpsControls.Camera.ScreenPointToRay(rayPosition);
-        //    SceneEditModeController.FindModelSetup(_data, ray, _raycastMaxDistance, _context.RaycastLayers);
+            Ray ray = _context.Player.Camera.ScreenPointToRay(rayPosition);
+            _context.EditModeController.FindModelSetup(_context.Data, ray, _raycastMaxDistance, _context.RaycastLayers);
 
-        //    if (_data.ModelSetup != null && _data.ModelSetup.MoveCabMovable)
-        //    {
-        //        Vector2 positionInput = _context.PlayerFpsControls.FpsMoveCabActions.MoveModel.ReadValue<Vector2>();
-        //        float rotationInput   = _context.PlayerFpsControls.FpsMoveCabActions.RotateModel.ReadValue<float>();
-        //        _data.AimPosition     = positionInput * _movementSpeedMultiplier;
-        //        _data.AimRotation     = rotationInput * _rotationSpeedMultiplier;
+            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.Configuration.MoveCabMovable)
+            {
+                Vector2 positionInput     = _context.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
+                float rotationInput       = _context.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
+                _context.Data.AimPosition = positionInput * _movementSpeedMultiplier;
+                _context.Data.AimRotation = rotationInput * _rotationSpeedMultiplier;
 
-        //        if (_data.ModelSetup.MoveCabGrabbable && _context.PlayerFpsControls.FpsMoveCabActions.GrabReleaseModel.triggered)
-        //            _context.TransitionTo<SceneEditModeGrabState>();
-        //    }
-        //}
+                if (_context.Data.ModelSetup.Configuration.MoveCabGrabbable && _context.InputActions.FpsMoveCab.Grab.triggered)
+                    _context.TransitionTo<ArcadeEditModeGrabState>();
+            }
+        }
 
         public override void OnFixedUpdate(float dt)
         {

@@ -179,6 +179,18 @@ namespace Arcade
             return Databases.Arcades.LoadAll();
         }
 
+        public void SaveCurrentArcadeConfigurationModels()
+        {
+            //if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
+            //    arcadeConfigurationComponent.SaveModelsOnly(_sceneDatabase, CurrentSceneConfiguration);
+        }
+
+        public void ReloadCurrentArcadeConfigurationModels()
+        {
+            //if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
+            //    arcadeConfigurationComponent.SetGamesAndPropsTransforms(CurrentSceneConfiguration);
+        }
+
         /*
         public bool SaveCurrentArcadeConfiguration()
         {
@@ -217,18 +229,6 @@ namespace Arcade
             };
 
             return cfgComponent.Save(_sceneDatabase, fpsCameraSettings, cylCameraSettings, !cylCamera.gameObject.activeInHierarchy);
-        }
-
-        public bool SaveCurrentArcadeConfigurationModels()
-        {
-            ArcadeConfigurationComponent cfgComponent = _objectsHierarchy.RootNode.GetComponent<ArcadeConfigurationComponent>();
-            return cfgComponent != null && cfgComponent.SaveModelsOnly(_sceneDatabase, CurrentSceneConfiguration);
-        }
-
-        public void ReloadCurrentArcadeConfigurationModels()
-        {
-            if (_objectsHierarchy.RootNode.TryGetComponent(out ArcadeConfigurationComponent cfgComponent))
-                cfgComponent.SetGamesAndPropsTransforms(CurrentSceneConfiguration);
         }
 
         public EmulatorConfiguration GetEmulatorForCurrentModelConfiguration()

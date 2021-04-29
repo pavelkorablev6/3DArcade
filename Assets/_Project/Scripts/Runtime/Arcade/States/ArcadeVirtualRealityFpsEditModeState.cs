@@ -26,11 +26,13 @@ namespace Arcade
 {
     public sealed class ArcadeVirtualRealityFpsEditModeState : ArcadeState
     {
-        private readonly ArcadeEditModeContext _editModeContext;
+        //private readonly ArcadeEditModeContext _editModeContext;
 
         public ArcadeVirtualRealityFpsEditModeState(ArcadeContext context)
         : base(context)
-            => _editModeContext = new ArcadeEditModeContext(/*_context.Main.PlayerFpsControls*/);
+        {
+            //_editModeContext = new ArcadeEditModeContext(/*_context.Main.PlayerFpsControls*/);
+        }
 
         public override void OnEnter()
         {
@@ -45,7 +47,7 @@ namespace Arcade
 
             //_context.Main.PlayerFpsControls.FpsMoveCabActions.Enable();
 
-            _editModeContext.TransitionTo<ArcadeEditModeAimState>();
+            //_editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
             //_context.UIController.EnableMoveCabUI();
         }
@@ -60,8 +62,8 @@ namespace Arcade
             //_context.UIController.DisableMoveCabUI();
         }
 
-        public override void OnUpdate(float dt)
-        {
+        //public override void OnUpdate(float dt)
+        //{
             //if (_context.Main.PlayerFpsControls.GlobalActions.Quit.triggered)
             //{
             //    _context.ReloadCurrentArcadeConfigurationModels();
@@ -87,9 +89,9 @@ namespace Arcade
             //        _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Disable();
             //}
 
-            _editModeContext.Update(dt);
-        }
+            //_editModeContext.Update(dt);
+        //}
 
-        public override void OnFixedUpdate(float dt) => _editModeContext.FixedUpdate(dt);
+        //public override void OnFixedUpdate(float dt) => _editModeContext.FixedUpdate(dt);
     }
 }

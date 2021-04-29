@@ -38,33 +38,32 @@ namespace Arcade
         {
             Assert.IsNotNull(data);
 
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
-            {
-                ModelConfigurationComponent targetModel = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
-                if (targetModel != null && targetModel != data.ModelSetup)
-                {
-                    if (data.ModelSetup != null && data.ModelSetup.gameObject.layer != _arcadeModelsLayer)
-                        data.ModelSetup.transform.SetLayersRecursively(data.SavedLayer);
-
-                    data.Set(targetModel, hitInfo.collider, hitInfo.rigidbody);
-
-                    if (data.ModelSetup.gameObject.layer != _arcadeModelsLayer)
-                    {
-                        data.SavedLayer = data.ModelSetup.gameObject.layer;
-                        data.ModelSetup.transform.SetLayersRecursively(_arcadeSelectionLayer);
-
-                        OnCurrentModelChanged?.Invoke(data.ModelSetup);
-                    }
-                    else
-                        OnCurrentModelChanged?.Invoke(null);
-                }
-            }
-            else
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
             {
                 data.Reset();
-
                 OnCurrentModelChanged?.Invoke(null);
+                return;
             }
+
+            ModelConfigurationComponent targetModel = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
+            if (targetModel == null || targetModel == data.ModelSetup)
+                return;
+
+            if (data.ModelSetup != null && data.ModelSetup.gameObject.layer != _arcadeModelsLayer)
+                data.ModelSetup.transform.SetLayersRecursively(data.SavedLayer);
+
+            data.Set(targetModel, hitInfo.collider, hitInfo.rigidbody);
+
+            if (data.ModelSetup.gameObject.layer == _arcadeModelsLayer)
+            {
+                OnCurrentModelChanged?.Invoke(null);
+                return;
+            }
+
+            data.SavedLayer = data.ModelSetup.gameObject.layer;
+            data.ModelSetup.transform.SetLayersRecursively(_arcadeSelectionLayer);
+
+            OnCurrentModelChanged?.Invoke(data.ModelSetup);
         }
 
         public static void ManualMoveAndRotate(in Transform transform, in Rigidbody rigidbody, in Vector2 positionInput, in float rotationInput)
@@ -113,33 +112,39 @@ namespace Arcade
             Assert.IsNotNull(data.ModelSetup);
             Assert.IsNotNull(data.Collider);
 
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
+                return;
+
+            Vector3 newPosition;
+            Transform transform = data.ModelSetup.transform;
+            Vector3 position    = hitInfo.point;
+            Vector3 normal      = hitInfo.normal;
+            float dot           = Vector3.Dot(Vector3.up, normal);
+
+            // Floor
+            if (dot > 0.05f)
             {
-                Transform transform = data.ModelSetup.transform;
-                Collider collider   = data.Collider;
-                Vector3 position    = hitInfo.point;
-                Vector3 normal      = hitInfo.normal;
-                float dot           = Vector3.Dot(Vector3.up, normal);
-                if (dot > 0.05f)
-                {
-                    Vector3 newPosition     = position + new Vector3(0f, 0.1f, 0f);
-                    transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
-                    transform.localRotation = Quaternion.FromToRotation(Vector3.up, normal) * Quaternion.LookRotation(-forward);
-                }
-                else if (dot < -0.05f)
-                {
-                    Vector3 newPosition     = new Vector3(position.x, transform.position.y, position.z);
-                    transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
-                    transform.localRotation = Quaternion.FromToRotation(Vector3.up, -normal) * Quaternion.LookRotation(-forward);
-                }
-                else // Vertical surface
-                {
-                    Vector3 positionOffset  = normal * Mathf.Max(collider.bounds.extents.x + 0.1f, collider.bounds.extents.z + 0.1f);
-                    Vector3 newPosition     = new Vector3(position.x, transform.position.y, position.z) + positionOffset;
-                    transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
-                    transform.localRotation = Quaternion.LookRotation(normal);
-                }
+                newPosition             = new Vector3(position.x, position.y + 0.1f, position.z);
+                transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
+                transform.localRotation = Quaternion.FromToRotation(Vector3.up, normal) * Quaternion.LookRotation(-forward);
+                return;
             }
+
+            // Ceiling
+            if (dot < -0.05f)
+            {
+                newPosition             = new Vector3(position.x, transform.position.y, position.z);
+                transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
+                transform.localRotation = Quaternion.FromToRotation(Vector3.up, -normal) * Quaternion.LookRotation(-forward);
+                return;
+            }
+
+            // Vertical surface
+            Collider collider       = data.Collider;
+            Vector3 positionOffset  = normal * Mathf.Max(collider.bounds.extents.x + 0.1f, collider.bounds.extents.z + 0.1f);
+            newPosition             = new Vector3(position.x, transform.position.y, position.z) + positionOffset;
+            transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);
+            transform.localRotation = Quaternion.LookRotation(normal);
         }
 
         public static MoveCabGrabSavedData InitGrabMode(in ArcadeEditModeData data, in Camera camera)

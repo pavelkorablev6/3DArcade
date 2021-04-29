@@ -73,8 +73,8 @@ namespace Arcade
             if (Cursor.lockState == CursorLockMode.Locked && _context.InputActions.FpsArcade.Interact.triggered)
                 _context.InteractionController.HandleInteraction();
 
-            //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
-            //    _context.TransitionTo<FpsMoveCabState>();
+            if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
+                _context.TransitionTo<ArcadeNormalFpsEditModeState>();
         }
     }
 }

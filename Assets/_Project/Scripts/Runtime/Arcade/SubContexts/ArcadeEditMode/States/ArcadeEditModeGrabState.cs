@@ -21,14 +21,15 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     public sealed class ArcadeEditModeGrabState : ArcadeEditModeState
     {
-        //private const float RAYCAST_MAX_DISTANCE = 22.0f;
+        private const float RAYCAST_MAX_DISTANCE = 22.0f;
 
-        //private MoveCabGrabSavedData _savedValues;
+        private MoveCabGrabSavedData _savedValues;
 
         public ArcadeEditModeGrabState(ArcadeEditModeContext context)
         : base(context)
@@ -39,26 +40,26 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            //_savedValues = SceneEditModeController.InitGrabMode(_context.Data, _context.PlayerFpsControls.Camera);
+            _savedValues = SceneEditModeController.InitGrabMode(_context.Data, _context.Player.Camera);
         }
 
         public override void OnExit()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            //SceneEditModeController.RestoreSavedValues(_context.Data, _savedValues);
-            //_savedValues = null;
+            SceneEditModeController.RestoreSavedValues(_context.Data, _savedValues);
+            _savedValues = null;
         }
 
-        //public override void Update(float dt)
-        //{
-        //    bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
-        //    Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : _context.Data.ScreenPoint;
-        //    Ray ray               = _context.PlayerFpsControls.Camera.ScreenPointToRay(rayPosition);
-        //    SceneEditModeController.AutoMoveAndRotate(_context.Data, ray, _context.PlayerFpsControls.transform.forward, RAYCAST_MAX_DISTANCE, _context.RaycastLayers);
+        public override void OnUpdate(float dt)
+        {
+            bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
+            Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : _context.Data.ScreenPoint;
+            Ray ray               = _context.Player.Camera.ScreenPointToRay(rayPosition);
+            SceneEditModeController.AutoMoveAndRotate(_context.Data, ray, _context.Player.ActiveTransform.forward, RAYCAST_MAX_DISTANCE, _context.RaycastLayers);
 
-        //    if (_context.PlayerFpsControls.FpsMoveCabActions.GrabReleaseModel.triggered)
-        //        _context.TransitionTo<SceneEditModeAimState>();
-        //}
+            if (_context.InputActions.FpsMoveCab.Grab.triggered)
+                _context.TransitionToPrevious();
+        }
     }
 }

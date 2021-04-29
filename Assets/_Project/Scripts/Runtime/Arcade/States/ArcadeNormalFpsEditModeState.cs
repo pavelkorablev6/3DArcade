@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -30,62 +31,62 @@ namespace Arcade
 
         public ArcadeNormalFpsEditModeState(ArcadeContext context)
         : base(context)
-            => _editModeContext = new ArcadeEditModeContext(/*_context.Main.PlayerFpsControls*/);
+            => _editModeContext = new ArcadeEditModeContext(context.Player, context.InputActions);
 
         public override void OnEnter()
         {
-            Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
+            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            //_context.VideoPlayerController.StopAllVideos();
+            _context.VideoPlayerController.StopAllVideos();
 
-            //_context.Main.PlayerFpsControls.FpsArcadeActions.Enable();
-            //if (Cursor.lockState != CursorLockMode.Locked)
-            //    _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Disable();
-            //_context.Main.PlayerFpsControls.FpsArcadeActions.Interact.Disable();
+            _context.InputActions.FpsArcade.Enable();
+            _context.InputActions.FpsArcade.Interact.Disable();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                _context.InputActions.FpsArcade.Look.Disable();
 
-            //_context.Main.PlayerFpsControls.FpsMoveCabActions.Enable();
+            _context.InputActions.FpsMoveCab.Enable();
 
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
-            //_context.UIController.EnableMoveCabUI();
+            _context.UIManager.TransitionTo<UINormalSceneEditModeState>();
         }
 
         public override void OnExit()
         {
-            Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            //_context.Main.PlayerFpsControls.FpsArcadeActions.Disable();
-            //_context.Main.PlayerFpsControls.FpsMoveCabActions.Disable();
+            _context.InputActions.FpsArcade.Disable();
+            _context.InputActions.FpsMoveCab.Disable();
 
-            //_context.UIController.DisableMoveCabUI();
+            _context.UIManager.TransitionTo<UIDisabledState>();
         }
 
         public override void OnUpdate(float dt)
         {
-            //if (_context.Main.PlayerFpsControls.GlobalActions.Quit.triggered)
-            //{
-            //    _context.ReloadCurrentArcadeConfigurationModels();
+            if (_context.InputActions.Global.Quit.triggered)
+            {
+                _context.ReloadCurrentArcadeConfigurationModels();
 
-            //    _editModeContext.TransitionTo<SceneEditModeNullState>();
-            //    _context.TransitionTo<SceneFpsNormalState>();
-            //}
+                _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+                _context.TransitionToPrevious();
+            }
 
-            //if (_context.Main.PlayerFpsControls.FpsArcadeActions.ToggleMoveCab.triggered)
-            //{
-            //    _ = _context.SaveCurrentArcadeConfigurationModels();
+            if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
+            {
+                _context.SaveCurrentArcadeConfigurationModels();
 
-            //    _editModeContext.TransitionTo<SceneEditModeNullState>();
-            //    _context.TransitionTo<SceneFpsNormalState>();
-            //}
+                _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+                _context.TransitionToPrevious();
+            }
 
-            //if (_context.Main.PlayerFpsControls.GlobalActions.ToggleCursor.triggered)
-            //{
-            //    SystemUtils.ToggleMouseCursor();
-            //    if (Cursor.lockState == CursorLockMode.Locked)
-            //        _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Enable();
-            //    else
-            //        _context.Main.PlayerFpsControls.FpsArcadeActions.Look.Disable();
-            //}
+            if (_context.InputActions.Global.ToggleCursor.triggered)
+            {
+                CursorUtils.ToggleMouseCursor();
+                if (Cursor.lockState == CursorLockMode.Locked)
+                    _context.InputActions.FpsArcade.Look.Enable();
+                else
+                    _context.InputActions.FpsArcade.Look.Disable();
+            }
 
             _editModeContext.Update(dt);
         }

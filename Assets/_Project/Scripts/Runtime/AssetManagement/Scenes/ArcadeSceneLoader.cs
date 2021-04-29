@@ -21,7 +21,9 @@
  * SOFTWARE. */
 
 using Cysharp.Threading.Tasks;
+using SK.Utilities.Unity;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -34,11 +36,16 @@ namespace Arcade
     {
         public override float LoadPercentCompleted => _sceneHandle.IsValid() && !_sceneHandle.IsDone ? _sceneHandle.PercentComplete : 0f;
 
+        private static int _arcadeModelsLayer = -1;
+
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private SceneInstance _sceneInstance;
 
         public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)
         {
+            if (_arcadeModelsLayer == -1)
+                _arcadeModelsLayer = LayerMask.NameToLayer("Arcade/ArcadeModels");
+
             IList<IResourceLocation> resourceLocations = await Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance));
             if (resourceLocations.Count == 0)
                 return false;
@@ -56,68 +63,19 @@ namespace Arcade
             if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
                 return false;
 
+            GameObject[] rootObjects = _sceneInstance.Scene.GetRootGameObjects();
+            foreach (GameObject gameObject in rootObjects)
+            {
+                if (gameObject.TryGetComponent(out MeshRenderer _))
+                    gameObject.transform.SetLayersRecursively(_arcadeModelsLayer);
+
+                MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+                foreach (MeshRenderer meshRenderer in meshRenderers)
+                    meshRenderer.transform.SetLayersRecursively(_arcadeModelsLayer);
+            }
+
             await _sceneInstance.ActivateAsync();
             return true;
         }
-
-        //public override void Load(AssetAddresses addressesToTry, System.Action onComplete)
-        //{
-        //    Loaded = false;
-
-        //    if (_sceneHandle.IsValid())
-        //        Addressables.Release(_sceneHandle);
-
-        //    _onComplete = onComplete;
-
-        //    Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance))
-        //                .Completed += ResourceLocationRetrievedCallback;
-        //}
-
-        //private void ResourceLocationRetrievedCallback(AsyncOperationHandle<IList<IResourceLocation>> aoHandle)
-        //{
-        //    if (aoHandle.Result.Count == 0)
-        //        return;
-
-        //    _sceneResourceLocation = aoHandle.Result[0];
-        //    LoadScene();
-        //}
-
-        //private void LoadScene()
-        //{
-        //    if (_sceneInstance.Scene.isLoaded)
-        //    {
-        //        _triggerSceneReload = true;
-        //        UnloadScene();
-        //        return;
-        //    }
-
-        //    _sceneHandle = Addressables.LoadSceneAsync(_sceneResourceLocation, LoadSceneMode.Additive);
-        //    _sceneHandle.Completed += SceneLoadedCallback;
-        //}
-
-        //private void UnloadScene() => Addressables.UnloadSceneAsync(_sceneInstance).Completed += SceneUnloadedCallback;
-
-        //private void SceneLoadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
-        //{
-        //    if (aoHandle.Status != AsyncOperationStatus.Succeeded)
-        //        return;
-
-        //    _sceneInstance = aoHandle.Result;
-
-        //    _onComplete?.Invoke();
-
-        //    _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
-
-        //    Loaded = true;
-        //}
-
-        //private void SceneUnloadedCallback(AsyncOperationHandle<SceneInstance> aoHandle)
-        //{
-        //    if (!_triggerSceneReload)
-        //        return;
-
-        //    LoadScene();
-        //    _triggerSceneReload = false;
-        //}
     }
 }
