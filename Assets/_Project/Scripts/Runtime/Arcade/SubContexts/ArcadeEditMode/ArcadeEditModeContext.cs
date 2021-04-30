@@ -43,6 +43,5 @@ namespace Arcade
 
             TransitionTo<ArcadeEditModeNullState>();
         }
-
     }
 }

@@ -160,7 +160,7 @@ namespace Arcade
                 await ArcadeController.Initialize();
         }
 
-        public bool SaveCurrentArcade()
+        public bool SaveCurrentArcade(bool modelsOnly = false)
         {
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
                 return false;
@@ -176,19 +176,10 @@ namespace Arcade
             if (!Databases.Arcades.Save(arcadeConfiguration))
                 return false;
 
+            if (modelsOnly)
+                return true;
+
             return Databases.Arcades.LoadAll();
-        }
-
-        public void SaveCurrentArcadeConfigurationModels()
-        {
-            //if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
-            //    arcadeConfigurationComponent.SaveModelsOnly(_sceneDatabase, CurrentSceneConfiguration);
-        }
-
-        public void ReloadCurrentArcadeConfigurationModels()
-        {
-            //if (EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
-            //    arcadeConfigurationComponent.SetGamesAndPropsTransforms(CurrentSceneConfiguration);
         }
 
         /*

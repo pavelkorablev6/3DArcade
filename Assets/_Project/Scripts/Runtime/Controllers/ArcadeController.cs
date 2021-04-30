@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using Cinemachine;
-using Cinemachine.PostFX;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,8 +42,8 @@ namespace Arcade
 
         protected readonly ArcadeContext _arcadeContext;
 
-        private readonly List<GameObject> _gameModels = new List<GameObject>();
-        private readonly List<GameObject> _propModels = new List<GameObject>();
+        private readonly List<ModelConfigurationComponent> _gameModels = new List<ModelConfigurationComponent>();
+        private readonly List<ModelConfigurationComponent> _propModels = new List<ModelConfigurationComponent>();
 
         private IModelSpawner _modelSpawner;
 
@@ -67,6 +66,18 @@ namespace Arcade
             Loaded = true;
         }
 
+        public void StoreModelPositions()
+        {
+            StoreModelPositions(_gameModels);
+            StoreModelPositions(_propModels);
+        }
+
+        public void RestoreModelPositions()
+        {
+            RestoreModelPositions(_gameModels);
+            RestoreModelPositions(_propModels);
+        }
+
         protected abstract void SetupPlayer();
 
         private async UniTask SpawnGames()
@@ -77,7 +88,7 @@ namespace Arcade
             foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Games)
             {
                 GameObject go = await SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
-                _gameModels.Add(go);
+                _gameModels.Add(go.GetComponent<ModelConfigurationComponent>());
             }
         }
 
@@ -104,7 +115,7 @@ namespace Arcade
             foreach (ModelConfiguration modelConfiguration in modelConfigurations)
             {
                 GameObject go = await SpawnProp(modelConfiguration, _arcadeContext.Scenes.Entities.PropsNodeTransform);
-                _propModels.Add(go);
+                _propModels.Add(go.GetComponent<ModelConfigurationComponent>());
             }
         }
 
@@ -218,6 +229,32 @@ namespace Arcade
                 GameScreenType.Vector  => RenderSettings.ScreenVectorIntenstity,
                 _                      => throw new System.NotImplementedException($"Unhandled switch case for GameScreenType: {game.ScreenType}")
             };
+        }
+
+        private static void StoreModelPositions(List<ModelConfigurationComponent> models)
+        {
+            foreach (ModelConfigurationComponent model in models)
+            {
+                ModelConfiguration cfg     = model.Configuration;
+                cfg.BeforeEditModePosition = cfg.Position;
+                cfg.BeforeEditModeRotation = cfg.Rotation;
+                cfg.BeforeEditModeScale    = cfg.Scale;
+            }
+        }
+
+        private static void RestoreModelPositions(List<ModelConfigurationComponent> models)
+        {
+            foreach (ModelConfigurationComponent model in models)
+            {
+                ModelConfiguration cfg = model.Configuration;
+                cfg.Position           = cfg.BeforeEditModePosition;
+                cfg.Rotation           = cfg.BeforeEditModeRotation;
+                cfg.Scale              = cfg.BeforeEditModeScale;
+
+                model.transform.position   = cfg.Position;
+                model.transform.rotation   = Quaternion.Euler(cfg.Rotation);
+                model.transform.localScale = cfg.Scale;
+            }
         }
 
         /*

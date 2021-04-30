@@ -66,12 +66,12 @@ namespace Arcade
             GameObject[] rootObjects = _sceneInstance.Scene.GetRootGameObjects();
             foreach (GameObject gameObject in rootObjects)
             {
-                if (gameObject.TryGetComponent(out MeshRenderer _))
+                if (gameObject.TryGetComponent(out Collider _))
                     gameObject.transform.SetLayersRecursively(_arcadeModelsLayer);
 
-                MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
-                foreach (MeshRenderer meshRenderer in meshRenderers)
-                    meshRenderer.transform.SetLayersRecursively(_arcadeModelsLayer);
+                Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(true);
+                foreach (Collider collider in colliders)
+                    collider.transform.SetLayersRecursively(_arcadeModelsLayer);
             }
 
             await _sceneInstance.ActivateAsync();

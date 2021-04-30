@@ -60,13 +60,11 @@ namespace Arcade
         [UnityEngine.HideInInspector]
         public DatabaseVector3 Scale = DatabaseVector3.One;
 
-        [XmlIgnore]
-        public PlatformConfiguration PlatformConfiguration { get; set; }
-
-        [XmlIgnore]
-        public EmulatorConfiguration EmulatorConfiguration { get; set; }
-
-        [XmlIgnore]
-        public GameConfiguration GameConfiguration { get; set; }
+        [XmlIgnore] public PlatformConfiguration PlatformConfiguration { get; set; }
+        [XmlIgnore] public EmulatorConfiguration EmulatorConfiguration { get; set; }
+        [XmlIgnore] public GameConfiguration GameConfiguration { get; set; }
+        [XmlIgnore] public DatabaseVector3 BeforeEditModePosition { get; set; }
+        [XmlIgnore] public DatabaseVector3 BeforeEditModeRotation { get; set; }
+        [XmlIgnore] public DatabaseVector3 BeforeEditModeScale { get; set; }
     }
 }

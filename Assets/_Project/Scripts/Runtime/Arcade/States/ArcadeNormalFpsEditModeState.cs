@@ -39,6 +39,8 @@ namespace Arcade
 
             _context.VideoPlayerController.StopAllVideos();
 
+            _context.ArcadeController.StoreModelPositions();
+
             _context.InputActions.FpsArcade.Enable();
             _context.InputActions.FpsArcade.Interact.Disable();
             if (Cursor.lockState != CursorLockMode.Locked)
@@ -65,7 +67,7 @@ namespace Arcade
         {
             if (_context.InputActions.Global.Quit.triggered)
             {
-                _context.ReloadCurrentArcadeConfigurationModels();
+                _context.ArcadeController.RestoreModelPositions();
 
                 _editModeContext.TransitionTo<ArcadeEditModeNullState>();
                 _context.TransitionToPrevious();
@@ -73,7 +75,7 @@ namespace Arcade
 
             if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
             {
-                _context.SaveCurrentArcadeConfigurationModels();
+                _ = _context.SaveCurrentArcade(true);
 
                 _editModeContext.TransitionTo<ArcadeEditModeNullState>();
                 _context.TransitionToPrevious();
