@@ -28,8 +28,6 @@ namespace Arcade
 {
     public abstract class Database<T> where T : DatabaseEntry
     {
-        public abstract T DefaultValues { get; }
-
         protected string Directory { get; private set; }
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();

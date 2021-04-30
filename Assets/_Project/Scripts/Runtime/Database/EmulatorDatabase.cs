@@ -24,8 +24,6 @@ namespace Arcade
 {
     public sealed class EmulatorDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
-        public override EmulatorConfiguration DefaultValues => new EmulatorConfiguration();
-
         public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalEmulator("_fps_arcade_launcher", "InternalFpsArcadeLauncher", InteractionType.FpsArcadeConfiguration);
         public static readonly EmulatorConfiguration CylArcadeLauncher = MakeInternalEmulator("_cyl_arcade_launcher", "InternalCylArcadeLauncher", InteractionType.CylArcadeConfiguration);
         public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalEmulator("_fps_menu_launcher", "InternalFpsMenuLauncher", InteractionType.FpsMenuConfiguration);

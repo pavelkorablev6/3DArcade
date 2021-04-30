@@ -20,15 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade.UnityEditor
 {
-    internal abstract class DatabaseEditorWindowState<T> : SK.Utilities.StateMachine.State<DatabaseEditorWindowState<T>> where T : DatabaseEntry
+    internal sealed class GeneralConfigurationSO : ConfigurationSO<GeneralConfiguration>
     {
-        protected DatabaseEditorWindowContext<T> _context;
-        protected Vector2 _scrollPosition = Vector2.zero;
-
-        public DatabaseEditorWindowState(DatabaseEditorWindowContext<T> context) => _context = context;
     }
 }

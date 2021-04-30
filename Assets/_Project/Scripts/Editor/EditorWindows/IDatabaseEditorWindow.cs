@@ -20,12 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    internal abstract class ConfigurationSO<T> : ScriptableObject where T : DatabaseEntry
+    internal interface IDatabaseEditorWindow<T>
+        where T : DatabaseEntry
     {
-        public T Value;
+        MultiFileDatabase<T> Database { get; }
+
+        SerializedObject GetSerializedObject(T entry);
+
+        void ClearConfiguration();
+
+        void DrawInlineButtons(T entry);
     }
 }

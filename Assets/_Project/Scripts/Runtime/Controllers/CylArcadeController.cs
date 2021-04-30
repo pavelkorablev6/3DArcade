@@ -78,7 +78,7 @@ namespace Arcade
 
             //PlayerControls.Camera.rect = CameraSettings.ViewportRect;
 
-            //CinemachineVirtualCamera vCam = PlayerControls.VirtualCamera;
+            //CinemachineNewVirtualCamera vCam = PlayerControls.VirtualCamera;
             //vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
             //vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
             //vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;

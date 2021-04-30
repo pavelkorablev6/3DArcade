@@ -164,7 +164,7 @@ namespace Arcade
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {
-                CinemachineVirtualCamera vCam = go.GetComponentInChildren<CinemachineVirtualCamera>();
+                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
                 if (vCam != null)
                 {
                     vCam.Priority = 0;

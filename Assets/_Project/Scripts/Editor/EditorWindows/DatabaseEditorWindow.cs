@@ -24,10 +24,11 @@ using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    internal abstract class DatabaseEditorWindowBase<T, U> : EditorWindow, IDatabaseEditorWindow<T> where T : DatabaseEntry where U : ConfigurationSO<T>, new()
+    internal abstract class DatabaseEditorWindow<T, U> : EditorWindow, IDatabaseEditorWindow<T>
+        where T : DatabaseEntry, new()
+        where U : ConfigurationSO<T>
     {
         public abstract MultiFileDatabase<T> Database { get; }
-        public abstract T DefaultConfiguration { get; }
 
         protected const float MIN_WINDOW_WIDTH  = 468f;
         protected const float MIN_WINDOW_HEIGHT = 468f;
@@ -42,7 +43,7 @@ namespace Arcade.UnityEditor
         public SerializedObject GetSerializedObject(T cfg)
         {
             _tempCfg = CreateInstance<U>();
-            _tempCfg.Value = cfg ?? DefaultConfiguration;
+            _tempCfg.Value = cfg ?? new T();
             return new SerializedObject(_tempCfg);
         }
 

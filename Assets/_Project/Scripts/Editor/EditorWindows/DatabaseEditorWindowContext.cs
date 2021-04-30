@@ -24,7 +24,8 @@ using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class DatabaseEditorWindowContext<T> : SK.Utilities.StateMachine.Context<DatabaseEditorWindowState<T>> where T : DatabaseEntry
+    internal sealed class DatabaseEditorWindowContext<T> : SK.Utilities.StateMachine.Context<DatabaseEditorWindowState<T>>
+        where T : DatabaseEntry
     {
         public readonly IDatabaseEditorWindow<T> DatabaseEditorWindow;
 

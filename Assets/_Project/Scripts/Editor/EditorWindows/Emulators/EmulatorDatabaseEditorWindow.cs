@@ -26,20 +26,18 @@ using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class PlatformDatabaseEditorWindow : DatabaseEditorWindowBase<PlatformConfiguration, PlatformConfigurationSO>
+    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindow<EmulatorConfiguration, EmulatorConfigurationSO>
     {
-        public override MultiFileDatabase<PlatformConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Platforms;
+        public override MultiFileDatabase<EmulatorConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Emulators;
 
-        public override PlatformConfiguration DefaultConfiguration => Database.DefaultValues;
-
-        [MenuItem("3DArcade/Platforms", false, 11), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        [MenuItem("3DArcade/Emulators", false, 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
         {
             UE_Utilities.OpenMainScene();
-            GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+            GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
 
-        [MenuItem("3DArcade/Platforms", true), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        [MenuItem("3DArcade/Emulators", true), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static bool ShowMenuValidation() => !Application.isPlaying;
     }
 }

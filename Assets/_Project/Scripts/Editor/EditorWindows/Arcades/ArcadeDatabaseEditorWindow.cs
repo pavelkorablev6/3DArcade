@@ -26,20 +26,27 @@ using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class EmulatorDatabaseEditorWindow : DatabaseEditorWindowBase<EmulatorConfiguration, EmulatorConfigurationSO>
+    internal sealed class ArcadeDatabaseEditorWindow : DatabaseEditorWindow<ArcadeConfiguration, ArcadeConfigurationSO>
     {
-        public override MultiFileDatabase<EmulatorConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Emulators;
+        public override MultiFileDatabase<ArcadeConfiguration> Database => new ArcadeManager().ArcadeContext.Databases.Arcades;
 
-        public override EmulatorConfiguration DefaultConfiguration => Database.DefaultValues;
-
-        [MenuItem("3DArcade/Emulators", false, 10), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
-        private static void ShowWindow()
+        [MenuItem("3DArcade/Arcades", false, 12)]
+        public static void ShowWindow()
         {
             UE_Utilities.OpenMainScene();
-            GetWindow<EmulatorDatabaseEditorWindow>("Emulator Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+            GetWindow<ArcadeDatabaseEditorWindow>("Arcade Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
 
-        [MenuItem("3DArcade/Emulators", true), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
+        public override void DrawInlineButtons(ArcadeConfiguration entry)
+        {
+            if (GUILayout.Button(new GUIContent("Load (FPS)", "Load this arcade's fps scene"), GUILayout.Width(85f)))
+                new ArcadeManager().LoadArcade(entry.Id, ArcadeType.Fps);
+
+            if (GUILayout.Button(new GUIContent("Load (CYL)", "Load this arcade's cyl scene"), GUILayout.Width(85f)))
+                new ArcadeManager().LoadArcade(entry.Id, ArcadeType.Cyl);
+        }
+
+        [MenuItem("3DArcade/Arcades", true), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static bool ShowMenuValidation() => !Application.isPlaying;
     }
 }

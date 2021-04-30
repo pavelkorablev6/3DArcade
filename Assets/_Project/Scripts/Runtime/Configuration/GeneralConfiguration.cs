@@ -27,6 +27,7 @@ using Zenject;
 
 namespace Arcade
 {
+    [System.Serializable]
     [XmlRoot("general")]
     public sealed class GeneralConfiguration
     {

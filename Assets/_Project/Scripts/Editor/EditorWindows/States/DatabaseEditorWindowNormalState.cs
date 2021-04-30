@@ -25,7 +25,8 @@ using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class DatabaseEditorWindowNormalState<T> : DatabaseEditorWindowState<T> where T : DatabaseEntry
+    internal sealed class DatabaseEditorWindowNormalState<T> : DatabaseEditorWindowState<T>
+        where T : DatabaseEntry
     {
         public DatabaseEditorWindowNormalState(DatabaseEditorWindowContext<T> context)
         : base(context)

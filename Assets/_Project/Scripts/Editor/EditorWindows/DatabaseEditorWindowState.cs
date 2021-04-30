@@ -20,30 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
+using UnityEngine;
 
-namespace Arcade
+namespace Arcade.UnityEditor
 {
-    public sealed class ArcadeNormalInternalGameState : ArcadeInternalGameState
+    internal abstract class DatabaseEditorWindowState<T> : SK.Utilities.StateMachine.State<DatabaseEditorWindowState<T>>
+        where T : DatabaseEntry
     {
-        private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
+        protected DatabaseEditorWindowContext<T> _context;
+        protected Vector2 _scrollPosition = Vector2.zero;
 
-        public ArcadeNormalInternalGameState(ArcadeContext context)
-        : base(context)
-        {
-        }
-
-        protected override void OnStateEnter()
-        {
-            _cinemachineVirtualCamera = _context.InteractionController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 20;
-        }
-
-        protected override void OnStateExit()
-        {
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 0;
-        }
+        public DatabaseEditorWindowState(DatabaseEditorWindowContext<T> context) => _context = context;
     }
 }

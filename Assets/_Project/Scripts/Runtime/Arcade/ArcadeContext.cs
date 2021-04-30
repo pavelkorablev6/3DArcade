@@ -199,7 +199,7 @@ namespace Arcade
                 return false;
 
             Camera fpsCamera                          = Main.PlayerFpsControls.Camera;
-            CinemachineVirtualCamera fpsVirtualCamera = Main.PlayerFpsControls.VirtualCamera;
+            CinemachineNewVirtualCamera fpsVirtualCamera = Main.PlayerFpsControls.VirtualCamera;
             CameraSettings fpsCameraSettings          = new CameraSettings
             {
                 Position      = Main.PlayerFpsControls.transform.position,
@@ -214,7 +214,7 @@ namespace Arcade
             };
 
             Camera cylCamera                          = Main.PlayerCylControls.Camera;
-            CinemachineVirtualCamera cylVirtualCamera = Main.PlayerCylControls.VirtualCamera;
+            CinemachineNewVirtualCamera cylVirtualCamera = Main.PlayerCylControls.VirtualCamera;
             CameraSettings cylCameraSettings          = new CameraSettings
             {
                 Position      = Main.PlayerCylControls.transform.position,
