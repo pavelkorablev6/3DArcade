@@ -169,11 +169,11 @@
   </cylarcade_properties>
   <games>
     <game id="demo" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
-      <overrides description="">
+      <interaction_type>FpsArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
+      <overrides description="Demo">
         <model />
         <emulator />
         <artwork_files>
@@ -214,16 +214,66 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="-4.66" y="0" z="3.27" />
+      <rotation x="0" y="180" z="0" />
+      <scale x="1" y="1" z="1" />
+    </game>
+    <game id="demo_twogames" platform="">
+      <interaction_type>FpsArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
+      <overrides description="Demo (2 Games)">
+        <model />
+        <emulator />
+        <artwork_files>
+          <marquee_image_files />
+          <marquee_video_files />
+          <screen_snap_files />
+          <screen_title_files />
+          <screen_video_files />
+          <generic_image_files />
+          <generic_video_files />
+          <info_files />
+        </artwork_files>
+        <artwork_directories>
+          <marquee_image_directories />
+          <marquee_video_directories />
+          <screen_snap_directories />
+          <screen_title_directories />
+          <screen_video_directories />
+          <generic_image_directories />
+          <generic_video_directories />
+          <info_directories />
+        </artwork_directories>
+        <game>
+          <Name />
+          <Description />
+          <CloneOf />
+          <RomOf />
+          <Genre />
+          <Year />
+          <Manufacturer />
+          <ScreenType>Default</ScreenType>
+          <ScreenOrientation>Default</ScreenOrientation>
+          <Mature>false</Mature>
+          <Playable>false</Playable>
+          <IsBios>false</IsBios>
+          <IsDevice>false</IsDevice>
+          <IsMechanical>false</IsMechanical>
+          <Available>false</Available>
+        </game>
+      </overrides>
+      <position x="-3.57" y="0" z="4.54" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="toga" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
-      <overrides description="">
+      <interaction_type>FpsArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
+      <overrides description="Time Out - Golden Age">
         <model />
         <emulator />
         <artwork_files>
@@ -264,15 +314,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="-2.44" y="0" z="5.02" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_right" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -314,15 +364,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="-1.38" y="0" z="5.44" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_left" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -364,15 +414,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="-0.33" y="0" z="5.68" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_flat_down" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -414,15 +464,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="0.68" y="0" z="5.43" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_flat_up" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -464,15 +514,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="1.95" y="0" z="5.11" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_inside_right" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -514,15 +564,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="3.11" y="0" z="4.33" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_inside_left" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -564,15 +614,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="4.18" y="0" z="3.43" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_inside_down" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -614,15 +664,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="5.17" y="0" z="2.36" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_inside_up" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -664,15 +714,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="5.69" y="0" z="1.05" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_outside_right" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -714,15 +764,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="5.49" y="0" z="-0.57" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_outside_left" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -764,15 +814,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="5.09" y="0" z="-2.05" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_outside_down" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -814,15 +864,15 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="4.05" y="0" z="-3.55" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_outside_up" platform="">
-      <interaction_type>Default</interaction_type>
-      <grabbable>false</grabbable>
-      <movecab_movable>false</movecab_movable>
-      <movecab_grabbable>false</movecab_grabbable>
+      <interaction_type>CylArcadeConfiguration</interaction_type>
+      <grabbable>true</grabbable>
+      <movecab_movable>true</movecab_movable>
+      <movecab_grabbable>true</movecab_grabbable>
       <overrides description="">
         <model />
         <emulator />
@@ -864,8 +914,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0" y="0" z="0" />
-      <rotation x="-0" y="0" z="0" />
+      <position x="2.69" y="0" z="-4.58" />
+      <rotation x="0" y="180" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>

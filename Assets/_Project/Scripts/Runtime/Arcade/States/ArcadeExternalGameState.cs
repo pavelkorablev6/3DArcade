@@ -42,7 +42,10 @@ namespace Arcade
 
             EmulatorConfiguration emulator = _context.InteractionController.InteractionData.CurrentTarget.Configuration.EmulatorConfiguration;
             if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.InteractionData.CurrentTarget.Configuration.Id))
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             _gameRunning = true;
         }

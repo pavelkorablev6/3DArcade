@@ -124,11 +124,25 @@ namespace Arcade
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
             {
-                _ = _arcadeContext.Databases.Games.TryGet(platform.MasterList,
-                                                          modelConfiguration.Id,
-                                                          new string[] { "CloneOf", "RomOf", "Year", "ScreenType", "ScreenRotation" },
-                                                          new string[] { "Name" },
-                                                          out game);
+                string[] returnFields = new string[]
+                {
+                    "Description",
+                    "CloneOf",
+                    "RomOf",
+                    "Genre",
+                    "Year",
+                    "Manufacturer",
+                    "ScreenType",
+                    "ScreenRotation",
+                    "Mature",
+                    "Playable",
+                    "IsBios",
+                    "IsDevice",
+                    "IsMechanical",
+                    "Available",
+                };
+                string[] searchFields = new string[] { "Name" };
+                _ = _arcadeContext.Databases.Games.TryGet(platform.MasterList, modelConfiguration.Id, returnFields, searchFields, out game);
             }
 
             modelConfiguration.PlatformConfiguration = platform;

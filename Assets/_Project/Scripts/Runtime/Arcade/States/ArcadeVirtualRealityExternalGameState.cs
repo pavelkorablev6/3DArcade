@@ -41,7 +41,10 @@ namespace Arcade
 
             _screenNode = _context.InteractionController.InteractionData.CurrentTarget.GetComponentInChildren<ScreenNodeTag>();
             if (_screenNode == null)
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             if (_screenNode.TryGetComponent(out VideoPlayer videoPlayer))
                 _context.VideoPlayerController.StopVideo(videoPlayer);

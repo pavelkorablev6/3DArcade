@@ -49,7 +49,19 @@ namespace Arcade
                 return;
 
             _interactionData.Set(currentTarget);
-            _onHoverEnter.Invoke(currentTarget.Configuration.Id);
+
+            string description;
+
+            ModelConfiguration modelConfiguration = currentTarget.Configuration;
+
+            if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
+                description = modelConfiguration.Overrides.Description;
+            else if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
+                description = modelConfiguration.GameConfiguration.Description;
+            else
+                description = modelConfiguration.Id;
+
+            _onHoverEnter.Invoke(description);
         }
     }
 }

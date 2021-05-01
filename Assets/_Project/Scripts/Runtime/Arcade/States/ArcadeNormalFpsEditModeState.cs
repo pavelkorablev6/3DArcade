@@ -70,7 +70,10 @@ namespace Arcade
                 _context.ArcadeController.RestoreModelPositions();
 
                 _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-                _context.TransitionToPrevious();
+                {
+                    _context.TransitionToPrevious();
+                    return;
+                }
             }
 
             if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
@@ -78,7 +81,10 @@ namespace Arcade
                 _ = _context.SaveCurrentArcade(true);
 
                 _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-                _context.TransitionToPrevious();
+                {
+                    _context.TransitionToPrevious();
+                    return;
+                }
             }
 
             if (_context.InputActions.Global.ToggleCursor.triggered)

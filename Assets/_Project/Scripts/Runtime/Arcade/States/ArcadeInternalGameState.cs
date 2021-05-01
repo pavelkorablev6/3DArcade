@@ -43,17 +43,26 @@ namespace Arcade
 
             ModelConfigurationComponent currentTarget = _context.InteractionController.InteractionData.CurrentTarget;
             if (currentTarget == null)
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             ScreenNodeTag screenNodeTag = currentTarget.GetComponentInChildren<ScreenNodeTag>(true);
             if (screenNodeTag == null)
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             if (screenNodeTag.TryGetComponent(out VideoPlayer videoPlayer))
                 _context.VideoPlayerController.StopVideo(videoPlayer);
 
             if (!_context.InternalGameController.StartGame(screenNodeTag, currentTarget.Configuration))
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             _screenNode = screenNodeTag;
 
@@ -85,7 +94,10 @@ namespace Arcade
         public sealed override void OnUpdate(float dt)
         {
             if (_context.InputActions.Global.Quit.triggered)
+            {
                 _context.TransitionToPrevious();
+                return;
+            }
 
             _context.InternalGameController.UpdateGame();
         }
