@@ -36,7 +36,7 @@ namespace Arcade.UnityEditor
 
         public ArcadeManager()
         {
-            string dataPath = SystemUtils.GetDataPath();
+            string dataPath        = SystemUtils.GetDataPath();
             IVirtualFileSystem vfs = new VirtualFileSystem().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
                                                             .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
                                                             .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
@@ -86,8 +86,8 @@ namespace Arcade.UnityEditor
             if (ArcadeContext == null)
                 return;
 
-            UE_Utilities.OpenMainScene();
-            UE_Utilities.CloseAllScenes();
+            SceneUtilities.OpenMainScene();
+            SceneUtilities.CloseAllScenes();
 
             ArcadeContext.StartArcade(name, arcadeType, ArcadeMode.Normal).Forget();
             SetCurrentArcadeStateInEditorPrefs(name, arcadeType);

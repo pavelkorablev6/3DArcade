@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,41 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEditor;
-using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    [InitializeOnLoad]
-    public static class InitializeOnLoad
+    internal static class SceneUtilities
     {
-        static InitializeOnLoad()
-        {
-            EditorApplication.update               += EditorUpdateCallback;
-            EditorApplication.playModeStateChanged += PlayModeStateChangedCallback;
-        }
+        private const string MAIN_SCENE_NAME = "Main";
+        private const string MAIN_SCENE_PATH = "Assets/_Project/Scenes/" + MAIN_SCENE_NAME + ".unity";
 
-        private static void EditorUpdateCallback()
+        public static void CloseAllScenes(bool keepFirst = true)
         {
-            if (Application.isPlaying)
-                return;
-
-            EditorApplication.update -= EditorUpdateCallback;
-            new ArcadeManager().ReloadCurrentArcade();
-        }
-
-        private static void PlayModeStateChangedCallback(PlayModeStateChange state)
-        {
-            switch (state)
+            int sceneMax = keepFirst ? 1 : 0;
+            while (EditorSceneManager.loadedSceneCount > sceneMax)
             {
-                case PlayModeStateChange.EnteredEditMode:
-                    new ArcadeManager().ReloadCurrentArcade();
-                    break;
-                case PlayModeStateChange.ExitingEditMode:
-                    ArcadeManager.SaveCurrentArcadeStateInEditorPrefs();
-                    UE_Utilities.CloseAllScenes();
-                    break;
+                Scene scene = SceneManager.GetSceneAt(EditorSceneManager.loadedSceneCount - 1);
+                _ = EditorSceneManager.CloseScene(scene, true);
             }
+        }
+
+        public static void OpenMainScene()
+        {
+            Scene scene = SceneManager.GetSceneByName(MAIN_SCENE_NAME);
+            if (!scene.isLoaded)
+                _ = EditorSceneManager.OpenScene(MAIN_SCENE_PATH, OpenSceneMode.Single);
         }
     }
 }

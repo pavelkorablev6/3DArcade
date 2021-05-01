@@ -24,7 +24,7 @@ using UnityEditor;
 
 namespace Arcade.UnityEditor
 {
-    internal sealed class UE_ModelImportWindow : EditorWindow
+    internal sealed class ModelImportWindow : EditorWindow
     {
     //    private static string _savedBrowseDir = string.Empty;
     //    private static string _externalPath   = string.Empty;

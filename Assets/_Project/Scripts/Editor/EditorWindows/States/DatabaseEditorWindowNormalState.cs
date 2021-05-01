@@ -114,7 +114,7 @@ namespace Arcade.UnityEditor
                 && arcadeConfigurationComponent.Configuration.Id.Equals(entry.Id, System.StringComparison.OrdinalIgnoreCase))
             {
                 ArcadeManager.ClearCurrentArcadeStateFromEditorPrefs();
-                UE_Utilities.CloseAllScenes();
+                SceneUtilities.CloseAllScenes();
             }
 
             _context.DeleteEntry(entry);

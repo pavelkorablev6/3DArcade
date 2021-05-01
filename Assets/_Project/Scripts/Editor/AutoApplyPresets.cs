@@ -26,7 +26,7 @@
 
 //namespace Arcade.UnityEditor
 //{
-//    internal sealed class UE_AutoApplyPresets : AssetPostprocessor
+//    internal sealed class AutoApplyPresets : AssetPostprocessor
 //    {
 //        private void OnPreprocessModel()
 //        {

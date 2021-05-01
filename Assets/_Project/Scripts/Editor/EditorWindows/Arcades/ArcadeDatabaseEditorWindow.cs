@@ -33,7 +33,7 @@ namespace Arcade.UnityEditor
         [MenuItem("3DArcade/Arcades", false, 12)]
         public static void ShowWindow()
         {
-            UE_Utilities.OpenMainScene();
+            SceneUtilities.OpenMainScene();
             GetWindow<ArcadeDatabaseEditorWindow>("Arcade Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
 

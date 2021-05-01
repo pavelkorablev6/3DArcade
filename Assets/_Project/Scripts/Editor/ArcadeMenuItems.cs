@@ -53,7 +53,7 @@ namespace Arcade.UnityEditor
         private static void CloseArcade()
         {
             ArcadeManager.ClearCurrentArcadeStateFromEditorPrefs();
-            UE_Utilities.CloseAllScenes();
+            SceneUtilities.CloseAllScenes();
         }
 
         // ************************************************************************************************

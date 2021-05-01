@@ -33,7 +33,7 @@ namespace Arcade.UnityEditor
         [MenuItem("3DArcade/Platforms", false, 11), SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Editor")]
         private static void ShowWindow()
         {
-            UE_Utilities.OpenMainScene();
+            SceneUtilities.OpenMainScene();
             GetWindow<PlatformDatabaseEditorWindow>("Platform Manager", true).minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
 

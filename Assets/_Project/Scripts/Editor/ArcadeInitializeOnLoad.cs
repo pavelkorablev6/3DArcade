@@ -1,4 +1,4 @@
-/* MIT License
+﻿/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,24 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+using UnityEditor;
+using UnityEngine;
 
 namespace Arcade.UnityEditor
 {
-    internal static class UE_Utilities
+    [InitializeOnLoad]
+    public static class ArcadeInitializeOnLoad
     {
-        public static void CloseAllScenes(bool keepFirst = true)
+        static ArcadeInitializeOnLoad()
         {
-            int sceneMax = keepFirst ? 1 : 0;
-            while (EditorSceneManager.loadedSceneCount > sceneMax)
-                _ = EditorSceneManager.CloseScene(SceneManager.GetSceneAt(EditorSceneManager.loadedSceneCount - 1), true);
+            EditorApplication.update               += EditorUpdateCallback;
+            EditorApplication.playModeStateChanged += PlayModeStateChangedCallback;
         }
 
-        public static void OpenMainScene()
+        private static void EditorUpdateCallback()
         {
-            if (!SceneManager.GetSceneByName("Main").isLoaded)
-                _ = EditorSceneManager.OpenScene("Assets/_Project/Scenes/Main.unity", OpenSceneMode.Single);
+            if (Application.isPlaying)
+                return;
+
+            EditorApplication.update -= EditorUpdateCallback;
+            new ArcadeManager().ReloadCurrentArcade();
+        }
+
+        private static void PlayModeStateChangedCallback(PlayModeStateChange state)
+        {
+            switch (state)
+            {
+                case PlayModeStateChange.EnteredEditMode:
+                    new ArcadeManager().ReloadCurrentArcade();
+                    break;
+                case PlayModeStateChange.ExitingEditMode:
+                    ArcadeManager.SaveCurrentArcadeStateInEditorPrefs();
+                    SceneUtilities.CloseAllScenes();
+                    break;
+            }
         }
     }
 }
