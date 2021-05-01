@@ -32,9 +32,7 @@ namespace Arcade
 
         private readonly List<string> _paths = new List<string>();
 
-        public Files(string[] extensions, Directories directories, params string[] fileNames) => TryAdd(extensions, directories, fileNames);
-
-        public string[] ToArray() => _paths.ToArray();
+        public Files(Directories directories, string[] fileNames, string[] extensions) => TryAdd(directories, fileNames, extensions);
 
         public string this[int i]
         {
@@ -42,26 +40,36 @@ namespace Arcade
             set => _paths[i] = value;
         }
 
-        private void TryAdd(string[] extensions, Directories directories, params string[] names)
+        private void TryAdd(Directories directories, string[] names, string[] extensions)
+            => ProcessDirectories(directories, names, extensions);
+
+        private void ProcessDirectories(Directories directories, string[] names, string[] extensions)
         {
             foreach (string directory in directories)
-            {
-                foreach (string name in names)
-                {
-                    if (string.IsNullOrEmpty(name))
-                        System.Diagnostics.Debugger.Break();
+                ProcessNames(directory, names, extensions);
+        }
 
-                    foreach (string extension in extensions)
-                    {
-                        string path = Path.GetFullPath(Path.Combine(directory, $"{name}.{extension}"));
-                        if (File.Exists(path))
-                        {
-                            _paths.Add(path);
-                            break;
-                        }
-                    }
-                }
-            }
+        private void ProcessNames(string directory, string[] names, string[] extensions)
+        {
+            foreach (string name in names)
+                ProcessExtensions(directory, name, extensions);
+        }
+
+        private void ProcessExtensions(string directory, string name, string[] extensions)
+        {
+            foreach (string extension in extensions)
+                if (ProcessExtension(directory, name, extension))
+                    return;
+        }
+
+        private bool ProcessExtension(string directory, string name, string extension)
+        {
+            string path = Path.GetFullPath(Path.Combine(directory, $"{name}.{extension}"));
+            if (!File.Exists(path))
+                return false;
+
+            _paths.Add(path);
+            return true;
         }
 
         public IEnumerator<string> GetEnumerator()

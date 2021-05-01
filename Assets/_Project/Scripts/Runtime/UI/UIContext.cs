@@ -26,8 +26,13 @@ namespace Arcade
 {
     public sealed class UIContext : Context<UIState>
     {
-        public readonly UIManager UIManager;
+        public readonly UICanvasController NormalUI;
+        public readonly UICanvasController VirtualRealityUI;
 
-        public UIContext(UIManager uiManager) => UIManager = uiManager;
+        public UIContext(UIManager uiManager)
+        {
+            NormalUI         = uiManager.NormalUI;
+            VirtualRealityUI = uiManager.VirtualRealityUI;
+        }
     }
 }

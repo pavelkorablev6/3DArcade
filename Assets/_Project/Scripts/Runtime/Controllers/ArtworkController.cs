@@ -61,18 +61,18 @@ namespace Arcade
             string[] platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);
             Directories directories      = new Directories(gameDirectories, platformDirectories);
 
-            Files files = new Files(_imageExtensions, directories, fileNamesToTry);
+            Files files = new Files(directories, fileNamesToTry, _imageExtensions);
 
             if (files.Count == 0)
             {
                 directories = new Directories(directoryNamesProvider.DefaultImageDirectories);
-                files       = new Files(_imageExtensions, directories, fileNamesToTry);
+                files       = new Files(directories, fileNamesToTry, _imageExtensions);
             }
 
             if (files.Count == 0)
                 return;
 
-            Texture[] textures = await _textureCache.LoadMultipleAsync(files.ToArray());
+            Texture[] textures = await _textureCache.LoadMultipleAsync(files);
             if (textures == null || textures.Length == 0)
             {
                 if (directoryNamesProvider is GenericArtworkDirectoriesProvider)
@@ -92,12 +92,12 @@ namespace Arcade
             string[] platformDirectories = directoryNamesProvider.GetPlatformVideoDirectories(modelConfiguration.PlatformConfiguration);
             Directories directories      = new Directories(gameDirectories, platformDirectories);
 
-            Files files = new Files(_videoExtensions, directories, fileNamesToTry);
+            Files files = new Files(directories, fileNamesToTry, _videoExtensions);
 
             if (files.Count == 0)
             {
                 directories = new Directories(directoryNamesProvider.DefaultVideoDirectories);
-                files       = new Files(_videoExtensions, directories, fileNamesToTry);
+                files       = new Files(directories, fileNamesToTry, _videoExtensions);
             }
 
             if (files.Count == 0)

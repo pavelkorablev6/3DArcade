@@ -29,6 +29,10 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.UIManager.Disable();
+        public override void OnEnter()
+        {
+            _context.NormalUI.Disable();
+            _context.VirtualRealityUI.Disable();
+        }
     }
 }

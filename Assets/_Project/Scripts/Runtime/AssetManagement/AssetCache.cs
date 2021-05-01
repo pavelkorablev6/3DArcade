@@ -44,14 +44,14 @@ namespace Arcade
             return newAsset;
         }
 
-        public async UniTask<T[]> LoadMultipleAsync(params string[] filePaths)
+        public async UniTask<T[]> LoadMultipleAsync(Files files)
         {
-            if (filePaths == null || filePaths.Length == 0)
+            if (files == null || files.Count == 0)
                 return null;
 
             List<T> result = new List<T>();
 
-            foreach (string filePath in filePaths)
+            foreach (string filePath in files)
             {
                 T asset = await Load(filePath);
                 if (asset != null)

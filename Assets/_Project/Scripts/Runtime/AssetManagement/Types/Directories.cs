@@ -29,11 +29,9 @@ namespace Arcade
 {
     public sealed class Directories : IEnumerable<string>
     {
-        public int Count => _paths.Count;
-
         private readonly List<string> _paths = new List<string>();
 
-        public Directories(params string[] paths) => TryAdd(paths);
+        public Directories(string[] paths) => TryAdd(paths);
 
         public Directories(params string[][] pathsArray)
         {
@@ -41,15 +39,7 @@ namespace Arcade
                 TryAdd(pathArray);
         }
 
-        public string[] ToArray() => _paths.ToArray();
-
-        public string this[int i]
-        {
-            get => _paths[i];
-            set => _paths[i] = value;
-        }
-
-        private void TryAdd(params string[] paths)
+        private void TryAdd(string[] paths)
         {
             string[] correctedPaths = FileSystem.CorrectPaths(paths);
             if (correctedPaths != null)

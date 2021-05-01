@@ -29,7 +29,7 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/InteractionData", fileName = "InteractionData")]
     public sealed class InteractionData : ScriptableObject
     {
-        [SerializeField, Layer] private int _selectionLayer;
+        [SerializeField, Layer] private int _raycastLayer;
 
         public ModelConfigurationComponent CurrentTarget { get; private set; }
         [System.NonSerialized] private int _savedLayer;
@@ -40,7 +40,7 @@ namespace Arcade
             if (CurrentTarget != null)
             {
                 _savedLayer                    = CurrentTarget.gameObject.layer;
-                CurrentTarget.gameObject.layer = _selectionLayer;
+                CurrentTarget.gameObject.layer = _raycastLayer;
             }
         }
 

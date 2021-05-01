@@ -30,6 +30,9 @@ namespace Arcade
         [SerializeField] private UICanvasController _normalUI;
         [SerializeField] private UICanvasController _virtualRealityUI;
 
+        public UICanvasController NormalUI => _normalUI;
+        public UICanvasController VirtualRealityUI => _virtualRealityUI;
+
         private UIContext _uiContext;
 
         private void Awake() => _uiContext = new UIContext(this);
@@ -48,24 +51,6 @@ namespace Arcade
         {
             _normalUI.UpdateStatusBar(percentComplete);
             _virtualRealityUI.UpdateStatusBar(percentComplete);
-        }
-
-        public void EnableNormalSceneLoadingUI() => _normalUI.EnableSceneLoadingUI();
-        public void EnableNormalSceneNormalUI() => _normalUI.EnableSceneNormalUI();
-        public void EnableNormalSceneEditModeUI() => _normalUI.EnableSceneEditModeUI();
-        public void EnableNormalConfigurationUI() => _normalUI.EnableConfigurationUI();
-        public void DisableNormalUI() => _normalUI.Disable();
-
-        public void EnableVirtualRealitySceneLoadingUI() => _virtualRealityUI.EnableSceneLoadingUI();
-        public void EnableVirtualRealitySceneNormalUI() => _virtualRealityUI.EnableSceneNormalUI();
-        public void EnableVirtualRealitySceneEditModeUI() => _virtualRealityUI.EnableSceneEditModeUI();
-        public void EnableVirtualRealityConfigurationUI() => _virtualRealityUI.EnableConfigurationUI();
-        public void DisableVirtualRealityUI() => _virtualRealityUI.Disable();
-
-        public void Disable()
-        {
-            DisableNormalUI();
-            DisableVirtualRealityUI();
         }
     }
 }

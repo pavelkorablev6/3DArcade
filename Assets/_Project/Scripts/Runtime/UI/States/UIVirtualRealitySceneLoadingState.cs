@@ -29,8 +29,8 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.UIManager.EnableVirtualRealitySceneLoadingUI();
+        public override void OnEnter() => _context.VirtualRealityUI.EnableSceneLoadingUI();
 
-        public override void OnExit() => _context.UIManager.DisableVirtualRealityUI();
+        public override void OnExit() => _context.VirtualRealityUI.DisableSceneLoadingUI();
     }
 }

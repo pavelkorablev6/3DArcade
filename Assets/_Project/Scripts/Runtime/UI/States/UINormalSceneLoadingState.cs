@@ -20,8 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class UINormalSceneLoadingState : UIState
@@ -31,8 +29,8 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.UIManager.EnableNormalSceneLoadingUI();
+        public override void OnEnter() => _context.NormalUI.EnableSceneLoadingUI();
 
-        public override void OnExit() => _context.UIManager.DisableNormalUI();
+        public override void OnExit() => _context.NormalUI.DisableSceneLoadingUI();
     }
 }
