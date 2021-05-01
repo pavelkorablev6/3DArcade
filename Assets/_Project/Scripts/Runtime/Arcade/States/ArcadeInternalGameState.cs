@@ -41,7 +41,7 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            ModelConfigurationComponent currentTarget = _context.InteractionController.InteractionData.CurrentTarget;
+            ModelConfigurationComponent currentTarget = _context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget;
             if (currentTarget == null)
             {
                 _context.TransitionToPrevious();
@@ -58,7 +58,7 @@ namespace Arcade
             if (screenNodeTag.TryGetComponent(out VideoPlayer videoPlayer))
                 _context.VideoPlayerController.StopVideo(videoPlayer);
 
-            if (!_context.InternalGameController.StartGame(screenNodeTag, currentTarget.Configuration))
+            if (!_context.GameControllers.Internal.StartGame(screenNodeTag, currentTarget.Configuration))
             {
                 _context.TransitionToPrevious();
                 return;
@@ -71,7 +71,7 @@ namespace Arcade
 
             _screenRenderer = _screenNode.GetComponent<Renderer>();
             _savedMaterial  = _screenRenderer.material;
-            _screenRenderer.material = _context.InternalGameController.ScreenMaterial;
+            _screenRenderer.material = _context.GameControllers.Internal.ScreenMaterial;
 
             OnStateEnter();
         }
@@ -82,7 +82,7 @@ namespace Arcade
 
             OnStateExit();
 
-            _context.InternalGameController.StopGame();
+            _context.GameControllers.Internal.StopGame();
 
             if (_screenRenderer != null)
                 _screenRenderer.material = _savedMaterial;
@@ -99,7 +99,7 @@ namespace Arcade
                 return;
             }
 
-            _context.InternalGameController.UpdateGame();
+            _context.GameControllers.Internal.UpdateGame();
         }
 
         protected virtual void OnStateEnter()

@@ -25,34 +25,38 @@ using UnityEngine.Events;
 
 namespace Arcade
 {
-    public sealed class InteractableRaycaster : MonoBehaviour
+    [DisallowMultipleComponent]
+    public abstract class InteractionRaycaster<T> : MonoBehaviour
+        where T : InteractionData
     {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private LayerMask _interactionLayerMask;
-        [SerializeField] private float _interactionMaxDistance = 1.8f;
-        [SerializeField] private InteractionData _interactionData;
+        [SerializeField] protected Camera _camera;
+        [SerializeField] private LayerMask _raycastMask;
+        [SerializeField] private float _raycastMaxDistance = Mathf.Infinity;
+        [SerializeField] private T _interactionData;
         [SerializeField] private UnityEvent<string> _onHoverEnter;
         [SerializeField] private UnityEvent<string> _onHoverExit;
 
-        public void FindInteractable()
+        public Camera Camera => _camera;
+        public float RaycastMaxDistance => _raycastMaxDistance;
+
+        public void UpdateCurrentTarget()
         {
-            Ray ray = _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
-            if (!Physics.Raycast(ray, out RaycastHit hitInfo, _interactionMaxDistance, _interactionLayerMask))
+            Ray ray = GetRay();
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
             {
                 _onHoverExit.Invoke(string.Empty);
                 _interactionData.Reset();
                 return;
             }
 
-            ModelConfigurationComponent currentTarget = hitInfo.transform.GetComponent<ModelConfigurationComponent>();
-            if (currentTarget == null || currentTarget == _interactionData.CurrentTarget)
+            if (_interactionData.CurrentTarget == modelConfigurationComponent)
                 return;
 
-            _interactionData.Set(currentTarget);
+            _interactionData.Set(hitInfo);
 
             string description;
 
-            ModelConfiguration modelConfiguration = currentTarget.Configuration;
+            ModelConfiguration modelConfiguration = _interactionData.CurrentTarget.Configuration;
 
             if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
                 description = modelConfiguration.Overrides.Description;
@@ -63,5 +67,7 @@ namespace Arcade
 
             _onHoverEnter.Invoke(description);
         }
+
+        protected abstract Ray GetRay();
     }
 }

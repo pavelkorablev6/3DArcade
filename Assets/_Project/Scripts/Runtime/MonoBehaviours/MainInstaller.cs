@@ -28,8 +28,10 @@ namespace Arcade
     public sealed class MainInstaller : MonoInstaller<MainInstaller>
     {
         [SerializeField] private Player _player;
-        [SerializeField] private InteractableRaycaster _interactableRaycaster;
-        [SerializeField] private InteractionController _interactionController;
+        [SerializeField] private NormalModeInteractionRaycaster _normalModeInteractionRaycaster;
+        [SerializeField] private NormalModeInteractionController _normalModeInteractionController;
+        [SerializeField] private EditModeInteractionRaycaster _editModeInteractionRaycaster;
+        [SerializeField] private EditModeInteractionController _editModeInteractionController;
         [SerializeField] private UIManager _uiManager;
 
         public override void InstallBindings()
@@ -68,16 +70,19 @@ namespace Arcade
             _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
-            _ = Container.Bind<InteractableRaycaster>().FromInstance(_interactableRaycaster).AsSingle();
-            _ = Container.Bind<InteractionController>().FromInstance(_interactionController).AsSingle();
+            _ = Container.Bind<NormalModeInteractionRaycaster>().FromInstance(_normalModeInteractionRaycaster).AsSingle();
+            _ = Container.Bind<NormalModeInteractionController>().FromInstance(_normalModeInteractionController).AsSingle();
+            _ = Container.Bind<EditModeInteractionRaycaster>().FromInstance(_editModeInteractionRaycaster).AsSingle();
+            _ = Container.Bind<EditModeInteractionController>().FromInstance(_editModeInteractionController).AsSingle();
+            _ = Container.Bind<InteractionControllers>().AsSingle().NonLazy();
 
             _ = Container.Bind<UIManager>().FromInstance(_uiManager).AsSingle();
 
-            _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
-
             _ = Container.Bind<Material>().WithId("LibretroScreenMaterial").FromResource("Materials/_libretroScreen");
             _ = Container.Bind<Material>().WithId("UDDScreenMaterial").FromResource("Materials/_uddScreen");
+            _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<InternalGameController>().AsSingle().NonLazy();
+            _ = Container.Bind<GameControllers>().AsSingle().NonLazy();
 
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }

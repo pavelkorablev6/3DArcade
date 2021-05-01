@@ -68,10 +68,10 @@ namespace Arcade
 
             _context.VideoPlayerController.UpdateVideosState();
 
-            _context.InteractableRaycaster.FindInteractable();
+            _context.InteractionControllers.NormalModeRaycaster.UpdateCurrentTarget();
 
             if (Cursor.lockState == CursorLockMode.Locked && _context.InputActions.FpsArcade.Interact.triggered)
-                _context.InteractionController.HandleInteraction();
+                _context.InteractionControllers.NormalModeController.HandleInteraction();
 
             if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
                 _context.TransitionTo<ArcadeNormalFpsEditModeState>();

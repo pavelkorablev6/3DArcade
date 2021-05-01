@@ -20,40 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    public sealed class PlayerControls : MonoBehaviour
+    public sealed class GameControllers
     {
-        [SerializeField] private GameObject _fpsController;
-        [SerializeField] private GameObject _cylController;
+        public readonly ExternalGameController External;
+        public readonly InternalGameController Internal;
 
-        public bool Active { get; private set; }
-
-        public Transform ActiveTransform => _fpsController.activeInHierarchy
-                                          ? _fpsController.transform
-                                          : _cylController.transform;
-
-        public void EnableFpsController()
+        public GameControllers(ExternalGameController externalGameController, InternalGameController internalGameController)
         {
-            _cylController.SetActive(false);
-            _fpsController.SetActive(true);
-            Active = true;
-        }
-
-        public void EnableCylController()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(true);
-            Active = true;
-        }
-
-        public void Disable()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(false);
-             Active = false;
+            External = externalGameController;
+            Internal = internalGameController;
         }
     }
 }

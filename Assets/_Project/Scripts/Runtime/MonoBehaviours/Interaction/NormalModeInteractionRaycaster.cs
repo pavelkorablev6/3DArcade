@@ -24,36 +24,9 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class PlayerControls : MonoBehaviour
+    public sealed class NormalModeInteractionRaycaster : InteractionRaycaster<NormalModeInteractionData>
     {
-        [SerializeField] private GameObject _fpsController;
-        [SerializeField] private GameObject _cylController;
-
-        public bool Active { get; private set; }
-
-        public Transform ActiveTransform => _fpsController.activeInHierarchy
-                                          ? _fpsController.transform
-                                          : _cylController.transform;
-
-        public void EnableFpsController()
-        {
-            _cylController.SetActive(false);
-            _fpsController.SetActive(true);
-            Active = true;
-        }
-
-        public void EnableCylController()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(true);
-            Active = true;
-        }
-
-        public void Disable()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(false);
-             Active = false;
-        }
+        protected override Ray GetRay()
+            => _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
     }
 }

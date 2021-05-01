@@ -37,11 +37,13 @@ namespace Arcade
         {
             OnEnterState();
 
-            _context.ExternalGameController.OnGameStarted += OnAppStarted;
-            _context.ExternalGameController.OnGameExited  += OnAppExited;
+            ExternalGameController gameController = _context.GameControllers.External;
 
-            EmulatorConfiguration emulator = _context.InteractionController.InteractionData.CurrentTarget.Configuration.EmulatorConfiguration;
-            if (!_context.ExternalGameController.StartGame(emulator, _context.InteractionController.InteractionData.CurrentTarget.Configuration.Id))
+            gameController.OnGameStarted += OnAppStarted;
+            gameController.OnGameExited  += OnAppExited;
+
+            EmulatorConfiguration emulator = _context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.Configuration.EmulatorConfiguration;
+            if (!gameController.StartGame(emulator, _context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.Configuration.Id))
             {
                 _context.TransitionToPrevious();
                 return;
@@ -52,10 +54,12 @@ namespace Arcade
 
         public sealed override void OnExit()
         {
-            _context.ExternalGameController.StopCurrent();
+            ExternalGameController gameController = _context.GameControllers.External;
 
-            _context.ExternalGameController.OnGameStarted -= OnAppStarted;
-            _context.ExternalGameController.OnGameExited  -= OnAppExited;
+            gameController.StopCurrent();
+
+            gameController.OnGameStarted -= OnAppStarted;
+            gameController.OnGameExited  -= OnAppExited;
 
             OnExitState();
         }

@@ -189,6 +189,88 @@ Transform:
   m_Father: {fileID: 96214925}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &85149132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85149133}
+  - component: {fileID: 85149134}
+  m_Layer: 0
+  m_Name: EditModeInteractionRaycaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &85149133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85149132}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 599590487}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &85149134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85149132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c192fa4d3da025b44b9bdd8db26784ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 1457968340}
+  _raycastMask:
+    serializedVersion: 2
+    m_Bits: 3968
+  _raycastMaxDistance: Infinity
+  _interactionData: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4, type: 2}
+  _onHoverEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 184493071}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onHoverExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 184493071}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _worldRaycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 896
 --- !u!1 &96214924
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +500,51 @@ Transform:
   m_Father: {fileID: 622012834}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &121073205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 121073207}
+  - component: {fileID: 121073206}
+  m_Layer: 0
+  m_Name: EditModeInteractionController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &121073206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121073205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25577c5a90b657b4b81cf3c7a2a9984a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionData: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4, type: 2}
+  _camera: {fileID: 1457968340}
+--- !u!4 &121073207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121073205}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &184219706
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +678,7 @@ GameObject:
   - component: {fileID: 302012186}
   - component: {fileID: 302012187}
   m_Layer: 0
-  m_Name: Interaction Controller
+  m_Name: NormalModeInteractionController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -612,7 +739,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &404805610
 PrefabInstance:
@@ -1830,6 +1957,7 @@ Transform:
   - {fileID: 1640022277}
   - {fileID: 1613447069}
   - {fileID: 1134910264}
+  - {fileID: 85149133}
   m_Father: {fileID: 96214925}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2334,7 +2462,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &896552227
 GameObject:
@@ -2802,7 +2930,7 @@ GameObject:
   - component: {fileID: 1134910264}
   - component: {fileID: 1134910263}
   m_Layer: 0
-  m_Name: Interactable Raycaster
+  m_Name: NormalModeInteractionRaycaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2821,27 +2949,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1457968340}
-  _interactionLayerMask:
+  _raycastMask:
     serializedVersion: 2
     m_Bits: 1920
-  _interactionMaxDistance: 1.8
+  _raycastMaxDistance: 1.8
   _interactionData: {fileID: 11400000, guid: f97278a6c18b12246b497b83c9443deb, type: 2}
   _onHoverEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314123261}
-        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 184493071}
+      - m_Target: {fileID: 1968981569}
         m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
         m_MethodName: set_text
         m_Mode: 0
@@ -2856,19 +2972,7 @@ MonoBehaviour:
   _onHoverExit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314123261}
-        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 184493071}
+      - m_Target: {fileID: 1968981569}
         m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
         m_MethodName: set_text
         m_Mode: 0
@@ -2952,8 +3056,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 4720070918826908351}
-  _interactableRaycaster: {fileID: 1134910263}
-  _interactionController: {fileID: 302012187}
+  _normalModeInteractionRaycaster: {fileID: 1134910263}
+  _normalModeInteractionController: {fileID: 302012187}
+  _editModeInteractionRaycaster: {fileID: 85149134}
+  _editModeInteractionController: {fileID: 121073206}
   _uiManager: {fileID: 4945186971106309493}
 --- !u!114 &1203112238
 MonoBehaviour:
@@ -3015,7 +3121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1224026738
 GameObject:
@@ -3459,18 +3565,6 @@ Transform:
   m_Father: {fileID: 118017229}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1314123261 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4945186969602008143, guid: dd77edeba74d31341bf3ca2f07db3d97,
-    type: 3}
-  m_PrefabInstance: {fileID: 4945186971106309492}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1457968335
 GameObject:
   m_ObjectHideFlags: 0
@@ -3723,7 +3817,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.7136205, y: 1}
+    m_SensorSize: {x: 0.835966, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -5023,6 +5117,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1968981569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4945186969602008143, guid: dd77edeba74d31341bf3ca2f07db3d97,
+    type: 3}
+  m_PrefabInstance: {fileID: 4945186971106309492}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1979082603
 GameObject:
   m_ObjectHideFlags: 0
@@ -5658,7 +5764,7 @@ PrefabInstance:
     - target: {fileID: 4945186969597389420, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4945186969597389420, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
@@ -5813,7 +5919,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fpsController: {fileID: 1640022273}
   _cylController: {fileID: 1613447068}
-  _interactionManager: {fileID: 1134910262}
 --- !u!1001 &7144413590467806170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5897,4 +6002,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fpsController: {fileID: 1501007651}
   _cylController: {fileID: 1716827551}
-  _interactionManager: {fileID: 1979082603}

@@ -21,39 +21,23 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Arcade
 {
-    public sealed class PlayerControls : MonoBehaviour
+    public sealed class EditModeInteractionRaycaster : InteractionRaycaster<EditModeInteractionData>
     {
-        [SerializeField] private GameObject _fpsController;
-        [SerializeField] private GameObject _cylController;
+        [SerializeField] private LayerMask _worldRaycastLayerMask;
 
-        public bool Active { get; private set; }
+        public LayerMask WorldRaycastLayerMask => _worldRaycastLayerMask;
 
-        public Transform ActiveTransform => _fpsController.activeInHierarchy
-                                          ? _fpsController.transform
-                                          : _cylController.transform;
-
-        public void EnableFpsController()
+        protected override Ray GetRay()
         {
-            _cylController.SetActive(false);
-            _fpsController.SetActive(true);
-            Active = true;
-        }
+            if (Cursor.lockState == CursorLockMode.Locked || Mouse.current == null)
+                return _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
 
-        public void EnableCylController()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(true);
-            Active = true;
-        }
-
-        public void Disable()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(false);
-             Active = false;
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            return _camera.ScreenPointToRay(mousePosition);
         }
     }
 }

@@ -21,39 +21,15 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
-    public sealed class PlayerControls : MonoBehaviour
+    [CreateAssetMenu(menuName = "Arcade/NormalModeInteractionData", fileName = "NormalModeInteractionData")]
+    public sealed class NormalModeInteractionData : InteractionData
     {
-        [SerializeField] private GameObject _fpsController;
-        [SerializeField] private GameObject _cylController;
+        public void HoverEnteredEventCallback(HoverEnterEventArgs args) => Set(args.interactable.GetComponent<ModelConfigurationComponent>());
 
-        public bool Active { get; private set; }
-
-        public Transform ActiveTransform => _fpsController.activeInHierarchy
-                                          ? _fpsController.transform
-                                          : _cylController.transform;
-
-        public void EnableFpsController()
-        {
-            _cylController.SetActive(false);
-            _fpsController.SetActive(true);
-            Active = true;
-        }
-
-        public void EnableCylController()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(true);
-            Active = true;
-        }
-
-        public void Disable()
-        {
-            _fpsController.SetActive(false);
-            _cylController.SetActive(false);
-             Active = false;
-        }
+        public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
     }
 }

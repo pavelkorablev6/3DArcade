@@ -21,13 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     public sealed class ArcadeEditModeAimState : ArcadeEditModeState
     {
-        private static readonly float _raycastMaxDistance = 22.0f;
         private static readonly float _movementSpeedMultiplier = 0.8f;
         private static readonly float _rotationSpeedMultiplier = 0.8f;
 
@@ -42,31 +40,31 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            Vector2 rayPosition;
-            if (Cursor.lockState != CursorLockMode.Locked && Mouse.current != null)
-                rayPosition = Mouse.current.position.ReadValue();
-            else
-                rayPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+            _context.InteractionRaycaster.UpdateCurrentTarget();
 
-            Ray ray = _context.Player.Camera.ScreenPointToRay(rayPosition);
-            _context.EditModeController.FindModelSetup(_context.Data, ray, _raycastMaxDistance, _context.RaycastLayers);
+            EditModeInteractionData interactionData = _context.InteractionController.InteractionData;
+            if (interactionData.CurrentTarget == null || !interactionData.CurrentTarget.Configuration.MoveCabMovable)
+                return;
 
-            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.Configuration.MoveCabMovable)
-            {
-                Vector2 positionInput     = _context.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
-                float rotationInput       = _context.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
-                _context.Data.AimPosition = positionInput * _movementSpeedMultiplier;
-                _context.Data.AimRotation = rotationInput * _rotationSpeedMultiplier;
+            Vector2 positionInput = _context.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
+            float rotationInput   = _context.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
+            Vector2 aimPosition   = positionInput * _movementSpeedMultiplier;
+            float aimRotation     = rotationInput * _rotationSpeedMultiplier;
+            interactionData.SetAimData(_context.Player.Camera, aimPosition, aimRotation);
 
-                if (_context.Data.ModelSetup.Configuration.MoveCabGrabbable && _context.InputActions.FpsMoveCab.Grab.triggered)
-                    _context.TransitionTo<ArcadeEditModeGrabState>();
-            }
+            if (!interactionData.CurrentTarget.Configuration.MoveCabGrabbable)
+                return;
+
+            if (_context.InputActions.FpsMoveCab.Grab.triggered)
+                _context.TransitionTo<ArcadeEditModeGrabState>();
         }
 
         public override void OnFixedUpdate(float dt)
         {
-            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.Configuration.MoveCabMovable)
-                SceneEditModeController.ManualMoveAndRotate(_context.Data.ModelSetup.transform, _context.Data.Rigidbody, _context.Data.AimPosition, _context.Data.AimRotation);
+            if (_context.InteractionController.InteractionData.CurrentTarget == null || !_context.InteractionController.InteractionData.CurrentTarget.Configuration.MoveCabMovable)
+                return;
+
+            _context.InteractionController.ManualMoveAndRotate();
         }
     }
 }

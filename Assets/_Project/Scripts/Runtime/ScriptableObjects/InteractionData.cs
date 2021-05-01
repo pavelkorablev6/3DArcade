@@ -22,39 +22,35 @@
 
 using SK.Utilities.Unity;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/InteractionData", fileName = "InteractionData")]
-    public sealed class InteractionData : ScriptableObject
+    public abstract class InteractionData : ScriptableObject
     {
-        [SerializeField, Layer] private int _raycastLayer;
+        [SerializeField, Layer] protected int _selectionLayer;
 
-        public ModelConfigurationComponent CurrentTarget { get; private set; }
-        [System.NonSerialized] private int _savedLayer;
+        public ModelConfigurationComponent CurrentTarget { get; protected set; }
+        public int SavedLayer { get; protected set; }
 
         public void Set(ModelConfigurationComponent target)
         {
             CurrentTarget = target;
             if (CurrentTarget != null)
             {
-                _savedLayer                    = CurrentTarget.gameObject.layer;
-                CurrentTarget.gameObject.layer = _raycastLayer;
+                SavedLayer = CurrentTarget.gameObject.layer;
+                CurrentTarget.gameObject.SetLayersRecursively(_selectionLayer);
             }
         }
 
-        public void Reset()
+        public virtual void Set(RaycastHit raycastHit) => Set(raycastHit.transform.GetComponent<ModelConfigurationComponent>());
+
+        public virtual void Reset()
         {
             if (CurrentTarget != null)
-                CurrentTarget.gameObject.layer = _savedLayer;
+                CurrentTarget.gameObject.SetLayersRecursively(SavedLayer);
 
             CurrentTarget = null;
-            _savedLayer   = 0;
+            SavedLayer    = 0;
         }
-
-        public void HoverEnteredEventCallback(HoverEnterEventArgs args) => Set(args.interactable.GetComponent<ModelConfigurationComponent>());
-
-        public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
     }
 }

@@ -20,128 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
-using System;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class InteractionController : MonoBehaviour
+    public abstract class InteractionController<T> : MonoBehaviour
+        where T : InteractionData
     {
-        [SerializeField] private InteractionData _interactionData;
+        [SerializeField] protected T _interactionData;
 
-        public InteractionData InteractionData => _interactionData;
-
-        private ArcadeContext _arcadeContext;
-
-        public void Initialize(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
-
-        public void HandleInteraction()
-        {
-            if (_interactionData.CurrentTarget == null)
-                return;
-
-            ModelConfiguration modelConfiguration = _interactionData.CurrentTarget.Configuration;
-            InteractionType interactionType       = modelConfiguration.InteractionType;
-
-            switch (interactionType)
-            {
-                case InteractionType.Default:
-                case InteractionType.GameInternal:
-                case InteractionType.GameExternal:
-                    HandleEmulatorInteraction(modelConfiguration);
-                    break;
-                case InteractionType.FpsArcadeConfiguration:
-                case InteractionType.CylArcadeConfiguration:
-                case InteractionType.FpsMenuConfiguration:
-                case InteractionType.CylMenuConfiguration:
-                    HandleArcadeTransition(modelConfiguration);
-                    break;
-                case InteractionType.None:
-                case InteractionType.URL:
-                    break;
-                default:
-                    throw new Exception($"Unhandled switch case for InteractionType: {modelConfiguration.InteractionType}");
-            }
-
-            _interactionData.Reset();
-        }
-
-        private void HandleEmulatorInteraction(ModelConfiguration modelConfiguration)
-        {
-            bool foundPlatform         = _arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform);
-            bool foundEmulatorOverride = _arcadeContext.Databases.Emulators.TryGet(modelConfiguration.Overrides.Emulator, out EmulatorConfiguration emulator);
-            if (foundPlatform && !foundEmulatorOverride)
-                _ = _arcadeContext.Databases.Emulators.TryGet(platform.Emulator, out emulator);
-
-            modelConfiguration.EmulatorConfiguration = emulator;
-            if (modelConfiguration.EmulatorConfiguration == null)
-                return;
-
-            InteractionType interactionType = modelConfiguration.EmulatorConfiguration.InteractionType;
-
-            switch (interactionType)
-            {
-                case InteractionType.GameInternal:
-                {
-                    if (_arcadeContext.GeneralConfiguration.EnableVR)
-                        _arcadeContext.TransitionTo<ArcadeVirtualRealityInternalGameState>();
-                    else
-                        _arcadeContext.TransitionTo<ArcadeNormalInternalGameState>();
-                }
-                break;
-                case InteractionType.GameExternal:
-                {
-                    if (_arcadeContext.GeneralConfiguration.EnableVR)
-                        _arcadeContext.TransitionTo<ArcadeVirtualRealityExternalGameState>();
-                    else
-                        _arcadeContext.TransitionTo<ArcadeNormalExternalGameState>();
-                }
-                break;
-                case InteractionType.FpsArcadeConfiguration:
-                case InteractionType.CylArcadeConfiguration:
-                case InteractionType.FpsMenuConfiguration:
-                case InteractionType.CylMenuConfiguration:
-                    HandleArcadeTransition(modelConfiguration);
-                    break;
-                case InteractionType.Default:
-                case InteractionType.None:
-                case InteractionType.URL:
-                    Debug.LogError("This message should never appear!");
-                    break;
-                default:
-                    throw new Exception($"Unhandled switch case for InteractionType: {interactionType}");
-            }
-        }
-
-        private void HandleArcadeTransition(ModelConfiguration modelConfiguration)
-        {
-            InteractionType interactionType = modelConfiguration.InteractionType;
-
-            switch (interactionType)
-            {
-                case InteractionType.FpsArcadeConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.Normal).Forget();
-                    break;
-                case InteractionType.CylArcadeConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.Normal).Forget();
-                    break;
-                case InteractionType.FpsMenuConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Fps, ArcadeMode.RenderTexture).Forget();
-                    break;
-                case InteractionType.CylMenuConfiguration:
-                    _arcadeContext.StartArcade(modelConfiguration.Id, ArcadeType.Cyl, ArcadeMode.RenderTexture).Forget();
-                    break;
-                case InteractionType.Default:
-                case InteractionType.None:
-                case InteractionType.GameInternal:
-                case InteractionType.GameExternal:
-                case InteractionType.URL:
-                    Debug.LogError("This message should never appear!");
-                    break;
-                default:
-                    throw new Exception($"Unhandled switch case for InteractionType: {interactionType}");
-            }
-        }
+        public T InteractionData => _interactionData;
     }
 }

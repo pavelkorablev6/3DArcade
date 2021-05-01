@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
 using SK.Utilities.StateMachine;
 
 namespace Arcade
@@ -29,19 +28,15 @@ namespace Arcade
     {
         public readonly Player Player;
         public readonly InputActions InputActions;
-        public readonly SceneEditModeController EditModeController;
-        public readonly ArcadeEditModeData Data;
-        public readonly LayerMask RaycastLayers;
+        public readonly EditModeInteractionRaycaster InteractionRaycaster;
+        public readonly EditModeInteractionController InteractionController;
 
-        public ArcadeEditModeContext(Player player, InputActions inputActions)
+        public ArcadeEditModeContext(ArcadeContext arcadeContext)
         {
-            Player             = player;
-            InputActions       = inputActions;
-            EditModeController = new SceneEditModeController();
-            Data               = new ArcadeEditModeData();
-            RaycastLayers      = LayerMask.GetMask("Arcade/ArcadeModels", "Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection");
-
-            TransitionTo<ArcadeEditModeNullState>();
+            Player                = arcadeContext.Player;
+            InputActions          = arcadeContext.InputActions;
+            InteractionRaycaster  = arcadeContext.InteractionControllers.EditModeRaycaster;
+            InteractionController = arcadeContext.InteractionControllers.EditModeController;
         }
     }
 }

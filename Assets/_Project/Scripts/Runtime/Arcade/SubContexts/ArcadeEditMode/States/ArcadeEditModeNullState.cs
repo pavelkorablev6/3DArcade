@@ -20,9 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class ArcadeEditModeNullState : ArcadeEditModeState
@@ -32,12 +29,6 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter()
-        {
-            if (_context.Data.ModelSetup != null && _context.Data.ModelSetup.gameObject.layer != LayerMask.NameToLayer("Arcade/ArcadeModels"))
-                _context.Data.ModelSetup.transform.SetLayersRecursively(_context.Data.SavedLayer);
-
-            _context.Data.Reset();
-        }
+        public override void OnEnter() => _context.InteractionController.InteractionData.Reset();
     }
 }

@@ -37,11 +37,9 @@ namespace Arcade
         public readonly Scenes Scenes;
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
-        public readonly InteractableRaycaster InteractableRaycaster;
-        public readonly InteractionController InteractionController;
+        public readonly InteractionControllers InteractionControllers;
         public readonly UIManager UIManager;
-        public readonly ExternalGameController ExternalGameController;
-        public readonly InternalGameController InternalGameController;
+        public readonly GameControllers GameControllers;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
@@ -53,12 +51,10 @@ namespace Arcade
                              Databases databases,
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
-                             NodeControllers nodeControllers,
-                             InteractableRaycaster interactableRaycaster,
-                             InteractionController interactionController,
-                             UIManager uiManager,
-                             ExternalGameController externalGameController,
-                             InternalGameController internalGameController)
+                             NodeControllers nodeControllers               = null,
+                             InteractionControllers interactionControllers = null,
+                             UIManager uiManager                           = null,
+                             GameControllers gameControllers               = null)
         {
             InputActions            = inputActions;
             Player                  = player;
@@ -67,18 +63,16 @@ namespace Arcade
             Scenes                  = scenes;
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
-            InteractableRaycaster   = interactableRaycaster;
-            InteractionController   = interactionController;
+            InteractionControllers  = interactionControllers;
             UIManager               = uiManager;
-            ExternalGameController  = externalGameController;
-            InternalGameController  = internalGameController;
+            GameControllers         = gameControllers;
         }
 
         protected override void OnStart()
         {
             InputActions.Enable();
             GeneralConfiguration.Initialize();
-            InteractionController.Initialize(this);
+            InteractionControllers.NormalModeController.Initialize(this);
             StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal).Forget();
         }
 

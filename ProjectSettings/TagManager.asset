@@ -16,15 +16,15 @@ TagManager:
   - Arcade/GameModels
   - Arcade/PropModels
   - Arcade/Selection
+  - Arcade/Highlight
   - ArcadeCamera
-  - 
   - Menu
   - Menu/ArcadeModels
   - Menu/GameModels
   - Menu/PropModels
   - Menu/Selection
+  - Menu/Highlight
   - MenuCamera
-  - 
   - 
   - 
   - 

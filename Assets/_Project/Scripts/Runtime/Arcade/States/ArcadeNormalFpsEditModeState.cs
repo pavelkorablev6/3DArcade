@@ -31,7 +31,7 @@ namespace Arcade
 
         public ArcadeNormalFpsEditModeState(ArcadeContext context)
         : base(context)
-            => _editModeContext = new ArcadeEditModeContext(context.Player, context.InputActions);
+            => _editModeContext = new ArcadeEditModeContext(context);
 
         public override void OnEnter()
         {
@@ -60,6 +60,8 @@ namespace Arcade
             _context.InputActions.FpsArcade.Disable();
             _context.InputActions.FpsMoveCab.Disable();
 
+            _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+
             _context.UIManager.TransitionTo<UIDisabledState>();
         }
 
@@ -67,38 +69,45 @@ namespace Arcade
         {
             if (_context.InputActions.Global.Quit.triggered)
             {
-                _context.ArcadeController.RestoreModelPositions();
-
-                _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-                {
-                    _context.TransitionToPrevious();
-                    return;
-                }
+                RevertChanges();
+                _context.TransitionToPrevious();
+                return;
             }
 
             if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
             {
-                _ = _context.SaveCurrentArcade(true);
-
-                _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-                {
-                    _context.TransitionToPrevious();
-                    return;
-                }
+                SaveChanges();
+                _context.TransitionToPrevious();
+                return;
             }
 
             if (_context.InputActions.Global.ToggleCursor.triggered)
-            {
-                CursorUtils.ToggleMouseCursor();
-                if (Cursor.lockState == CursorLockMode.Locked)
-                    _context.InputActions.FpsArcade.Look.Enable();
-                else
-                    _context.InputActions.FpsArcade.Look.Disable();
-            }
+                HandleCursorToggle();
 
             _editModeContext.Update(dt);
         }
 
         public override void OnFixedUpdate(float dt) => _editModeContext.FixedUpdate(dt);
+
+        private void RevertChanges()
+        {
+            _context.ArcadeController.RestoreModelPositions();
+            _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+        }
+
+        private void SaveChanges()
+        {
+            _ = _context.SaveCurrentArcade(true);
+            _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+        }
+
+        private void HandleCursorToggle()
+        {
+            CursorUtils.ToggleMouseCursor();
+            if (Cursor.lockState == CursorLockMode.Locked)
+                _context.InputActions.FpsArcade.Look.Enable();
+            else
+                _context.InputActions.FpsArcade.Look.Disable();
+        }
     }
 }
