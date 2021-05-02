@@ -30,14 +30,11 @@ namespace Arcade
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public abstract class PlayerController : MonoBehaviour
     {
-        [SerializeField] protected Camera _camera;
         [SerializeField] protected CinemachineNewVirtualCamera _virtualCamera;
-        [SerializeField] protected float _walkSpeed = 3f;
+        [SerializeField] protected float _walkSpeed            = 3f;
+        [SerializeField] protected float _turnSensitivity      = 8f;
         [SerializeField] protected float _minVerticalLookAngle = -89f;
         [SerializeField] protected float _maxVerticalLookAngle = 89f;
-
-        public Camera Camera => _camera;
-        public CinemachineNewVirtualCamera VirtualCamera => _virtualCamera;
 
         public abstract bool MovementEnabled { get; set; }
         public abstract bool LookEnabled { get; set; }

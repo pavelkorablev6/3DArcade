@@ -3976,13 +3976,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e53b9620540fa45aeda93f118a5737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 1457968340}
-  _virtualCamera: {fileID: 771026270}
+  _virtualCamera: {fileID: 0}
   _walkSpeed: 3
-  _minVerticalLookAngle: -40
-  _maxVerticalLookAngle: 40
-  _minHorizontalLookAngle: 0
-  _maxHorizontalLookAngle: 0
+  _turnSensitivity: 8
+  _minVerticalLookAngle: -89
+  _maxVerticalLookAngle: 89
+  _minHorizontalLookAngle: -40
+  _maxHorizontalLookAngle: 40
 --- !u!143 &1613447071
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4099,9 +4099,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797c8d8fe9524946abb3366823029b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 1457968340}
-  _virtualCamera: {fileID: 1492262176}
+  _virtualCamera: {fileID: 0}
   _walkSpeed: 3
+  _turnSensitivity: 8
   _minVerticalLookAngle: -89
   _maxVerticalLookAngle: 89
   _runSpeed: 6

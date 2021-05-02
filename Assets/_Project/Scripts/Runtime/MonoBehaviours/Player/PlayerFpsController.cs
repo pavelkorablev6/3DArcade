@@ -95,7 +95,7 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() : Vector2.zero;
+            _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
 
             _lookHorizontal = _lookInputValue.x;
             _lookVertical  += _lookInputValue.y;

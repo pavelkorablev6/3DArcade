@@ -79,7 +79,7 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            _lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>(): Vector2.zero;
+            _lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>() * _turnSensitivity : Vector2.zero;
 
             _lookHorizontal += _lookInputValue.x;
             _lookVertical   += _lookInputValue.y;
