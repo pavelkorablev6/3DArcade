@@ -3976,7 +3976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e53b9620540fa45aeda93f118a5737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _virtualCamera: {fileID: 0}
+  _virtualCamera: {fileID: 771026270}
   _walkSpeed: 3
   _turnSensitivity: 8
   _minVerticalLookAngle: -89
@@ -4099,7 +4099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797c8d8fe9524946abb3366823029b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _virtualCamera: {fileID: 0}
+  _virtualCamera: {fileID: 1492262176}
   _walkSpeed: 3
   _turnSensitivity: 8
   _minVerticalLookAngle: -89
