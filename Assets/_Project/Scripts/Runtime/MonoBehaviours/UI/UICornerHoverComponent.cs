@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,8 +34,16 @@ namespace Arcade
 
         private void OnEnable() => _image.color = Color.clear;
 
-        public void OnPointerEnter(PointerEventData eventData) => _image.color = Color.white;
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _image.color = Color.white;
+            _ = transform.DOScale(new Vector3(2f, 2f, 1f), 0.3f);
+        }
 
-        public void OnPointerExit(PointerEventData eventData) => _image.color = Color.clear;
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            transform.localScale = Vector3.one;
+            _image.color         = Color.clear;
+        }
     }
 }
