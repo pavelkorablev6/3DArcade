@@ -33,7 +33,7 @@ namespace Arcade
 
         private readonly string _fileName;
 
-        public SingleFileDatabase(IVirtualFileSystem virtualFileSystem, string directoryAlias, string fileName)
+        public SingleFileDatabase(VirtualFileSystem virtualFileSystem, string directoryAlias, string fileName)
         : base(virtualFileSystem, directoryAlias)
         {
             if (string.IsNullOrEmpty(fileName))

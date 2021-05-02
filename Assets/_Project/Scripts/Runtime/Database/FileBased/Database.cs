@@ -32,10 +32,10 @@ namespace Arcade
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 
-        private readonly IVirtualFileSystem _virtualFileSystem;
+        private readonly VirtualFileSystem _virtualFileSystem;
         private readonly string _directoryAlias;
 
-        public Database(IVirtualFileSystem virtualFileSystem, string directoryAlias)
+        public Database(VirtualFileSystem virtualFileSystem, string directoryAlias)
         {
             _virtualFileSystem = virtualFileSystem;
             _directoryAlias    = directoryAlias;

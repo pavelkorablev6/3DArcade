@@ -23,7 +23,6 @@
 using SK.Utilities;
 using System.Xml.Serialization;
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
@@ -45,20 +44,11 @@ namespace Arcade
 
         private const string VFS_FILE_ALIAS = "general_cfg";
 
-        private readonly IVirtualFileSystem _virtualFileSystem;
         private string _filePath;
 
-        // Needed for XMLSerializer...
-        public GeneralConfiguration()
+        public void Initialize(VirtualFileSystem virtualFileSystem)
         {
-        }
-
-        [Inject]
-        public GeneralConfiguration(IVirtualFileSystem virtualFileSystem) => _virtualFileSystem = virtualFileSystem;
-
-        public void Initialize()
-        {
-            _filePath = _virtualFileSystem.GetFile(VFS_FILE_ALIAS);
+            _filePath = virtualFileSystem.GetFile(VFS_FILE_ALIAS);
             Load();
         }
 
@@ -73,7 +63,7 @@ namespace Arcade
                     return;
                 }
 
-                if (!FileSystem.FileExists(_filePath))
+                if (!FileSystemUtils.FileExists(_filePath))
                 {
                     Debug.Log($"[{GetType().Name}.Load] File not found, creating one using default values");
                     CreateDefaultConfiguration();

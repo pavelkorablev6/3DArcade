@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class ArcadeDatabase : MultiFileDatabase<ArcadeConfiguration>
     {
-        public ArcadeDatabase(IVirtualFileSystem virtualFileSystem)
+        public ArcadeDatabase(VirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "arcade_cfgs")
         {
         }

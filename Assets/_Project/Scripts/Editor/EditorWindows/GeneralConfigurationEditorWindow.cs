@@ -49,11 +49,11 @@ namespace Arcade.UnityEditor
             EditorGUI.FocusTextInControl(null);
             _scrollPosition = Vector2.zero;
 
-            string dataPath        = SystemUtils.GetDataPath();
-            IVirtualFileSystem vfs = new VirtualFileSystem().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml");
+            string dataPath       = SystemUtils.GetDataPath();
+            VirtualFileSystem vfs = CreateInstance<VirtualFileSystem>().MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml");
 
-            GeneralConfiguration cfg = new GeneralConfiguration(vfs);
-            cfg.Initialize();
+            GeneralConfiguration cfg = new GeneralConfiguration();
+            cfg.Initialize(vfs);
 
             _cfg       = CreateInstance<GeneralConfigurationSO>();
             _cfg.Value = cfg;

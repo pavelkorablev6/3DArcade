@@ -88,11 +88,11 @@ namespace Arcade
             };
         }
 
-        private readonly IVirtualFileSystem _virtualFileSystem;
+        private readonly VirtualFileSystem _virtualFileSystem;
 
         private SQLiteDatabase _database;
 
-        public GameDatabase(IVirtualFileSystem virtualFileSystem) => _virtualFileSystem = virtualFileSystem;
+        public GameDatabase(VirtualFileSystem virtualFileSystem) => _virtualFileSystem = virtualFileSystem;
 
         public void Initialize()
         {

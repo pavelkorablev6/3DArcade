@@ -28,7 +28,7 @@ namespace Arcade
 {
     public abstract class MultiFileDatabase<T> : Database<T> where T : DatabaseEntry
     {
-        protected MultiFileDatabase(IVirtualFileSystem virtualFileSystem, string directoryAlias)
+        protected MultiFileDatabase(VirtualFileSystem virtualFileSystem, string directoryAlias)
         : base(virtualFileSystem, directoryAlias)
         {
         }

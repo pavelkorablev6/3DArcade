@@ -30,14 +30,14 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
-        private IVirtualFileSystem _virtualFileSystem;
-        private ArcadeContext _sceneContext;
+        private VirtualFileSystem _virtualFileSystem;
+        private ArcadeContext _arcadeContext;
 
         [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
-        private void Construct(IVirtualFileSystem virtualFileSystem, ArcadeContext sceneContext)
+        private void Construct(VirtualFileSystem virtualFileSystem, ArcadeContext arcadeContext)
         {
             _virtualFileSystem = virtualFileSystem;
-            _sceneContext      = sceneContext;
+            _arcadeContext     = arcadeContext;
         }
 
         private void Start()
@@ -57,7 +57,7 @@ namespace Arcade
                                   .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
                                   .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
 
-            _sceneContext.Start();
+            _arcadeContext.Start();
 
             //string mameSupportDirectory = $"{Application.streamingAssetsPath}/3darcade~/Dats";
             //string listXmlPath          = $"{mameSupportDirectory}/mame2003-plus.xml";
@@ -88,9 +88,9 @@ namespace Arcade
             _sceneContext.Update(Time.deltaTime);
         }
 #else
-        private void Update() => _sceneContext.Update(Time.deltaTime);
+        private void Update() => _arcadeContext.Update(Time.deltaTime);
 #endif
-        private void FixedUpdate() => _sceneContext.FixedUpdate(Time.fixedDeltaTime);
+        private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
 
         private void ValidateCurrentOS()
         {

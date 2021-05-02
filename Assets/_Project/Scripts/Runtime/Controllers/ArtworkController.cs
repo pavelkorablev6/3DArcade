@@ -41,10 +41,10 @@ namespace Arcade
         private static readonly string[] _imageExtensions = new string[] { "png", "jpg", "jpeg" };
         private static readonly string[] _videoExtensions = new string[] { "mp4", "mkv", "avi" };
 
-        private readonly IVirtualFileSystem _virtualFileSystem;
+        private readonly VirtualFileSystem _virtualFileSystem;
         private readonly AssetCache<Texture> _textureCache;
 
-        public ArtworkController(IVirtualFileSystem virtualFileSystem, AssetCache<Texture> textureCache)
+        public ArtworkController(VirtualFileSystem virtualFileSystem, AssetCache<Texture> textureCache)
         {
             _virtualFileSystem = virtualFileSystem;
             _textureCache      = textureCache;

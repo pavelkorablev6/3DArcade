@@ -94,7 +94,7 @@ namespace Arcade
         private static bool FoundGame(string[] directories, string gameName, string extension)
         {
             foreach (string directory in directories)
-                if (FileSystem.FileExists($"{directory}/{gameName}.{extension}"))
+                if (FileSystemUtils.FileExists($"{directory}/{gameName}.{extension}"))
                     return true;
             return false;
         }

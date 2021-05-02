@@ -37,15 +37,7 @@ namespace Arcade
         public override void InstallBindings()
         {
             _ = Container.Bind<InputActions>().AsSingle().NonLazy();
-            _ = Container.Bind<Player>().FromInstance(_player).AsSingle();
-
-            _ = Container.Bind<IVirtualFileSystem>().To<VirtualFileSystem>().AsSingle().NonLazy();
-            _ = Container.Bind<GeneralConfiguration>().AsSingle().NonLazy();
-            _ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorDatabase>().AsSingle().NonLazy();
-            _ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformDatabase>().AsSingle().NonLazy();
-            _ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadeDatabase>().AsSingle().NonLazy();
-            _ = Container.Bind<GameDatabase>().AsSingle().NonLazy();
-            _ = Container.Bind<Databases>().AsSingle().NonLazy();
+            _ = Container.Bind<Player>().FromInstance(_player);
 
             _ = Container.Bind<IEntititesSceneCreator>().To<EntitiesSceneCreator>().AsSingle().NonLazy();
             _ = Container.Bind<ArcadeSceneLoaderBase>().To<ArcadeSceneLoader>().AsSingle().NonLazy();
@@ -70,13 +62,13 @@ namespace Arcade
             _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
-            _ = Container.Bind<NormalModeInteractionRaycaster>().FromInstance(_normalModeInteractionRaycaster).AsSingle();
-            _ = Container.Bind<NormalModeInteractionController>().FromInstance(_normalModeInteractionController).AsSingle();
-            _ = Container.Bind<EditModeInteractionRaycaster>().FromInstance(_editModeInteractionRaycaster).AsSingle();
-            _ = Container.Bind<EditModeInteractionController>().FromInstance(_editModeInteractionController).AsSingle();
+            _ = Container.Bind<NormalModeInteractionRaycaster>().FromScriptableObject(_normalModeInteractionRaycaster).AsSingle();
+            _ = Container.Bind<NormalModeInteractionController>().FromScriptableObject(_normalModeInteractionController).AsSingle();
+            _ = Container.Bind<EditModeInteractionRaycaster>().FromScriptableObject(_editModeInteractionRaycaster).AsSingle();
+            _ = Container.Bind<EditModeInteractionController>().FromScriptableObject(_editModeInteractionController).AsSingle();
             _ = Container.Bind<InteractionControllers>().AsSingle().NonLazy();
 
-            _ = Container.Bind<UIManager>().FromInstance(_uiManager).AsSingle();
+            _ = Container.Bind<UIManager>().FromInstance(_uiManager);
 
             _ = Container.Bind<Material>().WithId("LibretroScreenMaterial").FromResource("Materials/_libretroScreen");
             _ = Container.Bind<Material>().WithId("UDDScreenMaterial").FromResource("Materials/_uddScreen");

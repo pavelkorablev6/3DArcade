@@ -32,7 +32,7 @@ namespace Arcade
     {
         public readonly InputActions InputActions;
         public readonly Player Player;
-        public readonly GeneralConfiguration GeneralConfiguration;
+        public readonly GeneralConfigurationVariable GeneralConfiguration;
         public readonly Databases Databases;
         public readonly Scenes Scenes;
         public readonly AssetAddressesProviders AssetAddressesProviders;
@@ -47,7 +47,7 @@ namespace Arcade
 
         public ArcadeContext(InputActions inputActions,
                              Player player,
-                             GeneralConfiguration generalConfiguration,
+                             GeneralConfigurationVariable generalConfiguration,
                              Databases databases,
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
@@ -72,8 +72,11 @@ namespace Arcade
         {
             InputActions.Enable();
             GeneralConfiguration.Initialize();
+            InteractionControllers.NormalModeRaycaster.Initialize(Player.Camera);
+            InteractionControllers.EditModeRaycaster.Initialize(Player.Camera);
             InteractionControllers.NormalModeController.Initialize(this);
-            StartArcade(GeneralConfiguration.StartingArcade, GeneralConfiguration.StartingArcadeType, ArcadeMode.Normal).Forget();
+
+            StartArcade(GeneralConfiguration.Value.StartingArcade, GeneralConfiguration.Value.StartingArcadeType, ArcadeMode.Normal).Forget();
         }
 
         protected override void OnUpdate(float dt)
@@ -137,9 +140,9 @@ namespace Arcade
                 List<InputDevice> devices = new List<InputDevice>();
                 InputDevices.GetDevices(devices);
                 if (devices.Count == 0)
-                    GeneralConfiguration.EnableVR = false;
+                    GeneralConfiguration.Value.EnableVR = false;
 
-                if (GeneralConfiguration.EnableVR)
+                if (GeneralConfiguration.Value.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();
                 else
                     TransitionTo<ArcadeNormalLoadState>();

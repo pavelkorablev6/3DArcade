@@ -29,7 +29,7 @@ namespace Arcade
         public static readonly EmulatorConfiguration FpsMenuLauncher   = MakeInternalEmulator("_fps_menu_launcher", "InternalFpsMenuLauncher", InteractionType.FpsMenuConfiguration);
         public static readonly EmulatorConfiguration CylMenuLauncher   = MakeInternalEmulator("_cyl_menu_launcher", "InternalCylMenuLauncher", InteractionType.CylMenuConfiguration);
 
-        public EmulatorDatabase(IVirtualFileSystem virtualFileSystem)
+        public EmulatorDatabase(VirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "emulator_cfgs")
         {
         }

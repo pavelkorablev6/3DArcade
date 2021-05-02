@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class PlatformDatabase : MultiFileDatabase<PlatformConfiguration>
     {
-        public PlatformDatabase(IVirtualFileSystem virtualFileSystem)
+        public PlatformDatabase(VirtualFileSystem virtualFileSystem)
         : base(virtualFileSystem, "platform_cfgs")
         {
         }
