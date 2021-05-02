@@ -50,11 +50,11 @@ namespace Arcade
             if (resourceLocations.Count == 0)
                 return false;
 
-            if (_sceneInstance.Scene.IsValid() && _sceneInstance.Scene.isLoaded)
+            if (triggerReload)
             {
-                _ = await Addressables.UnloadSceneAsync(_sceneInstance);
-                if (triggerReload)
-                    return await Load(addressesToTry, false);
+                if (_sceneInstance.Scene.IsValid() && _sceneInstance.Scene.isLoaded)
+                    _ = await Addressables.UnloadSceneAsync(_sceneInstance);
+                return await Load(addressesToTry, false);
             }
 
             _sceneHandle   = Addressables.LoadSceneAsync(resourceLocations[0], LoadSceneMode.Additive);
@@ -74,7 +74,7 @@ namespace Arcade
                     collider.transform.SetLayersRecursively(_arcadeModelsLayer);
             }
 
-            await _sceneInstance.ActivateAsync();
+            _ = SceneManager.SetActiveScene(_sceneInstance.Scene);
             return true;
         }
     }

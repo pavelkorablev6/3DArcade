@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using SK.Utilities;
+using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -63,7 +64,7 @@ namespace Arcade
                     return;
                 }
 
-                if (!FileSystemUtils.FileExists(_filePath))
+                if (!File.Exists(_filePath))
                 {
                     Debug.Log($"[{GetType().Name}.Load] File not found, creating one using default values");
                     CreateDefaultConfiguration();

@@ -64,7 +64,7 @@ namespace Arcade
 
         private bool ProcessExtension(string directory, string name, string extension)
         {
-            string path = Path.GetFullPath(Path.Combine(directory, $"{name}.{extension}"));
+            string path = Path.Combine(directory, $"{name}.{extension}");
             if (!File.Exists(path))
                 return false;
 

@@ -60,18 +60,8 @@ namespace Arcade
                 path2 = path2.TrimStart(Path.DirectorySeparatorChar);
                 path2 = path2.TrimStart(Path.AltDirectorySeparatorChar);
             }
-            return Path.GetFullPath(Path.Combine(path1, path2));
+            return Path.Combine(path1, path2);
         }
-
-        public static bool FileExists(string filePath) => File.Exists(Path.GetFullPath(filePath));
-
-        public static string ReadAllText(string filePath) => File.ReadAllText(Path.GetFullPath(filePath));
-
-        public static byte[] ReadAllBytes(string filePath) => File.ReadAllBytes(Path.GetFullPath(filePath));
-
-        public static void WriteAllText(string filePath, string content) => File.WriteAllText(Path.GetFullPath(filePath), content);
-
-        public static bool DirectoryExists(string dirPath) => Directory.Exists(Path.GetFullPath(dirPath));
 
         public static string[] GetFiles(string dirPath, string searchPattern, bool searchAllDirectories)
         {
@@ -85,9 +75,6 @@ namespace Arcade
                 searchOption = searchAllDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             string[] files = Directory.GetFiles(dirPath, searchPattern, searchOption);
-            for (int i = 0; i < files.Length; i++)
-                files[i] = Path.GetFullPath(files[i]);
-
             return files.Length > 0 ? files : null;
         }
     }

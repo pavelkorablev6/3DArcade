@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using SK.Utilities;
+using System.IO;
 using UnityEngine;
 using Zenject;
 
@@ -86,15 +87,15 @@ namespace Arcade
         private static string ProcessExtensions(string[] extensions, string[] directories, string gameName)
         {
             foreach (string extension in extensions)
-                if (FoundGame(directories, gameName, extension))
+                if (ProcessFile(directories, gameName, extension))
                     return extension;
             return null;
         }
 
-        private static bool FoundGame(string[] directories, string gameName, string extension)
+        private static bool ProcessFile(string[] directories, string gameName, string extension)
         {
             foreach (string directory in directories)
-                if (FileSystemUtils.FileExists($"{directory}/{gameName}.{extension}"))
+                if (File.Exists($"{directory}/{gameName}.{extension}"))
                     return true;
             return false;
         }

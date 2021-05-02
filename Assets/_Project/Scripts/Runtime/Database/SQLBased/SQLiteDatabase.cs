@@ -45,7 +45,7 @@ namespace Arcade
 
         private readonly string _connectionString;
 
-        public SQLiteDatabase(string databasePath) => _connectionString = $"Data Source={Path.GetFullPath(databasePath)},Version=3";
+        public SQLiteDatabase(string databasePath) => _connectionString = $"Data Source={databasePath},Version=3";
 
         public void CreateTable(string tableName, bool failsIfExists, params string[] columns)
         {

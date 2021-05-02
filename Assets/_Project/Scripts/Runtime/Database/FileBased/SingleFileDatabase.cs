@@ -59,7 +59,7 @@ namespace Arcade
             }
         }
 
-        protected override void PostInitialize() => FilePath = Path.GetFullPath(Path.Combine(Directory, $"{_fileName}.xml"));
+        protected override void PostInitialize() => FilePath = Path.Combine(Directory, $"{_fileName}.xml");
 
         protected sealed override void PostAdd(T entry) => SaveAll();
 
