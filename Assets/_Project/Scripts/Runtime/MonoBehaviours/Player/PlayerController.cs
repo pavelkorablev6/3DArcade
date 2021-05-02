@@ -39,29 +39,35 @@ namespace Arcade
         public abstract bool MovementEnabled { get; set; }
         public abstract bool LookEnabled { get; set; }
 
+        protected const float CONTROLLER_HEIGHT_TO_CENTER_RATIO          = 2f / 0.18f;
+        protected const float CONTROLLER_HEIGHT_TO_CAMERA_POSITION_RATIO = 1.5f / 2f;
+
         protected InputActions _inputActions;
         protected CharacterController _characterController;
-        protected Vector2 _lookInputValue;
+        protected CinemachineTransposer _cinemachineTransposer;
         protected Vector3 _moveVelocity;
-        protected float _lookHorizontal;
         protected float _lookVertical;
 
         [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
         private void Construct(InputActions inputActions) => _inputActions = inputActions;
 
-        private void Awake() => _characterController = GetComponent<CharacterController>();
+        private void Awake()
+        {
+            _characterController   = GetComponent<CharacterController>();
+            _cinemachineTransposer = _virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        }
 
         private void OnEnable()
         {
-            _lookInputValue = Vector2.zero;
-            _moveVelocity   = Vector3.zero;
-            _lookHorizontal = 0f;
-            _lookVertical   = 0f;
+            _moveVelocity = Vector3.zero;
+            _lookVertical = 0f;
         }
 
         private void Update()
         {
-            HandleMovement(Time.deltaTime);
+            float deltaTime = Time.deltaTime;
+            HandleHeight(deltaTime);
+            HandleMovement(deltaTime);
             HandleLook();
         }
 
@@ -73,8 +79,20 @@ namespace Arcade
             _maxVerticalLookAngle = Mathf.Clamp(max, 0f, 89f);
         }
 
+        protected abstract void HandleHeight(float dt);
+
         protected abstract void HandleMovement(float dt);
 
         protected abstract void HandleLook();
+
+        protected void SetHeight(float heightInput)
+        {
+            _cinemachineTransposer.m_FollowOffset = new Vector3(0f, _characterController.height * CONTROLLER_HEIGHT_TO_CAMERA_POSITION_RATIO, 0f);
+
+            _characterController.height += heightInput;
+            _characterController.center = new Vector3(0f, _characterController.height / 2f, 0f);
+            _characterController.height = Mathf.Clamp(_characterController.height, 0.1f, 4f);
+            _characterController.radius = _characterController.height / CONTROLLER_HEIGHT_TO_CENTER_RATIO;
+        }
     }
 }

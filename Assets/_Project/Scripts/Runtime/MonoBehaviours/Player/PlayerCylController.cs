@@ -55,7 +55,9 @@ namespace Arcade
         }
 
         private InputAction _movementAction;
-        private float _movementInputValue;
+        private float _lookHorizontal;
+
+        private void OnEnable() => _lookVertical = 0f;
 
         public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylArcade.NavigationVertical;
 
@@ -67,11 +69,25 @@ namespace Arcade
             _maxHorizontalLookAngle = Mathf.Clamp(max, 0f, 90f);
         }
 
+        protected override void HandleHeight(float dt)
+        {
+            if (!_inputActions.CylArcade.CameraHeight.enabled)
+                return;
+
+            float heightInput = _inputActions.CylArcade.CameraHeight.ReadValue<float>();
+            if (heightInput == 0f)
+                return;
+
+            heightInput *= dt;
+
+            SetHeight(heightInput);
+        }
+
         protected override void HandleMovement(float dt)
         {
-            _movementInputValue = _movementAction != null && _movementAction.enabled ? _movementAction.ReadValue<float>() : 0f;
+            float movementInputValue = _movementAction != null && _movementAction.enabled ? _movementAction.ReadValue<float>() : 0f;
 
-            _ = _characterController.Move(new Vector3(0f, 0f, _movementInputValue) * _walkSpeed * dt);
+            _ = _characterController.Move(new Vector3(0f, 0f, movementInputValue) * _walkSpeed * dt);
 
             if (transform.localPosition.z < 0f)
                 transform.localPosition = new Vector3(0f, transform.localPosition.y, 0f);
@@ -79,11 +95,11 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            _lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>() * _turnSensitivity : Vector2.zero;
+            Vector2 lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
 
-            _lookHorizontal += _lookInputValue.x;
-            _lookVertical   += _lookInputValue.y;
+            _lookHorizontal += lookInputValue.x;
             _lookHorizontal  = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);
+            _lookVertical   += lookInputValue.y;
             _lookVertical    = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);
             if (_virtualCamera != null)
                 _virtualCamera.transform.localEulerAngles = new Vector3(-_lookVertical, 0f, 0f);

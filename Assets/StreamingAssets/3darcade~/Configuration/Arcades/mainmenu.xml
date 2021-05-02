@@ -214,8 +214,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-4.66" y="0" z="3.27" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-5.25" y="-0" z="2.63" />
+      <rotation x="-0" y="118.12" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="demo_twogames" platform="">
@@ -264,8 +264,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-3.57" y="0" z="4.54" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-4.69" y="-0" z="3.51" />
+      <rotation x="-0" y="129.38" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="toga" platform="">
@@ -314,8 +314,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-2.44" y="0" z="5.02" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-3.98" y="-0" z="4.31" />
+      <rotation x="-0" y="140.62" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_right" platform="">
@@ -364,8 +364,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-1.38" y="0" z="5.44" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-3.03" y="-0" z="5.04" />
+      <rotation x="-0" y="151.88" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_flat_left" platform="">
@@ -414,8 +414,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-0.33" y="0" z="5.68" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-1.99" y="-0" z="5.56" />
+      <rotation x="0" y="163.13" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_flat_down" platform="">
@@ -464,8 +464,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="0.68" y="0" z="5.43" />
-      <rotation x="0" y="180" z="0" />
+      <position x="-0.86" y="-0" z="5.9" />
+      <rotation x="-0" y="174.37" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_flat_up" platform="">
@@ -514,8 +514,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="1.95" y="0" z="5.11" />
-      <rotation x="0" y="180" z="0" />
+      <position x="0.37" y="-0" z="5.95" />
+      <rotation x="0" y="-174.37" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_inside_right" platform="">
@@ -564,8 +564,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="3.11" y="0" z="4.33" />
-      <rotation x="0" y="180" z="0" />
+      <position x="1.64" y="-0" z="5.67" />
+      <rotation x="-0" y="-163.12" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_inside_left" platform="">
@@ -614,8 +614,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="4.18" y="0" z="3.43" />
-      <rotation x="0" y="180" z="0" />
+      <position x="2.7" y="-0" z="5.21" />
+      <rotation x="0" y="-151.88" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_inside_down" platform="">
@@ -664,8 +664,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="5.17" y="0" z="2.36" />
-      <rotation x="0" y="180" z="0" />
+      <position x="3.65" y="-0" z="4.58" />
+      <rotation x="0" y="-140.62" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_inside_up" platform="">
@@ -714,8 +714,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="5.69" y="0" z="1.05" />
-      <rotation x="0" y="180" z="0" />
+      <position x="4.53" y="-0" z="3.71" />
+      <rotation x="-0" y="-129.38" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_outside_right" platform="">
@@ -764,8 +764,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="5.49" y="0" z="-0.57" />
-      <rotation x="0" y="180" z="0" />
+      <position x="5.17" y="-0" z="2.78" />
+      <rotation x="0" y="-118.12" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_hor_outside_left" platform="">
@@ -814,8 +814,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="5.09" y="0" z="-2.05" />
-      <rotation x="0" y="180" z="0" />
+      <position x="5.63" y="-0" z="1.76" />
+      <rotation x="0" y="-106.88" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_outside_down" platform="">
@@ -864,8 +864,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="4.05" y="0" z="-3.55" />
-      <rotation x="0" y="180" z="0" />
+      <position x="5.92" y="-0" z="0.69" />
+      <rotation x="-0" y="-95.62" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
     <game id="cyl_demo_vert_outside_up" platform="">
@@ -914,8 +914,8 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="2.69" y="0" z="-4.58" />
-      <rotation x="0" y="180" z="0" />
+      <position x="5.94" y="-0" z="-0.45" />
+      <rotation x="-0" y="-84.38" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>

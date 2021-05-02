@@ -26,9 +26,8 @@ namespace Arcade
 {
     public sealed class PlayerFpsController : PlayerController
     {
-        [SerializeField] private float _runSpeed  = 6f;
-        [SerializeField] private float _jumpForce = 10f;
-
+        [SerializeField] private float _runSpeed     = 6f;
+        [SerializeField] private float _jumpForce    = 10f;
         [SerializeField] private float _extraGravity = 40f;
 
         public override bool MovementEnabled
@@ -55,34 +54,49 @@ namespace Arcade
             }
         }
 
-        private Vector2 _movementInputValue;
-        private bool _sprinting;
-        private bool _performJump;
+
+        protected override void HandleHeight(float dt)
+        {
+            if (!_inputActions.FpsArcade.CameraHeight.enabled)
+                return;
+
+            float heightInput = _inputActions.FpsArcade.CameraHeight.ReadValue<float>();
+            if (heightInput == 0f)
+                return;
+
+            heightInput *= dt;
+
+            SetHeight(heightInput);
+        }
 
         protected override void HandleMovement(float dt)
         {
+            Vector2 movementInputValue;
+            bool sprinting;
+            bool performJump;
+
             if (_inputActions.FpsArcade.Movement.enabled)
             {
-                _movementInputValue = _inputActions.FpsArcade.Movement.ReadValue<Vector2>();
-                _sprinting          = _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
-                _performJump        = _inputActions.FpsArcade.Jump.triggered;
+                movementInputValue = _inputActions.FpsArcade.Movement.ReadValue<Vector2>();
+                sprinting          = _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
+                performJump        = _inputActions.FpsArcade.Jump.triggered;
             }
             else
             {
-                _movementInputValue = Vector2.zero;
-                _sprinting          = false;
-                _performJump        = false;
+                movementInputValue = Vector2.zero;
+                sprinting          = false;
+                performJump        = false;
             }
 
             if (_characterController.isGrounded)
             {
-                _moveVelocity = new Vector3(_movementInputValue.x, -0.1f, _movementInputValue.y);
+                _moveVelocity = new Vector3(movementInputValue.x, -0.1f, movementInputValue.y);
                 _moveVelocity.Normalize();
 
-                float speed   = _sprinting ? _runSpeed : _walkSpeed;
+                float speed   = sprinting ? _runSpeed : _walkSpeed;
                 _moveVelocity = transform.TransformDirection(_moveVelocity) * speed;
 
-                if (_performJump)
+                if (performJump)
                     _moveVelocity.y = _jumpForce;
             }
 
@@ -95,14 +109,14 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            _lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
+            Vector2 lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
 
-            _lookHorizontal = _lookInputValue.x;
-            _lookVertical  += _lookInputValue.y;
-            _lookVertical   = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);
+            float lookHorizontal = lookInputValue.x;
+            _lookVertical       += lookInputValue.y;
+            _lookVertical        = Mathf.Clamp(_lookVertical, _minVerticalLookAngle, _maxVerticalLookAngle);
             if (_virtualCamera != null)
                 _virtualCamera.transform.localEulerAngles = new Vector3(-_lookVertical, 0f, 0f);
-            transform.Rotate(new Vector3(0f, _lookHorizontal, 0f));
+            transform.Rotate(new Vector3(0f, lookHorizontal, 0f));
         }
     }
 }

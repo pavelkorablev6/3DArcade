@@ -442,7 +442,7 @@ namespace Arcade
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Negative"",
+                    ""name"": ""positive"",
                     ""id"": ""f307a84c-c441-4477-9b8b-b899be2ad6b2"",
                     ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
@@ -453,7 +453,7 @@ namespace Arcade
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Positive"",
+                    ""name"": ""negative"",
                     ""id"": ""dd3eb91e-9fbc-4c81-ac07-0e1bbfd9e71e"",
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",

@@ -51,8 +51,12 @@ namespace Arcade
 
         public void Disable()
         {
+            _fpsController.transform.position = new Vector3(0f, 1f, 0f);
             _fpsController.SetActive(false);
+
+            _cylController.transform.position = new Vector3(0f, 1f, 0f);
             _cylController.SetActive(false);
+
              Active = false;
         }
     }
