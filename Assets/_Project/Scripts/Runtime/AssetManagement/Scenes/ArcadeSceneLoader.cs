@@ -34,8 +34,6 @@ namespace Arcade
 {
     public sealed class ArcadeSceneLoader : ArcadeSceneLoaderBase
     {
-        public override float LoadPercentCompleted => _sceneHandle.IsValid() && !_sceneHandle.IsDone ? _sceneHandle.PercentComplete : 0f;
-
         private static int _arcadeModelsLayer = -1;
 
         private AsyncOperationHandle<SceneInstance> _sceneHandle;

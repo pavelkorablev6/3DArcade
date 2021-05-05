@@ -32,18 +32,16 @@ namespace Arcade
     {
         [SerializeField] private RawImage _image;
 
-        private void OnEnable() => _image.color = Color.clear;
-
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _image.color = Color.white;
+            _ = _image.DOColor(Color.white, 0.3f);
             _ = transform.DOScale(new Vector3(2f, 2f, 1f), 0.3f);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            transform.localScale = Vector3.one;
-            _image.color         = Color.clear;
+            _ = _image.DOColor(Color.clear, 0.2f);
+            _ = transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f);
         }
     }
 }

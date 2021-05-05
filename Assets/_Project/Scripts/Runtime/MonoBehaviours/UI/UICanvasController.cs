@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using TMPro;
 using UnityEngine;
 
 namespace Arcade
@@ -32,10 +31,6 @@ namespace Arcade
         [SerializeField] private GameObject _normalUI;
         [SerializeField] private GameObject _moveCabUI;
         [SerializeField] private GameObject _configurationUI;
-
-        [SerializeField] private RectTransform _progressTransform;
-        [SerializeField] private TMP_Text _progressMessageText;
-        [SerializeField] private TMP_Text _progressPercentText;
 
         public void EnableSceneLoadingUI() => _loadingUI.SetActive(true);
 
@@ -60,76 +55,5 @@ namespace Arcade
             DisableSceneEditModeUI();
             DisableConfigurationUI();
         }
-
-        public void InitStatusBar(string message)
-        {
-            if (!_loadingUI.activeInHierarchy)
-                return;
-
-            _progressTransform.localScale = new Vector3(0f, 1f, 1f);
-            _progressMessageText.SetText(message);
-            _progressPercentText.SetText("0%");
-        }
-
-        public void UpdateStatusBar(float percentComplete)
-        {
-            if (!_loadingUI.activeInHierarchy)
-                return;
-
-            _progressTransform.localScale = new Vector3(percentComplete, 1f, 1f);
-            _progressPercentText.SetText($"{percentComplete * 100:0}%");
-        }
-
-        public void ResetStatusBar()
-        {
-            _progressTransform.localScale = new Vector3(0f, 1f, 1f);
-            _progressMessageText.Clear();
-            _progressPercentText.Clear();
-        }
-
-#if UNITY_EDITOR
-        [ContextMenu("Loading State")]
-        private void Context_LoadingState()
-        {
-            DisableSceneNormalUI();
-            DisableSceneEditModeUI();
-            DisableConfigurationUI();
-
-            EnableSceneLoadingUI();
-        }
-
-        [ContextMenu("Normal State")]
-        private void Context_NormalState()
-        {
-            DisableSceneLoadingUI();
-            DisableSceneEditModeUI();
-            DisableConfigurationUI();
-
-            EnableSceneNormalUI();
-        }
-
-        [ContextMenu("MoveCab State")]
-        private void Context_MoveCabState()
-        {
-            DisableSceneLoadingUI();
-            DisableSceneNormalUI();
-            DisableConfigurationUI();
-
-            EnableSceneEditModeUI();
-        }
-
-        [ContextMenu("Configuration State")]
-        private void Context_ConfigurationState()
-        {
-            DisableSceneLoadingUI();
-            DisableSceneNormalUI();
-            DisableSceneEditModeUI();
-
-            EnableConfigurationUI();
-        }
-
-        [ContextMenu("Disabled State")]
-        private void Context_Disable() => Disable();
-#endif
     }
 }

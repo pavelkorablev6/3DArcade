@@ -20,10 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+using Zenject;
+
 namespace Arcade
 {
-    public interface IArcadeEventListener<T>
+    public sealed class UIInstaller : MonoInstaller<UIInstaller>
     {
-        void OnEventRaised(T item);
+        [SerializeField] private UICanvasController _normalUI;
+        [SerializeField] private UICanvasController _virtualRealityUI;
+
+        public override void InstallBindings()
+        {
+            _ = Container.Bind<UICanvasController>().WithId("normal").FromInstance(_normalUI);
+            _ = Container.Bind<UICanvasController>().WithId("vr").FromInstance(_virtualRealityUI);
+            _ = Container.Bind<UIContext>().AsSingle().NonLazy();
+        }
     }
 }

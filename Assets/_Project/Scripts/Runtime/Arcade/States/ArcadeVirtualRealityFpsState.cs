@@ -36,14 +36,14 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.UIManager.TransitionTo<UIVirtualRealitySceneNormalState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UIVirtualRealitySceneNormalState));
         }
 
         public override void OnExit()
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.UIManager.TransitionTo<UIDisabledState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)

@@ -51,6 +51,8 @@ namespace Arcade
 
         public async UniTask Initialize()
         {
+            Loaded = false;
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
                 _modelSpawner = new EditorModelSpawner();
@@ -59,6 +61,7 @@ namespace Arcade
 #else
             _modelSpawner = new ModelSpawner();
 #endif
+
             SetupPlayer();
             await SpawnGames();
             await SpawProps();

@@ -34,7 +34,12 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
+        public override void OnEnter()
+        {
+            Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
+
+            _context.InteractionRaycaster.ResetCurrentTarget();
+        }
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 

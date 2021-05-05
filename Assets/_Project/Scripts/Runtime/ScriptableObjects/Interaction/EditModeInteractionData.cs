@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -35,8 +34,6 @@ namespace Arcade
             public RigidbodyInterpolation RigidbodyInterpolation;
             public bool RigidbodyIsKinematic;
         }
-
-        [SerializeField, Layer] private int _highlightLayer;
 
         public Collider Collider { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
@@ -71,6 +68,8 @@ namespace Arcade
 
         public void InitGrabMode()
         {
+            Reset();
+
             _savedData = new SavedData
             {
                 ColliderIsTrigger      = Collider.isTrigger,

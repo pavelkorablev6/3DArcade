@@ -48,9 +48,11 @@ namespace Arcade
 
             _context.InputActions.FpsMoveCab.Enable();
 
+            _context.InteractionControllers.NormalModeRaycaster.ResetCurrentTarget();
+
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
-            _context.UIManager.TransitionTo<UINormalSceneEditModeState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneEditModeState));
         }
 
         public override void OnExit()
@@ -62,7 +64,7 @@ namespace Arcade
 
             _editModeContext.TransitionTo<ArcadeEditModeNullState>();
 
-            _context.UIManager.TransitionTo<UIDisabledState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)

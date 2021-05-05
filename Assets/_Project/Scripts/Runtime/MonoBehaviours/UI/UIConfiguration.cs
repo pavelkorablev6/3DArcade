@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -28,16 +29,19 @@ using UnityEngine.UI;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIGeneralConfiguration : MonoBehaviour
+    public sealed class UIConfiguration : MonoBehaviour
     {
-        [SerializeField] private GeneralConfigurationVariable _generalConfiguration;
         [SerializeField] private Databases _databases;
+        [SerializeField] private GeneralConfigurationVariable _generalConfiguration;
+        [SerializeField] private RectTransform _generalConfigurationPanel;
         [SerializeField] private TMP_Dropdown _startingArcadeDropdown;
         [SerializeField] private TMP_Dropdown _startingArcadeTypeDropdown;
         [SerializeField] private Toggle _mouseLookReverseToggle;
         [SerializeField] private Toggle _enableVRToggle;
 
-        public void OnEnable()
+        [SerializeField] private RectTransform _toolbarPanel;
+
+        public void ShowGeneralConfiguration()
         {
             _generalConfiguration.Initialize();
 
@@ -50,9 +54,21 @@ namespace Arcade
             _mouseLookReverseToggle.isOn = _generalConfiguration.Value.MouseLookReverse;
 
             _enableVRToggle.isOn = _generalConfiguration.Value.EnableVR;
+
+            _ = _generalConfigurationPanel.DOAnchorPosX(0f, 0.3f).OnStart(() =>
+            {
+                gameObject.SetActive(true);
+                _generalConfigurationPanel.gameObject.SetActive(true);
+            });
         }
 
-        public void Save()
+        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f).OnComplete(() =>
+        {
+            _generalConfigurationPanel.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        });
+
+        public void SaveGeneralConfiguration()
         {
             _generalConfiguration.Value.StartingArcade = _startingArcadeDropdown.options[_startingArcadeDropdown.value].text;
 
@@ -66,5 +82,17 @@ namespace Arcade
             _generalConfiguration.Save();
             _generalConfiguration.Initialize();
         }
+
+        public void ShowToolbar() => _toolbarPanel.DOScaleY(1f, 0.3f).OnStart(() =>
+        {
+            gameObject.SetActive(true);
+            _toolbarPanel.gameObject.SetActive(true);
+        });
+
+        public void HideToolbar() => _toolbarPanel.DOScaleY(0f, 0.3f).OnComplete(() =>
+        {
+            _toolbarPanel.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        });
     }
 }

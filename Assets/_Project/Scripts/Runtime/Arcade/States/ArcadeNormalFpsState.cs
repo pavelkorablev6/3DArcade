@@ -40,7 +40,7 @@ namespace Arcade
             if (Cursor.lockState != CursorLockMode.Locked)
                 _context.InputActions.FpsArcade.Look.Disable();
 
-            _context.UIManager.TransitionTo<UINormalSceneNormalState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneNormalState));
         }
 
         public override void OnExit()
@@ -49,7 +49,7 @@ namespace Arcade
 
             _context.InputActions.FpsArcade.Disable();
 
-            _context.UIManager.TransitionTo<UIDisabledState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)

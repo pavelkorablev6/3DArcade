@@ -28,11 +28,13 @@ namespace Arcade
     public sealed class MainInstaller : MonoInstaller<MainInstaller>
     {
         [SerializeField] private Player _player;
+
         [SerializeField] private NormalModeInteractionRaycaster _normalModeInteractionRaycaster;
         [SerializeField] private NormalModeInteractionController _normalModeInteractionController;
         [SerializeField] private EditModeInteractionRaycaster _editModeInteractionRaycaster;
         [SerializeField] private EditModeInteractionController _editModeInteractionController;
-        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private TypeEvent _uiStateTransitionEvent;
+        [SerializeField] private StringVariable _arcadeNameVariable;
 
         public override void InstallBindings()
         {
@@ -68,13 +70,14 @@ namespace Arcade
             _ = Container.Bind<EditModeInteractionController>().FromScriptableObject(_editModeInteractionController).AsSingle();
             _ = Container.Bind<InteractionControllers>().AsSingle().NonLazy();
 
-            _ = Container.Bind<UIManager>().FromInstance(_uiManager);
-
-            _ = Container.Bind<Material>().WithId("LibretroScreenMaterial").FromResource("Materials/_libretroScreen");
-            _ = Container.Bind<Material>().WithId("UDDScreenMaterial").FromResource("Materials/_uddScreen");
+            _ = Container.Bind<Material>().FromResource("Materials/_libretroScreen").WhenInjectedInto<InternalGameController>();
+            _ = Container.Bind<Material>().FromResource("Materials/_uddScreen").WhenInjectedInto<ExternalGameController>();
             _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<InternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<GameControllers>().AsSingle().NonLazy();
+
+            _ = Container.Bind<TypeEvent>().FromScriptableObject(_uiStateTransitionEvent).AsSingle();
+            _ = Container.Bind<StringVariable>().WithId("arcade_name").FromScriptableObject(_arcadeNameVariable).AsSingle();
 
             _ = Container.Bind<ArcadeContext>().AsSingle().NonLazy();
         }

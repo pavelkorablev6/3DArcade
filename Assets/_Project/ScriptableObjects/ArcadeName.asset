@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 747c3b3f9f83cb444bd84c9457f7a037, type: 3}
-  m_Name: VirtualFileSystem
+  m_Script: {fileID: 11500000, guid: 4ea8dacdc03b92744a281d701c2fa3df, type: 3}
+  m_Name: ArcadeName
   m_EditorClassIdentifier: 
+  _initialValue: 

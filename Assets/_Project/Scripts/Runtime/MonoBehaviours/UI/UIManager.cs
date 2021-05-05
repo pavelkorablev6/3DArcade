@@ -21,36 +21,29 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIManager : MonoBehaviour
+    public sealed class UIManager: MonoBehaviour
     {
-        [SerializeField] private UICanvasController _normalUI;
-        [SerializeField] private UICanvasController _virtualRealityUI;
-
-        public UICanvasController NormalUI => _normalUI;
-        public UICanvasController VirtualRealityUI => _virtualRealityUI;
+        private const string UICONTEXT_TRANSITIONTO_METHOD_NAME = nameof(UIContext.TransitionTo);
 
         private UIContext _uiContext;
 
-        private void Awake() => _uiContext = new UIContext(this);
+        [Inject]
+        public void Construct(UIContext uiContext) => _uiContext = uiContext;
 
-        private void Start() => TransitionTo<UIDisabledState>();
-
-        public void TransitionTo<T>() where T : UIState => _uiContext.TransitionTo<T>();
-
-        public void InitStatusBar(string message)
+        public void TransitionTo(System.Type type)
         {
-            _normalUI.InitStatusBar(message);
-            _virtualRealityUI.InitStatusBar(message);
-        }
+            if (type.BaseType != typeof(UIState))
+                return;
 
-        public void UpdateStatusBar(float percentComplete)
-        {
-            _normalUI.UpdateStatusBar(percentComplete);
-            _virtualRealityUI.UpdateStatusBar(percentComplete);
+            System.Type uiContextType                  = typeof(UIContext);
+            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(UICONTEXT_TRANSITIONTO_METHOD_NAME);
+            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
+            _ = genericMethod.Invoke(_uiContext, new object[] { });
         }
     }
 }

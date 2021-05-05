@@ -21,11 +21,10 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Configuration/General", fileName = "GeneralConfiguration")]
+    [CreateAssetMenu(menuName = "Arcade/Variable/GeneralConfiguration", fileName = "GeneralConfiguration")]
     public sealed class GeneralConfigurationVariable : Variable<GeneralConfiguration>
     {
         [SerializeField] private VirtualFileSystem _virtualFileSystem;

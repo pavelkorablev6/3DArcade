@@ -26,8 +26,6 @@ namespace Arcade
 {
     public abstract class ArcadeSceneLoaderBase
     {
-        public virtual float LoadPercentCompleted { get; }
-
         public abstract UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload);
     }
 }

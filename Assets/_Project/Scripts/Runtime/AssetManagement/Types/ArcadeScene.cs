@@ -26,8 +26,6 @@ namespace Arcade
 {
     public sealed class ArcadeScene
     {
-        public float LoadingPercentCompleted => _sceneLoader.LoadPercentCompleted;
-
         private readonly ArcadeSceneLoaderBase _sceneLoader;
 
         public ArcadeScene(ArcadeSceneLoaderBase sceneLoader) => _sceneLoader = sceneLoader;

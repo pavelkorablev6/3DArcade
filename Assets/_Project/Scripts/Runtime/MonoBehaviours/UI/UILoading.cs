@@ -20,29 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
+using Zenject;
 
 namespace Arcade
 {
-    public abstract class ArcadeEventListener<TType, TArcadeEvent> : EventListener<TType>
-        where TArcadeEvent : EventBase<TType>
+    [DisallowMultipleComponent]
+    public sealed class UILoading : MonoBehaviour
     {
-        [SerializeField] private TArcadeEvent _event;
-        [SerializeField] private UnityEvent<TType> _response;
+        [SerializeField] private TMP_Text _statusText;
 
-        private void OnEnable()
-        {
-            if (_event != null)
-                _event.RegisterListener(this);
-        }
+        private StringVariable _arcadeNameVariable;
 
-        private void OnDisable()
-        {
-            if (_event != null)
-                _event.UnregisterListener(this);
-        }
+        [Inject]
+        public void Construct([Inject(Id = "arcade_name")] StringVariable arcadeNameVariable) => _arcadeNameVariable = arcadeNameVariable;
 
-        public override void OnEventRaised(TType item) => _response.Invoke(item);
+        private void OnEnable() => InitStatusBar();
+
+        private void OnDisable() => ResetStatusBar();
+
+        private void InitStatusBar() => _statusText.SetText(_arcadeNameVariable.Value);
+
+        private void ResetStatusBar() => _statusText.Clear();
     }
 }

@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using SK.Utilities.StateMachine;
+using Zenject;
 
 namespace Arcade
 {
@@ -29,10 +30,11 @@ namespace Arcade
         public readonly UICanvasController NormalUI;
         public readonly UICanvasController VirtualRealityUI;
 
-        public UIContext(UIManager uiManager)
+        public UIContext([Inject(Id = "normal")] UICanvasController normalUI,
+                         [Inject(Id = "vr")]     UICanvasController virtualRealityUI)
         {
-            NormalUI         = uiManager.NormalUI;
-            VirtualRealityUI = uiManager.VirtualRealityUI;
+            NormalUI         = normalUI;
+            VirtualRealityUI = virtualRealityUI;
         }
     }
 }

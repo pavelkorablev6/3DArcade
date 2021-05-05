@@ -21,28 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Arcade
 {
-    public abstract class ArcadeEventListener<TType, TArcadeEvent> : EventListener<TType>
-        where TArcadeEvent : EventBase<TType>
+    [CreateAssetMenu(menuName = "Arcade/Event/Type", fileName = "NewTypeEvent")]
+    public sealed class TypeEvent : EventBase<System.Type>
     {
-        [SerializeField] private TArcadeEvent _event;
-        [SerializeField] private UnityEvent<TType> _response;
-
-        private void OnEnable()
-        {
-            if (_event != null)
-                _event.RegisterListener(this);
-        }
-
-        private void OnDisable()
-        {
-            if (_event != null)
-                _event.UnregisterListener(this);
-        }
-
-        public override void OnEventRaised(TType item) => _response.Invoke(item);
     }
 }

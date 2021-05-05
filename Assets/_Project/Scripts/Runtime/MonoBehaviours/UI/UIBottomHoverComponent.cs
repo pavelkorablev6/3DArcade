@@ -20,29 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Arcade
 {
-    public abstract class ArcadeEventListener<TType, TArcadeEvent> : EventListener<TType>
-        where TArcadeEvent : EventBase<TType>
+    [DisallowMultipleComponent]
+    public sealed class UIBottomHoverComponent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private TArcadeEvent _event;
-        [SerializeField] private UnityEvent<TType> _response;
+        [SerializeField] private RawImage _image;
 
-        private void OnEnable()
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_event != null)
-                _event.RegisterListener(this);
+            _ = _image.DOColor(Color.white, 0.3f);
+            _ = transform.DOScaleY(2f, 0.3f);
         }
 
-        private void OnDisable()
+        public void OnPointerExit(PointerEventData eventData)
         {
-            if (_event != null)
-                _event.UnregisterListener(this);
+            _ = _image.DOColor(Color.clear, 0.2f);
+            _ = transform.DOScaleY(1f, 0.3f);
         }
-
-        public override void OnEventRaised(TType item) => _response.Invoke(item);
     }
 }

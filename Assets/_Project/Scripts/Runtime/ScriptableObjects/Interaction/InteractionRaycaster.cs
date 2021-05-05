@@ -68,6 +68,8 @@ namespace Arcade
             _targetChangedEvent.Raise(description);
         }
 
+        public void ResetCurrentTarget() => _interactionData.Reset();
+
         protected abstract Ray GetRay();
     }
 }

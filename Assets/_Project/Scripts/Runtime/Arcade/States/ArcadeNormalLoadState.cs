@@ -38,25 +38,20 @@ namespace Arcade
 
             CursorUtils.HideMouseCursor();
 
-            _context.UIManager.TransitionTo<UINormalSceneLoadingState>();
-            _context.UIManager.InitStatusBar($"Loading arcade: {_context.ArcadeConfiguration}...");
+            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneLoadingState));
         }
 
         public override void OnExit()
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            _context.UIManager.TransitionTo<UIDisabledState>();
+            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)
         {
             if (!_context.ArcadeController.Loaded)
-            {
-                float percentComplete = _context.Scenes.Arcade.LoadingPercentCompleted;
-                _context.UIManager.UpdateStatusBar(percentComplete);
                 return;
-            }
 
             switch (_context.ArcadeConfiguration.ArcadeType)
             {

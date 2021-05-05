@@ -25,6 +25,7 @@ using SK.Utilities.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using Zenject;
 
 namespace Arcade
 {
@@ -38,8 +39,10 @@ namespace Arcade
         public readonly AssetAddressesProviders AssetAddressesProviders;
         public readonly NodeControllers NodeControllers;
         public readonly InteractionControllers InteractionControllers;
-        public readonly UIManager UIManager;
         public readonly GameControllers GameControllers;
+
+        public readonly TypeEvent UIStateTransitionEvent;
+        public readonly StringVariable ArcadeNameVariable;
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
@@ -51,10 +54,11 @@ namespace Arcade
                              Databases databases,
                              Scenes scenes,
                              AssetAddressesProviders assetAddressesProviders,
-                             NodeControllers nodeControllers               = null,
-                             InteractionControllers interactionControllers = null,
-                             UIManager uiManager                           = null,
-                             GameControllers gameControllers               = null)
+                             NodeControllers nodeControllers                                = null,
+                             InteractionControllers interactionControllers                  = null,
+                             GameControllers gameControllers                                = null,
+                             TypeEvent uiStateTransitionEvent                               = null,
+                             [Inject(Id = "arcade_name")] StringVariable arcadeNameVariable = null)
         {
             InputActions            = inputActions;
             Player                  = player;
@@ -64,8 +68,9 @@ namespace Arcade
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
             InteractionControllers  = interactionControllers;
-            UIManager               = uiManager;
             GameControllers         = gameControllers;
+            UIStateTransitionEvent  = uiStateTransitionEvent;
+            ArcadeNameVariable      = arcadeNameVariable;
         }
 
         protected override void OnStart()
@@ -135,6 +140,8 @@ namespace Arcade
             if (ArcadeController == null)
                 return;
 
+            ArcadeNameVariable.Value = arcadeConfiguration.ToString();
+
             if (Application.isPlaying)
             {
                 List<InputDevice> devices = new List<InputDevice>();
@@ -153,8 +160,15 @@ namespace Arcade
             AssetAddresses addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration);
 
             bool success = await Scenes.Arcade.Load(addressesToTry);
-            if (success)
-                await ArcadeController.Initialize();
+            if (!success)
+            {
+                ArcadeNameVariable.Value = string.Empty;
+                return;
+            }
+
+            await ArcadeController.Initialize();
+
+            ArcadeNameVariable.Value = string.Empty;
         }
 
         public bool SaveCurrentArcade(bool modelsOnly = false)
