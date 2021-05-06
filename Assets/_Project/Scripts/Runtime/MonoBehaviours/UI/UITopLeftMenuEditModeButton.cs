@@ -21,27 +21,33 @@
  * SOFTWARE. */
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UICornerHoverComponent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public sealed class UITopLeftMenuEditModeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        [SerializeField] private RawImage _image;
+        [SerializeField] private TMP_Text _text;
+        [SerializeField] private UINormalTopLeftMenuHover _uiNormalTopLeftMenuHover;
+        [SerializeField] private TypeEvent _arcadeStateTransitionEvent;
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public void OnPointerEnter(PointerEventData eventData) => ShowText();
+
+        public void OnPointerExit(PointerEventData eventData) => HideText();
+
+        public void OnPointerClick(PointerEventData eventData)
         {
-            _ = _image.DOColor(Color.white, 0.3f);
-            _ = transform.DOScale(new Vector3(2f, 2f, 1f), 0.3f);
+            HideText();
+            _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsEditModeState));
         }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _ = _image.DOColor(Color.clear, 0.2f);
-            _ = transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f);
-        }
+        public void TransitionTo(System.Type type) => _arcadeStateTransitionEvent.Raise(type);
+
+        private void ShowText() => _text.DOColor(Color.white, 0.3f);
+
+        private void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

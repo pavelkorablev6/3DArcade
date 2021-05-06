@@ -30,6 +30,8 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
+        private const string ARCADECONTEXT_TRANSITIONTO_METHOD_NAME = nameof(ArcadeContext.TransitionTo);
+
         private VirtualFileSystem _virtualFileSystem;
         private ArcadeContext _arcadeContext;
 
@@ -91,6 +93,17 @@ namespace Arcade
         private void Update() => _arcadeContext.Update(Time.deltaTime);
 #endif
         private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
+
+        public void ArcadeTransitionEventCallback(System.Type type)
+        {
+            if (type.BaseType != typeof(ArcadeState))
+                return;
+
+            System.Type arcadeContextType              = typeof(ArcadeContext);
+            System.Reflection.MethodInfo methodInfo    = arcadeContextType.GetMethod(ARCADECONTEXT_TRANSITIONTO_METHOD_NAME);
+            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
+            _ = genericMethod.Invoke(_arcadeContext, new object[] { });
+        }
 
         private void ValidateCurrentOS()
         {

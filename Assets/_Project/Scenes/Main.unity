@@ -2824,6 +2824,7 @@ GameObject:
   - component: {fileID: 1203112238}
   - component: {fileID: 1203112237}
   - component: {fileID: 1203112235}
+  - component: {fileID: 1203112239}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -2915,6 +2916,34 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames: []
   _parentContractNames: []
+--- !u!114 &1203112239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203112234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1fb83c7c96fea4ea4c070380b84282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 15b1a2b6d9b37d74ab7d4140aeda6d00, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1203112235}
+        m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
+        m_MethodName: ArcadeTransitionEventCallback
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1214545103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3621,7 +3650,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.6536842, y: 1}
+    m_SensorSize: {x: 0.8346457, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
