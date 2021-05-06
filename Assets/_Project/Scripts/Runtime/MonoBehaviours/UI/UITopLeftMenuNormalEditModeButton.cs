@@ -28,10 +28,10 @@ using UnityEngine.EventSystems;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UITopLeftMenuEditModeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public sealed class UITopLeftMenuNormalEditModeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField] private TMP_Text _text;
-        [SerializeField] private UINormalTopLeftMenuHover _uiNormalTopLeftMenuHover;
+        [SerializeField] private UITopLeftMenu _topLeftMenu;
         [SerializeField] private TypeEvent _arcadeStateTransitionEvent;
 
         public void OnPointerEnter(PointerEventData eventData) => ShowText();
@@ -41,6 +41,7 @@ namespace Arcade
         public void OnPointerClick(PointerEventData eventData)
         {
             HideText();
+            _topLeftMenu.Hide();
             _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsEditModeState));
         }
 

@@ -21,20 +21,32 @@
  * SOFTWARE. */
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UINormalTopLeftMenuHover : MonoBehaviour, IPointerExitHandler
+    public sealed class UITopLeftMenuEditModeCancelButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        private RectTransform _transform;
+        [SerializeField] private TMP_Text _text;
+        [SerializeField] private UITopLeftMenu _topLeftMenu;
+        [SerializeField] private TypeEvent _arcadeStateTransitionEvent;
 
-        private void Awake() => _transform = transform as RectTransform;
+        public void OnPointerEnter(PointerEventData eventData) => ShowText();
 
-        public void OnPointerExit(PointerEventData eventData) => Hide();
+        public void OnPointerExit(PointerEventData eventData) => HideText();
 
-        public void Hide() => _transform.DOAnchorPosX(-40f, 0.3f).OnComplete(() => gameObject.SetActive(false));
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            HideText();
+            _topLeftMenu.Hide();
+            _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsState));
+        }
+
+        private void ShowText() => _text.DOColor(Color.white, 0.3f);
+
+        private void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

@@ -21,16 +21,30 @@
  * SOFTWARE. */
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UINormalTopLeftCornerHover : MonoBehaviour, IPointerEnterHandler
+    public sealed class UITopLeftMenuNormalGeneralConfigurationButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        [SerializeField] private RectTransform _menu;
+        [SerializeField] private TMP_Text _text;
+        [SerializeField] private UITopLeftMenu _menu;
 
-        public void OnPointerEnter(PointerEventData eventData) => _menu.DOAnchorPosX(0f, 0.3f).OnStart(() => _menu.gameObject.SetActive(true));
+        public void OnPointerEnter(PointerEventData eventData) => ShowText();
+
+        public void OnPointerExit(PointerEventData eventData) => HideText();
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            HideText();
+            _menu.Hide();
+        }
+
+        private void ShowText() => _text.DOColor(Color.white, 0.3f);
+
+        private void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

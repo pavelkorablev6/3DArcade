@@ -55,18 +55,20 @@ namespace Arcade
 
             _enableVRToggle.isOn = _generalConfiguration.Value.EnableVR;
 
-            _ = _generalConfigurationPanel.DOAnchorPosX(0f, 0.3f).OnStart(() =>
-            {
-                gameObject.SetActive(true);
-                _generalConfigurationPanel.gameObject.SetActive(true);
-            });
+            _ = _generalConfigurationPanel.DOAnchorPosX(0f, 0.3f)
+                                          .OnStart(() =>
+                                          {
+                                              gameObject.SetActive(true);
+                                              _generalConfigurationPanel.gameObject.SetActive(true);
+                                          });
         }
 
-        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f).OnComplete(() =>
-        {
-            _generalConfigurationPanel.gameObject.SetActive(false);
-            gameObject.SetActive(false);
-        });
+        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f)
+                                                                            .OnComplete(() =>
+                                                                            {
+                                                                                _generalConfigurationPanel.gameObject.SetActive(false);
+                                                                                gameObject.SetActive(false);
+                                                                            });
 
         public void SaveGeneralConfiguration()
         {
@@ -83,16 +85,18 @@ namespace Arcade
             _generalConfiguration.Initialize();
         }
 
-        public void ShowToolbar() => _toolbarPanel.DOScaleY(1f, 0.3f).OnStart(() =>
-        {
-            gameObject.SetActive(true);
-            _toolbarPanel.gameObject.SetActive(true);
-        });
+        public void ShowToolbar() => _toolbarPanel.DOScaleY(1f, 0.3f)
+                                                  .OnStart(() =>
+                                                  {
+                                                      gameObject.SetActive(true);
+                                                      _toolbarPanel.gameObject.SetActive(true);
+                                                  });
 
-        public void HideToolbar() => _toolbarPanel.DOScaleY(0f, 0.3f).OnComplete(() =>
-        {
-            _toolbarPanel.gameObject.SetActive(false);
-            gameObject.SetActive(false);
-        });
+        public void HideToolbar() => _toolbarPanel.DOScaleY(0f, 0.3f)
+                                                  .OnComplete(() =>
+                                                  {
+                                                      _toolbarPanel.gameObject.SetActive(false);
+                                                      gameObject.SetActive(false);
+                                                  });
     }
 }

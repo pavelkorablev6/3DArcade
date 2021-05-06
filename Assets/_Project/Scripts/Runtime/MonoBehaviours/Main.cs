@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
 using SK.Utilities.Unity;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Zenject;
 
@@ -35,7 +35,7 @@ namespace Arcade
         private VirtualFileSystem _virtualFileSystem;
         private ArcadeContext _arcadeContext;
 
-        [Inject, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "DI")]
+        [Inject]
         private void Construct(VirtualFileSystem virtualFileSystem, ArcadeContext arcadeContext)
         {
             _virtualFileSystem = virtualFileSystem;
@@ -49,6 +49,8 @@ namespace Arcade
             Time.timeScale              = 1f;
 
             ValidateCurrentOS();
+
+            DOTween.SetTweensCapacity(1250, 50);
 
             string dataPath = SystemUtils.GetDataPath();
             _ = _virtualFileSystem.MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")

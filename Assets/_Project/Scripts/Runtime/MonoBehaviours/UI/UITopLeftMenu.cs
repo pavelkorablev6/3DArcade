@@ -28,23 +28,16 @@ using UnityEngine.EventSystems;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UITopLeftMenuGeneralConfigurationButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public sealed class UITopLeftMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private TMP_Text _text;
-        [SerializeField] private UINormalTopLeftMenuHover _uiNormalTopLeftMenuHover;
+        [SerializeField] private RectTransform _panel;
 
-        public void OnPointerEnter(PointerEventData eventData) => ShowText();
+        public void OnPointerEnter(PointerEventData eventData) => Show();
 
-        public void OnPointerExit(PointerEventData eventData) => HideText();
+        public void OnPointerExit(PointerEventData eventData) => Hide();
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            HideText();
-            _uiNormalTopLeftMenuHover.Hide();
-        }
+        public void Show() => _panel.DOAnchorPosX(50f, 0.4f);
 
-        private void ShowText() => _text.DOColor(Color.white, 0.3f);
-
-        private void HideText() => _text.DOColor(Color.clear, 0.3f);
+        public void Hide() => _panel.DOAnchorPosX(0f, 0.4f);
     }
 }
