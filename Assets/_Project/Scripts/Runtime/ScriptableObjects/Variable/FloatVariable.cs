@@ -20,28 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIBottomHoverComponent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    [CreateAssetMenu(menuName = "Arcade/Variable/Float", fileName = "NewFloatVariable")]
+    public sealed class FloatVariable : VariableBase<float>
     {
-        [SerializeField] private RawImage _image;
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            _ = _image.DOColor(Color.white, 0.3f);
-            _ = transform.DOScaleY(2f, 0.3f);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _ = _image.DOColor(Color.clear, 0.2f);
-            _ = transform.DOScaleY(1f, 0.3f);
-        }
     }
 }

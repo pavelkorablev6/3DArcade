@@ -389,7 +389,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 3769687911538680811}
   m_Follow: {fileID: 3769687911538680811}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 32
     OrthographicSize: 10
     NearClipPlane: 0.01
     FarClipPlane: 300
@@ -397,7 +397,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 1.7753165, y: 1}
+    m_SensorSize: {x: 2.3730254, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

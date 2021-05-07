@@ -20,32 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIEditModeTopLeftMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    [CreateAssetMenu(menuName = "Arcade/Variable/String", fileName = "NewStringVariable")]
+    public sealed class StringVariable : VariableBase<string>
     {
-        [SerializeField] private TMP_Text _text;
-        [SerializeField] private UITopLeftMenu _topLeftMenu;
-        [SerializeField] private TypeEvent _arcadeStateTransitionEvent;
-
-        public void OnPointerEnter(PointerEventData eventData) => ShowText();
-
-        public void OnPointerExit(PointerEventData eventData) => HideText();
-
-        public void DoArcadeTransition()
-        {
-            if (_arcadeStateTransitionEvent != null)
-                _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsState));
-        }
-
-        public void ShowText() => _text.DOColor(Color.white, 0.3f);
-
-        public void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

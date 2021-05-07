@@ -24,8 +24,12 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/Float", fileName = "NewFloatVariable")]
-    public sealed class FloatVariable : Variable<float>
+    public abstract class VariableBase<T> : ScriptableObject
     {
+        [SerializeField] protected T _initialValue;
+
+        [System.NonSerialized] public T Value;
+
+        private void OnEnable() => Value = _initialValue;
     }
 }

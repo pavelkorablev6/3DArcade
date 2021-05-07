@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,15 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UINormalTopLeftMenuEditModeButton : UINormalTopLeftMenuButton
+    public sealed class ArcadeVirtualRealityFpsNormalState : ArcadeState
     {
-        [SerializeField] private TypeEvent _arcadeStateTransitionEvent;
+        public ArcadeVirtualRealityFpsNormalState(ArcadeContext context)
+        : base(context)
+        {
+        }
 
-        public void DoArcadeStateTransition() => _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsEditModeState));
+        public override void OnEnter()
+        {
+            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+
+            _context.UIStateTransitionEvent.Raise(typeof(UIVirtualRealitySceneNormalState));
+        }
+
+        public override void OnExit()
+        {
+            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
+
+            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
+        }
+
+        public override void OnUpdate(float dt)
+        {
+            if (_context.InputActions.Global.Quit.triggered)
+                ApplicationUtils.ExitApp();
+
+            _context.VideoPlayerController.UpdateVideosState();
+        }
     }
 }

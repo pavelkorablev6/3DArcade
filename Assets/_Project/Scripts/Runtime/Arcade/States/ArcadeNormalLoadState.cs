@@ -56,7 +56,7 @@ namespace Arcade
             switch (_context.ArcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
-                    _context.TransitionTo<ArcadeNormalFpsState>();
+                    _context.TransitionTo<ArcadeStandardFpsNormalState>();
                     break;
                 case ArcadeType.Cyl:
                     _context.TransitionTo<ArcadeNormalCylState>();

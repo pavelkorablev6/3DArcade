@@ -28,6 +28,6 @@ namespace Arcade
     public sealed class NormalModeInteractionRaycaster : InteractionRaycaster<NormalModeInteractionData>
     {
         protected override Ray GetRay()
-            => _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+            => Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
     }
 }

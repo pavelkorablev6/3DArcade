@@ -30,6 +30,7 @@ namespace Arcade
         [SerializeField, Layer] protected int _selectionLayer;
 
         public ModelConfigurationComponent CurrentTarget { get; protected set; }
+        public ModelConfigurationComponent LastTarget { get; protected set; }
 
         private int _savedLayer;
 
@@ -40,6 +41,7 @@ namespace Arcade
             ResetCurrentTargetLayer();
 
             CurrentTarget = null;
+            LastTarget    = null;
             _savedLayer   = 0;
         }
 
@@ -51,6 +53,8 @@ namespace Arcade
 
             _savedLayer = CurrentTarget.gameObject.layer;
             CurrentTarget.gameObject.SetLayersRecursively(_selectionLayer);
+
+            LastTarget = CurrentTarget;
         }
 
         protected void ResetCurrentTargetLayer()

@@ -25,11 +25,11 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalFpsEditModeState : ArcadeState
+    public sealed class ArcadeStandardFpsEditModeState : ArcadeState
     {
         private readonly ArcadeEditModeContext _editModeContext;
 
-        public ArcadeNormalFpsEditModeState(ArcadeContext context)
+        public ArcadeStandardFpsEditModeState(ArcadeContext context)
         : base(context)
             => _editModeContext = new ArcadeEditModeContext(context);
 

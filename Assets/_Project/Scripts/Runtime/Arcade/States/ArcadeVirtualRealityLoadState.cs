@@ -53,7 +53,7 @@ namespace Arcade
             switch (_context.ArcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
-                    _context.TransitionTo<ArcadeVirtualRealityFpsState>();
+                    _context.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
                     break;
                 case ArcadeType.Cyl:
                     _context.TransitionTo<ArcadeVirtualRealityCylState>();

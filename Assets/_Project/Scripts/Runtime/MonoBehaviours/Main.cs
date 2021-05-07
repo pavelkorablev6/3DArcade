@@ -97,15 +97,42 @@ namespace Arcade
         private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
 
         // TODO: Replace/Remove the public functions...
-        public void TransitionTo(System.Type type)
+        public void ToggleInteractionsInput(bool enable)
         {
-            if (type.BaseType != typeof(ArcadeState))
-                return;
+            if (enable)
+            {
+                _arcadeContext.InputActions.FpsArcade.Enable();
+                if (Cursor.lockState == CursorLockMode.None)
+                    _arcadeContext.InputActions.FpsArcade.Look.Disable();
 
-            System.Type arcadeContextType              = typeof(ArcadeContext);
-            System.Reflection.MethodInfo methodInfo    = arcadeContextType.GetMethod(ARCADECONTEXT_TRANSITIONTO_METHOD_NAME);
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_arcadeContext, new object[] { });
+                _arcadeContext.InputActions.FpsMoveCab.Enable();
+
+                _arcadeContext.InputActions.CylArcade.Enable();
+                if (Cursor.lockState == CursorLockMode.None)
+                    _arcadeContext.InputActions.CylArcade.Look.Disable();
+            }
+            else
+            {
+                _arcadeContext.InputActions.FpsArcade.Disable();
+                _arcadeContext.InputActions.FpsMoveCab.Disable();
+                _arcadeContext.InputActions.CylArcade.Disable();
+            }
+        }
+
+        public void TransitionToFpsNormalState()
+        {
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
+            else
+                _arcadeContext.TransitionTo<ArcadeStandardFpsNormalState>();
+        }
+
+        public void TransitionToFpsEditModeState()
+        {
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
+            else
+                _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
         }
 
         public void RestoreCurrentArcadeModels() => _arcadeContext?.ArcadeController?.RestoreModelPositions();

@@ -32,12 +32,10 @@ namespace Arcade
         [SerializeField] private T _interactionData;
         [SerializeField] private StringEvent _targetChangedEvent;
 
-        protected Camera _camera;
-
-        public Camera Camera => _camera;
+        public Camera Camera { get; protected set; }
         public float RaycastMaxDistance => _raycastMaxDistance;
 
-        public void Initialize(Camera camera) => _camera = camera;
+        public void Initialize(Camera camera) => Camera = camera;
 
         public void UpdateCurrentTarget()
         {

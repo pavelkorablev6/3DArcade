@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _raycastMask:
     serializedVersion: 2
-    m_Bits: 1920
+    m_Bits: 1952
   _raycastMaxDistance: 1.8
   _interactionData: {fileID: 11400000, guid: f97278a6c18b12246b497b83c9443deb, type: 2}
   _targetChangedEvent: {fileID: 11400000, guid: 719f76e52c12e6740a559c3dc234726b,

@@ -29,7 +29,7 @@ namespace Arcade
     {
         public void ManualMoveAndRotate()
         {
-            if (!Enabled || _interactionData.Rigidbody == null)
+            if (_interactionData.Rigidbody == null)
                 return;
 
             Transform transform = _interactionData.CurrentTarget.transform;
@@ -74,9 +74,6 @@ namespace Arcade
 
         public void AutoMoveAndRotate(Ray ray, Vector3 forward, float maxDistance, LayerMask layerMask)
         {
-            if (!Enabled)
-                return;
-
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
                 return;
 

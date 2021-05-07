@@ -24,12 +24,8 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class Variable<T> : ScriptableObject
+    [CreateAssetMenu(menuName = "Arcade/Event/Bool", fileName = "NewBoolEvent")]
+    public sealed class BoolEvent : EventBase<bool>
     {
-        [SerializeField] protected T _initialValue;
-
-        [System.NonSerialized] public T Value;
-
-        private void OnEnable() => Value = _initialValue;
     }
 }

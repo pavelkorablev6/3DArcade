@@ -20,25 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/GeneralConfiguration", fileName = "GeneralConfiguration")]
-    public sealed class GeneralConfigurationVariable : Variable<GeneralConfiguration>
+    public sealed class BoolEventListener : ArcadeEventListener<bool, BoolEvent>
     {
-        [SerializeField] private VirtualFileSystem _virtualFileSystem;
-
-        public void Initialize()
-        {
-            Value = _initialValue;
-            Value.Initialize(_virtualFileSystem);
-        }
-
-        public void SetMouseLookReverse(bool value) => Value.MouseLookReverse = value;
-
-        public void SetEnableVR(bool value) => Value.EnableVR = value;
-
-        public void Save() => Value.Save();
     }
 }

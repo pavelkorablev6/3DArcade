@@ -20,12 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
 using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/String", fileName = "NewStringVariable")]
-    public sealed class StringVariable : Variable<string>
+    [DisallowMultipleComponent]
+    public sealed class UIEditModeActionBar: MonoBehaviour
     {
+        private RectTransform _transform;
+
+        private void Awake() => _transform = transform as RectTransform;
+
+        private void OnEnable() => Show();
+
+        private void OnDisable() => Hide();
+
+        private void OnDestroy() => DOTween.KillAll();
+
+        public void Show() => _transform.DOAnchorPosY(0f, 0.4f);
+
+        public void Hide() => _transform.DOAnchorPosY(-50f, 0.4f);
     }
 }

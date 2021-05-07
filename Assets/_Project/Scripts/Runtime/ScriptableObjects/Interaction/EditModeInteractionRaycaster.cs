@@ -35,10 +35,10 @@ namespace Arcade
         protected override Ray GetRay()
         {
             if (Cursor.lockState == CursorLockMode.Locked || Mouse.current == null)
-                return _camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+                return Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
 
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            return _camera.ScreenPointToRay(mousePosition);
+            return Camera.ScreenPointToRay(mousePosition);
         }
     }
 }

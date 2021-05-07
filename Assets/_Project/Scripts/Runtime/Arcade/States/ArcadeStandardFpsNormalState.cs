@@ -25,9 +25,9 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalFpsState : ArcadeState
+    public sealed class ArcadeStandardFpsNormalState : ArcadeState
     {
-        public ArcadeNormalFpsState(ArcadeContext context)
+        public ArcadeStandardFpsNormalState(ArcadeContext context)
         : base(context)
         {
         }
@@ -74,7 +74,7 @@ namespace Arcade
                 _context.InteractionControllers.NormalModeController.HandleInteraction();
 
             if (_context.InputActions.FpsArcade.ToggleMoveCab.triggered)
-                _context.TransitionTo<ArcadeNormalFpsEditModeState>();
+                _context.TransitionTo<ArcadeStandardFpsEditModeState>();
         }
     }
 }

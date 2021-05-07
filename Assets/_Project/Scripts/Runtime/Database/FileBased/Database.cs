@@ -136,7 +136,6 @@ namespace Arcade
 
         public void DeleteAll()
         {
-
             DeleteAllFromDisk();
             _entries.Clear();
         }

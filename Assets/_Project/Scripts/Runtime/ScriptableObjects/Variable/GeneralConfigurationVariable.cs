@@ -1,4 +1,4 @@
-/* MIT License
+﻿/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,38 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityFpsState : ArcadeState
+    [CreateAssetMenu(menuName = "Arcade/Variable/GeneralConfiguration", fileName = "GeneralConfiguration")]
+    public sealed class GeneralConfigurationVariable : VariableBase<GeneralConfiguration>
     {
-        public ArcadeVirtualRealityFpsState(ArcadeContext context)
-        : base(context)
+        [SerializeField] private VirtualFileSystem _virtualFileSystem;
+
+        public void Initialize()
         {
+            Value = _initialValue;
+            Value.Initialize(_virtualFileSystem);
         }
 
-        public override void OnEnter()
-        {
-            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+        public void SetMouseLookReverse(bool value) => Value.MouseLookReverse = value;
 
-            _context.UIStateTransitionEvent.Raise(typeof(UIVirtualRealitySceneNormalState));
-        }
+        public void SetEnableVR(bool value) => Value.EnableVR = value;
 
-        public override void OnExit()
-        {
-            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            _context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
-        }
-
-        public override void OnUpdate(float dt)
-        {
-            if (_context.InputActions.Global.Quit.triggered)
-                ApplicationUtils.ExitApp();
-
-            _context.VideoPlayerController.UpdateVideosState();
-        }
+        public void Save() => Value.Save();
     }
 }
