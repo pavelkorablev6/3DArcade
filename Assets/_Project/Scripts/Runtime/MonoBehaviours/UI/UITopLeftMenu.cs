@@ -31,10 +31,22 @@ namespace Arcade
     public sealed class UITopLeftMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private RectTransform _panel;
+        [SerializeField] private NormalModeInteractionController _normalModeInteractionController;
+        [SerializeField] private EditModeInteractionController _editModeInteractionController;
 
-        public void OnPointerEnter(PointerEventData eventData) => Show();
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _normalModeInteractionController.Enabled = false;
+            _editModeInteractionController.Enabled   = false;
+            Show();
+        }
 
-        public void OnPointerExit(PointerEventData eventData) => Hide();
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            Hide();
+            _normalModeInteractionController.Enabled = true;
+            _editModeInteractionController.Enabled   = true;
+        }
 
         public void Show() => _panel.DOAnchorPosX(50f, 0.4f);
 

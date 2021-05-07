@@ -30,27 +30,33 @@ namespace Arcade
         [SerializeField, Layer] protected int _selectionLayer;
 
         public ModelConfigurationComponent CurrentTarget { get; protected set; }
-        public int SavedLayer { get; protected set; }
 
-        public void Set(ModelConfigurationComponent target)
-        {
-            CurrentTarget = target;
-            if (CurrentTarget != null)
-            {
-                SavedLayer = CurrentTarget.gameObject.layer;
-                CurrentTarget.gameObject.SetLayersRecursively(_selectionLayer);
-            }
-        }
+        private int _savedLayer;
 
         public virtual void Set(RaycastHit raycastHit) => Set(raycastHit.transform.GetComponent<ModelConfigurationComponent>());
 
         public virtual void Reset()
         {
-            if (CurrentTarget != null)
-                CurrentTarget.gameObject.SetLayersRecursively(SavedLayer);
+            ResetCurrentTargetLayer();
 
             CurrentTarget = null;
-            SavedLayer    = 0;
+            _savedLayer   = 0;
+        }
+
+        protected void Set(ModelConfigurationComponent target)
+        {
+            CurrentTarget = target;
+            if (CurrentTarget == null)
+                return;
+
+            _savedLayer = CurrentTarget.gameObject.layer;
+            CurrentTarget.gameObject.SetLayersRecursively(_selectionLayer);
+        }
+
+        protected void ResetCurrentTargetLayer()
+        {
+            if (CurrentTarget != null)
+                CurrentTarget.gameObject.SetLayersRecursively(_savedLayer);
         }
     }
 }

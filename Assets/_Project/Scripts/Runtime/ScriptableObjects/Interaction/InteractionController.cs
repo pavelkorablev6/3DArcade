@@ -29,6 +29,8 @@ namespace Arcade
     {
         [SerializeField] protected T _interactionData;
 
+        public bool Enabled { get; set; } = true;
+
         public T InteractionData => _interactionData;
     }
 }

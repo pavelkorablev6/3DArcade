@@ -96,7 +96,8 @@ namespace Arcade
 #endif
         private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
 
-        public void ArcadeTransitionEventCallback(System.Type type)
+        // TODO: Replace/Remove the public functions...
+        public void TransitionTo(System.Type type)
         {
             if (type.BaseType != typeof(ArcadeState))
                 return;
@@ -106,6 +107,10 @@ namespace Arcade
             System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
             _ = genericMethod.Invoke(_arcadeContext, new object[] { });
         }
+
+        public void RestoreCurrentArcadeModels() => _arcadeContext?.ArcadeController?.RestoreModelPositions();
+
+        public void SaveCurrentArcadeModels() => _arcadeContext?.SaveCurrentArcade(true);
 
         private void ValidateCurrentOS()
         {

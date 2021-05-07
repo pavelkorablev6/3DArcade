@@ -28,7 +28,7 @@ using UnityEngine.EventSystems;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UITopLeftMenuNormalGeneralConfigurationButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class UINormalTopLeftMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private UITopLeftMenu _menu;
@@ -37,14 +37,8 @@ namespace Arcade
 
         public void OnPointerExit(PointerEventData eventData) => HideText();
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            HideText();
-            _menu.Hide();
-        }
+        public void ShowText() => _text.DOColor(Color.white, 0.3f);
 
-        private void ShowText() => _text.DOColor(Color.white, 0.3f);
-
-        private void HideText() => _text.DOColor(Color.clear, 0.3f);
+        public void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

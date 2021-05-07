@@ -68,6 +68,8 @@ namespace Arcade
 
         public void InitGrabMode()
         {
+            ResetCurrentTargetLayer();
+
             _savedData = new SavedData
             {
                 ColliderIsTrigger      = Collider.isTrigger,
@@ -75,8 +77,6 @@ namespace Arcade
                 CollisionDetectionMode = Rigidbody.collisionDetectionMode,
                 RigidbodyIsKinematic   = Rigidbody.isKinematic
             };
-
-            //Reset();
 
             CurrentTarget.gameObject.layer   = 0;
             Collider.isTrigger               = true;

@@ -2934,7 +2934,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1203112235}
         m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
-        m_MethodName: ArcadeTransitionEventCallback
+        m_MethodName: TransitionTo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3650,7 +3650,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 1.0550964, y: 1}
+    m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -5609,6 +5609,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3136989771511902755, guid: dd77edeba74d31341bf3ca2f07db3d97,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1203112235}
     - target: {fileID: 4945186969597389410, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_Name
@@ -5669,6 +5674,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9186856350366049278, guid: dd77edeba74d31341bf3ca2f07db3d97,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1203112235}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd77edeba74d31341bf3ca2f07db3d97, type: 3}
 --- !u!1001 &5900815773777798739

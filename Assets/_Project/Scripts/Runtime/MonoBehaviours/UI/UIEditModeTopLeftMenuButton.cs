@@ -28,7 +28,7 @@ using UnityEngine.EventSystems;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UITopLeftMenuEditModeCancelButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public sealed class UIEditModeTopLeftMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private UITopLeftMenu _topLeftMenu;
@@ -38,15 +38,14 @@ namespace Arcade
 
         public void OnPointerExit(PointerEventData eventData) => HideText();
 
-        public void OnPointerClick(PointerEventData eventData)
+        public void DoArcadeTransition()
         {
-            HideText();
-            _topLeftMenu.Hide();
-            _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsState));
+            if (_arcadeStateTransitionEvent != null)
+                _arcadeStateTransitionEvent.Raise(typeof(ArcadeNormalFpsState));
         }
 
-        private void ShowText() => _text.DOColor(Color.white, 0.3f);
+        public void ShowText() => _text.DOColor(Color.white, 0.3f);
 
-        private void HideText() => _text.DOColor(Color.clear, 0.3f);
+        public void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

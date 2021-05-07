@@ -39,8 +39,6 @@ namespace Arcade
         [SerializeField] private Toggle _mouseLookReverseToggle;
         [SerializeField] private Toggle _enableVRToggle;
 
-        [SerializeField] private RectTransform _toolbarPanel;
-
         public void ShowGeneralConfiguration()
         {
             _generalConfiguration.Initialize();
@@ -63,13 +61,6 @@ namespace Arcade
                                           });
         }
 
-        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f)
-                                                                            .OnComplete(() =>
-                                                                            {
-                                                                                _generalConfigurationPanel.gameObject.SetActive(false);
-                                                                                gameObject.SetActive(false);
-                                                                            });
-
         public void SaveGeneralConfiguration()
         {
             _generalConfiguration.Value.StartingArcade = _startingArcadeDropdown.options[_startingArcadeDropdown.value].text;
@@ -85,18 +76,11 @@ namespace Arcade
             _generalConfiguration.Initialize();
         }
 
-        public void ShowToolbar() => _toolbarPanel.DOScaleY(1f, 0.3f)
-                                                  .OnStart(() =>
-                                                  {
-                                                      gameObject.SetActive(true);
-                                                      _toolbarPanel.gameObject.SetActive(true);
-                                                  });
-
-        public void HideToolbar() => _toolbarPanel.DOScaleY(0f, 0.3f)
-                                                  .OnComplete(() =>
-                                                  {
-                                                      _toolbarPanel.gameObject.SetActive(false);
-                                                      gameObject.SetActive(false);
-                                                  });
+        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f)
+                                                                            .OnComplete(() =>
+                                                                            {
+                                                                                _generalConfigurationPanel.gameObject.SetActive(false);
+                                                                                gameObject.SetActive(false);
+                                                                            });
     }
 }

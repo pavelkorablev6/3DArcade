@@ -1439,7 +1439,7 @@ GameObject:
   - component: {fileID: 4351318238336688878}
   - component: {fileID: 6199992523223479993}
   - component: {fileID: 9186856350366049278}
-  - component: {fileID: 2326821366092475389}
+  - component: {fileID: 171620475}
   m_Layer: 5
   m_Name: Standard_Edit_SaveButton
   m_TagString: Untagged
@@ -1548,8 +1548,56 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6199992523223479993}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &2326821366092475389
+      m_Calls:
+      - m_Target: {fileID: 171620475}
+        m_TargetAssemblyTypeName: Arcade.UIEditModeTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: HideText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4714866384344251377}
+        m_TargetAssemblyTypeName: Arcade.UITopLeftMenu, Arcade.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
+        m_MethodName: SaveCurrentArcadeModels
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 171620475}
+        m_TargetAssemblyTypeName: Arcade.UIEditModeTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: DoArcadeTransition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &171620475
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1558,7 +1606,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1088410647562432279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7798c904f76958c468a6b2e402034f1c, type: 3}
+  m_Script: {fileID: 11500000, guid: a9a37cf4619ea9843a5cd15b9887dbcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 4339946390123390794}
@@ -3421,7 +3469,55 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 642795396518966959}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 181731656573431579}
+        m_TargetAssemblyTypeName: Arcade.UIEditModeTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: HideText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4714866384344251377}
+        m_TargetAssemblyTypeName: Arcade.UITopLeftMenu, Arcade.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
+        m_MethodName: RestoreCurrentArcadeModels
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 181731656573431579}
+        m_TargetAssemblyTypeName: Arcade.UIEditModeTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: DoArcadeTransition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &181731656573431579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5212,9 +5308,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 350008240574622735}
-  - component: {fileID: 4714866384344251377}
   - component: {fileID: 8263242573406512971}
   - component: {fileID: 1185733670389370993}
+  - component: {fileID: 4714866384344251377}
   m_Layer: 5
   m_Name: Standard_Edit_Menu
   m_TagString: Untagged
@@ -5242,19 +5338,6 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &4714866384344251377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3860266514759074426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99492fe5b086cc34e9f9fb2b4b4af8fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _panel: {fileID: 1998912162610960845}
 --- !u!222 &8263242573406512971
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5290,6 +5373,23 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &4714866384344251377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3860266514759074426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99492fe5b086cc34e9f9fb2b4b4af8fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 1998912162610960845}
+  _normalModeInteractionController: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
+    type: 2}
+  _editModeInteractionController: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+    type: 2}
 --- !u!1 &3893622868433147686
 GameObject:
   m_ObjectHideFlags: 0
@@ -8007,6 +8107,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 4566444406216186630}
+        m_TargetAssemblyTypeName: Arcade.UINormalTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: HideText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8011582031609512241}
+        m_TargetAssemblyTypeName: Arcade.UITopLeftMenu, Arcade.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 66752216}
         m_TargetAssemblyTypeName: Arcade.UIConfiguration, Arcade.Runtime
         m_MethodName: ShowGeneralConfiguration
@@ -8017,7 +8141,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &4566444406216186630
 MonoBehaviour:
@@ -10117,7 +10241,6 @@ MonoBehaviour:
   _startingArcadeTypeDropdown: {fileID: 1022200946058365446}
   _mouseLookReverseToggle: {fileID: 4386536033928655717}
   _enableVRToggle: {fileID: 8725425379288443960}
-  _toolbarPanel: {fileID: 0}
 --- !u!1 &7077907941819267821
 GameObject:
   m_ObjectHideFlags: 0
@@ -11838,7 +11961,7 @@ GameObject:
   - component: {fileID: 8921847827366523704}
   - component: {fileID: 8539878415590854880}
   - component: {fileID: 5176334284866039594}
-  - component: {fileID: 4288563581599111387}
+  - component: {fileID: 791135114}
   m_Layer: 5
   m_Name: Standard_Normal_EditModeButton
   m_TagString: Untagged
@@ -11947,8 +12070,44 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8539878415590854880}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4288563581599111387
+      m_Calls:
+      - m_Target: {fileID: 791135114}
+        m_TargetAssemblyTypeName: Arcade.UINormalTopLeftMenuButton, Arcade.Runtime
+        m_MethodName: HideText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8011582031609512241}
+        m_TargetAssemblyTypeName: Arcade.UITopLeftMenu, Arcade.Runtime
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 791135114}
+        m_TargetAssemblyTypeName: Arcade.UINormalTopLeftMenuEditModeButton, Arcade.Runtime
+        m_MethodName: DoArcadeStateTransition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &791135114
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11957,11 +12116,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8248061531028022571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e71a96fb32430524bad18a28cedc2264, type: 3}
+  m_Script: {fileID: 11500000, guid: d67ed912157b89f4ca0f5683f74423c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 1329631971513057858}
-  _topLeftMenu: {fileID: 8011582031609512241}
+  _menu: {fileID: 8011582031609512241}
   _arcadeStateTransitionEvent: {fileID: 11400000, guid: 15b1a2b6d9b37d74ab7d4140aeda6d00,
     type: 2}
 --- !u!1 &8302097240293207030
@@ -12686,9 +12845,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9013564954492089399}
-  - component: {fileID: 8011582031609512241}
   - component: {fileID: 8573604869568046878}
   - component: {fileID: 905952715396136540}
+  - component: {fileID: 8011582031609512241}
   m_Layer: 5
   m_Name: Standard_Normal_Menu
   m_TagString: Untagged
@@ -12716,19 +12875,6 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &8011582031609512241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8839851359724290033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99492fe5b086cc34e9f9fb2b4b4af8fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _panel: {fileID: 2194214338864519268}
 --- !u!222 &8573604869568046878
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12764,6 +12910,23 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &8011582031609512241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8839851359724290033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99492fe5b086cc34e9f9fb2b4b4af8fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 2194214338864519268}
+  _normalModeInteractionController: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
+    type: 2}
+  _editModeInteractionController: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+    type: 2}
 --- !u!1 &8912766789111501379
 GameObject:
   m_ObjectHideFlags: 0
