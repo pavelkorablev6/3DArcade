@@ -56,7 +56,7 @@ namespace Arcade
                     _context.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
                     break;
                 case ArcadeType.Cyl:
-                    _context.TransitionTo<ArcadeVirtualRealityCylState>();
+                    _context.TransitionTo<ArcadeVirtualRealityCylNormalState>();
                     break;
                 default:
                     break;

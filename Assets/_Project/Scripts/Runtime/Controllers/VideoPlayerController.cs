@@ -26,7 +26,7 @@ using UnityEngine.Video;
 
 namespace Arcade
 {
-    public abstract class VideoPlayerControllerBase
+    public abstract class VideoPlayerController
     {
         protected const int NUM_CABS_WITH_VIDEOS_PLAYING = 3;
 
@@ -34,7 +34,7 @@ namespace Arcade
 
         protected readonly Player _player;
 
-        protected VideoPlayerControllerBase(Player player) => _player = player;
+        protected VideoPlayerController(Player player) => _player = player;
 
         public void UpdateVideosState()
         {

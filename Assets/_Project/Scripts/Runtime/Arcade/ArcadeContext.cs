@@ -46,7 +46,7 @@ namespace Arcade
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
-        public VideoPlayerControllerBase VideoPlayerController { get; private set; }
+        public VideoPlayerController VideoPlayerController { get; private set; }
 
         public ArcadeContext(InputActions inputActions,
                              Player player,
@@ -140,10 +140,11 @@ namespace Arcade
             if (ArcadeController == null)
                 return;
 
-            ArcadeNameVariable.Value = arcadeConfiguration.ToString();
 
             if (Application.isPlaying)
             {
+                ArcadeNameVariable.Value = arcadeConfiguration.ToString();
+
                 List<InputDevice> devices = new List<InputDevice>();
                 InputDevices.GetDevices(devices);
                 if (devices.Count == 0)
@@ -152,7 +153,7 @@ namespace Arcade
                 if (GeneralConfiguration.Value.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();
                 else
-                    TransitionTo<ArcadeNormalLoadState>();
+                    TransitionTo<ArcadeStandardLoadState>();
             }
 
             Scenes.Entities.Initialize(arcadeConfiguration);
@@ -162,13 +163,15 @@ namespace Arcade
             bool success = await Scenes.Arcade.Load(addressesToTry);
             if (!success)
             {
-                ArcadeNameVariable.Value = string.Empty;
+                if (Application.isPlaying)
+                    ArcadeNameVariable.Value = string.Empty;
                 return;
             }
 
             await ArcadeController.Initialize();
 
-            ArcadeNameVariable.Value = string.Empty;
+            if (Application.isPlaying)
+                ArcadeNameVariable.Value = string.Empty;
         }
 
         public bool SaveCurrentArcade(bool modelsOnly = false)

@@ -25,12 +25,12 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeVirtualRealityCylState : ArcadeState
+    public sealed class ArcadeVirtualRealityCylNormalState : ArcadeState
     {
         //private float _timer        = 0f;
         //private float _acceleration = 1f;
 
-        public ArcadeVirtualRealityCylState(ArcadeContext context)
+        public ArcadeVirtualRealityCylNormalState(ArcadeContext context)
         : base(context)
         {
         }

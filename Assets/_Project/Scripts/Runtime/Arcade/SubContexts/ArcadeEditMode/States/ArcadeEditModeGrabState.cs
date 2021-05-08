@@ -37,6 +37,8 @@ namespace Arcade
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
             _context.InteractionController.InteractionData.InitGrabMode();
+
+            _context.UITransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnExit()

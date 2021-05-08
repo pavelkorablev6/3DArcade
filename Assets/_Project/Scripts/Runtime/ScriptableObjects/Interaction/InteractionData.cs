@@ -41,7 +41,6 @@ namespace Arcade
             ResetCurrentTargetLayer();
 
             CurrentTarget = null;
-            LastTarget    = null;
             _savedLayer   = 0;
         }
 

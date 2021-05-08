@@ -30,6 +30,7 @@ namespace Arcade
         public readonly InputActions InputActions;
         public readonly EditModeInteractionRaycaster InteractionRaycaster;
         public readonly EditModeInteractionController InteractionController;
+        public readonly TypeEvent UITransitionEvent;
 
         public ArcadeEditModeContext(ArcadeContext arcadeContext)
         {
@@ -37,6 +38,7 @@ namespace Arcade
             InputActions          = arcadeContext.InputActions;
             InteractionRaycaster  = arcadeContext.InteractionControllers.EditModeRaycaster;
             InteractionController = arcadeContext.InteractionControllers.EditModeController;
+            UITransitionEvent     = arcadeContext.UIStateTransitionEvent;
         }
     }
 }

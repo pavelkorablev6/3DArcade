@@ -20,17 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UINormalSceneNormalState : UIState
+    [DisallowMultipleComponent]
+    public sealed class UIStandardNormalMenu : MonoBehaviour
     {
-        public UINormalSceneNormalState(UIContext context)
-        : base(context)
-        {
-        }
+        [SerializeField] private RectTransform _panel;
+        [SerializeField] private Vector2 _animationEndPosition;
+        [SerializeField] private float _animationDuration;
 
-        public override void OnEnter() => _context.NormalUI.EnableSceneNormalUI();
+        private Vector2 _animationStartPosition;
 
-        public override void OnExit() => _context.NormalUI.DisableSceneNormalUI();
+        private void Awake() => _animationStartPosition = _panel.anchoredPosition;
+
+        public void Show() => _panel.DOAnchorPos(_animationEndPosition,_animationDuration);
+
+        public void Hide() => _panel.DOAnchorPos(_animationStartPosition, _animationDuration);
     }
 }

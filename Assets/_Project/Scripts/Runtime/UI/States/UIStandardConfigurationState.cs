@@ -20,26 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
-using UnityEngine;
-
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIEditModeActionBar: MonoBehaviour
+    public sealed class UIStandardConfigurationState : UIState
     {
-        private RectTransform _transform;
+        public UIStandardConfigurationState(UIContext context)
+        : base(context)
+        {
+        }
 
-        private void Awake() => _transform = transform as RectTransform;
+        public override void OnEnter() => _context.NormalUI.EnableConfigurationUI();
 
-        private void OnEnable() => Show();
-
-        private void OnDisable() => Hide();
-
-        private void OnDestroy() => DOTween.KillAll();
-
-        public void Show() => _transform.DOAnchorPosY(0f, 0.4f);
-
-        public void Hide() => _transform.DOAnchorPosY(-50f, 0.4f);
+        public override void OnExit() => _context.NormalUI.DisableConfigurationUI();
     }
 }

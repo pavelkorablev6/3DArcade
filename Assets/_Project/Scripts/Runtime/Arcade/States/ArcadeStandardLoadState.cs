@@ -25,9 +25,9 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalLoadState : ArcadeState
+    public sealed class ArcadeStandardLoadState : ArcadeState
     {
-        public ArcadeNormalLoadState(ArcadeContext context)
+        public ArcadeStandardLoadState(ArcadeContext context)
         : base(context)
         {
         }
@@ -38,7 +38,7 @@ namespace Arcade
 
             CursorUtils.HideMouseCursor();
 
-            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneLoadingState));
+            _context.UIStateTransitionEvent.Raise(typeof(UIStandardLoadingState));
         }
 
         public override void OnExit()
@@ -59,7 +59,7 @@ namespace Arcade
                     _context.TransitionTo<ArcadeStandardFpsNormalState>();
                     break;
                 case ArcadeType.Cyl:
-                    _context.TransitionTo<ArcadeNormalCylState>();
+                    _context.TransitionTo<ArcadeStandardCylNormalState>();
                     break;
                 default:
                     break;

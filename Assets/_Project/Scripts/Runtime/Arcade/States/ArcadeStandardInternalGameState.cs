@@ -20,25 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
-using TMPro;
-using UnityEngine;
-using UnityEngine.EventSystems;
+using Cinemachine;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public class UINormalTopLeftMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public sealed class ArcadeStandardInternalGameState : ArcadeInternalGameState
     {
-        [SerializeField] private TMP_Text _text;
-        [SerializeField] private UITopLeftMenu _menu;
+        private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
 
-        public void OnPointerEnter(PointerEventData eventData) => ShowText();
+        public ArcadeStandardInternalGameState(ArcadeContext context)
+        : base(context)
+        {
+        }
 
-        public void OnPointerExit(PointerEventData eventData) => HideText();
+        protected override void OnStateEnter()
+        {
+            _cinemachineVirtualCamera = _context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 20;
+        }
 
-        public void ShowText() => _text.DOColor(Color.white, 0.3f);
-
-        public void HideText() => _text.DOColor(Color.clear, 0.3f);
+        protected override void OnStateExit()
+        {
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 0;
+        }
     }
 }

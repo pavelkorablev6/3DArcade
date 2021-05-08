@@ -25,12 +25,12 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class ArcadeNormalCylState : ArcadeState
+    public sealed class ArcadeStandardCylNormalState : ArcadeState
     {
         //private float _timer        = 0f;
         //private float _acceleration = 1f;
 
-        public ArcadeNormalCylState(ArcadeContext context)
+        public ArcadeStandardCylNormalState(ArcadeContext context)
         : base(context)
         {
         }
@@ -39,7 +39,7 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
-            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneNormalState));
+            _context.UIStateTransitionEvent.Raise(typeof(UIStandardNormalState));
 
             _context.InputActions.CylArcade.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)

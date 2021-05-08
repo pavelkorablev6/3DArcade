@@ -26,12 +26,18 @@ using UnityEngine;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UITopLeftMenu : MonoBehaviour
+    public sealed class UIStandardEditModeActionBar: MonoBehaviour
     {
-        [SerializeField] private RectTransform _panel;
+        private RectTransform _transform;
 
-        public void Show() => _panel.DOAnchorPosX(50f, 0.4f);
+        private void Awake() => _transform = transform as RectTransform;
 
-        public void Hide() => _panel.DOAnchorPosX(0f, 0.4f);
+        private void OnEnable() => Show();
+
+        private void OnDisable() => Hide();
+
+        public void Show() => _transform.DOAnchorPosY(0f, 0.4f);
+
+        public void Hide() => _transform.DOAnchorPosY(-50f, 0.4f);
     }
 }

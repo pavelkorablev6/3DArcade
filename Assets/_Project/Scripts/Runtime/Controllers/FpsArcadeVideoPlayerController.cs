@@ -26,7 +26,7 @@ using UnityEngine.Video;
 
 namespace Arcade
 {
-    public sealed class FpsArcadeVideoPlayerController : VideoPlayerControllerBase
+    public sealed class FpsArcadeVideoPlayerController : VideoPlayerController
     {
         private const float OVERLAPSPHERE_RADIUS   = 1.8f;
         private const int NUM_COLLIDERS_TO_PROCESS = 10;

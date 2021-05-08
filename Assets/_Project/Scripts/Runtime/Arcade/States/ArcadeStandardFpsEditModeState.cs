@@ -52,7 +52,7 @@ namespace Arcade
 
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
-            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneEditModeState));
+            _context.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnExit()

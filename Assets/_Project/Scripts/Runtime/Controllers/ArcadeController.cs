@@ -81,6 +81,12 @@ namespace Arcade
             RestoreModelPositions(_propModels);
         }
 
+        public async UniTask<GameObject> SpawnGame(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation)
+        {
+            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
+            return await SpawnModel(modelConfiguration, position, rotation, _arcadeContext.Scenes.Entities.GamesNodeTransform, EntitiesScene.GamesLayer, addressesToTry);
+        }
+
         protected abstract void SetupPlayer();
 
         private async UniTask SpawnGames()
@@ -164,20 +170,20 @@ namespace Arcade
         private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, bool applyArtworks)
         {
             Vector3 position;
-            Quaternion orientation;
+            Quaternion rotation;
 
             if (spawnAtPositionWithRotation)
             {
-                position    = modelConfiguration.Position;
-                orientation = Quaternion.Euler(modelConfiguration.Rotation);
+                position = modelConfiguration.Position;
+                rotation = Quaternion.Euler(modelConfiguration.Rotation);
             }
             else
             {
-                position    = Vector3.zero;
-                orientation = Quaternion.identity;
+                position = Vector3.zero;
+                rotation = Quaternion.identity;
             }
 
-            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, orientation, parent);
+            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
             if (go == null)
                 return null;
 
@@ -185,8 +191,8 @@ namespace Arcade
             go.transform.localScale = modelConfiguration.Scale;
             go.layer                = layer;
 
-            ModelConfigurationComponent modelConfigurationComponent = go.AddComponent<ModelConfigurationComponent>();
-            modelConfigurationComponent.SetModelConfiguration(modelConfiguration);
+            go.AddComponent<ModelConfigurationComponent>()
+              .SetModelConfiguration(modelConfiguration);
 
             if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
@@ -199,6 +205,31 @@ namespace Arcade
 
             if (applyArtworks)
                 await ApplyArtworks(go, modelConfiguration);
+
+            return go;
+        }
+
+        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation, Transform parent, int layer, AssetAddresses addressesToTry)
+        {
+            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
+            if (go == null)
+                return null;
+
+            go.name                 = modelConfiguration.Id;
+            go.transform.localScale = modelConfiguration.Scale;
+            go.layer                = layer;
+
+            go.AddComponent<ModelConfigurationComponent>()
+              .SetModelConfiguration(modelConfiguration);
+
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                _ = go.AddComponent<XRSimpleInteractable>();
+            else
+            {
+                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
+                if (vCam != null)
+                    vCam.Priority = 0;
+            }
 
             return go;
         }
@@ -253,6 +284,9 @@ namespace Arcade
         {
             foreach (ModelConfigurationComponent model in models)
             {
+                if (model == null)
+                    continue;
+
                 ModelConfiguration cfg = model.Configuration;
                 cfg.Position           = cfg.BeforeEditModePosition;
                 cfg.Rotation           = cfg.BeforeEditModeRotation;

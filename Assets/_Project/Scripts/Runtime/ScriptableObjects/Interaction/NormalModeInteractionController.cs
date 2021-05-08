@@ -83,7 +83,7 @@ namespace Arcade
                     if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityInternalGameState>();
                     else
-                        _arcadeContext.TransitionTo<ArcadeNormalInternalGameState>();
+                        _arcadeContext.TransitionTo<ArcadeStandardInternalGameState>();
                 }
                 break;
                 case InteractionType.GameExternal:
@@ -91,7 +91,7 @@ namespace Arcade
                     if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityExternalGameState>();
                     else
-                        _arcadeContext.TransitionTo<ArcadeNormalExternalGameState>();
+                        _arcadeContext.TransitionTo<ArcadeStandardExternalGameState>();
                 }
                 break;
                 case InteractionType.FpsArcadeConfiguration:

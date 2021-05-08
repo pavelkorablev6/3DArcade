@@ -20,17 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
 namespace Arcade
 {
-    public sealed class UINormalSceneEditModeState : UIState
+    [DisallowMultipleComponent]
+    public class UIStandardNormalMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public UINormalSceneEditModeState(UIContext context)
-        : base(context)
-        {
-        }
+        [SerializeField] private TMP_Text _text;
+        [SerializeField] private UIStandardNormalMenu _menu;
 
-        public override void OnEnter() => _context.NormalUI.EnableSceneEditModeUI();
+        public void OnPointerEnter(PointerEventData eventData) => ShowText();
 
-        public override void OnExit() => _context.NormalUI.DisableSceneEditModeUI();
+        public void OnPointerExit(PointerEventData eventData) => HideText();
+
+        public void ShowText() => _text.DOColor(Color.white, 0.3f);
+
+        public void HideText() => _text.DOColor(Color.clear, 0.3f);
     }
 }

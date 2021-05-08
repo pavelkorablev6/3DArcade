@@ -40,7 +40,7 @@ namespace Arcade
             if (Cursor.lockState != CursorLockMode.Locked)
                 _context.InputActions.FpsArcade.Look.Disable();
 
-            _context.UIStateTransitionEvent.Raise(typeof(UINormalSceneNormalState));
+            _context.UIStateTransitionEvent.Raise(typeof(UIStandardNormalState));
         }
 
         public override void OnExit()

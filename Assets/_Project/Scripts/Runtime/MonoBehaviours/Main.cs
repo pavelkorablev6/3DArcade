@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using SK.Utilities.Unity;
 using UnityEngine;
@@ -96,6 +97,8 @@ namespace Arcade
 #endif
         private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
 
+        private void OnDestroy() => DOTween.KillAll();
+
         // TODO: Replace/Remove the public functions...
         public void ToggleInteractionsInput(bool enable)
         {
@@ -113,9 +116,13 @@ namespace Arcade
             }
             else
             {
-                _arcadeContext.InputActions.FpsArcade.Disable();
-                _arcadeContext.InputActions.FpsMoveCab.Disable();
-                _arcadeContext.InputActions.CylArcade.Disable();
+                _arcadeContext.InputActions.FpsArcade.Interact.Disable();
+                _arcadeContext.InputActions.FpsArcade.Look.Disable();
+
+                _arcadeContext.InputActions.FpsMoveCab.Grab.Disable();
+
+                _arcadeContext.InputActions.CylArcade.Interact.Disable();
+                _arcadeContext.InputActions.CylArcade.Look.Disable();
             }
         }
 
@@ -135,9 +142,35 @@ namespace Arcade
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
         }
 
-        public void RestoreCurrentArcadeModels() => _arcadeContext?.ArcadeController?.RestoreModelPositions();
+        public void AddGameModel()
+        {
+            if (_arcadeContext.ArcadeController == null)
+                return;
 
-        public void SaveCurrentArcadeModels() => _arcadeContext?.SaveCurrentArcade(true);
+            Transform playerTransform = _arcadeContext.Player.ActiveTransform;
+
+            Vector3 playerPosition  = playerTransform.position;
+            Vector3 playerDirection = playerTransform.forward;
+            float spawnDistance     = 2f;
+
+            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "id" };
+
+            Vector3 spawnPosition    = playerPosition + playerDirection * spawnDistance;
+            Quaternion spawnRotation = Quaternion.LookRotation(-playerDirection);
+
+            _arcadeContext.ArcadeController.SpawnGame(modelConfiguration, spawnPosition, spawnRotation).Forget();
+        }
+
+        public void RemoveModel()
+        {
+            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.LastTarget;
+            if (target != null)
+                ObjectUtils.DestroyObject(target.gameObject);
+        }
+
+        public void RestoreCurrentArcadeModels() => _arcadeContext.ArcadeController?.RestoreModelPositions();
+
+        public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);
 
         private void ValidateCurrentOS()
         {

@@ -39,6 +39,8 @@ namespace Arcade
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
             _context.InteractionRaycaster.ResetCurrentTarget();
+
+            _context.UITransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");

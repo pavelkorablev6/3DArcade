@@ -20,30 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
-
 namespace Arcade
 {
-    public sealed class ArcadeNormalInternalGameState : ArcadeInternalGameState
+    public sealed class UIStandardLoadingState : UIState
     {
-        private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
-
-        public ArcadeNormalInternalGameState(ArcadeContext context)
+        public UIStandardLoadingState(UIContext context)
         : base(context)
         {
         }
 
-        protected override void OnStateEnter()
-        {
-            _cinemachineVirtualCamera = _context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 20;
-        }
+        public override void OnEnter() => _context.NormalUI.EnableSceneLoadingUI();
 
-        protected override void OnStateExit()
-        {
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 0;
-        }
+        public override void OnExit() => _context.NormalUI.DisableSceneLoadingUI();
     }
 }
