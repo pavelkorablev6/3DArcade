@@ -23,6 +23,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using SK.Utilities.Unity;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -100,6 +101,28 @@ namespace Arcade
         private void OnDestroy() => DOTween.KillAll();
 
         // TODO: Replace/Remove the public functions...
+        public void ToggleInput(bool enable)
+        {
+            if (enable)
+            {
+                _arcadeContext.InputActions.FpsArcade.Enable();
+                if (Cursor.lockState == CursorLockMode.None)
+                    _arcadeContext.InputActions.FpsArcade.Look.Disable();
+
+                _arcadeContext.InputActions.FpsMoveCab.Enable();
+
+                _arcadeContext.InputActions.CylArcade.Enable();
+                if (Cursor.lockState == CursorLockMode.None)
+                    _arcadeContext.InputActions.CylArcade.Look.Disable();
+            }
+            else
+            {
+                _arcadeContext.InputActions.FpsArcade.Disable();
+                _arcadeContext.InputActions.FpsMoveCab.Disable();
+                _arcadeContext.InputActions.CylArcade.Disable();
+            }
+        }
+
         public void ToggleInteractionsInput(bool enable)
         {
             if (enable)
@@ -142,7 +165,11 @@ namespace Arcade
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
         }
 
-        public void AddGameModel()
+        private readonly List<GameObject> _editModeAddedItems = new List<GameObject>();
+
+        public void AddGameModel() => AddGameModelAsync().Forget();
+
+        private async UniTaskVoid AddGameModelAsync()
         {
             if (_arcadeContext.ArcadeController == null)
                 return;
@@ -155,20 +182,32 @@ namespace Arcade
 
             ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "id" };
 
-            Vector3 spawnPosition    = playerPosition + playerDirection * spawnDistance;
+            Vector3 verticalOffset   = Vector3.up * 0.4f;
+            Vector3 spawnPosition    = playerPosition + verticalOffset + playerDirection * spawnDistance;
             Quaternion spawnRotation = Quaternion.LookRotation(-playerDirection);
 
-            _arcadeContext.ArcadeController.SpawnGame(modelConfiguration, spawnPosition, spawnRotation).Forget();
+            GameObject spawnedModel = await _arcadeContext.ArcadeController.SpawnGame(modelConfiguration, spawnPosition, spawnRotation);
+            _editModeAddedItems.Add(spawnedModel);
         }
 
         public void RemoveModel()
         {
             ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.LastTarget;
-            if (target != null)
-                ObjectUtils.DestroyObject(target.gameObject);
+            if (target == null)
+                return;
+
+            _ = _editModeAddedItems.Remove(target.gameObject);
+            ObjectUtils.DestroyObject(target.gameObject);
         }
 
-        public void RestoreCurrentArcadeModels() => _arcadeContext.ArcadeController?.RestoreModelPositions();
+        public void RestoreCurrentArcadeModels()
+        {
+            foreach (GameObject item in _editModeAddedItems)
+                ObjectUtils.DestroyObject(item);
+            _editModeAddedItems.Clear();
+
+            _arcadeContext.ArcadeController?.RestoreModelPositions();
+        }
 
         public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);
 
