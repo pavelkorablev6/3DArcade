@@ -24,7 +24,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/States/NullState", fileName = "EditModeNullState")]
     public sealed class ArcadeEditModeNullState : ArcadeEditModeState
     {
         public override void OnEnter() => Context.InteractionController.InteractionData.Reset();

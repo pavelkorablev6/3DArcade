@@ -25,7 +25,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/FpsNormalState", fileName = "StandardFpsNormalState")]
     public sealed class ArcadeStandardFpsNormalState : ArcadeState
     {
         public override void OnEnter()

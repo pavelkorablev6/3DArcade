@@ -24,10 +24,9 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Player/VirtualRealityCylState", fileName = "PlayerVirtualRealityCylState")]
-    public sealed class PlayerVirtualRealityCylState : PlayerState
+    public sealed class PlayerVirtualRealityFpsState : PlayerState
     {
-        public override void OnEnter() => Player.EnableVirtualRealityCylControls();
+        public override void OnEnter() => Player.EnableVirtualRealityFpsControls();
 
         public override void OnExit() => Player.DisableVirtualRealityControls();
     }

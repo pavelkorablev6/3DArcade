@@ -24,7 +24,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/States/AimState", fileName = "EditModeAimState")]
     public sealed class ArcadeEditModeAimState : ArcadeEditModeState
     {
         private static readonly float _movementSpeedMultiplier = 0.8f;

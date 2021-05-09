@@ -25,7 +25,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Data/NormalMode", fileName = "NormalModeInteractionData")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionData", fileName = "NormalModeInteractionData")]
     public sealed class NormalModeInteractionData : InteractionData
     {
         public void HoverEnteredEventCallback(HoverEnterEventArgs args) => Set(args.interactable.GetComponent<ModelConfigurationComponent>());

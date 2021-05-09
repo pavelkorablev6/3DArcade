@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Controller/EditMode", fileName = "EditModeInteractionController")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionController", fileName = "EditModeInteractionController")]
     public sealed class EditModeInteractionController : InteractionController<EditModeInteractionData>
     {
         public void ManualMoveAndRotate()

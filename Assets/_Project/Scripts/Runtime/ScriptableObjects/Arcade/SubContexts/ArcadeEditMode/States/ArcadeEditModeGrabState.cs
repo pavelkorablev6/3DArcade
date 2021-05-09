@@ -25,7 +25,6 @@ using UnityEngine.InputSystem;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/States/GrabState", fileName = "EditModeGrabState")]
     public sealed class ArcadeEditModeGrabState : ArcadeEditModeState
     {
         public override void OnEnter()

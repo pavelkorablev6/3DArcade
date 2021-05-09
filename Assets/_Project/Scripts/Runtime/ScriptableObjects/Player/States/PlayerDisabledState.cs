@@ -24,27 +24,8 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIManager: MonoBehaviour
+    public sealed class PlayerDisabledState : PlayerState
     {
-        [SerializeField] private UICanvasController _standardUI;
-        [SerializeField] private UICanvasController _virtualRealityUI;
-
-        private const string UICONTEXT_TRANSITIONTO_METHOD_NAME = nameof(UIContext.TransitionTo);
-
-        private UIContext _uiContext;
-
-        private void Awake() => _uiContext = new UIContext(_standardUI, _virtualRealityUI);
-
-        public void TransitionTo(System.Type type)
-        {
-            if (type.BaseType != typeof(UIState))
-                return;
-
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(UICONTEXT_TRANSITIONTO_METHOD_NAME);
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
-        }
+        public override void OnEnter() => Player.Disable();
     }
 }

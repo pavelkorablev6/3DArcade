@@ -24,7 +24,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/States/AddState", fileName = "EditModeAddState")]
     public sealed class ArcadeEditModeAddState : ArcadeEditModeState
     {
         public override void OnEnter() => Debug.Log($">> <color=green>Entered</color> {GetType().Name}");

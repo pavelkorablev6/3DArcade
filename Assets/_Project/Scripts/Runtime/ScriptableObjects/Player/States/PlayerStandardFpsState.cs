@@ -20,16 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity.StateMachine;
 using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Player/PlayerContext", fileName = "PlayerContext")]
-    public sealed class PlayerContext : Context<PlayerState>
+    public sealed class PlayerStandardFpsState : PlayerState
     {
-        public Player Player { get; private set; }
+        public override void OnEnter() => Player.EnableNormalFpsControls();
 
-        public void Initialize(Player player) => Player = player;
+        public override void OnExit() => Player.DisableNormalControls();
     }
 }

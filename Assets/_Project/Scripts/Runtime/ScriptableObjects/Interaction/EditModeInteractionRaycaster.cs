@@ -25,7 +25,7 @@ using UnityEngine.InputSystem;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Raycaster/EditMode", fileName = "EditModeInteractionRaycaster")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionRaycaster", fileName = "EditModeInteractionRaycaster")]
     public sealed class EditModeInteractionRaycaster : InteractionRaycaster<EditModeInteractionData>
     {
         [SerializeField] private LayerMask _worldRaycastLayerMask;

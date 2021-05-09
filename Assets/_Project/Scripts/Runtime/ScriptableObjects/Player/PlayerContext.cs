@@ -20,15 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity.StateMachine;
 using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Player/StandardCylState", fileName = "PlayerStandardCylState")]
-    public sealed class PlayerStandardCylState : PlayerState
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/PlayerContext", fileName = "PlayerContext")]
+    public sealed class PlayerContext : Context<PlayerState>
     {
-        public override void OnEnter() => Player.EnableNormalCylControls();
+        public Player Player { get; private set; }
 
-        public override void OnExit() => Player.DisableNormalControls();
+        public void Initialize(Player player) => Player = player;
     }
 }

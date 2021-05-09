@@ -24,11 +24,10 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Player/StandardFpsState", fileName = "PlayerStandardFpsState")]
-    public sealed class PlayerStandardFpsState : PlayerState
+    public sealed class PlayerVirtualRealityCylState : PlayerState
     {
-        public override void OnEnter() => Player.EnableNormalFpsControls();
+        public override void OnEnter() => Player.EnableVirtualRealityCylControls();
 
-        public override void OnExit() => Player.DisableNormalControls();
+        public override void OnExit() => Player.DisableVirtualRealityControls();
     }
 }

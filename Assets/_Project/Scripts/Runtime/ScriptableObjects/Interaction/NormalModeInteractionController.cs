@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Controller/NormalMode", fileName = "NormalModeInteractionController")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionController", fileName = "NormalModeInteractionController")]
     public sealed class NormalModeInteractionController : InteractionController<NormalModeInteractionData>
     {
         private ArcadeContext _arcadeContext;

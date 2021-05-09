@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Raycaster/Normal", fileName = "NormalModeInteractionRaycaster")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionRaycaster", fileName = "NormalModeInteractionRaycaster")]
     public sealed class NormalModeInteractionRaycaster : InteractionRaycaster<NormalModeInteractionData>
     {
         protected override Ray GetRay()

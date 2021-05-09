@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/Data/EditMode", fileName = "EditModeInteractionData")]
+    [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionData", fileName = "EditModeInteractionData")]
     public sealed class EditModeInteractionData : InteractionData
     {
         private sealed class SavedData

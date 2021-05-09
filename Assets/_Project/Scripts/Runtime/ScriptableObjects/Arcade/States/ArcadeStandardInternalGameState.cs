@@ -25,7 +25,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/InternalGameState", fileName = "StandardInternalGameState")]
     public sealed class ArcadeStandardInternalGameState : ArcadeInternalGameState
     {
         private CinemachineNewVirtualCamera CinemachineVirtualCamera { get; set; }

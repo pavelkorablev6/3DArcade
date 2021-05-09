@@ -25,7 +25,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/LoadState", fileName = "StandardLoadState")]
     public sealed class ArcadeStandardLoadState : ArcadeState
     {
         public override void OnEnter()

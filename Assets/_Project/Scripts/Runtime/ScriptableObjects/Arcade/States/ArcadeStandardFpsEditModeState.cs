@@ -25,7 +25,6 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/FpsEditModeState", fileName = "StandardFpsEditModeState")]
     public sealed class ArcadeStandardFpsEditModeState : ArcadeState
     {
         [SerializeField] private ArcadeEditModeContext _editModeContext;
