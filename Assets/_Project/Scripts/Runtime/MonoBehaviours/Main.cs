@@ -32,12 +32,15 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
-        [SerializeField] private VirtualFileSystem _virtualFileSystem;
-
+        private VirtualFileSystem _virtualFileSystem;
         private ArcadeContext _arcadeContext;
 
         [Inject]
-        public void Construct(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
+        public void Construct(VirtualFileSystem virtualFileSystem, ArcadeContext arcadeContext)
+        {
+            _virtualFileSystem = virtualFileSystem;
+            _arcadeContext     = arcadeContext;
+        }
 
         private void Start()
         {
