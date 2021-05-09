@@ -20,14 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.StateMachine;
+using SK.Utilities.Unity.StateMachine;
 
 namespace Arcade
 {
     public abstract class PlayerState : State<PlayerState>
     {
-        protected PlayerContext _context;
-
-        public PlayerState(PlayerContext context) => _context = context;
+        public new PlayerContext Context => base.Context as PlayerContext;
+        public Player Player => Context.Player;
     }
 }

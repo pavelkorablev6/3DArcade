@@ -26,6 +26,6 @@ namespace Arcade
 {
     public abstract class ArcadeState : State<ArcadeState>
     {
-        protected ArcadeContext Context => _context as ArcadeContext;
+        protected new ArcadeContext Context => base.Context as ArcadeContext;
     }
 }

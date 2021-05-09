@@ -66,7 +66,7 @@ namespace Arcade
             if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _arcadeContext.Player.TransitionTo<PlayerVirtualRealityCylState>();
             else
-                _arcadeContext.Player.TransitionTo<PlayerNormalCylState>();
+                _arcadeContext.Player.TransitionTo<PlayerStandardCylState>();
 
             //_main.PlayerCylControls.gameObject.SetActive(false);
             //_main.PlayerCylControls.gameObject.SetActive(true);

@@ -27,31 +27,31 @@ namespace Arcade
 {
     public sealed class ArcadeVirtualRealityExternalGameState : ArcadeExternalGameState
     {
-        [System.NonSerialized] private ScreenNodeTag _screenNode;
-        [System.NonSerialized] private Material _savedMaterial;
+        private ScreenNodeTag ScreenNode { get; set; }
+        private Material SavedMaterial { get; set; }
 
         protected override void OnEnterState()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            _screenNode = Context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<ScreenNodeTag>();
-            if (_screenNode == null)
+            ScreenNode = Context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<ScreenNodeTag>();
+            if (ScreenNode == null)
             {
                 Context.TransitionToPrevious();
                 return;
             }
 
-            if (_screenNode.TryGetComponent(out VideoPlayer videoPlayer))
+            if (ScreenNode.TryGetComponent(out VideoPlayer videoPlayer))
                 Context.VideoPlayerController.StopVideo(videoPlayer);
 
-            if (_screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+            if (ScreenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
                 dynamicArtworkComponent.enabled = false;
 
-            Renderer renderer = _screenNode.GetComponent<Renderer>();
-            _savedMaterial    = renderer.material;
+            Renderer renderer = ScreenNode.GetComponent<Renderer>();
+            SavedMaterial    = renderer.material;
             renderer.material = Context.GameControllers.External.ScreenMaterial;
 
-            uDesktopDuplication.Texture uddTexture = _screenNode.gameObject.AddComponent<uDesktopDuplication.Texture>();
+            uDesktopDuplication.Texture uddTexture = ScreenNode.gameObject.AddComponent<uDesktopDuplication.Texture>();
             uddTexture.invertY = true;
         }
 
@@ -59,16 +59,16 @@ namespace Arcade
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            if (_screenNode == null)
+            if (ScreenNode == null)
                 return;
 
-            if (_screenNode.TryGetComponent(out uDesktopDuplication.Texture uddTexture))
+            if (ScreenNode.TryGetComponent(out uDesktopDuplication.Texture uddTexture))
                 Object.Destroy(uddTexture);
 
-            Renderer renderer = _screenNode.GetComponent<Renderer>();
-            renderer.material = _savedMaterial;
+            Renderer renderer = ScreenNode.GetComponent<Renderer>();
+            renderer.material = SavedMaterial;
 
-            if (_screenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
+            if (ScreenNode.TryGetComponent(out DynamicArtworkComponent dynamicArtworkComponent))
                 dynamicArtworkComponent.enabled = true;
         }
     }

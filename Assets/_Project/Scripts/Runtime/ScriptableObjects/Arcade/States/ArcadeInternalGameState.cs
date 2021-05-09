@@ -27,10 +27,10 @@ namespace Arcade
 {
     public abstract class ArcadeInternalGameState : ArcadeState
     {
-        [System.NonSerialized] private ScreenNodeTag _screenNode;
-        [System.NonSerialized] private Renderer _screenRenderer;
-        [System.NonSerialized] private Material _savedMaterial;
-        [System.NonSerialized] private DynamicArtworkComponent _dynamicArtworkComponent;
+        private ScreenNodeTag ScreenNode { get; set; }
+        private Renderer ScreenRenderer { get; set; }
+        private Material SavedMaterial { get; set; }
+        private DynamicArtworkComponent DynamicArtworkComponent { get; set; }
 
         public sealed override void OnEnter()
         {
@@ -59,14 +59,15 @@ namespace Arcade
                 return;
             }
 
-            _screenNode = screenNodeTag;
+            ScreenNode = screenNodeTag;
 
-            if (_screenNode.TryGetComponent(out _dynamicArtworkComponent))
-                _dynamicArtworkComponent.enabled = false;
+            DynamicArtworkComponent = ScreenNode.GetComponent<DynamicArtworkComponent>();
+            if (DynamicArtworkComponent != null)
+                DynamicArtworkComponent.enabled = false;
 
-            _screenRenderer = _screenNode.GetComponent<Renderer>();
-            _savedMaterial  = _screenRenderer.material;
-            _screenRenderer.material = Context.GameControllers.Internal.ScreenMaterial;
+            ScreenRenderer = ScreenNode.GetComponent<Renderer>();
+            SavedMaterial  = ScreenRenderer.material;
+            ScreenRenderer.material = Context.GameControllers.Internal.ScreenMaterial;
 
             OnStateEnter();
         }
@@ -79,11 +80,11 @@ namespace Arcade
 
             Context.GameControllers.Internal.StopGame();
 
-            if (_screenRenderer != null)
-                _screenRenderer.material = _savedMaterial;
+            if (ScreenRenderer != null)
+                ScreenRenderer.material = SavedMaterial;
 
-            if (_dynamicArtworkComponent != null)
-                _dynamicArtworkComponent.enabled = true;
+            if (DynamicArtworkComponent != null)
+                DynamicArtworkComponent.enabled = true;
         }
 
         public sealed override void OnUpdate(float dt)

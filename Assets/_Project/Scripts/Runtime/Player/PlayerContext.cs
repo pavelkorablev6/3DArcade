@@ -20,14 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.StateMachine;
+using SK.Utilities.Unity.StateMachine;
+using UnityEngine;
 
 namespace Arcade
 {
+    [CreateAssetMenu(menuName = "Arcade/Player/PlayerContext", fileName = "PlayerContext")]
     public sealed class PlayerContext : Context<PlayerState>
     {
-        public readonly Player Player;
+        public Player Player { get; private set; }
 
-        public PlayerContext(Player player) => Player = player;
+        public void Initialize(Player player) => Player = player;
     }
 }

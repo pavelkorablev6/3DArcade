@@ -20,15 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
+    [CreateAssetMenu(menuName = "Arcade/Player/DisabledState", fileName = "PlayerDisabledState")]
     public sealed class PlayerDisabledState : PlayerState
     {
-        public PlayerDisabledState(PlayerContext context)
-        : base(context)
-        {
-        }
-
-        public override void OnEnter() => _context.Player.Disable();
+        public override void OnEnter() => Player.Disable();
     }
 }

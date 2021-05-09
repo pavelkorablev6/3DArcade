@@ -26,6 +26,6 @@ namespace Arcade
 {
     public abstract class ArcadeEditModeState : State<ArcadeEditModeState>
     {
-        protected ArcadeEditModeContext Context => _context as ArcadeEditModeContext;
+        protected new ArcadeEditModeContext Context => base.Context as ArcadeEditModeContext;
     }
 }

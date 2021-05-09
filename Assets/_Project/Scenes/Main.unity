@@ -2235,18 +2235,6 @@ Transform:
   m_Father: {fileID: 1224026739}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &636664969 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4945186971106309491, guid: dd77edeba74d31341bf3ca2f07db3d97,
-    type: 3}
-  m_PrefabInstance: {fileID: 4945186971106309492}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feee3893ea0b39440b0dfe8eebe11f7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &767570952
 GameObject:
   m_ObjectHideFlags: 0
@@ -3114,8 +3102,6 @@ MonoBehaviour:
   _arcadeNameVariable: {fileID: 11400000, guid: f3b8cae982225fe4eb0e92d789921aad,
     type: 2}
   _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}
-  _arcadeEditModeContext: {fileID: 11400000, guid: bf5fd43b8e302b34fa3c660996896efe,
-    type: 2}
 --- !u!114 &1203112238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5863,6 +5849,7 @@ MonoBehaviour:
   _mainCamera: {fileID: 1457968340}
   _normalControls: {fileID: 7064439643649170218}
   _virtualRealityControls: {fileID: 7984420611464707651}
+  _playerContext: {fileID: 11400000, guid: 6b51ece490350db4fb6b2adcecdf9c55, type: 2}
 --- !u!1001 &4945186971106309492
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5870,11 +5857,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 288510449992814113, guid: dd77edeba74d31341bf3ca2f07db3d97,
-        type: 3}
-      propertyPath: _standardUI
-      value: 
-      objectReference: {fileID: 636664969}
     - target: {fileID: 360228999184739938, guid: dd77edeba74d31341bf3ca2f07db3d97,
         type: 3}
       propertyPath: m_AnchorMax.y

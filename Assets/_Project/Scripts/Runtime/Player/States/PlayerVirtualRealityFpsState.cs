@@ -20,17 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
+    [CreateAssetMenu(menuName = "Arcade/Player/VirtualRealityFpsState", fileName = "PlayerVirtualRealityFpsState")]
     public sealed class PlayerVirtualRealityFpsState : PlayerState
     {
-        public PlayerVirtualRealityFpsState(PlayerContext context)
-        : base(context)
-        {
-        }
+        public override void OnEnter() => Player.EnableVirtualRealityFpsControls();
 
-        public override void OnEnter() => _context.Player.EnableVirtualRealityFpsControls();
-
-        public override void OnExit() => _context.Player.DisableVirtualRealityControls();
+        public override void OnExit() => Player.DisableVirtualRealityControls();
     }
 }

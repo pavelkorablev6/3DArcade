@@ -28,19 +28,19 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/InternalGameState", fileName = "StandardInternalGameState")]
     public sealed class ArcadeStandardInternalGameState : ArcadeInternalGameState
     {
-        [System.NonSerialized] private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
+        private CinemachineNewVirtualCamera CinemachineVirtualCamera { get; set; }
 
         protected override void OnStateEnter()
         {
-            _cinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 20;
+            CinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
+            if (CinemachineVirtualCamera != null)
+                CinemachineVirtualCamera.Priority = 20;
         }
 
         protected override void OnStateExit()
         {
-            if (_cinemachineVirtualCamera != null)
-                _cinemachineVirtualCamera.Priority = 0;
+            if (CinemachineVirtualCamera != null)
+                CinemachineVirtualCamera.Priority = 0;
         }
     }
 }

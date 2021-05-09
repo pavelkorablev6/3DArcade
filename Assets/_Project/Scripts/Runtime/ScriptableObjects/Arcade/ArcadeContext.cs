@@ -124,7 +124,7 @@ namespace Arcade
                 break;
                 case ArcadeType.Cyl:
                 {
-                    ArcadeController = ArcadeConfiguration.CylArcadeProperties.WheelVariant switch
+                    ArcadeController = arcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
@@ -141,7 +141,6 @@ namespace Arcade
 
             if (ArcadeController == null)
                 return;
-
 
             if (Application.isPlaying)
             {
@@ -236,24 +235,6 @@ namespace Arcade
             };
 
             return cfgComponent.Save(_sceneDatabase, fpsCameraSettings, cylCameraSettings, !cylCamera.gameObject.activeInHierarchy);
-        }
-
-        public EmulatorConfiguration GetEmulatorForCurrentModelConfiguration()
-        {
-            if (CurrentModelConfiguration == null)
-                return null;
-
-            if (!string.IsNullOrEmpty(CurrentModelConfiguration.Emulator))
-                return EmulatorDatabase.Get(CurrentModelConfiguration.Emulator);
-
-            if (!string.IsNullOrEmpty(CurrentModelConfiguration.Platform)
-             && PlatformDatabase.Get(CurrentModelConfiguration.Platform, out PlatformConfiguration platformConfiguration))
-            {
-                if (!string.IsNullOrEmpty(platformConfiguration.Emulator))
-                    return EmulatorDatabase.Get(platformConfiguration.Emulator);
-            }
-
-            return null;
         }
         */
     }

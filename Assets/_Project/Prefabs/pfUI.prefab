@@ -11016,7 +11016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bc51954e21cfd408e28de28bfc88b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _normalUI: {fileID: 4945186971106309491}
+  _standardUI: {fileID: 4945186971106309491}
   _virtualRealityUI: {fileID: 4945186971106309495}
 --- !u!114 &4945186971106309494
 MonoBehaviour:

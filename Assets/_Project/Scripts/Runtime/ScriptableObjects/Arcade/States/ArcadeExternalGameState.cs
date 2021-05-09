@@ -26,7 +26,7 @@ namespace Arcade
 {
     public abstract class ArcadeExternalGameState : ArcadeState
     {
-        [System.NonSerialized] private bool _gameRunning;
+        private bool GameRunning { get; set; }
 
         public sealed override void OnEnter()
         {
@@ -44,7 +44,7 @@ namespace Arcade
                 return;
             }
 
-            _gameRunning = true;
+            GameRunning = true;
         }
 
         public sealed override void OnExit()
@@ -61,7 +61,7 @@ namespace Arcade
 
         public sealed override void OnUpdate(float dt)
         {
-            if (!_gameRunning)
+            if (!GameRunning)
                 Context.TransitionToPrevious();
         }
 
@@ -74,6 +74,6 @@ namespace Arcade
         }
 
         private void OnAppExited(OSUtils.ProcessExitedData data, EmulatorConfiguration emulator, string game)
-            => _gameRunning = false;
+            => GameRunning = false;
     }
 }

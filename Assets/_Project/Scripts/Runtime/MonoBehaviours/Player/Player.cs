@@ -29,10 +29,9 @@ namespace Arcade
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private PlayerControls _normalControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
+        [SerializeField] private PlayerContext _playerContext;
 
         public Camera Camera => _mainCamera;
-
-        private PlayerContext _playerContext;
 
         private void Awake() => Initialize();
 
@@ -50,7 +49,7 @@ namespace Arcade
             }
         }
 
-        public void Initialize() => _playerContext = new PlayerContext(this);
+        public void Initialize() => _playerContext.Initialize(this);
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 
