@@ -10979,8 +10979,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4945186969597389420}
-  - component: {fileID: 4638202101279647004}
-  - component: {fileID: 6268000259052969989}
   - component: {fileID: 288510449992814113}
   - component: {fileID: 4945186971106309494}
   m_Layer: 5
@@ -11006,38 +11004,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4638202101279647004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945186969597389410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 6268000259052969989}
-  _installerPrefabs: []
-  _autoRun: 1
-  _kernel: {fileID: 0}
---- !u!114 &6268000259052969989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945186969597389410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 565681f14a124364eba4a289c1fcdc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalUI: {fileID: 4945186971106309491}
-  _virtualRealityUI: {fileID: 4945186971106309495}
 --- !u!114 &288510449992814113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11050,6 +11016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bc51954e21cfd408e28de28bfc88b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _normalUI: {fileID: 4945186971106309491}
+  _virtualRealityUI: {fileID: 4945186971106309495}
 --- !u!114 &4945186971106309494
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,17 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UIStandardLoadingState : UIState
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/States/AddState", fileName = "EditModeAddState")]
+    public sealed class ArcadeEditModeAddState : ArcadeEditModeState
     {
-        public UIStandardLoadingState(UIContext context)
-        : base(context)
-        {
-        }
+        public override void OnEnter() => Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-        public override void OnEnter() => _context.StandardUI.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.StandardUI.DisableSceneLoadingUI();
+        public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
     }
 }

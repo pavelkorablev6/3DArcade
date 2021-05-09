@@ -20,17 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity.StateMachine;
+
 namespace Arcade
 {
-    public sealed class UIStandardLoadingState : UIState
+    public abstract class ArcadeState : State<ArcadeState>
     {
-        public UIStandardLoadingState(UIContext context)
-        : base(context)
-        {
-        }
-
-        public override void OnEnter() => _context.StandardUI.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.StandardUI.DisableSceneLoadingUI();
+        protected ArcadeContext Context => _context as ArcadeContext;
     }
 }

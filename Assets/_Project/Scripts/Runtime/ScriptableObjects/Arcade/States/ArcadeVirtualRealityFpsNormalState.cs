@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,17 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UIStandardLoadingState : UIState
+    public sealed class ArcadeVirtualRealityFpsNormalState : ArcadeState
     {
-        public UIStandardLoadingState(UIContext context)
-        : base(context)
+        public override void OnEnter()
         {
+            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+
+            Context.UIStateTransitionEvent.Raise(typeof(UIVirtualRealitySceneNormalState));
         }
 
-        public override void OnEnter() => _context.StandardUI.EnableSceneLoadingUI();
+        public override void OnExit()
+        {
+            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-        public override void OnExit() => _context.StandardUI.DisableSceneLoadingUI();
+            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
+        }
+
+        public override void OnUpdate(float dt)
+        {
+            if (Context.InputActions.Global.Quit.triggered)
+                ApplicationUtils.ExitApp();
+
+            Context.VideoPlayerController.UpdateVideosState();
+        }
     }
 }

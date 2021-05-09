@@ -29,8 +29,8 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.NormalUI.EnableConfigurationUI();
+        public override void OnEnter() => _context.StandardUI.EnableConfigurationUI();
 
-        public override void OnExit() => _context.NormalUI.DisableConfigurationUI();
+        public override void OnExit() => _context.StandardUI.DisableConfigurationUI();
     }
 }

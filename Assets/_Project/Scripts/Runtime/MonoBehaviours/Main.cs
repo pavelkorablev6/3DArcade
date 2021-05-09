@@ -32,13 +32,11 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class Main : MonoBehaviour
     {
-        private const string ARCADECONTEXT_TRANSITIONTO_METHOD_NAME = nameof(ArcadeContext.TransitionTo);
-
         private VirtualFileSystem _virtualFileSystem;
         private ArcadeContext _arcadeContext;
 
         [Inject]
-        private void Construct(VirtualFileSystem virtualFileSystem, ArcadeContext arcadeContext)
+        public void Construct(VirtualFileSystem virtualFileSystem, ArcadeContext arcadeContext)
         {
             _virtualFileSystem = virtualFileSystem;
             _arcadeContext     = arcadeContext;
@@ -94,11 +92,11 @@ namespace Arcade
             _sceneContext.Update(Time.deltaTime);
         }
 #else
-        private void Update() => _arcadeContext.Update(Time.deltaTime);
+        private void Update() => _arcadeContext.OnUpdate(Time.deltaTime);
 #endif
-        private void FixedUpdate() => _arcadeContext.FixedUpdate(Time.fixedDeltaTime);
+        private void FixedUpdate() => _arcadeContext.OnFixedUpdate(Time.fixedDeltaTime);
 
-        private void OnDestroy() => DOTween.KillAll();
+        private void OnDisable() => DOTween.KillAll();
 
         // TODO: Replace/Remove the public functions...
         public void ToggleInput(bool enable)

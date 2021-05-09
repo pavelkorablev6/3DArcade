@@ -21,19 +21,17 @@
  * SOFTWARE. */
 
 using SK.Utilities.StateMachine;
-using Zenject;
 
 namespace Arcade
 {
     public sealed class UIContext : Context<UIState>
     {
-        public readonly UICanvasController NormalUI;
+        public readonly UICanvasController StandardUI;
         public readonly UICanvasController VirtualRealityUI;
 
-        public UIContext([Inject(Id = "normal")] UICanvasController normalUI,
-                         [Inject(Id = "vr")]     UICanvasController virtualRealityUI)
+        public UIContext(UICanvasController standardUI, UICanvasController virtualRealityUI)
         {
-            NormalUI         = normalUI;
+            StandardUI       = standardUI;
             VirtualRealityUI = virtualRealityUI;
         }
     }

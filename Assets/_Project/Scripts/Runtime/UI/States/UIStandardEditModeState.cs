@@ -29,8 +29,8 @@ namespace Arcade
         {
         }
 
-        public override void OnEnter() => _context.NormalUI.EnableSceneEditModeUI();
+        public override void OnEnter() => _context.StandardUI.EnableSceneEditModeUI();
 
-        public override void OnExit() => _context.NormalUI.DisableSceneEditModeUI();
+        public override void OnExit() => _context.StandardUI.DisableSceneEditModeUI();
     }
 }

@@ -20,17 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cinemachine;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UIStandardLoadingState : UIState
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/InternalGameState", fileName = "StandardInternalGameState")]
+    public sealed class ArcadeStandardInternalGameState : ArcadeInternalGameState
     {
-        public UIStandardLoadingState(UIContext context)
-        : base(context)
+        [System.NonSerialized] private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
+
+        protected override void OnStateEnter()
         {
+            _cinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.CurrentTarget.GetComponentInChildren<CinemachineNewVirtualCamera>();
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 20;
         }
 
-        public override void OnEnter() => _context.StandardUI.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.StandardUI.DisableSceneLoadingUI();
+        protected override void OnStateExit()
+        {
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 0;
+        }
     }
 }

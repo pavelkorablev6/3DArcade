@@ -80,7 +80,8 @@ namespace Arcade.UnityEditor
                                                                                                     gamePrefabAddressesProvider,
                                                                                                     propPrefabAddressesProvider);
 
-            ArcadeContext = new ArcadeContext(null, player, generalConfiguration, databases, scenes, addressesProviders);
+            ArcadeContext = ScriptableObject.CreateInstance<ArcadeContext>();
+            ArcadeContext.Construct(null, player, generalConfiguration, databases, scenes, addressesProviders);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)

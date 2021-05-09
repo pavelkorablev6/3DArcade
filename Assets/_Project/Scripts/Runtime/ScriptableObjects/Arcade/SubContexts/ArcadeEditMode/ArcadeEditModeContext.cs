@@ -20,17 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity.StateMachine;
+using UnityEngine;
+
 namespace Arcade
 {
-    public sealed class UIStandardLoadingState : UIState
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditMode/Context", fileName = "EditModeContext")]
+    public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
-        public UIStandardLoadingState(UIContext context)
-        : base(context)
+        public Player Player { get; private set; }
+        public InputActions InputActions { get; private set; }
+        public EditModeInteractionRaycaster InteractionRaycaster { get; private set; }
+        public EditModeInteractionController InteractionController { get; private set; }
+        public TypeEvent UITransitionEvent { get; private set; }
+
+        public void Initialize(ArcadeContext arcadeContext)
         {
+            Player                = arcadeContext.Player;
+            InputActions          = arcadeContext.InputActions;
+            InteractionRaycaster  = arcadeContext.InteractionControllers.EditModeRaycaster;
+            InteractionController = arcadeContext.InteractionControllers.EditModeController;
+            UITransitionEvent     = arcadeContext.UIStateTransitionEvent;
         }
-
-        public override void OnEnter() => _context.StandardUI.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.StandardUI.DisableSceneLoadingUI();
     }
 }

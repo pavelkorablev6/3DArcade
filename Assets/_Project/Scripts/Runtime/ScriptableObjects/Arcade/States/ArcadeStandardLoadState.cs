@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -20,31 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIManager: MonoBehaviour
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/State/Standard/LoadState", fileName = "StandardLoadState")]
+    public sealed class ArcadeStandardLoadState : ArcadeState
     {
-        [SerializeField] private UICanvasController _standardUI;
-        [SerializeField] private UICanvasController _virtualRealityUI;
-
-        private const string UICONTEXT_TRANSITIONTO_METHOD_NAME = nameof(UIContext.TransitionTo);
-
-        private UIContext _uiContext;
-
-        private void Awake() => _uiContext = new UIContext(_standardUI, _virtualRealityUI);
-
-        public void TransitionTo(System.Type type)
+        public override void OnEnter()
         {
-            if (type.BaseType != typeof(UIState))
+            Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+
+            CursorUtils.HideMouseCursor();
+
+            Context.UIStateTransitionEvent.Raise(typeof(UIStandardLoadingState));
+        }
+
+        public override void OnExit()
+        {
+            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
+
+            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
+        }
+
+        public override void OnUpdate(float dt)
+        {
+            if (!Context.ArcadeController.Loaded)
                 return;
 
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(UICONTEXT_TRANSITIONTO_METHOD_NAME);
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
+            switch (Context.ArcadeConfiguration.ArcadeType)
+            {
+                case ArcadeType.Fps:
+                    Context.TransitionTo<ArcadeStandardFpsNormalState>();
+                    break;
+                case ArcadeType.Cyl:
+                    Context.TransitionTo<ArcadeStandardCylNormalState>();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
