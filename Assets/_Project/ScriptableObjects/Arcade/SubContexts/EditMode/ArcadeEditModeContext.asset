@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArcadeEditModeContext
   m_EditorClassIdentifier: 
   _states:
-  - {fileID: 11400000, guid: 84637f0323d96cf47a6755c9a4fe1695, type: 2}
-  - {fileID: 11400000, guid: 067ca7237edf8454b94d9cde4c35d61f, type: 2}
-  - {fileID: 11400000, guid: 581862116e982f64c943c5fadc638392, type: 2}
-  - {fileID: 11400000, guid: 7b18960e077baab4dabb5a7eb5a1d380, type: 2}
+  - {fileID: 11400000, guid: 801a3aa2de2e4a042aa69514c7e52e92, type: 2}
+  - {fileID: 11400000, guid: 13bc2c78e5e85e24881488152abf18ba, type: 2}
+  - {fileID: 11400000, guid: 7b55b603407cd9342931c9940791fbed, type: 2}
+  - {fileID: 11400000, guid: 6613def229e9b494c897e1abb44d3ca7, type: 2}

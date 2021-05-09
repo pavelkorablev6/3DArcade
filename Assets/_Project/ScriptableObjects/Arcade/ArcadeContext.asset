@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: ArcadeContext
   m_EditorClassIdentifier: 
   _states:
-  - {fileID: 11400000, guid: 66b1be259e77ad6419596681c0cb73d0, type: 2}
-  - {fileID: 11400000, guid: c4be412638647fd44bf623a77e83bbf1, type: 2}
-  - {fileID: 11400000, guid: bd27d52ed65fd314fb7e74d340df5fd4, type: 2}
-  - {fileID: 11400000, guid: 661142f0a531ed84aa1590b672c96d35, type: 2}
-  - {fileID: 11400000, guid: ab90eaf6fdd2d4b459087766e04532dc, type: 2}
+  - {fileID: 11400000, guid: 5f6a17863bea3d142a3669a16b8a6088, type: 2}
+  - {fileID: 11400000, guid: cde82171d65abdb4e8d8bae00eb08a36, type: 2}
+  - {fileID: 11400000, guid: 748ac8e270a54b447b84021fe59202c0, type: 2}
+  - {fileID: 11400000, guid: 608becfba4ef90c4391b69470c77bddd, type: 2}
+  - {fileID: 11400000, guid: 7ced8212b1b2f434eb5f76f83ada7baf, type: 2}
+  - {fileID: 11400000, guid: 1630c3d676c673f40a3a069b2ce5e438, type: 2}
+  - {fileID: 11400000, guid: 548100eae7a95a64abd8897e563af7fb, type: 2}
+  - {fileID: 11400000, guid: c43f1ad2c2afbb84aa2e29dc9852787d, type: 2}
+  - {fileID: 11400000, guid: b3a7fda5a8f272c43b1617ef1264ace1, type: 2}
+  - {fileID: 11400000, guid: 1d771c40d586b024289214eed2baa57a, type: 2}
+  - {fileID: 11400000, guid: 07850064a81e2cd42b1c2e19b1cab07e, type: 2}
+  - {fileID: 11400000, guid: 226273258fe93534d8ca8025d08c813f, type: 2}
