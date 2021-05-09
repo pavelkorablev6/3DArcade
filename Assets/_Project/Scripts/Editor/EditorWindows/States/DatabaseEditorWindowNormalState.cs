@@ -28,16 +28,11 @@ namespace Arcade.UnityEditor
     internal sealed class DatabaseEditorWindowNormalState<T> : DatabaseEditorWindowState<T>
         where T : DatabaseEntry
     {
-        public DatabaseEditorWindowNormalState(DatabaseEditorWindowContext<T> context)
-        : base(context)
-        {
-        }
-
         public override void OnEnter()
         {
             EditorGUI.FocusTextInControl(null);
             _scrollPosition = Vector2.zero;
-            _context.RefreshDatabase();
+            Context.RefreshDatabase();
         }
 
         public override void OnUpdate(float dt)
@@ -67,7 +62,7 @@ namespace Arcade.UnityEditor
             using GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(_scrollPosition, EditorStyles.helpBox);
             _scrollPosition = scrollView.scrollPosition;
 
-            foreach (T entry in _context.Entries)
+            foreach (T entry in Context.Entries)
             {
                 using (new GUILayout.HorizontalScope())
                 {
@@ -77,7 +72,7 @@ namespace Arcade.UnityEditor
                         return;
                     }
 
-                    _context.DatabaseEditorWindow.DrawInlineButtons(entry);
+                    Context.DatabaseEditorWindow.DrawInlineButtons(entry);
 
                     GUI.backgroundColor = Color.red;
                     if (GUILayout.Button(new GUIContent("x", "Delete this configuration"), GUILayout.Width(35f)))
@@ -90,20 +85,20 @@ namespace Arcade.UnityEditor
         private void AddButtonClicked()
         {
             EditorGUI.FocusTextInControl(null);
-            _context.TransitionTo<DatabaseEditorWindowCreateNewState<T>>();
+            Context.TransitionTo<DatabaseEditorWindowCreateNewState<T>>();
         }
 
         private void ReloadButtonClicked()
         {
             EditorGUI.FocusTextInControl(null);
-            _context.RefreshDatabase();
+            Context.RefreshDatabase();
         }
 
         private void ListItemEditButtonClicked(T entry)
         {
             EditorGUI.FocusTextInControl(null);
-            _context.SetSerializedFields(entry);
-            _context.TransitionTo<DatabaseEditorWindowEditSelectionState<T>>();
+            Context.SetSerializedFields(entry);
+            Context.TransitionTo<DatabaseEditorWindowEditSelectionState<T>>();
         }
 
         private void ListItemDeleteButtonClicked(T entry)
@@ -117,7 +112,7 @@ namespace Arcade.UnityEditor
                 SceneUtilities.CloseAllScenes();
             }
 
-            _context.DeleteEntry(entry);
+            Context.DeleteEntry(entry);
         }
     }
 }

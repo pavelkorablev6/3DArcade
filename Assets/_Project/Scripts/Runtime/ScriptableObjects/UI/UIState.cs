@@ -20,12 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
+using SK.Utilities.Unity.StateMachine;
 
 namespace Arcade
 {
-    public abstract class EventListener<T> : MonoBehaviour
+    public abstract class UIState : State<UIContext, UIState>
     {
-        public abstract void OnEventRaised(T item);
     }
 }

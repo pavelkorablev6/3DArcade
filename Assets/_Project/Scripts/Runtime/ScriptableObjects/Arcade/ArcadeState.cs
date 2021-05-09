@@ -24,8 +24,7 @@ using SK.Utilities.Unity.StateMachine;
 
 namespace Arcade
 {
-    public abstract class ArcadeState : State<ArcadeState>
+    public abstract class ArcadeState : State<ArcadeContext, ArcadeState>
     {
-        protected new ArcadeContext Context => base.Context as ArcadeContext;
     }
 }

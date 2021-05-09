@@ -20,14 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.StateMachine;
+using SK.Utilities.Unity.StateMachine;
+using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class UIState : State<UIState>
+    [CreateAssetMenu(menuName = "Arcade/StateMachine/UIContext", fileName = "UIContext")]
+    public sealed class UIContext : Context<UIState>
     {
-        public readonly UIContext _context;
+        public UICanvasController StandardUI { get; private set; }
+        public UICanvasController VirtualRealityUI { get; private set; }
 
-        public UIState(UIContext context) => _context = context;
+        public void Initialize(UICanvasController standardUI, UICanvasController virtualRealityUI)
+        {
+            StandardUI       = standardUI;
+            VirtualRealityUI = virtualRealityUI;
+        }
     }
 }

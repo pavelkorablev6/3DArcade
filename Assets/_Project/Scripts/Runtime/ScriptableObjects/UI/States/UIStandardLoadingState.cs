@@ -22,15 +22,10 @@
 
 namespace Arcade
 {
-    public sealed class UIVirtualRealitySceneNormalState : UIState
+    public sealed class UIStandardLoadingState : UIState
     {
-        public UIVirtualRealitySceneNormalState(UIContext context)
-        : base(context)
-        {
-        }
+        public override void OnEnter() => Context.StandardUI.EnableSceneLoadingUI();
 
-        public override void OnEnter() => _context.VirtualRealityUI.EnableSceneNormalUI();
-
-        public override void OnExit() => _context.VirtualRealityUI.DisableSceneNormalUI();
+        public override void OnExit() => Context.StandardUI.DisableSceneLoadingUI();
     }
 }

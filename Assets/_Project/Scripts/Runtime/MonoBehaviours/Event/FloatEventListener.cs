@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class FloatEventListener : ArcadeEventListener<float, FloatEvent>
+    public sealed class FloatEventListener : EventListenerBase<float, FloatEvent>
     {
     }
 }

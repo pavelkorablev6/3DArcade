@@ -20,17 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+using Zenject;
+
 namespace Arcade
 {
-    public sealed class UIVirtualRealitySceneLoadingState : UIState
+    public sealed class PlayerInstaller : MonoInstaller<PlayerInstaller>
     {
-        public UIVirtualRealitySceneLoadingState(UIContext context)
-        : base(context)
-        {
-        }
+        [SerializeField] private Player _player;
 
-        public override void OnEnter() => _context.VirtualRealityUI.EnableSceneLoadingUI();
-
-        public override void OnExit() => _context.VirtualRealityUI.DisableSceneLoadingUI();
+        public override void InstallBindings() => Container.Bind<Player>().FromInstance(_player);
     }
 }

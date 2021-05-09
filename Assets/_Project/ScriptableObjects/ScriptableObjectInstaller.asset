@@ -16,3 +16,16 @@ MonoBehaviour:
   _generalConfigurationVariable: {fileID: 11400000, guid: e73c346bff35ea041864153f6973108b,
     type: 2}
   _databases: {fileID: 11400000, guid: e8c64f039a7454e4db81906a8ece05df, type: 2}
+  _normalModeInteractionRaycaster: {fileID: 11400000, guid: 650b124b73c66ec4db092fef6776e2c4,
+    type: 2}
+  _normalModeInteractionController: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
+    type: 2}
+  _editModeInteractionRaycaster: {fileID: 11400000, guid: cbc79846d7076e74980b97e357b39a84,
+    type: 2}
+  _editModeInteractionController: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+    type: 2}
+  _uiStateTransitionEvent: {fileID: 11400000, guid: 0110be78fa93dff4abf86fbed129b27e,
+    type: 2}
+  _arcadeNameVariable: {fileID: 11400000, guid: f3b8cae982225fe4eb0e92d789921aad,
+    type: 2}
+  _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}

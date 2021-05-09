@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GeneralConfiguration
   m_EditorClassIdentifier: 
   _initialValue:
-    StartingArcade: demo_twogames
+    StartingArcade: 
     StartingArcadeType: 0
     MouseLookReverse: 0
     EnableVR: 0

@@ -27,7 +27,7 @@ namespace Arcade
 {
     public abstract class EventBase<T> : ScriptableObject
     {
-        private readonly List<EventListener<T>> _eventListeners = new List<EventListener<T>>();
+        private readonly List<IEventListener<T>> _eventListeners = new List<IEventListener<T>>();
 
         public void Raise(T item)
         {
@@ -35,13 +35,13 @@ namespace Arcade
                 _eventListeners[i].OnEventRaised(item);
         }
 
-        public void RegisterListener(EventListener<T> listener)
+        public void RegisterListener(IEventListener<T> listener)
         {
             if (!_eventListeners.Contains(listener))
                 _eventListeners.Add(listener);
         }
 
-        public void UnregisterListener(EventListener<T> listener)
+        public void UnregisterListener(IEventListener<T> listener)
         {
             if (_eventListeners.Contains(listener))
                 _ = _eventListeners.Remove(listener);

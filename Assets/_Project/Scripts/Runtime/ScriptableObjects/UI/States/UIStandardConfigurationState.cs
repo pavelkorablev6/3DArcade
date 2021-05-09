@@ -20,29 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace Arcade
 {
-    public abstract class ArcadeEventListener<TType, TArcadeEvent> : EventListener<TType>
-        where TArcadeEvent : EventBase<TType>
+    public sealed class UIStandardConfigurationState : UIState
     {
-        [SerializeField] private TArcadeEvent _event;
-        [SerializeField] private UnityEvent<TType> _response;
+        public override void OnEnter() => Context.StandardUI.EnableConfigurationUI();
 
-        private void OnEnable()
-        {
-            if (_event != null)
-                _event.RegisterListener(this);
-        }
-
-        private void OnDisable()
-        {
-            if (_event != null)
-                _event.UnregisterListener(this);
-        }
-
-        public override void OnEventRaised(TType item) => _response.Invoke(item);
+        public override void OnExit() => Context.StandardUI.DisableConfigurationUI();
     }
 }

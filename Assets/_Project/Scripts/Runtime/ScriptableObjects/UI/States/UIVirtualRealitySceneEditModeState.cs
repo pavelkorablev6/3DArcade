@@ -22,15 +22,10 @@
 
 namespace Arcade
 {
-    public sealed class UIStandardEditModeState : UIState
+    public sealed class UIVirtualRealitySceneEditModeState : UIState
     {
-        public UIStandardEditModeState(UIContext context)
-        : base(context)
-        {
-        }
+        public override void OnEnter() => Context.VirtualRealityUI.EnableSceneEditModeUI();
 
-        public override void OnEnter() => _context.StandardUI.EnableSceneEditModeUI();
-
-        public override void OnExit() => _context.StandardUI.DisableSceneEditModeUI();
+        public override void OnExit() => Context.VirtualRealityUI.DisableSceneEditModeUI();
     }
 }

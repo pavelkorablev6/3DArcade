@@ -22,7 +22,8 @@
 
 namespace Arcade
 {
-    public sealed class VoidEventListener : EventListenerBase<Void, VoidEvent>
+    public interface IEventListener<T>
     {
+        void OnEventRaised(T item);
     }
 }

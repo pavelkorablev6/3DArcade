@@ -24,8 +24,7 @@ using SK.Utilities.Unity.StateMachine;
 
 namespace Arcade
 {
-    public abstract class ArcadeEditModeState : State<ArcadeEditModeState>
+    public abstract class ArcadeEditModeState : State<ArcadeEditModeContext, ArcadeEditModeState>
     {
-        protected new ArcadeEditModeContext Context => base.Context as ArcadeEditModeContext;
     }
 }

@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class StringEventListener : ArcadeEventListener<string, StringEvent>
+    public sealed class StringEventListener : EventListenerBase<string, StringEvent>
     {
     }
 }

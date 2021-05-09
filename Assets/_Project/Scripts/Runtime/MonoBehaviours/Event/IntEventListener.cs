@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class IntEventListener : ArcadeEventListener<int, IntEvent>
+    public sealed class IntEventListener : EventListenerBase<int, IntEvent>
     {
     }
 }

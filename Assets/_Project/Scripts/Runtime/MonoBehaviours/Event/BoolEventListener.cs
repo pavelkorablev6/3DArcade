@@ -22,7 +22,7 @@
 
 namespace Arcade
 {
-    public sealed class BoolEventListener : ArcadeEventListener<bool, BoolEvent>
+    public sealed class BoolEventListener : EventListenerBase<bool, BoolEvent>
     {
     }
 }

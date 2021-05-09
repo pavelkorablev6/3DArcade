@@ -38,7 +38,7 @@ namespace Arcade.UnityEditor
 
         private void OnEnable() => _context = new DatabaseEditorWindowContext<T>(this);
 
-        private void OnGUI() => _context.Update(0f);
+        private void OnGUI() => _context.OnUpdate(0f);
 
         public SerializedObject GetSerializedObject(T cfg)
         {

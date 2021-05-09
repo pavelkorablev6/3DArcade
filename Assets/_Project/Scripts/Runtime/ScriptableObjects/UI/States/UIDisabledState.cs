@@ -20,19 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.StateMachine;
-
 namespace Arcade
 {
-    public sealed class UIContext : Context<UIState>
+    public sealed class UIDisabledState : UIState
     {
-        public readonly UICanvasController StandardUI;
-        public readonly UICanvasController VirtualRealityUI;
-
-        public UIContext(UICanvasController standardUI, UICanvasController virtualRealityUI)
+        public override void OnEnter()
         {
-            StandardUI       = standardUI;
-            VirtualRealityUI = virtualRealityUI;
+            Context.StandardUI.Disable();
+            Context.VirtualRealityUI.Disable();
         }
     }
 }

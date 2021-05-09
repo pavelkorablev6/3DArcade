@@ -29,12 +29,13 @@ namespace Arcade
     {
         [SerializeField] private UICanvasController _standardUI;
         [SerializeField] private UICanvasController _virtualRealityUI;
+        [SerializeField] private UIContext _uiContext;
 
-        private const string UICONTEXT_TRANSITIONTO_METHOD_NAME = nameof(UIContext.TransitionTo);
-
-        private UIContext _uiContext;
-
-        private void Awake() => _uiContext = new UIContext(_standardUI, _virtualRealityUI);
+        private void Start()
+        {
+            _uiContext.Initialize(_standardUI, _virtualRealityUI);
+            _uiContext.Start();
+        }
 
         public void TransitionTo(System.Type type)
         {
@@ -42,7 +43,7 @@ namespace Arcade
                 return;
 
             System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(UICONTEXT_TRANSITIONTO_METHOD_NAME);
+            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
             System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
             _ = genericMethod.Invoke(_uiContext, new object[] { });
         }

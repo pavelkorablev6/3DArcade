@@ -31,20 +31,15 @@ namespace Arcade.UnityEditor
         private T _configuration;
         private string _newId;
 
-        public DatabaseEditorWindowEditSelectionState(DatabaseEditorWindowContext<T> context)
-        : base(context)
-        {
-        }
-
         public override void OnEnter()
         {
             EditorGUI.FocusTextInControl(null);
             _scrollPosition = Vector2.zero;
-            _configuration  = (_context.TempCfgObject.targetObject as ConfigurationSO<T>).Value;
+            _configuration  = (Context.TempCfgObject.targetObject as ConfigurationSO<T>).Value;
             _newId          = string.Empty;
         }
 
-        public override void OnExit() => _context.ClearSerializedFields();
+        public override void OnExit() => Context.ClearSerializedFields();
 
         public override void OnUpdate(float dt)
         {
@@ -120,9 +115,9 @@ namespace Arcade.UnityEditor
                 _scrollPosition       = scrollView.scrollPosition;
                 EditorGUI.indentLevel = -1;
 
-                _ = EditorGUILayout.PropertyField(_context.TempValueProperty, GUIContent.none, true);
-                _context.TempValueProperty.isExpanded = true;
-                _ = _context.TempCfgObject.ApplyModifiedProperties();
+                _ = EditorGUILayout.PropertyField(Context.TempValueProperty, GUIContent.none, true);
+                Context.TempValueProperty.isExpanded = true;
+                _ = Context.TempCfgObject.ApplyModifiedProperties();
             }
             EditorGUI.indentLevel = indentLevel;
 
@@ -139,14 +134,14 @@ namespace Arcade.UnityEditor
             if (!string.IsNullOrEmpty(newId))
                 _configuration.Id = _newId;
 
-            if (_context.SaveEntry(_configuration))
-                _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
+            if (Context.SaveEntry(_configuration))
+                Context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }
 
         private void CancelButtonClicked()
         {
             EditorGUI.FocusTextInControl(null);
-            _context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
+            Context.TransitionTo<DatabaseEditorWindowNormalState<T>>();
         }
     }
 }
