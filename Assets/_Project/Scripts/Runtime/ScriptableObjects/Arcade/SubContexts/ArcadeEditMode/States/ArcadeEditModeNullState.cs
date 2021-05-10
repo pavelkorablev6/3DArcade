@@ -20,12 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-
 namespace Arcade
 {
     public sealed class ArcadeEditModeNullState : ArcadeEditModeState
     {
-        public override void OnEnter() => Context.InteractionController.InteractionData.Reset();
+        public override void OnEnter() => Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.Reset();
     }
 }

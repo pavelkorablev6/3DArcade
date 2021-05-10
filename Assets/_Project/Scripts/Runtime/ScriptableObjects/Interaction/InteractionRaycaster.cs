@@ -30,7 +30,7 @@ namespace Arcade
         [SerializeField] private LayerMask _raycastMask;
         [SerializeField] private float _raycastMaxDistance = Mathf.Infinity;
         [SerializeField] private T _interactionData;
-        [SerializeField] private StringEvent _targetChangedEvent;
+        [SerializeField] private ModelConfigurationComponentPairEvent _targetChangedEvent;
 
         public Camera Camera { get; protected set; }
         public float RaycastMaxDistance => _raycastMaxDistance;
@@ -42,28 +42,17 @@ namespace Arcade
             Ray ray = GetRay();
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
             {
-                _targetChangedEvent.Raise(null);
                 _interactionData.Reset();
+                _targetChangedEvent.Raise(_interactionData.TargetPair);
                 return;
             }
 
-            if (_interactionData.CurrentTarget == modelConfigurationComponent)
+            if (_interactionData.TargetPair.Current == modelConfigurationComponent)
                 return;
 
             _interactionData.Set(hitInfo);
 
-            string description;
-
-            ModelConfiguration modelConfiguration = _interactionData.CurrentTarget.Configuration;
-
-            if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
-                description = modelConfiguration.Overrides.Description;
-            else if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
-                description = modelConfiguration.GameConfiguration.Description;
-            else
-                description = modelConfiguration.Id;
-
-            _targetChangedEvent.Raise(description);
+            _targetChangedEvent.Raise(_interactionData.TargetPair);
         }
 
         public void ResetCurrentTarget() => _interactionData.Reset();

@@ -50,26 +50,38 @@ namespace Arcade
         public override void OnUpdate(float dt)
         {
             if (Context.InputActions.Global.Quit.triggered)
+            {
                 ApplicationUtils.ExitApp();
+                return;
+            }
 
             if (Context.InputActions.Global.ToggleCursor.triggered)
-            {
-                CursorUtils.ToggleMouseCursor();
-                if (Cursor.lockState == CursorLockMode.Locked)
-                    Context.InputActions.FpsArcade.Look.Enable();
-                else
-                    Context.InputActions.FpsArcade.Look.Disable();
-            }
+                HandleCursorToggle();
 
             Context.VideoPlayerController.UpdateVideosState();
 
             Context.InteractionControllers.NormalModeRaycaster.UpdateCurrentTarget();
 
+            if (Context.MouseOverUI)
+                return;
+
             if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsArcade.Interact.triggered)
+            {
                 Context.InteractionControllers.NormalModeController.HandleInteraction();
+                return;
+            }
 
             if (Context.InputActions.FpsArcade.ToggleMoveCab.triggered)
                 Context.TransitionTo<ArcadeStandardFpsEditModeState>();
+        }
+
+        private void HandleCursorToggle()
+        {
+            CursorUtils.ToggleMouseCursor();
+            if (Cursor.lockState == CursorLockMode.Locked)
+                Context.InputActions.FpsArcade.Look.Enable();
+            else
+                Context.InputActions.FpsArcade.Look.Disable();
         }
     }
 }

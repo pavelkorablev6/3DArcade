@@ -29,10 +29,10 @@ namespace Arcade
     {
         public void ManualMoveAndRotate()
         {
-            if (_interactionData.Rigidbody == null)
+            if (_interactionData == null || _interactionData.Rigidbody == null)
                 return;
 
-            Transform transform = _interactionData.CurrentTarget.transform;
+            Transform transform = _interactionData.TargetPair.Current.transform;
 
             Rigidbody rigidbody  = _interactionData.Rigidbody;
             rigidbody.constraints = RigidbodyConstraints.None;
@@ -78,7 +78,7 @@ namespace Arcade
                 return;
 
             Vector3 newPosition;
-            Transform transform = _interactionData.CurrentTarget.transform;
+            Transform transform = _interactionData.TargetPair.Current.transform;
             Vector3 position    = hitInfo.point;
             Vector3 normal      = hitInfo.normal;
             float dot           = Vector3.Dot(Vector3.up, normal);

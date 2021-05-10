@@ -20,32 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using UnityEngine;
-using Zenject;
-
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UI : MonoBehaviour
+    public sealed class ModelConfigurationComponentPair
     {
-        private UIContext _uiContext;
+        public ModelConfigurationComponent Current { get; private set; }
+        public ModelConfigurationComponent Previous { get; private set; }
 
-        [Inject]
-        public void Construct(UIContext uiContext) => _uiContext = uiContext;
+        public void SetCurrent(ModelConfigurationComponent component) => Current = component;
 
-        private void Start() => _uiContext.Start();
-
-        private void Update() => _uiContext.OnUpdate(Time.deltaTime);
-
-        public void TransitionTo(System.Type type)
-        {
-            if (type.BaseType != typeof(UIState))
-                return;
-
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
-        }
+        public void UpdatePrevious() => Previous = Current;
     }
 }

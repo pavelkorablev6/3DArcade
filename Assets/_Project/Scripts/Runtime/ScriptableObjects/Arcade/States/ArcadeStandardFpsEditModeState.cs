@@ -33,6 +33,8 @@ namespace Arcade
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
 
+            _editModeContext.Start();
+
             Context.VideoPlayerController.StopAllVideos();
 
             Context.ArcadeController.StoreModelPositions();
@@ -46,7 +48,6 @@ namespace Arcade
 
             Context.InteractionControllers.NormalModeRaycaster.ResetCurrentTarget();
 
-            _editModeContext.Initialize(Context);
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
             Context.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
@@ -66,6 +67,20 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
+            if (Context.MouseOverUI)
+            {
+                Context.InputActions.FpsArcade.Disable();
+                Context.InputActions.FpsMoveCab.Grab.Disable();
+            }
+            else
+            {
+                Context.InputActions.FpsArcade.Enable();
+                Context.InputActions.FpsArcade.Interact.Disable();
+                if (Cursor.lockState != CursorLockMode.Locked)
+                    Context.InputActions.FpsArcade.Look.Disable();
+                Context.InputActions.FpsMoveCab.Grab.Enable();
+            }
+
             if (Context.InputActions.Global.Quit.triggered)
             {
                 RevertChanges();

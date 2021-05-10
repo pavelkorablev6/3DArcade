@@ -31,26 +31,26 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            Context.InteractionController.InteractionData.InitGrabMode();
+            Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.InitGrabMode();
 
-            Context.UITransitionEvent.Raise(typeof(UIDisabledState));
+            Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnExit()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            Context.InteractionController.InteractionData.RestoreValues();
+            Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.RestoreValues();
         }
 
         public override void OnUpdate(float dt)
         {
             bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
-            Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : Context.InteractionController.InteractionData.ScreenPoint;
-            Ray ray               = Context.InteractionRaycaster.Camera.ScreenPointToRay(rayPosition);
-            Context.InteractionController.AutoMoveAndRotate(ray, Context.Player.ActiveTransform.forward, Context.InteractionRaycaster.RaycastMaxDistance, Context.InteractionRaycaster.WorldRaycastLayerMask);
+            Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.ScreenPoint;
+            Ray ray               = Context.ArcadeContext.InteractionControllers.EditModeRaycaster.Camera.ScreenPointToRay(rayPosition);
+            Context.ArcadeContext.InteractionControllers.EditModeController.AutoMoveAndRotate(ray, Context.ArcadeContext.Player.ActiveTransform.forward, Context.ArcadeContext.InteractionControllers.EditModeRaycaster.RaycastMaxDistance, Context.ArcadeContext.InteractionControllers.EditModeRaycaster.WorldRaycastLayerMask);
 
-            if (Context.InputActions.FpsMoveCab.Grab.triggered)
+            if (Context.ArcadeContext.InputActions.FpsMoveCab.Grab.triggered)
                 Context.TransitionToPrevious();
         }
     }

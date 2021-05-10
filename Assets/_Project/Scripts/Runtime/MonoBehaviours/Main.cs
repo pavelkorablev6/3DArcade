@@ -149,7 +149,7 @@ namespace Arcade
 
         public void TransitionToFpsNormalState()
         {
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsNormalState>();
@@ -157,7 +157,7 @@ namespace Arcade
 
         public void TransitionToFpsEditModeState()
         {
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
@@ -190,7 +190,7 @@ namespace Arcade
 
         public void RemoveModel()
         {
-            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.LastTarget;
+            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.TargetPair.Previous;
             if (target == null)
                 return;
 

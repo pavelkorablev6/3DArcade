@@ -3040,8 +3040,6 @@ GameObject:
   - component: {fileID: 1203112238}
   - component: {fileID: 1203112237}
   - component: {fileID: 1203112235}
-  - component: {fileID: 1203112245}
-  - component: {fileID: 1203112239}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -3061,8 +3059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37759dc78eb60ea459298efca2997ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _virtualFileSystem: {fileID: 11400000, guid: f64f31db46bd5a44aba8c580ece02a1f, type: 2}
-  _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}
 --- !u!4 &1203112236
 Transform:
   m_ObjectHideFlags: 0
@@ -3091,18 +3087,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 4720070918826908351}
-  _normalModeInteractionRaycaster: {fileID: 11400000, guid: 650b124b73c66ec4db092fef6776e2c4,
-    type: 2}
-  _normalModeInteractionController: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
-    type: 2}
-  _editModeInteractionRaycaster: {fileID: 11400000, guid: cbc79846d7076e74980b97e357b39a84,
-    type: 2}
-  _editModeInteractionController: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
-    type: 2}
-  _uiStateTransitionEvent: {fileID: 11400000, guid: 0110be78fa93dff4abf86fbed129b27e,
-    type: 2}
-  _arcadeNameVariable: {fileID: 11400000, guid: f3b8cae982225fe4eb0e92d789921aad,
-    type: 2}
 --- !u!114 &1203112238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3136,62 +3120,6 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames: []
   _parentContractNames: []
---- !u!114 &1203112239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203112234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ee095ee0c11b38449e74ff704982d0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _event: {fileID: 11400000, guid: a22471321be348647a4c06d7f7651dc0, type: 2}
-  _response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1203112235}
-        m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
-        m_MethodName: ToggleInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1203112245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203112234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ee095ee0c11b38449e74ff704982d0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _event: {fileID: 11400000, guid: 304334e299c290744835eef38479b2e7, type: 2}
-  _response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1203112235}
-        m_TargetAssemblyTypeName: Arcade.Main, Arcade.Runtime
-        m_MethodName: ToggleInteractionsInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1214545103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,7 +3826,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 0.8477273, y: 1}
+    m_SensorSize: {x: 1.1313394, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

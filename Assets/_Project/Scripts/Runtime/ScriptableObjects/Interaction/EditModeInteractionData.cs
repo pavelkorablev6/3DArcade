@@ -78,11 +78,11 @@ namespace Arcade
                 RigidbodyIsKinematic   = Rigidbody.isKinematic
             };
 
-            CurrentTarget.gameObject.layer   = 0;
-            Collider.isTrigger               = true;
-            Rigidbody.interpolation          = RigidbodyInterpolation.Interpolate;
-            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            Rigidbody.isKinematic            = true;
+            TargetPair.Current.gameObject.layer = 0;
+            Collider.isTrigger                  = true;
+            Rigidbody.interpolation             = RigidbodyInterpolation.Interpolate;
+            Rigidbody.collisionDetectionMode    = CollisionDetectionMode.Discrete;
+            Rigidbody.isKinematic               = true;
         }
 
         public void RestoreValues()
@@ -101,7 +101,7 @@ namespace Arcade
 
         public void SetAimData(Camera camera, Vector2 aimPosition, float aimRotation)
         {
-            ScreenPoint = camera.WorldToScreenPoint(CurrentTarget.transform.position);
+            ScreenPoint = camera.WorldToScreenPoint(TargetPair.Current.transform.position);
             AimPosition = aimPosition;
             AimRotation = aimRotation;
         }

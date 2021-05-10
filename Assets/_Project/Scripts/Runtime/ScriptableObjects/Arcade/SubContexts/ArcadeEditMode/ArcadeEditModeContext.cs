@@ -28,19 +28,8 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditModeContext", fileName = "EditModeContext")]
     public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
-        public Player Player { get; private set; }
-        public InputActions InputActions { get; private set; }
-        public EditModeInteractionRaycaster InteractionRaycaster { get; private set; }
-        public EditModeInteractionController InteractionController { get; private set; }
-        public TypeEvent UITransitionEvent { get; private set; }
+        [SerializeField] private ArcadeContext _arcadeContext;
 
-        public void Initialize(ArcadeContext arcadeContext)
-        {
-            Player                = arcadeContext.Player;
-            InputActions          = arcadeContext.InputActions;
-            InteractionRaycaster  = arcadeContext.InteractionControllers.EditModeRaycaster;
-            InteractionController = arcadeContext.InteractionControllers.EditModeController;
-            UITransitionEvent     = arcadeContext.UIStateTransitionEvent;
-        }
+        public ArcadeContext ArcadeContext => _arcadeContext;
     }
 }

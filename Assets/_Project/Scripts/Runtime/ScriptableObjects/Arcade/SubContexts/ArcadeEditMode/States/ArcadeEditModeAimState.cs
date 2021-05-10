@@ -33,40 +33,43 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            Context.InteractionRaycaster.ResetCurrentTarget();
+            Context.ArcadeContext.InteractionControllers.EditModeRaycaster.ResetCurrentTarget();
 
-            Context.UITransitionEvent.Raise(typeof(UIStandardEditModeState));
+            Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
         public override void OnUpdate(float dt)
         {
-            Context.InteractionRaycaster.UpdateCurrentTarget();
+            Context.ArcadeContext.InteractionControllers.EditModeRaycaster.UpdateCurrentTarget();
 
-            EditModeInteractionData interactionData = Context.InteractionController.InteractionData;
-            if (interactionData.CurrentTarget == null || !interactionData.CurrentTarget.Configuration.MoveCabMovable)
+            EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
+            if (interactionData.TargetPair.Current == null || !interactionData.TargetPair.Current.Configuration.MoveCabMovable)
                 return;
 
-            Vector2 positionInput = Context.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
-            float rotationInput   = Context.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
+            Vector2 positionInput = Context.ArcadeContext.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
+            float rotationInput   = Context.ArcadeContext.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
             Vector2 aimPosition   = positionInput * _movementSpeedMultiplier;
             float aimRotation     = rotationInput * _rotationSpeedMultiplier;
-            interactionData.SetAimData(Context.Player.Camera, aimPosition, aimRotation);
+            interactionData.SetAimData(Context.ArcadeContext.Player.Camera, aimPosition, aimRotation);
 
-            if (!interactionData.CurrentTarget.Configuration.MoveCabGrabbable)
+            if (!interactionData.TargetPair.Current.Configuration.MoveCabGrabbable)
                 return;
 
-            if (Context.InputActions.FpsMoveCab.Grab.triggered)
+            if (Context.ArcadeContext.MouseOverUI)
+                return;
+
+            if (Context.ArcadeContext.InputActions.FpsMoveCab.Grab.triggered)
                 Context.TransitionTo<ArcadeEditModeGrabState>();
         }
 
         public override void OnFixedUpdate(float dt)
         {
-            if (Context.InteractionController.InteractionData.CurrentTarget == null || !Context.InteractionController.InteractionData.CurrentTarget.Configuration.MoveCabMovable)
+            if (Cursor.lockState == CursorLockMode.None)
                 return;
 
-            Context.InteractionController.ManualMoveAndRotate();
+            Context.ArcadeContext.InteractionControllers.EditModeController.ManualMoveAndRotate();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Arcade
         [SerializeField] private EditModeInteractionController _editModeInteractionController;
         [SerializeField] private TypeEvent _uiStateTransitionEvent;
         [SerializeField] private StringVariable _arcadeNameVariable;
+        [SerializeField] private BoolVariable _mouseOverUIVariable;
         [SerializeField] private ArcadeContext _arcadeContext;
 
         public override void InstallBindings()
@@ -90,6 +91,7 @@ namespace Arcade
 
             _ = Container.Bind<TypeEvent>().FromScriptableObject(_uiStateTransitionEvent).AsSingle();
             _ = Container.Bind<StringVariable>().WithId("arcade_name").FromScriptableObject(_arcadeNameVariable).AsSingle();
+            _ = Container.Bind<BoolVariable>().WithId("mouse_over_ui").FromScriptableObject(_mouseOverUIVariable).AsSingle();
 
             _ = Container.Bind<ArcadeContext>().FromScriptableObject(_arcadeContext).AsSingle();
         }

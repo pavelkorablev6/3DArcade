@@ -28,4 +28,6 @@ MonoBehaviour:
     type: 2}
   _arcadeNameVariable: {fileID: 11400000, guid: f3b8cae982225fe4eb0e92d789921aad,
     type: 2}
+  _mouseOverUIVariable: {fileID: 11400000, guid: 119e176c94a22d84b8ebbdc7831e3850,
+    type: 2}
   _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}

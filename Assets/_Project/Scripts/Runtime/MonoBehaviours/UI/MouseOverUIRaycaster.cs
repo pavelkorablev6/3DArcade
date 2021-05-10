@@ -20,32 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UI : MonoBehaviour
+    public sealed class MouseOverUIRaycaster : MonoBehaviour
     {
-        private UIContext _uiContext;
+        private readonly PointerEventData _pointerEventData  = new PointerEventData(EventSystem.current);
+        private readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
+
+        private BoolVariable _mouseOverUIVariable;
 
         [Inject]
-        public void Construct(UIContext uiContext) => _uiContext = uiContext;
+        public void Construct([Inject(Id = "mouse_over_ui")] BoolVariable mouseOverUIVariable) => _mouseOverUIVariable = mouseOverUIVariable;
 
-        private void Start() => _uiContext.Start();
-
-        private void Update() => _uiContext.OnUpdate(Time.deltaTime);
-
-        public void TransitionTo(System.Type type)
+        private void Update()
         {
-            if (type.BaseType != typeof(UIState))
+            if (Mouse.current is null)
+            {
+                _mouseOverUIVariable.Value = false;
                 return;
+            }
 
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
+            _pointerEventData.position = Mouse.current.position.ReadValue();
+            EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
+            _mouseOverUIVariable.Value = _raycastResults.Count > 0;
         }
     }
 }

@@ -34,10 +34,10 @@ namespace Arcade
 
         public void HandleInteraction()
         {
-            if (_interactionData.CurrentTarget == null)
+            if (_interactionData.TargetPair.Current == null)
                 return;
 
-            ModelConfiguration modelConfiguration = _interactionData.CurrentTarget.Configuration;
+            ModelConfiguration modelConfiguration = _interactionData.TargetPair.Current.Configuration;
             InteractionType interactionType       = modelConfiguration.InteractionType;
 
             switch (interactionType)
@@ -80,7 +80,7 @@ namespace Arcade
             {
                 case InteractionType.GameInternal:
                 {
-                    if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                    if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityInternalGameState>();
                     else
                         _arcadeContext.TransitionTo<ArcadeStandardInternalGameState>();
@@ -88,7 +88,7 @@ namespace Arcade
                 break;
                 case InteractionType.GameExternal:
                 {
-                    if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                    if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityExternalGameState>();
                     else
                         _arcadeContext.TransitionTo<ArcadeStandardExternalGameState>();

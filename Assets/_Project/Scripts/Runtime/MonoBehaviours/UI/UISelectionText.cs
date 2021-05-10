@@ -31,10 +31,24 @@ namespace Arcade
     {
         [SerializeField] private TMP_Text _text;
 
-        public void SetText(string text)
+        public void SetText(ModelConfigurationComponentPair modelConfigurationComponentPair)
         {
-            _text.SetText(text);
-            _ = _text.DOColor(!string.IsNullOrEmpty(text) ? Color.white : Color.clear, 1f);
+            string description = string.Empty;
+
+            if (modelConfigurationComponentPair.Current != null)
+            {
+                ModelConfiguration modelConfiguration = modelConfigurationComponentPair.Current.Configuration;
+
+                if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
+                    description = modelConfiguration.Overrides.Description;
+                else if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
+                    description = modelConfiguration.GameConfiguration.Description;
+                else
+                    description = modelConfiguration.Id;
+            }
+
+            _text.SetText(description);
+            _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
         }
     }
 }

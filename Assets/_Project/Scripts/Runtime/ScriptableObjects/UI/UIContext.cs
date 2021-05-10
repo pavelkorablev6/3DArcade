@@ -22,6 +22,7 @@
 
 using SK.Utilities.Unity.StateMachine;
 using UnityEngine;
+using Zenject;
 
 namespace Arcade
 {
@@ -30,11 +31,16 @@ namespace Arcade
     {
         public UICanvasController StandardUI { get; private set; }
         public UICanvasController VirtualRealityUI { get; private set; }
+        public MouseOverUIRaycaster MouseOverUIRaycaster { get; private set; }
 
-        public void Initialize(UICanvasController standardUI, UICanvasController virtualRealityUI)
+        [Inject]
+        public void Construct([Inject(Id = "std")] UICanvasController standardUI,
+                              [Inject(Id = "vr")] UICanvasController virtualRealityUI,
+                              MouseOverUIRaycaster mouseOverUIRaycaster)
         {
-            StandardUI       = standardUI;
-            VirtualRealityUI = virtualRealityUI;
+            StandardUI           = standardUI;
+            VirtualRealityUI     = virtualRealityUI;
+            MouseOverUIRaycaster = mouseOverUIRaycaster;
         }
     }
 }

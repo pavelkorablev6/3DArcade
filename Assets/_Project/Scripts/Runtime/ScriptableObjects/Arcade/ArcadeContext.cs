@@ -24,7 +24,7 @@ using Cysharp.Threading.Tasks;
 using SK.Utilities.Unity.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Arcade
@@ -32,22 +32,25 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/ArcadeContext", fileName = "ArcadeContext")]
     public sealed class ArcadeContext : Context<ArcadeState>
     {
+        public bool MouseOverUI => MouseOverUIVariable.Value;
+
         public InputActions InputActions { get; private set; }
         public Player Player { get; private set; }
-        public GeneralConfigurationVariable GeneralConfiguration { get; private set; }
+        public GeneralConfigurationVariable GeneralConfigurationVariable { get; private set; }
         public Databases Databases { get; private set; }
         public Scenes Scenes { get; private set; }
         public AssetAddressesProviders AssetAddressesProviders { get; private set; }
         public NodeControllers NodeControllers { get; private set; }
         public InteractionControllers InteractionControllers { get; private set; }
         public GameControllers GameControllers { get; private set; }
-
         public TypeEvent UIStateTransitionEvent { get; private set; }
         public StringVariable ArcadeNameVariable { get; private set; }
 
         public ArcadeConfiguration ArcadeConfiguration { get; private set; }
         public ArcadeController ArcadeController { get; private set; }
         public VideoPlayerController VideoPlayerController { get; private set; }
+
+        private BoolVariable MouseOverUIVariable { get; set; }
 
         [Inject]
         public void Construct(InputActions inputActions,
@@ -56,40 +59,50 @@ namespace Arcade
                               Databases databases,
                               Scenes scenes,
                               AssetAddressesProviders assetAddressesProviders,
-                              NodeControllers nodeControllers                                = null,
-                              InteractionControllers interactionControllers                  = null,
-                              GameControllers gameControllers                                = null,
-                              TypeEvent uiStateTransitionEvent                               = null,
-                              [Inject(Id = "arcade_name")] StringVariable arcadeNameVariable = null)
+                              NodeControllers nodeControllers                                 = null,
+                              InteractionControllers interactionControllers                   = null,
+                              GameControllers gameControllers                                 = null,
+                              TypeEvent uiStateTransitionEvent                                = null,
+                              [Inject(Id = "arcade_name")] StringVariable arcadeNameVariable  = null,
+                              [Inject(Id = "mouse_over_ui")] BoolVariable mouseOverUIVariable = null)
         {
-            InputActions            = inputActions;
-            Player                  = player;
-            GeneralConfiguration    = generalConfiguration;
-            Databases               = databases;
-            Scenes                  = scenes;
-            AssetAddressesProviders = assetAddressesProviders;
-            NodeControllers         = nodeControllers;
-            InteractionControllers  = interactionControllers;
-            GameControllers         = gameControllers;
-            UIStateTransitionEvent  = uiStateTransitionEvent;
-            ArcadeNameVariable      = arcadeNameVariable;
+            InputActions                 = inputActions;
+            Player                       = player;
+            GeneralConfigurationVariable = generalConfiguration;
+            Databases                    = databases;
+            Scenes                       = scenes;
+            AssetAddressesProviders      = assetAddressesProviders;
+            NodeControllers              = nodeControllers;
+            InteractionControllers       = interactionControllers;
+            GameControllers              = gameControllers;
+            UIStateTransitionEvent       = uiStateTransitionEvent;
+            ArcadeNameVariable           = arcadeNameVariable;
+            MouseOverUIVariable          = mouseOverUIVariable;
         }
 
-        protected override void OnContextStart()
+        protected override void OnContextStart() => Restart();
+
+        protected override void OnContextUpdate(float dt)
+        {
+            if (MouseOverUIVariable.Value || Keyboard.current is null)
+                return;
+
+            if (Keyboard.current.insertKey.wasPressedThisFrame)
+                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode).Forget();
+
+            if (Keyboard.current.homeKey.wasPressedThisFrame)
+                Restart();
+        }
+
+        public void Restart()
         {
             InputActions.Enable();
-            GeneralConfiguration.Initialize();
+            GeneralConfigurationVariable.Initialize();
             InteractionControllers.NormalModeRaycaster.Initialize(Player.Camera);
             InteractionControllers.EditModeRaycaster.Initialize(Player.Camera);
             InteractionControllers.NormalModeController.Initialize(this);
 
-            StartArcade(GeneralConfiguration.Value.StartingArcade, GeneralConfiguration.Value.StartingArcadeType, ArcadeMode.Normal).Forget();
-        }
-
-        protected override void OnContextUpdate(float dt)
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode).Forget();
+            StartArcade(GeneralConfigurationVariable.Value.StartingArcade, GeneralConfigurationVariable.Value.StartingArcadeType, ArcadeMode.Normal).Forget();
         }
 
         public async UniTaskVoid StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
@@ -97,7 +110,7 @@ namespace Arcade
             if (string.IsNullOrEmpty(id))
                 return;
 
-            GeneralConfiguration.Initialize();
+            GeneralConfigurationVariable.Initialize();
             Databases.Initialize();
             if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
@@ -146,12 +159,12 @@ namespace Arcade
             {
                 ArcadeNameVariable.Value = arcadeConfiguration.ToString();
 
-                List<InputDevice> devices = new List<InputDevice>();
-                InputDevices.GetDevices(devices);
+                List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
+                UnityEngine.XR.InputDevices.GetDevices(devices);
                 if (devices.Count == 0)
-                    GeneralConfiguration.Value.EnableVR = false;
+                    GeneralConfigurationVariable.Value.EnableVR = false;
 
-                if (GeneralConfiguration.Value.EnableVR)
+                if (GeneralConfigurationVariable.Value.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();
                 else
                     TransitionTo<ArcadeStandardLoadState>();

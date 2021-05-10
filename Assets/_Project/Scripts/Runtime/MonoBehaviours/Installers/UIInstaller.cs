@@ -26,26 +26,19 @@ using Zenject;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UI : MonoBehaviour
+    public sealed class UIInstaller : MonoInstaller<UIInstaller>
     {
-        private UIContext _uiContext;
+        [SerializeField] private UICanvasController _standardUI;
+        [SerializeField] private UICanvasController _virtualRealityUI;
+        [SerializeField] private UIContext _uiContext;
+        [SerializeField] private MouseOverUIRaycaster _mouseOverUIRaycaster;
 
-        [Inject]
-        public void Construct(UIContext uiContext) => _uiContext = uiContext;
-
-        private void Start() => _uiContext.Start();
-
-        private void Update() => _uiContext.OnUpdate(Time.deltaTime);
-
-        public void TransitionTo(System.Type type)
+        public override void InstallBindings()
         {
-            if (type.BaseType != typeof(UIState))
-                return;
-
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
+            _ = Container.Bind<UICanvasController>().WithId("std").FromInstance(_standardUI);
+            _ = Container.Bind<UICanvasController>().WithId("vr").FromInstance(_virtualRealityUI);
+            _ = Container.Bind<MouseOverUIRaycaster>().FromInstance(_mouseOverUIRaycaster).AsSingle();
+            _ = Container.Bind<UIContext>().FromScriptableObject(_uiContext).AsSingle();
         }
     }
 }

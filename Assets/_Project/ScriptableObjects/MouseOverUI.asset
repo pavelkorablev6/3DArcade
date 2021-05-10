@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 908cc5b9c860b394eb7db9bae9363b16, type: 3}
-  m_Name: OnRequestToggleInteractions
+  m_Script: {fileID: 11500000, guid: cd86a6d4435f266458f4b85c8fee034d, type: 3}
+  m_Name: MouseOverUI
   m_EditorClassIdentifier: 
+  _initialValue: 0

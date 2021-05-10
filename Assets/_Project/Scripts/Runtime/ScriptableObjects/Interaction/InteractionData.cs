@@ -29,8 +29,7 @@ namespace Arcade
     {
         [SerializeField, Layer] protected int _selectionLayer;
 
-        public ModelConfigurationComponent CurrentTarget { get; protected set; }
-        public ModelConfigurationComponent LastTarget { get; protected set; }
+        public ModelConfigurationComponentPair TargetPair { get; } = new ModelConfigurationComponentPair();
 
         private int _savedLayer;
 
@@ -40,26 +39,26 @@ namespace Arcade
         {
             ResetCurrentTargetLayer();
 
-            CurrentTarget = null;
-            _savedLayer   = 0;
+            TargetPair.SetCurrent(null);
+            _savedLayer = 0;
         }
 
         protected void Set(ModelConfigurationComponent target)
         {
-            CurrentTarget = target;
-            if (CurrentTarget == null)
+            TargetPair.SetCurrent(target);
+            if (TargetPair.Current == null)
                 return;
 
-            _savedLayer = CurrentTarget.gameObject.layer;
-            CurrentTarget.gameObject.SetLayersRecursively(_selectionLayer);
+            _savedLayer = TargetPair.Current.gameObject.layer;
+            TargetPair.Current.gameObject.SetLayersRecursively(_selectionLayer);
 
-            LastTarget = CurrentTarget;
+            TargetPair.UpdatePrevious();
         }
 
         protected void ResetCurrentTargetLayer()
         {
-            if (CurrentTarget != null)
-                CurrentTarget.gameObject.SetLayersRecursively(_savedLayer);
+            if (TargetPair.Current != null)
+                TargetPair.Current.gameObject.SetLayersRecursively(_savedLayer);
         }
     }
 }

@@ -21,31 +21,11 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UI : MonoBehaviour
+    [CreateAssetMenu(menuName = "Arcade/Variable/Bool", fileName = "NewBoolVariable")]
+    public sealed class BoolVariable : VariableBase<bool>
     {
-        private UIContext _uiContext;
-
-        [Inject]
-        public void Construct(UIContext uiContext) => _uiContext = uiContext;
-
-        private void Start() => _uiContext.Start();
-
-        private void Update() => _uiContext.OnUpdate(Time.deltaTime);
-
-        public void TransitionTo(System.Type type)
-        {
-            if (type.BaseType != typeof(UIState))
-                return;
-
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
-        }
     }
 }

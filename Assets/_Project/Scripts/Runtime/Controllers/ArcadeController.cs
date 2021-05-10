@@ -194,7 +194,7 @@ namespace Arcade
             go.AddComponent<ModelConfigurationComponent>()
               .SetModelConfiguration(modelConfiguration);
 
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {
@@ -222,7 +222,7 @@ namespace Arcade
             go.AddComponent<ModelConfigurationComponent>()
               .SetModelConfiguration(modelConfiguration);
 
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {
