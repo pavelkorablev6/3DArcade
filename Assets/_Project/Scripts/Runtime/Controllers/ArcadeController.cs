@@ -66,6 +66,10 @@ namespace Arcade
             await SpawnGames();
             await SpawProps();
 
+            ReflectionProbe[] probes = Object.FindObjectsOfType<ReflectionProbe>();
+            foreach (ReflectionProbe probe in probes)
+                probe.RenderProbe();
+
             Loaded = true;
         }
 

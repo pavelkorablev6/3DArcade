@@ -43,8 +43,9 @@ namespace Arcade
         {
             _generalConfiguration.Initialize();
 
-            _startingArcadeDropdown.options = _databases.Arcades.GetNames().Select(x => new TMP_Dropdown.OptionData(x)).ToList();
-            _startingArcadeDropdown.value   = _startingArcadeDropdown.options.FindIndex(x => x.text == _generalConfiguration.Value.StartingArcade);
+            _startingArcadeDropdown.ClearOptions();
+            _startingArcadeDropdown.AddOptions(_databases.Arcades.GetNames());
+            _startingArcadeDropdown.value = _startingArcadeDropdown.options.FindIndex(x => x.text == _generalConfiguration.Value.StartingArcade);
 
             _startingArcadeTypeDropdown.options = System.Enum.GetNames(typeof(ArcadeType)).Select(x => new TMP_Dropdown.OptionData(x)).ToList();
             _startingArcadeTypeDropdown.value   = _startingArcadeTypeDropdown.options.FindIndex(x => x.text == _generalConfiguration.Value.StartingArcadeType.ToString());

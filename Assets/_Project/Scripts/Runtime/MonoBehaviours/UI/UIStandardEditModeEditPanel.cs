@@ -21,6 +21,8 @@
  * SOFTWARE. */
 
 using DG.Tweening;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +34,7 @@ namespace Arcade
     {
         [SerializeField] private TMP_InputField _id;
         [SerializeField] private TMP_Dropdown _interactionType;
-        [SerializeField] private TMP_InputField _platform;
+        [SerializeField] private TMP_Dropdown _platform;
         [SerializeField] private Toggle _grabbable;
         [SerializeField] private Toggle _movecabMovable;
         [SerializeField] private Toggle _movecabGrabbable;
@@ -43,7 +45,18 @@ namespace Arcade
 
         private void Awake() => _transform = transform as RectTransform;
 
-        private void OnEnable() => Show();
+        private void OnEnable()
+        {
+            _arcadeContext.Databases.Platforms.Initialize();
+
+            _interactionType.ClearOptions();
+            _interactionType.AddOptions(System.Enum.GetNames(typeof(InteractionType)).ToList());
+
+            _platform.ClearOptions();
+            _platform.AddOptions(new List<string> { "" }.Concat(_arcadeContext.Databases.Platforms.GetNames()).ToList());
+
+            Show();
+        }
 
         private void OnDisable() => Hide();
 
@@ -59,13 +72,18 @@ namespace Arcade
                 return;
             }
 
+            if (_target == modelConfigurationComponentPair.Previous)
+                return;
+
             _target = modelConfigurationComponentPair.Previous;
 
-            ModelConfiguration modelConfiguration = modelConfigurationComponentPair.Previous.Configuration;
+            ModelConfiguration modelConfiguration = _target.Configuration;
 
             _id.text               = modelConfiguration.Id;
             _interactionType.value = (int)modelConfiguration.InteractionType;
-            _platform.text         = modelConfiguration.PlatformConfiguration?.Id;
+            _platform.value        = modelConfiguration.PlatformConfiguration != null
+                                     ? _platform.options.FindIndex(x => x.text.Equals(modelConfiguration.PlatformConfiguration.Id))
+                                     : 0;
             _grabbable.isOn        = modelConfiguration.Grabbable;
             _movecabMovable.isOn   = modelConfiguration.MoveCabMovable;
             _movecabGrabbable.isOn = modelConfiguration.MoveCabGrabbable;
@@ -76,16 +94,17 @@ namespace Arcade
             if (_target == null)
                 return;
 
-            ModelConfiguration cfg = _target.Configuration;
-            cfg.Id                 = _id.text;
-            cfg.InteractionType    = (InteractionType)_interactionType.value;
-            cfg.Platform           =_platform.text;
-            cfg.Grabbable          =_grabbable.isOn;
-            cfg.MoveCabMovable     =_movecabMovable.isOn;
-            cfg.MoveCabGrabbable   =_movecabGrabbable.isOn;
+            _target.Configuration.Id                 = _id.text;
+            _target.Configuration.InteractionType    = (InteractionType)_interactionType.value;
+            _target.Configuration.Platform           =_platform.options[_platform.value].text;
+            _target.Configuration.Grabbable          =_grabbable.isOn;
+            _target.Configuration.MoveCabMovable     =_movecabMovable.isOn;
+            _target.Configuration.MoveCabGrabbable   =_movecabGrabbable.isOn;
 
-            _target.SetModelConfiguration(cfg);
+            //_target.SetModelConfiguration(cfg);
             _ = _arcadeContext.SaveCurrentArcade();
+
+            ResetUIData();
         }
 
         private void ResetUIData()
@@ -93,7 +112,7 @@ namespace Arcade
             _target                = null;
             _id.text               = null;
             _interactionType.value = 0;
-            _platform.text         = null;
+            _platform.value        = 0;
             _grabbable.isOn        = false;
             _movecabMovable.isOn   = false;
             _movecabGrabbable.isOn = false;

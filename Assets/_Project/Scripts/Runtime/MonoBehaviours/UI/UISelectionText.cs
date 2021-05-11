@@ -26,29 +26,35 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UISelectionText : MonoBehaviour
+    public abstract class UISelectionText : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _text;
+        [SerializeField] protected TMP_Text _text;
 
         public void SetText(ModelConfigurationComponentPair modelConfigurationComponentPair)
         {
-            string description = string.Empty;
+            ModelConfigurationComponent cfgComponent = GetConfigurationComponent(modelConfigurationComponentPair);
 
-            if (modelConfigurationComponentPair.Current != null)
-            {
-                ModelConfiguration modelConfiguration = modelConfigurationComponentPair.Current.Configuration;
-
-                if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
-                    description = modelConfiguration.Overrides.Description;
-                else if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
-                    description = modelConfiguration.GameConfiguration.Description;
-                else
-                    description = modelConfiguration.Id;
-            }
-
+            string description = GetDescription(cfgComponent);
             _text.SetText(description);
             _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
+        }
+
+        protected abstract ModelConfigurationComponent GetConfigurationComponent(ModelConfigurationComponentPair modelConfigurationComponentPair);
+
+        private string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
+        {
+            if (modelConfigurationComponent == null)
+                return string.Empty;
+
+            ModelConfiguration modelConfiguration = modelConfigurationComponent.Configuration;
+
+            if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
+                return modelConfiguration.Overrides.Description;
+
+            if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
+                return modelConfiguration.GameConfiguration.Description;
+
+            return modelConfiguration.Id;
         }
     }
 }

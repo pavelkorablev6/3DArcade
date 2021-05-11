@@ -55,7 +55,7 @@ namespace Arcade
 
         public bool Contains(string name) => _entries.ContainsKey(name);
 
-        public string[] GetNames() => _entries.Keys.ToArray();
+        public List<string> GetNames() => _entries.Keys.ToList();
 
         public T[] GetValues() => _entries.Values.ToArray();
 
