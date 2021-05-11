@@ -31,7 +31,7 @@ namespace Arcade
 
         protected override void OnStateEnter()
         {
-            CinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.TargetPair.Current.GetComponentInChildren<CinemachineNewVirtualCamera>();
+            CinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.Current.GetComponentInChildren<CinemachineNewVirtualCamera>();
             if (CinemachineVirtualCamera != null)
                 CinemachineVirtualCamera.Priority = 20;
         }

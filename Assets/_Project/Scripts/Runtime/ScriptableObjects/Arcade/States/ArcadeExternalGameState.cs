@@ -37,8 +37,8 @@ namespace Arcade
             gameController.OnGameStarted += OnAppStarted;
             gameController.OnGameExited  += OnAppExited;
 
-            EmulatorConfiguration emulator = Context.InteractionControllers.NormalModeController.InteractionData.TargetPair.Current.Configuration.EmulatorConfiguration;
-            if (!gameController.StartGame(emulator, Context.InteractionControllers.NormalModeController.InteractionData.TargetPair.Current.Configuration.Id))
+            EmulatorConfiguration emulator = Context.InteractionControllers.NormalModeController.InteractionData.Current.Configuration.EmulatorConfiguration;
+            if (!gameController.StartGame(emulator, Context.InteractionControllers.NormalModeController.InteractionData.Current.Configuration.Id))
             {
                 Context.TransitionToPrevious();
                 return;

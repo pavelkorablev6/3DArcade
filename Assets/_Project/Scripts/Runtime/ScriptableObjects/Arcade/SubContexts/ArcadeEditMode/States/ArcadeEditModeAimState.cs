@@ -42,10 +42,13 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
+            if (Context.ArcadeContext.MouseOverUI)
+                return;
+
             Context.ArcadeContext.InteractionControllers.EditModeRaycaster.UpdateCurrentTarget();
 
             EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
-            if (interactionData.TargetPair.Current == null || !interactionData.TargetPair.Current.Configuration.MoveCabMovable)
+            if (interactionData.Current == null || !interactionData.Current.Configuration.MoveCabMovable)
                 return;
 
             Vector2 positionInput = Context.ArcadeContext.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
@@ -54,10 +57,7 @@ namespace Arcade
             float aimRotation     = rotationInput * _rotationSpeedMultiplier;
             interactionData.SetAimData(Context.ArcadeContext.Player.Camera, aimPosition, aimRotation);
 
-            if (!interactionData.TargetPair.Current.Configuration.MoveCabGrabbable)
-                return;
-
-            if (Context.ArcadeContext.MouseOverUI)
+            if (!interactionData.Current.Configuration.MoveCabGrabbable)
                 return;
 
             if (Context.ArcadeContext.InputActions.FpsMoveCab.Grab.triggered)

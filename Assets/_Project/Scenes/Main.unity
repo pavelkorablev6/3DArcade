@@ -169,6 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 96214925}
   - component: {fileID: 4720070918826908351}
+  - component: {fileID: 96214927}
   - component: {fileID: 96214926}
   m_Layer: 0
   m_Name: Player
@@ -207,6 +208,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ActionAssets:
   - {fileID: -944628639613478452, guid: 1050b2433651de04f9e12b6866b9546f, type: 3}
+--- !u!114 &96214927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96214924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f30b16a6e0b0cc4d86c19c9d3eb1994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &118017228
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,7 +504,7 @@ GameObject:
   - component: {fileID: 295445644}
   - component: {fileID: 295445645}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: Standard Cyl Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2018,7 +2031,7 @@ GameObject:
   - component: {fileID: 599590487}
   - component: {fileID: 7064439643649170218}
   m_Layer: 0
-  m_Name: Normal Controls
+  m_Name: Standard Controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2340,7 +2353,7 @@ GameObject:
   - component: {fileID: 771026268}
   - component: {fileID: 771026269}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Standard Cyl Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3037,7 +3050,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1203112236}
-  - component: {fileID: 1203112238}
   - component: {fileID: 1203112237}
   - component: {fileID: 1203112235}
   m_Layer: 0
@@ -3083,26 +3095,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1203112234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f30b16a6e0b0cc4d86c19c9d3eb1994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 4720070918826908351}
---- !u!114 &1203112238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203112234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 79c9c3789231813428f5ec7f12b4fd8f, type: 2}
+  - {fileID: 11400000, guid: 660704a554cbb8a47bfbfd5a7a92cdee, type: 2}
   - {fileID: 11400000, guid: a5ef7df5708a40b49bbbe649c99e1640, type: 2}
+  - {fileID: 11400000, guid: b870eeff8cff00643962d707a646c10c, type: 2}
+  - {fileID: 11400000, guid: cf8eaf97a9c01a542ab306e62016883e, type: 2}
   _monoInstallers:
-  - {fileID: 1203112237}
+  - {fileID: 96214927}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -3755,7 +3758,7 @@ GameObject:
   - component: {fileID: 1492262176}
   - component: {fileID: 1492262174}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Standard Fps Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3826,7 +3829,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 2.503563, y: 1}
+    m_SensorSize: {x: 1.1480362, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3850,7 +3853,7 @@ GameObject:
   - component: {fileID: 1501007660}
   - component: {fileID: 1501007653}
   m_Layer: 0
-  m_Name: Fps
+  m_Name: XR Fps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4241,7 +4244,7 @@ GameObject:
   - component: {fileID: 1547569651}
   - component: {fileID: 1547569652}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: Standard Fps Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4290,7 +4293,7 @@ GameObject:
   - component: {fileID: 1613447071}
   - component: {fileID: 1613447070}
   m_Layer: 0
-  m_Name: Cyl
+  m_Name: Standard Cyl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4429,7 +4432,7 @@ GameObject:
   - component: {fileID: 1640022276}
   - component: {fileID: 1640022274}
   m_Layer: 0
-  m_Name: Fps
+  m_Name: Standard Fps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4961,7 +4964,7 @@ GameObject:
   - component: {fileID: 1716827552}
   - component: {fileID: 1716827559}
   m_Layer: 0
-  m_Name: Cyl
+  m_Name: XR Cyl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5776,7 +5779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCamera: {fileID: 1457968340}
-  _normalControls: {fileID: 7064439643649170218}
+  _standardControls: {fileID: 7064439643649170218}
   _virtualRealityControls: {fileID: 7984420611464707651}
   _playerContext: {fileID: 11400000, guid: 6b51ece490350db4fb6b2adcecdf9c55, type: 2}
 --- !u!1001 &4945186971106309492

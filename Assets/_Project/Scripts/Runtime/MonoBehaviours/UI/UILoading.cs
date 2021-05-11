@@ -31,16 +31,16 @@ namespace Arcade
     {
         [SerializeField] private TMP_Text _statusText;
 
-        private StringVariable _arcadeNameVariable;
+        private ArcadeConfigurationVariable _arcadeConfigurationVariable;
 
         [Inject]
-        public void Construct([Inject(Id = "arcade_name")] StringVariable arcadeNameVariable) => _arcadeNameVariable = arcadeNameVariable;
+        public void Construct(ArcadeConfigurationVariable arcadeConfigurationVariable) => _arcadeConfigurationVariable = arcadeConfigurationVariable;
 
         private void OnEnable() => InitStatusBar();
 
         private void OnDisable() => ResetStatusBar();
 
-        private void InitStatusBar() => _statusText.SetText(_arcadeNameVariable.Value);
+        private void InitStatusBar() => _statusText.SetText(_arcadeConfigurationVariable.Value.ToString());
 
         private void ResetStatusBar() => _statusText.Clear();
     }

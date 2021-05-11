@@ -24,12 +24,12 @@ namespace Arcade
 {
     public sealed class UIEditSelectionText : UISelectionText
     {
-        protected override ModelConfigurationComponent GetConfigurationComponent(ModelConfigurationComponentPair componentPair)
+        protected override ModelConfigurationComponent GetConfigurationComponent(InteractionData interactionData)
         {
-            if (componentPair.Current != null)
-                return componentPair.Current;
+            if (interactionData.Current != null)
+                return interactionData.Current;
 
-            return componentPair.Previous;
+            return interactionData.Last;
         }
     }
 }

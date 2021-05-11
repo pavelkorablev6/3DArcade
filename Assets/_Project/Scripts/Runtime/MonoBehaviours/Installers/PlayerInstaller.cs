@@ -25,10 +25,9 @@ using Zenject;
 
 namespace Arcade
 {
+    [RequireComponent(typeof(Player))]
     public sealed class PlayerInstaller : MonoInstaller<PlayerInstaller>
     {
-        [SerializeField] private Player _player;
-
-        public override void InstallBindings() => Container.Bind<Player>().FromInstance(_player);
+        public override void InstallBindings() => Container.Bind<Player>().FromComponentOn(gameObject).AsSingle();
     }
 }

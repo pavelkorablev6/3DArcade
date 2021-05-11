@@ -34,7 +34,7 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            ScreenNode = Context.InteractionControllers.NormalModeController.InteractionData.TargetPair.Current.GetComponentInChildren<ScreenNodeTag>();
+            ScreenNode = Context.InteractionControllers.NormalModeController.InteractionData.Current.GetComponentInChildren<ScreenNodeTag>();
             if (ScreenNode == null)
             {
                 Context.TransitionToPrevious();

@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d64b7f9d03597f41831f1bf65c40ebb, type: 3}
+  m_Name: ArcadeConfiguration
+  m_EditorClassIdentifier: 
+  _initialValue:
+    Description: 
+    FpsArcadeProperties:
+      Scene: _cylinder
+      CameraSettings:
+        Position:
+          X: 0
+          Y: 0
+          Z: 0
+        Rotation:
+          X: 0
+          Y: 0
+          Z: 0
+        Height: 0.6
+        Orthographic: 0
+        FieldOfView: 60
+        AspectRatio: 1
+        NearClipPlane: 0.1
+        FarClipPlane: 300
+      RenderSettings:
+        MarqueeIntensity: 1.4
+        ScreenLcdIntensity: 1.4
+        ScreenRasterIntensity: 1.4
+        ScreenSvgIntensity: 1.4
+        ScreenVectorIntenstity: 2.1
+      AudioSettings:
+        MainVolume: 1
+        MusicVolume: 0.6
+        AmbientVolume: 0.4
+        MinimumDistance: 1
+        MaximumDistance: 3
+      Model: 
+      Props: []
+    CylArcadeProperties:
+      Scene: _empty
+      CameraSettings:
+        Position:
+          X: 0
+          Y: 0
+          Z: 0
+        Rotation:
+          X: 0
+          Y: 0
+          Z: 0
+        Height: 0.6
+        Orthographic: 0
+        FieldOfView: 60
+        AspectRatio: 1
+        NearClipPlane: 0.1
+        FarClipPlane: 300
+      RenderSettings:
+        MarqueeIntensity: 1.4
+        ScreenLcdIntensity: 1.4
+        ScreenRasterIntensity: 1.4
+        ScreenSvgIntensity: 1.4
+        ScreenVectorIntenstity: 2.1
+      AudioSettings:
+        MainVolume: 1
+        MusicVolume: 0.6
+        AmbientVolume: 0.4
+        MinimumDistance: 1
+        MaximumDistance: 3
+      Model: 
+      Props: []
+      WheelVariant: 1
+      WheelRadius: 5
+      Sprockets: 5
+      MouseLook: 0
+      SelectedSprocket: -1
+      SelectedPositionZ: 5
+      SprocketRotation:
+        X: 0
+        Y: 180
+        Z: 0
+      ModelSpacing: 0.2
+      HorizontalNavigation: 1
+      InverseNavigation: 0
+      InverseList: 0
+      LineAngle: -5
+    Games: []

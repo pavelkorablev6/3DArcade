@@ -23,11 +23,13 @@
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    public sealed class EditorArcadeSceneLoader : ArcadeSceneLoaderBase
+    [CreateAssetMenu(menuName = "Arcade/Editor/ArcadeSceneLoader", fileName = "EditorArcadeSceneLoader")]
+    public sealed class EditorArcadeSceneLoader : AddressableSceneLoaderBase
     {
         public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)
         {

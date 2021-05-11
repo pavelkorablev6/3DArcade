@@ -20,14 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using UnityEngine;
+using Zenject;
+
 namespace Arcade
 {
-    public sealed class GameControllers
+    [CreateAssetMenu(menuName = "Arcade/GameControllers", fileName = "GameControllers")]
+    public sealed class GameControllers : ScriptableObject
     {
-        public readonly ExternalGameController External;
-        public readonly InternalGameController Internal;
+        public ExternalGameController External { get; private set; }
+        public InternalGameController Internal { get; private set; }
 
-        public GameControllers(ExternalGameController externalGameController, InternalGameController internalGameController)
+        [Inject]
+        public void Construct(ExternalGameController externalGameController, InternalGameController internalGameController)
         {
             External = externalGameController;
             Internal = internalGameController;

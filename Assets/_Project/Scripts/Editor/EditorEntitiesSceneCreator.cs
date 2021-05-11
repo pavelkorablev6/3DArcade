@@ -21,13 +21,15 @@
  * SOFTWARE. */
 
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    public sealed class EditorEntitiesSceneCreator : IEntititesSceneCreator
+    [CreateAssetMenu(menuName = "Arcade/Editor/EntitiesSceneCreator", fileName = "EditorEntitiesSceneCreator")]
+    public sealed class EditorEntitiesSceneCreator : SceneCreatorBase
     {
-        public Scene Create(string name)
+        public override Scene Create(string name)
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             scene.name  = name;

@@ -32,63 +32,54 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/ArcadeContext", fileName = "ArcadeContext")]
     public sealed class ArcadeContext : Context<ArcadeState>
     {
-        public bool MouseOverUI => MouseOverUIVariable.Value;
+        [SerializeField] private Databases _databases;
+        [SerializeField] private Scenes _scenes;
+        [SerializeField] private InteractionControllers _interactionControllers;
+        [SerializeField] private BoolVariable _mouseOverUIVariable;
+        [SerializeField] private GeneralConfigurationVariable _generalConfigurationVariable;
+        [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
+        [SerializeField] private ArcadeControllerVariable _arcadeControllerVariable;
+        [SerializeField] private VideoPlayerControllerVariable _videoPlayerControllerVariable;
+        [SerializeField] private TypeEvent _uiStateTransitionEvent;
 
         public InputActions InputActions { get; private set; }
         public Player Player { get; private set; }
-        public GeneralConfigurationVariable GeneralConfigurationVariable { get; private set; }
-        public Databases Databases { get; private set; }
-        public Scenes Scenes { get; private set; }
-        public AssetAddressesProviders AssetAddressesProviders { get; private set; }
-        public NodeControllers NodeControllers { get; private set; }
-        public InteractionControllers InteractionControllers { get; private set; }
         public GameControllers GameControllers { get; private set; }
-        public TypeEvent UIStateTransitionEvent { get; private set; }
-        public StringVariable ArcadeNameVariable { get; private set; }
 
-        public ArcadeConfiguration ArcadeConfiguration { get; private set; }
-        public ArcadeController ArcadeController { get; private set; }
-        public VideoPlayerController VideoPlayerController { get; private set; }
+        public Databases Databases => _databases;
+        public Scenes Scenes => _scenes;
+        public InteractionControllers InteractionControllers => _interactionControllers;
+        public bool MouseOverUI => _mouseOverUIVariable.Value;
+        public GeneralConfiguration GeneralConfiguration => _generalConfigurationVariable.Value;
+        public ArcadeConfiguration ArcadeConfiguration => _arcadeConfigurationVariable.Value;
+        public ArcadeController ArcadeController => _arcadeControllerVariable.Value;
+        public VideoPlayerController VideoPlayerController => _videoPlayerControllerVariable.Value;
+        public TypeEvent UIStateTransitionEvent => _uiStateTransitionEvent;
 
-        private BoolVariable MouseOverUIVariable { get; set; }
+        public AssetAddressesProviders AssetAddressesProviders { get; private set; }
+        public IModelSpawner ModelSpawner { get; private set; }
+        public NodeControllers NodeControllers { get; private set; }
 
         [Inject]
-        public void Construct(InputActions inputActions,
-                              Player player,
-                              GeneralConfigurationVariable generalConfiguration,
-                              Databases databases,
-                              Scenes scenes,
-                              AssetAddressesProviders assetAddressesProviders,
-                              NodeControllers nodeControllers                                 = null,
-                              InteractionControllers interactionControllers                   = null,
-                              GameControllers gameControllers                                 = null,
-                              TypeEvent uiStateTransitionEvent                                = null,
-                              [Inject(Id = "arcade_name")] StringVariable arcadeNameVariable  = null,
-                              [Inject(Id = "mouse_over_ui")] BoolVariable mouseOverUIVariable = null)
+        public void Construct(InputActions inputActions, Player player, AssetAddressesProviders assetAddressesProviders, IModelSpawner modelSpawner, NodeControllers nodeControllers = null, GameControllers gameControllers = null)
         {
-            InputActions                 = inputActions;
-            Player                       = player;
-            GeneralConfigurationVariable = generalConfiguration;
-            Databases                    = databases;
-            Scenes                       = scenes;
-            AssetAddressesProviders      = assetAddressesProviders;
-            NodeControllers              = nodeControllers;
-            InteractionControllers       = interactionControllers;
-            GameControllers              = gameControllers;
-            UIStateTransitionEvent       = uiStateTransitionEvent;
-            ArcadeNameVariable           = arcadeNameVariable;
-            MouseOverUIVariable          = mouseOverUIVariable;
+            InputActions            = inputActions;
+            Player                  = player;
+            AssetAddressesProviders = assetAddressesProviders;
+            ModelSpawner            = modelSpawner;
+            NodeControllers         = nodeControllers;
+            GameControllers         = gameControllers;
         }
 
         protected override void OnContextStart() => Restart();
 
         protected override void OnContextUpdate(float dt)
         {
-            if (MouseOverUIVariable.Value || Keyboard.current is null)
+            if (_mouseOverUIVariable.Value || Keyboard.current is null)
                 return;
 
             if (Keyboard.current.insertKey.wasPressedThisFrame)
-                StartArcade(ArcadeConfiguration.Id, ArcadeConfiguration.ArcadeType, ArcadeConfiguration.ArcadeMode).Forget();
+                StartArcade(_arcadeConfigurationVariable.Value.Id, _arcadeConfigurationVariable.Value.ArcadeType, _arcadeConfigurationVariable.Value.ArcadeMode).Forget();
 
             if (Keyboard.current.homeKey.wasPressedThisFrame)
                 Restart();
@@ -96,13 +87,8 @@ namespace Arcade
 
         public void Restart()
         {
-            InputActions.Enable();
-            GeneralConfigurationVariable.Initialize();
-            InteractionControllers.NormalModeRaycaster.Initialize(Player.Camera);
-            InteractionControllers.EditModeRaycaster.Initialize(Player.Camera);
-            InteractionControllers.NormalModeController.Initialize(this);
-
-            StartArcade(GeneralConfigurationVariable.Value.StartingArcade, GeneralConfigurationVariable.Value.StartingArcadeType, ArcadeMode.Normal).Forget();
+            _generalConfigurationVariable.Initialize();
+            StartArcade(_generalConfigurationVariable.Value.StartingArcade, _generalConfigurationVariable.Value.StartingArcadeType, ArcadeMode.Normal).Forget();
         }
 
         public async UniTaskVoid StartArcade(string id, ArcadeType arcadeType, ArcadeMode arcadeMode)
@@ -110,20 +96,26 @@ namespace Arcade
             if (string.IsNullOrEmpty(id))
                 return;
 
-            GeneralConfigurationVariable.Initialize();
-            Databases.Initialize();
-            if (!Databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
+            _databases.Initialize();
+            if (!_databases.Arcades.TryGet(id, out ArcadeConfiguration arcadeConfiguration))
                 return;
+
+            InputActions?.Enable();
+
+            _generalConfigurationVariable.Initialize();
+
+            _interactionControllers.NormalModeRaycaster.Initialize(Player.Camera);
+            _interactionControllers.EditModeRaycaster.Initialize(Player.Camera);
 
             arcadeConfiguration.ArcadeType = arcadeType;
             arcadeConfiguration.ArcadeMode = arcadeMode;
 
-            ArcadeConfiguration = arcadeConfiguration;
+            _arcadeConfigurationVariable.Value = arcadeConfiguration;
 
-            VideoPlayerController?.StopAllVideos();
+            _arcadeControllerVariable.Value = null;
 
-            VideoPlayerController = null;
-            ArcadeController      = null;
+            _videoPlayerControllerVariable.Value?.StopAllVideos();
+            _videoPlayerControllerVariable.Value = null;
 
             Player.TransitionTo<PlayerDisabledState>();
 
@@ -131,13 +123,13 @@ namespace Arcade
             {
                 case ArcadeType.Fps:
                 {
-                    VideoPlayerController = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection"));
-                    ArcadeController      = new FpsArcadeController(this);
+                    _videoPlayerControllerVariable.Value = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection"));
+                    _arcadeControllerVariable.Value      = new FpsArcadeController(this);
                 }
                 break;
                 case ArcadeType.Cyl:
                 {
-                    ArcadeController = arcadeConfiguration.CylArcadeProperties.WheelVariant switch
+                    _arcadeControllerVariable.Value = arcadeConfiguration.CylArcadeProperties.WheelVariant switch
                     {
                         //WheelVariant.CameraInsideHorizontal  => new CylArcadeControllerWheel3DCameraInsideHorizontal(ArcadeContext),
                         //WheelVariant.CameraOutsideHorizontal => new CylArcadeControllerWheel3DCameraOutsideHorizontal(ArcadeContext),
@@ -152,40 +144,31 @@ namespace Arcade
                 break;
             }
 
-            if (ArcadeController == null)
+            if (_arcadeControllerVariable.Value == null)
                 return;
 
             if (Application.isPlaying)
             {
-                ArcadeNameVariable.Value = arcadeConfiguration.ToString();
-
                 List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
                 UnityEngine.XR.InputDevices.GetDevices(devices);
                 if (devices.Count == 0)
-                    GeneralConfigurationVariable.Value.EnableVR = false;
+                    _generalConfigurationVariable.SetEnableVR(false);
 
-                if (GeneralConfigurationVariable.Value.EnableVR)
+                if (_generalConfigurationVariable.Value.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();
                 else
                     TransitionTo<ArcadeStandardLoadState>();
             }
 
-            Scenes.Entities.Initialize(arcadeConfiguration);
+            _scenes.Entities.Initialize(arcadeConfiguration);
 
             AssetAddresses addressesToTry = AssetAddressesProviders.Arcade.GetAddressesToTry(arcadeConfiguration);
 
-            bool success = await Scenes.Arcade.Load(addressesToTry);
+            bool success = await _scenes.Arcade.Load(addressesToTry);
             if (!success)
-            {
-                if (Application.isPlaying)
-                    ArcadeNameVariable.Value = string.Empty;
                 return;
-            }
 
-            await ArcadeController.Initialize();
-
-            if (Application.isPlaying)
-                ArcadeNameVariable.Value = string.Empty;
+            await _arcadeControllerVariable.Value.Initialize(ModelSpawner);
         }
 
         public bool SaveCurrentArcade(bool modelsOnly = false)
@@ -201,13 +184,13 @@ namespace Arcade
                 game.Scale.RoundValues();
             }
 
-            if (!Databases.Arcades.Save(arcadeConfiguration))
+            if (!_databases.Arcades.Save(arcadeConfiguration))
                 return false;
 
             if (modelsOnly)
                 return true;
 
-            return Databases.Arcades.LoadAll();
+            return _databases.Arcades.LoadAll();
         }
 
         /*

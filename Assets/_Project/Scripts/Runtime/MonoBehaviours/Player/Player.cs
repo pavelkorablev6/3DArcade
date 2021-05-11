@@ -27,7 +27,7 @@ namespace Arcade
     public sealed class Player : MonoBehaviour
     {
         [SerializeField] private Camera _mainCamera;
-        [SerializeField] private PlayerControls _normalControls;
+        [SerializeField] private PlayerControls _standardControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
         [SerializeField] private PlayerContext _playerContext;
 
@@ -41,8 +41,8 @@ namespace Arcade
         {
             get
             {
-                if (_normalControls.Active)
-                    return _normalControls.ActiveTransform;
+                if (_standardControls.Active)
+                    return _standardControls.ActiveTransform;
                 if (_virtualRealityControls.Active)
                     return _virtualRealityControls.ActiveTransform;
                 return null;
@@ -53,9 +53,9 @@ namespace Arcade
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 
-        public void EnableNormalFpsControls() => _normalControls.EnableFpsController();
-        public void EnableNormalCylControls() => _normalControls.EnableCylController();
-        public void DisableNormalControls()   => _normalControls.Disable();
+        public void EnableNormalFpsControls() => _standardControls.EnableFpsController();
+        public void EnableNormalCylControls() => _standardControls.EnableCylController();
+        public void DisableNormalControls()   => _standardControls.Disable();
 
         public void EnableVirtualRealityFpsControls() => _virtualRealityControls.EnableFpsController();
         public void EnableVirtualRealityCylControls() => _virtualRealityControls.EnableCylController();

@@ -49,18 +49,11 @@ namespace Arcade
 
         public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
-        public async UniTask Initialize()
+        public async UniTask Initialize(IModelSpawner modelSpawner)
         {
             Loaded = false;
 
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-                _modelSpawner = new EditorModelSpawner();
-            else
-                _modelSpawner = new ModelSpawner();
-#else
-            _modelSpawner = new ModelSpawner();
-#endif
+            _modelSpawner = modelSpawner;
 
             SetupPlayer();
             await SpawnGames();
@@ -195,10 +188,11 @@ namespace Arcade
             go.transform.localScale = modelConfiguration.Scale;
             go.layer                = layer;
 
-            go.AddComponent<ModelConfigurationComponent>()
-              .SetModelConfiguration(modelConfiguration);
+            ModelConfigurationComponent modelConfigurationComponent = go.AddComponent<ModelConfigurationComponent>();
+            modelConfigurationComponent.SetModelConfiguration(modelConfiguration);
+            modelConfigurationComponent.OriginalLayer = layer;
 
-            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {
@@ -226,7 +220,7 @@ namespace Arcade
             go.AddComponent<ModelConfigurationComponent>()
               .SetModelConfiguration(modelConfiguration);
 
-            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {

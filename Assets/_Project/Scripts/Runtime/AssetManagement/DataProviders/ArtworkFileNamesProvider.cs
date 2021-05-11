@@ -26,13 +26,13 @@ namespace Arcade
     {
         private readonly MultiFileDatabase<PlatformConfiguration> _platformDatabase;
         private readonly MultiFileDatabase<EmulatorConfiguration> _emulatorDatabase;
-        private readonly GameDatabase _gameDatabase;
+        private readonly GamesDatabase _gameDatabase;
 
-        public ArtworkFileNamesProvider(MultiFileDatabase<PlatformConfiguration> platformDatabase, MultiFileDatabase<EmulatorConfiguration> emulatorDatabase, GameDatabase gameDatabase)
+        public ArtworkFileNamesProvider(Databases databases)
         {
-            _platformDatabase = platformDatabase;
-            _emulatorDatabase = emulatorDatabase;
-            _gameDatabase     = gameDatabase;
+            _platformDatabase = databases.Platforms;
+            _emulatorDatabase = databases.Emulators;
+            _gameDatabase     = databases.Games;
         }
 
         public string[] GetNamesToTry(ModelConfiguration cfg)

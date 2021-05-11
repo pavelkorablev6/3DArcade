@@ -64,18 +64,18 @@ namespace Arcade
 
         public void Hide() => _transform.DOAnchorPosX(-340f, 0.4f);
 
-        public void SetUIData(ModelConfigurationComponentPair modelConfigurationComponentPair)
+        public void SetUIData(InteractionData interactionData)
         {
-            if (modelConfigurationComponentPair.Previous == null)
+            if (interactionData.Last == null)
             {
                 ResetUIData();
                 return;
             }
 
-            if (_target == modelConfigurationComponentPair.Previous)
+            if (_target == interactionData.Last)
                 return;
 
-            _target = modelConfigurationComponentPair.Previous;
+            _target = interactionData.Last;
 
             ModelConfiguration modelConfiguration = _target.Configuration;
 
@@ -101,7 +101,6 @@ namespace Arcade
             _target.Configuration.MoveCabMovable     =_movecabMovable.isOn;
             _target.Configuration.MoveCabGrabbable   =_movecabGrabbable.isOn;
 
-            //_target.SetModelConfiguration(cfg);
             _ = _arcadeContext.SaveCurrentArcade();
 
             ResetUIData();

@@ -89,7 +89,7 @@ namespace Arcade
                 System.Threading.Thread.Sleep(SLEEP_TIME);
                 return;
             }
-            _sceneContext.Update(Time.deltaTime);
+            _arcadeContext.OnUpdate(Time.deltaTime);
         }
 #else
         private void Update() => _arcadeContext.OnUpdate(Time.deltaTime);
@@ -149,7 +149,7 @@ namespace Arcade
 
         public void TransitionToFpsNormalState()
         {
-            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsNormalState>();
@@ -157,7 +157,7 @@ namespace Arcade
 
         public void TransitionToFpsEditModeState()
         {
-            if (_arcadeContext.GeneralConfigurationVariable.Value.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
@@ -190,7 +190,7 @@ namespace Arcade
 
         public void RemoveModel()
         {
-            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.TargetPair.Previous;
+            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.Last;
             if (target == null)
                 return;
 

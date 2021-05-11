@@ -30,16 +30,16 @@ namespace Arcade
     {
         [SerializeField] protected TMP_Text _text;
 
-        public void SetText(ModelConfigurationComponentPair modelConfigurationComponentPair)
+        public void SetText(InteractionData interactionData)
         {
-            ModelConfigurationComponent cfgComponent = GetConfigurationComponent(modelConfigurationComponentPair);
+            ModelConfigurationComponent cfgComponent = GetConfigurationComponent(interactionData);
 
             string description = GetDescription(cfgComponent);
             _text.SetText(description);
             _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
         }
 
-        protected abstract ModelConfigurationComponent GetConfigurationComponent(ModelConfigurationComponentPair modelConfigurationComponentPair);
+        protected abstract ModelConfigurationComponent GetConfigurationComponent(InteractionData interactionData);
 
         private string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
         {

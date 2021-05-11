@@ -25,10 +25,10 @@ using UnityEngine.Events;
 
 namespace Arcade
 {
-    public abstract class EventListenerBase<TType, TArcadeEvent> : MonoBehaviour, IEventListener<TType>
-        where TArcadeEvent : EventBase<TType>
+    public abstract class EventListenerBase<TType, TEvent> : MonoBehaviour, IEventListener<TType>
+        where TEvent : EventBase<TType>
     {
-        [SerializeField] private TArcadeEvent _event;
+        [SerializeField] private TEvent _event;
         [SerializeField] private UnityEvent<TType> _response;
 
         private void OnEnable()

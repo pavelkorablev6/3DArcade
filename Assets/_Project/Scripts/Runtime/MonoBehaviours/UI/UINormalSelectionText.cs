@@ -24,7 +24,7 @@ namespace Arcade
 {
     public sealed class UINormalSelectionText : UISelectionText
     {
-        protected override ModelConfigurationComponent GetConfigurationComponent(ModelConfigurationComponentPair componentPair)
-            => componentPair.Current;
+        protected override ModelConfigurationComponent GetConfigurationComponent(InteractionData interactionData)
+            => interactionData.Current;
     }
 }

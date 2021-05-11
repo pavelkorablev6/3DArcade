@@ -31,47 +31,46 @@ namespace Arcade.UnityEditor
     {
         public readonly ArcadeContext ArcadeContext;
 
-        private const string VIRTUAL_FILE_SYSTEM_SO_PATH   = "Assets/_Project/ScriptableObjects/Configuration/VirtualFileSystem.asset";
-        private const string GENERAL_CONFIGURATION_SO_PATH = "Assets/_Project/ScriptableObjects/Configuration/GeneralConfiguration.asset";
-        private const string DATABASES_SO_PATH             = "Assets/_Project/ScriptableObjects/Configuration/Databases.asset";
+        private const string ROOT_SO_PATH                  = "Assets/_Project/ScriptableObjects";
+        private const string VIRTUAL_FILE_SYSTEM_SO_PATH   = ROOT_SO_PATH + "/VirtualFileSystem.asset";
+        private const string GENERAL_CONFIGURATION_SO_PATH = ROOT_SO_PATH + "/Variables/GeneralConfiguration.asset";
+        private const string DATABASES_SO_PATH             = ROOT_SO_PATH + "/Database/Databases.asset";
+        //private const string SCENES_SO_PATH                = ROOT_SO_PATH + "/Scenes.asset";
+        private const string ARCADE_CONTEXT_SO_PATH        = ROOT_SO_PATH + "/Editor/EditorArcadeContext.asset";
 
         private static GameObject _dummyGamePrefab;
         private static GameObject _dummyPropPrefab;
 
         public ArcadeManager()
         {
-            string dataPath       = SystemUtils.GetDataPath();
-            VirtualFileSystem vfs = AssetDatabase.LoadAssetAtPath<VirtualFileSystem>(VIRTUAL_FILE_SYSTEM_SO_PATH)
-                .MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
-                .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
-                .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
-                .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
-                .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
-                .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
-                .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
-
             Player player = Object.FindObjectOfType<Player>();
             if (player == null)
                 return;
 
             player.Initialize();
 
+            string dataPath       = SystemUtils.GetDataPath();
+            VirtualFileSystem vfs = AssetDatabase.LoadAssetAtPath<VirtualFileSystem>(VIRTUAL_FILE_SYSTEM_SO_PATH);
+            _ = vfs.MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
+                   .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
+                   .MountDirectory("platform_cfgs", $"{dataPath}/3darcade~/Configuration/Platforms")
+                   .MountDirectory("arcade_cfgs", $"{dataPath}/3darcade~/Configuration/Arcades")
+                   .MountDirectory("gamelist_cfgs", $"{dataPath}/3darcade~/Configuration/Gamelists")
+                   .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
+                   .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
+
             GeneralConfigurationVariable generalConfiguration = AssetDatabase.LoadAssetAtPath<GeneralConfigurationVariable>(GENERAL_CONFIGURATION_SO_PATH);
             generalConfiguration.Initialize();
 
-            EmulatorDatabase emulatorDatabase = new EmulatorDatabase(vfs);
-            PlatformDatabase platformDatabase = new PlatformDatabase(vfs);
-            ArcadeDatabase arcadeDatabase     = new ArcadeDatabase(vfs);
-            GameDatabase gameDatabase         = new GameDatabase(vfs);
-            Databases databases               = AssetDatabase.LoadAssetAtPath<Databases>(DATABASES_SO_PATH);
-            databases.Construct(emulatorDatabase, platformDatabase, arcadeDatabase, gameDatabase);
+            //EmulatorDatabase emulatorDatabase = new EmulatorDatabase(vfs);
+            //PlatformDatabase platformDatabase = new PlatformDatabase(vfs);
+            //ArcadeDatabase arcadeDatabase     = new ArcadeDatabase(vfs);
+            //GameDatabase gameDatabase         = new GameDatabase(vfs);
+            Databases databases = AssetDatabase.LoadAssetAtPath<Databases>(DATABASES_SO_PATH);
+            //databases.Construct(emulatorDatabase, platformDatabase, arcadeDatabase, gameDatabase);
             databases.Initialize();
 
-            EditorEntitiesSceneCreator sceneCreator = new EditorEntitiesSceneCreator();
-            EntitiesScene entitiesScene             = new EntitiesScene(sceneCreator);
-            EditorArcadeSceneLoader sceneLoader     = new EditorArcadeSceneLoader();
-            ArcadeScene arcadeScene                 = new ArcadeScene(sceneLoader);
-            Scenes scenes                           = new Scenes(entitiesScene, arcadeScene);
+            //Scenes scenes = AssetDatabase.LoadAssetAtPath<Scenes>(SCENES_SO_PATH);
 
             ArcadeSceneAddressesProvider arcadeSceneAddressesProvider = new ArcadeSceneAddressesProvider();
             GamePrefabAddressesProvider gamePrefabAddressesProvider   = new GamePrefabAddressesProvider();
@@ -80,8 +79,10 @@ namespace Arcade.UnityEditor
                                                                                                     gamePrefabAddressesProvider,
                                                                                                     propPrefabAddressesProvider);
 
-            ArcadeContext = ScriptableObject.CreateInstance<ArcadeContext>();
-            ArcadeContext.Construct(null, player, generalConfiguration, databases, scenes, addressesProviders);
+            IModelSpawner modelSpawner = new EditorModelSpawner();
+
+            ArcadeContext = AssetDatabase.LoadAssetAtPath<ArcadeContext>(ARCADE_CONTEXT_SO_PATH);
+            ArcadeContext.Construct(null, player, addressesProviders, modelSpawner);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)

@@ -30,6 +30,8 @@ namespace Arcade
     {
         [SerializeField] private ModelConfiguration _modelConfiguration = default;
 
+        public int OriginalLayer { get; set; }
+
         public ModelConfiguration Configuration => _modelConfiguration;
 
         public ModelConfiguration GetModelConfigurationWithUpdatedTransforms()
@@ -39,6 +41,8 @@ namespace Arcade
             _modelConfiguration.Scale    = transform.localScale;
             return _modelConfiguration;
         }
+
+        public void ResetLayer() => gameObject.SetLayersRecursively(OriginalLayer);
 
         public void SetModelConfiguration(ModelConfiguration modelConfiguration) => _modelConfiguration = modelConfiguration;
     }
