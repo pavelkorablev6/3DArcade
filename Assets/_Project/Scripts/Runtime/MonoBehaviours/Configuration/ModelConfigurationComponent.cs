@@ -28,11 +28,22 @@ namespace Arcade
     [DisallowMultipleComponent, SelectionBase]
     public sealed class ModelConfigurationComponent : MonoBehaviour
     {
-        [SerializeField] private ModelConfiguration _modelConfiguration = default;
-
-        public int OriginalLayer { get; set; }
+        [SerializeField] private ModelConfiguration _modelConfiguration;
 
         public ModelConfiguration Configuration => _modelConfiguration;
+
+        private int _originalLayer;
+
+        public void InitialSetup(ModelConfiguration modelConfiguration, int layer)
+        {
+            _modelConfiguration = modelConfiguration;
+            _originalLayer      = layer;
+
+            transform.name       = modelConfiguration.Id;
+            transform.localScale = modelConfiguration.Scale;
+
+            transform.SetLayerRecursively(layer);
+        }
 
         public ModelConfiguration GetModelConfigurationWithUpdatedTransforms()
         {
@@ -42,8 +53,6 @@ namespace Arcade
             return _modelConfiguration;
         }
 
-        public void ResetLayer() => gameObject.SetLayersRecursively(OriginalLayer);
-
-        public void SetModelConfiguration(ModelConfiguration modelConfiguration) => _modelConfiguration = modelConfiguration;
+        public void ResetLayer() => transform.SetLayerRecursively(_originalLayer);
     }
 }

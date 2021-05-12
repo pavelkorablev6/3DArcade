@@ -143,7 +143,7 @@ namespace Arcade.UnityEditor
             if (!EntitiesScene.TryGetGamesNode(out Transform gamesNode))
                 return;
 
-            SpawnEntity(gamesNode, _dummyGamePrefab);
+            SpawnEntity(_dummyGamePrefab, gamesNode, LayerMask.NameToLayer("Arcade/GameModels"));
         }
 
         public static void SpawnProp()
@@ -151,10 +151,10 @@ namespace Arcade.UnityEditor
             if (!ValidatePrefabStatus("pfDummyPropModel", ref _dummyPropPrefab))
                 return;
 
-            if (!EntitiesScene.TryGetPropsNode(out Transform gamesNode))
+            if (!EntitiesScene.TryGetPropsNode(out Transform propsNode))
                 return;
 
-            SpawnEntity(gamesNode, _dummyPropPrefab);
+            SpawnEntity(_dummyPropPrefab, propsNode, LayerMask.NameToLayer("Arcade/PropModels"));
         }
 
         private static bool ValidatePrefabStatus(string prefabName, ref GameObject outPrefab)
@@ -167,20 +167,16 @@ namespace Arcade.UnityEditor
             return outPrefab != null;
         }
 
-        private static void SpawnEntity(Transform parent, GameObject prefab)
+        private static void SpawnEntity(GameObject prefab, Transform parent, int layer)
         {
             if (parent == null || prefab == null)
                 return;
 
             GameObject gameObject = Object.Instantiate(prefab, parent);
-            gameObject.name       = "set_proper_id";
 
-            ModelConfiguration modelConfiguration = new ModelConfiguration
-            {
-                Id = "id"
-            };
+            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "default_id" };
             gameObject.AddComponent<ModelConfigurationComponent>()
-                      .SetModelConfiguration(modelConfiguration);
+                      .InitialSetup(modelConfiguration, layer);
 
             Scene entititesScene = SceneManager.GetSceneByName(EntitiesScene.ARCADE_SETUP_SCENE_NAME);
             _ = EditorSceneManager.MarkSceneDirty(entititesScene);
@@ -188,47 +184,5 @@ namespace Arcade.UnityEditor
             Selection.activeGameObject = gameObject;
             EditorGUIUtility.PingObject(gameObject);
         }
-
-        //public void SaveArcade(ArcadeConfigurationComponent arcadeConfiguration)
-        //{
-            //_playerCylControls.gameObject.SetActive(true);
-            //_playerCylControls.gameObject.SetActive(false);
-
-            //Camera camera                          = _playerFpsControls.Camera;
-            //CinemachineNewVirtualCamera virtualCamera = _playerFpsControls.VirtualCamera;
-            //CinemachineTransposer transposer       = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-
-            //CameraSettings fpsCameraSettings = new CameraSettings
-            //{
-            //    Position      = _playerFpsControls.transform.position,
-            //    Rotation      = MathUtils.CorrectEulerAngles(camera.transform.eulerAngles),
-            //    Height        = transposer.m_FollowOffset.y,
-            //    Orthographic  = camera.orthographic,
-            //    FieldOfView   = virtualCamera.m_Lens.FieldOfView,
-            //    AspectRatio   = virtualCamera.m_Lens.OrthographicSize,
-            //    NearClipPlane = virtualCamera.m_Lens.NearClipPlane,
-            //    FarClipPlane  = virtualCamera.m_Lens.FarClipPlane,
-            //    ViewportRect  = camera.rect
-            //};
-
-            //camera        = _playerCylControls.Camera;
-            //virtualCamera = _playerCylControls.VirtualCamera;
-            //transposer    = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-
-            //CameraSettings cylCameraSettings = new CameraSettings
-            //{
-            //    Position      = _playerCylControls.transform.position,
-            //    Rotation      = MathUtils.CorrectEulerAngles(camera.transform.eulerAngles),
-            //    Height        = transposer.m_FollowOffset.y,
-            //    Orthographic  = camera.orthographic,
-            //    FieldOfView   = virtualCamera.m_Lens.FieldOfView,
-            //    AspectRatio   = virtualCamera.m_Lens.OrthographicSize,
-            //    NearClipPlane = virtualCamera.m_Lens.NearClipPlane,
-            //    FarClipPlane  = virtualCamera.m_Lens.FarClipPlane,
-            //    ViewportRect  = camera.rect
-            //};
-
-            //_ = arcadeConfiguration.Save(_arcadeDatabase, fpsCameraSettings, cylCameraSettings, !_playerCylControls.gameObject.activeInHierarchy);
-        //}
     }
 }

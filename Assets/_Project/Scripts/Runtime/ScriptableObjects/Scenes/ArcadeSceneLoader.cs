@@ -66,11 +66,11 @@ namespace Arcade
             foreach (GameObject gameObject in rootObjects)
             {
                 if (gameObject.TryGetComponent(out Collider _))
-                    gameObject.transform.SetLayersRecursively(_arcadeModelsLayer);
+                    gameObject.transform.SetLayerRecursively(_arcadeModelsLayer);
 
                 Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(true);
                 foreach (Collider collider in colliders)
-                    collider.transform.SetLayersRecursively(_arcadeModelsLayer);
+                    collider.transform.SetLayerRecursively(_arcadeModelsLayer);
             }
 
             _ = SceneManager.SetActiveScene(_sceneInstance.Scene);

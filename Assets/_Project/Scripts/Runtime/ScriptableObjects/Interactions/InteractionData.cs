@@ -46,7 +46,7 @@ namespace Arcade
             if (Current == null)
                 return;
 
-            Current.gameObject.SetLayersRecursively(_selectionLayer);
+            Current.gameObject.SetLayerRecursively(_selectionLayer);
 
             Last = Current;
         }

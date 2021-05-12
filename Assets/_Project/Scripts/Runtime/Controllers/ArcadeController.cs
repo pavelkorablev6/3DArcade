@@ -61,7 +61,7 @@ namespace Arcade
 
             ReflectionProbe[] probes = Object.FindObjectsOfType<ReflectionProbe>();
             foreach (ReflectionProbe probe in probes)
-                probe.RenderProbe();
+                _ = probe.RenderProbe();
 
             Loaded = true;
         }
@@ -180,26 +180,9 @@ namespace Arcade
                 rotation = Quaternion.identity;
             }
 
-            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
+            GameObject go = await SpawnModel(modelConfiguration, position, rotation, parent, layer, addressesToTry);
             if (go == null)
                 return null;
-
-            go.name                 = modelConfiguration.Id;
-            go.transform.localScale = modelConfiguration.Scale;
-            go.layer                = layer;
-
-            ModelConfigurationComponent modelConfigurationComponent = go.AddComponent<ModelConfigurationComponent>();
-            modelConfigurationComponent.SetModelConfiguration(modelConfiguration);
-            modelConfigurationComponent.OriginalLayer = layer;
-
-            if (_arcadeContext.GeneralConfiguration.EnableVR)
-                _ = go.AddComponent<XRSimpleInteractable>();
-            else
-            {
-                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
-                if (vCam != null)
-                    vCam.Priority = 0;
-            }
 
             if (applyArtworks)
                 await ApplyArtworks(go, modelConfiguration);
@@ -213,12 +196,8 @@ namespace Arcade
             if (go == null)
                 return null;
 
-            go.name                 = modelConfiguration.Id;
-            go.transform.localScale = modelConfiguration.Scale;
-            go.layer                = layer;
-
             go.AddComponent<ModelConfigurationComponent>()
-              .SetModelConfiguration(modelConfiguration);
+              .InitialSetup(modelConfiguration, layer);
 
             if (_arcadeContext.GeneralConfiguration.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();

@@ -28,33 +28,33 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/VirtualFileSystem", fileName = "VirtualFileSystem")]
     public sealed class VirtualFileSystem : ScriptableObject
     {
-        private Dictionary<string, string> MountedDirectories { get; } = new Dictionary<string, string>();
-        private Dictionary<string, string> MountedFiles       { get; } = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _mountedDirectories = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _mountedFiles       = new Dictionary<string, string>();
 
         public VirtualFileSystem MountDirectory(string alias, string path)
         {
-            if (!MountedDirectories.ContainsKey(alias))
-                MountedDirectories.Add(alias, path);
+            if (!_mountedDirectories.ContainsKey(alias))
+                _mountedDirectories.Add(alias, path);
             return this;
         }
 
         public VirtualFileSystem MountFile(string alias, string path)
         {
-            if (!MountedFiles.ContainsKey(alias))
-                MountedFiles.Add(alias, path);
+            if (!_mountedFiles.ContainsKey(alias))
+                _mountedFiles.Add(alias, path);
             return this;
         }
 
         public string GetDirectory(string alias)
         {
-            if (MountedDirectories.TryGetValue(alias, out string result))
+            if (_mountedDirectories.TryGetValue(alias, out string result))
                 return result;
             return null;
         }
 
         public string GetFile(string alias)
         {
-            if (MountedFiles.TryGetValue(alias, out string result))
+            if (_mountedFiles.TryGetValue(alias, out string result))
                 return result;
             return null;
         }
