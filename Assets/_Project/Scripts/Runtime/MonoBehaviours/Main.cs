@@ -178,7 +178,7 @@ namespace Arcade
             Vector3 playerDirection = playerTransform.forward;
             float spawnDistance     = 2f;
 
-            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "default_id", Overrides = new ModelConfigurationOverrides { Model = "_editmode_add" } };
+            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "default_id" };
 
             Vector3 verticalOffset   = Vector3.up * 0.4f;
             Vector3 spawnPosition    = playerPosition + verticalOffset + playerDirection * spawnDistance;
