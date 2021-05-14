@@ -24,6 +24,6 @@ namespace Arcade
 {
     public sealed class ArcadeEditModeNullState : ArcadeEditModeState
     {
-        public override void OnEnter() => Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.Reset();
+        public override void OnEnter() => Context.ArcadeContext.InteractionControllers.Reset();
     }
 }

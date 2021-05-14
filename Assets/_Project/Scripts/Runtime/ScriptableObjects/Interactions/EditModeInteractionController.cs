@@ -21,41 +21,48 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Arcade
 {
     [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionController", fileName = "EditModeInteractionController")]
     public sealed class EditModeInteractionController : InteractionController<EditModeInteractionData>
     {
+        protected override Ray GetRay()
+        {
+            if (Cursor.lockState == CursorLockMode.Locked || Mouse.current == null)
+                return Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            return Camera.ScreenPointToRay(mousePosition);
+        }
+
         public void ManualMoveAndRotate()
         {
-            if (_interactionData == null || _interactionData.Rigidbody == null)
+            if (_interactionData.Rigidbody == null)
                 return;
 
-            Transform transform = _interactionData.Current.transform;
-
-            Rigidbody rigidbody  = _interactionData.Rigidbody;
-            rigidbody.constraints = RigidbodyConstraints.None;
+            _interactionData.Rigidbody.constraints = RigidbodyConstraints.None;
 
             // Position
             Vector2 aimPosition = _interactionData.AimPosition;
             if (aimPosition.sqrMagnitude > 0.001f)
             {
-                rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+                _interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
-                rigidbody.AddForce(-transform.forward * aimPosition.y, ForceMode.VelocityChange);
-                rigidbody.AddForce(-transform.right * aimPosition.x, ForceMode.VelocityChange);
+                _interactionData.Rigidbody.AddForce(-_interactionData.Current.transform.forward * aimPosition.y, ForceMode.VelocityChange);
+                _interactionData.Rigidbody.AddForce(-_interactionData.Current.transform.right * aimPosition.x, ForceMode.VelocityChange);
             }
-            rigidbody.AddForce(Vector3.right * -rigidbody.velocity.x, ForceMode.VelocityChange);
-            rigidbody.AddForce(Vector3.forward * -rigidbody.velocity.z, ForceMode.VelocityChange);
+            _interactionData.Rigidbody.AddForce(Vector3.right * -_interactionData.Rigidbody.velocity.x, ForceMode.VelocityChange);
+            _interactionData.Rigidbody.AddForce(Vector3.forward * -_interactionData.Rigidbody.velocity.z, ForceMode.VelocityChange);
 
             // Rotation
             float aimRotation = _interactionData.AimRotation;
             if (aimRotation < -0.5f || aimRotation > 0.5f)
             {
-                rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                _interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
-                float angle           = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
+                float angle           = Mathf.Atan2(_interactionData.Current.transform.forward.x, _interactionData.Current.transform.forward.z) * Mathf.Rad2Deg;
                 float targetAngle     = angle + aimRotation;
                 float angleDifference = (targetAngle - angle);
 
@@ -67,8 +74,8 @@ namespace Arcade
                         angleDifference = (360f - angleDifference) * -1f;
                 }
 
-                rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
-                rigidbody.AddTorque(Vector3.up * -rigidbody.angularVelocity.y, ForceMode.VelocityChange);
+                _interactionData.Rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
+                _interactionData.Rigidbody.AddTorque(Vector3.up * -_interactionData.Rigidbody.angularVelocity.y, ForceMode.VelocityChange);
             }
         }
 

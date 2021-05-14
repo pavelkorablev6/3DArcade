@@ -26,20 +26,16 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class UISelectionText : MonoBehaviour
+    public sealed class UISelectionText : MonoBehaviour
     {
-        [SerializeField] protected TMP_Text _text;
+        [SerializeField] private TMP_Text _text;
 
         public void SetText(InteractionData interactionData)
         {
-            ModelConfigurationComponent cfgComponent = GetConfigurationComponent(interactionData);
-
-            string description = GetDescription(cfgComponent);
+            string description = GetDescription(interactionData.Current);
             _text.SetText(description);
             _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
         }
-
-        protected abstract ModelConfigurationComponent GetConfigurationComponent(InteractionData interactionData);
 
         private string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
         {

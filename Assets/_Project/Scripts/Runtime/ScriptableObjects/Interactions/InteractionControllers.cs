@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
 
 namespace Arcade
@@ -27,14 +28,22 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/InteractionControllers", fileName = "InteractionControllers")]
     public sealed class InteractionControllers : ScriptableObject
     {
-        [SerializeField] private NormalModeInteractionRaycaster _normalModeRaycaster;
         [SerializeField] private NormalModeInteractionController _normalModeController;
-        [SerializeField] private EditModeInteractionRaycaster _editModeRaycaster;
         [SerializeField] private EditModeInteractionController _editModeController;
 
-        public NormalModeInteractionRaycaster NormalModeRaycaster => _normalModeRaycaster;
         public NormalModeInteractionController NormalModeController => _normalModeController;
-        public EditModeInteractionRaycaster EditModeRaycaster => _editModeRaycaster;
         public EditModeInteractionController EditModeController => _editModeController;
+
+        public void Construct(Camera camera)
+        {
+            _normalModeController.Construct(camera);
+            _editModeController.Construct(camera);
+        }
+
+        public void Reset()
+        {
+            _normalModeController.Reset();
+            _editModeController.Reset();
+        }
     }
 }

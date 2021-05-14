@@ -20,41 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
 {
     public abstract class InteractionData : ScriptableObject
     {
-        [SerializeField, Layer] protected int _selectionLayer;
+        public ModelConfigurationComponent Current => _current;
 
-        public ModelConfigurationComponent Current { get; private set; }
-        public ModelConfigurationComponent Last { get; private set; }
+        [System.NonSerialized] private ModelConfigurationComponent _current;
 
-        public virtual void Set(RaycastHit raycastHit) => Set(raycastHit.transform.GetComponent<ModelConfigurationComponent>());
+        public virtual void Set(ModelConfigurationComponent target) => _current = target;
 
-        public virtual void Reset()
+        public void Reset()
         {
-            ResetCurrentTargetLayer();
-            Current = null;
-        }
-
-        protected void Set(ModelConfigurationComponent target)
-        {
-            Current = target;
-            if (Current == null)
-                return;
-
-            Current.gameObject.SetLayerRecursively(_selectionLayer);
-
-            Last = Current;
-        }
-
-        protected void ResetCurrentTargetLayer()
-        {
-            if (Current != null)
-                Current.ResetLayer();
+            if (_current != null)
+                _current.RestoreOriginalLayer();
+            _current = null;
         }
     }
 }

@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: NormalModeInteractionController
   m_EditorClassIdentifier: 
   _interactionData: {fileID: 11400000, guid: f97278a6c18b12246b497b83c9443deb, type: 2}
+  _raycastMask:
+    serializedVersion: 2
+    m_Bits: 1920
+  _raycastMaxDistance: 1.8
+  _targetChangedEvent: {fileID: 11400000, guid: 9743def2eb04e0a48b4a7611bece5092,
+    type: 2}
   _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}

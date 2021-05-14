@@ -190,7 +190,7 @@ namespace Arcade
 
         public void RemoveModel()
         {
-            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.Last;
+            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.Current;
             if (target == null)
                 return;
 

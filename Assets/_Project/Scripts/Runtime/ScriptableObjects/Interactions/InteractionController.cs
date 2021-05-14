@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Arcade
@@ -28,7 +29,42 @@ namespace Arcade
         where T : InteractionData
     {
         [SerializeField] protected T _interactionData;
+        [SerializeField] private LayerMask _raycastMask;
+        [SerializeField] private float _raycastMaxDistance = math.INFINITY;
+        [SerializeField] private InteractionDataEvent _targetChangedEvent;
 
         public T InteractionData => _interactionData;
+        public Camera Camera => _camera;
+
+        [System.NonSerialized] private Camera _camera;
+
+        public void Construct(Camera camera) => _camera = camera;
+
+        public void UpdateCurrentTarget(bool resetCurrent = true)
+        {
+            Ray ray = GetRay();
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
+            {
+                if (resetCurrent)
+                {
+                    _interactionData.Reset();
+                    _targetChangedEvent.Raise(_interactionData);
+                }
+                return;
+            }
+
+            if (_interactionData.Current == modelConfigurationComponent)
+                return;
+
+            _interactionData.Set(modelConfigurationComponent);
+
+            _targetChangedEvent.Raise(_interactionData);
+
+            return;
+        }
+
+        public void Reset() => _interactionData.Reset();
+
+        protected abstract Ray GetRay();
     }
 }

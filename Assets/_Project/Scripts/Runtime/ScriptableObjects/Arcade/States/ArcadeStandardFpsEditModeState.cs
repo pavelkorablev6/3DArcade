@@ -46,8 +46,6 @@ namespace Arcade
 
             Context.InputActions.FpsMoveCab.Enable();
 
-            Context.InteractionControllers.NormalModeRaycaster.ResetCurrentTarget();
-
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
             Context.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));

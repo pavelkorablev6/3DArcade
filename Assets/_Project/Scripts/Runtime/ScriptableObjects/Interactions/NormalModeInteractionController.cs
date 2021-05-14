@@ -61,6 +61,8 @@ namespace Arcade
             _interactionData.Reset();
         }
 
+        protected override Ray GetRay() => Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+
         private void HandleEmulatorInteraction(ModelConfiguration modelConfiguration)
         {
             bool foundPlatform         = _arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform);

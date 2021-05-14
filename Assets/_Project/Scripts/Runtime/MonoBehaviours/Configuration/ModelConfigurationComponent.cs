@@ -31,7 +31,6 @@ namespace Arcade
         [SerializeField] private ModelConfiguration _modelConfiguration;
 
         public ModelConfiguration Configuration => _modelConfiguration;
-
         private int _originalLayer;
 
         public void InitialSetup(ModelConfiguration modelConfiguration, int layer)
@@ -39,10 +38,10 @@ namespace Arcade
             _modelConfiguration = modelConfiguration;
             _originalLayer      = layer;
 
-            transform.name       = modelConfiguration.Id;
-            transform.localScale = modelConfiguration.Scale;
+            gameObject.name = modelConfiguration.Id;
+            gameObject.SetLayerRecursively(layer);
 
-            transform.SetLayerRecursively(layer);
+            transform.localScale = modelConfiguration.Scale;
         }
 
         public ModelConfiguration GetModelConfigurationWithUpdatedTransforms()
@@ -53,6 +52,6 @@ namespace Arcade
             return _modelConfiguration;
         }
 
-        public void ResetLayer() => transform.SetLayerRecursively(_originalLayer);
+        public void RestoreOriginalLayer() => gameObject.SetLayerRecursively(_originalLayer);
     }
 }

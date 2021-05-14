@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -27,83 +28,106 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionData", fileName = "EditModeInteractionData")]
     public sealed class EditModeInteractionData : InteractionData
     {
-        private sealed class SavedData
+        private sealed class PhysicsState
         {
-            public bool ColliderIsTrigger;
-            public CollisionDetectionMode CollisionDetectionMode;
-            public RigidbodyInterpolation RigidbodyInterpolation;
-            public bool RigidbodyIsKinematic;
+            public bool ColliderIsTrigger                        = false;
+            public CollisionDetectionMode CollisionDetectionMode = CollisionDetectionMode.Discrete;
+            public RigidbodyInterpolation RigidbodyInterpolation = RigidbodyInterpolation.None;
+            public bool RigidbodyIsKinematic                     = false;
         }
 
-        public Collider Collider { get; private set; }
-        public Rigidbody Rigidbody { get; private set; }
-        public Vector2 ScreenPoint { get; private set; }
-        public Vector2 AimPosition { get; private set; }
-        public float AimRotation { get; private set; }
+        [SerializeField, Layer] private int _highlightLayer;
 
-        private SavedData _savedData;
+        [System.NonSerialized] public Vector2 ScreenPoint;
+        [System.NonSerialized] public Vector2 AimPosition;
+        [System.NonSerialized] public float AimRotation;
+        [System.NonSerialized] public Collider Collider;
+        [System.NonSerialized] public Rigidbody Rigidbody;
 
-        public override void Set(RaycastHit raycastHit)
+        [System.NonSerialized] private PhysicsState _savedData;
+
+        public void SetAimData(Camera camera, Vector2 aimPosition, float aimRotation)
         {
-            base.Set(raycastHit);
-
-            Collider  = raycastHit.collider;
-            Rigidbody = raycastHit.rigidbody;
-            if (Rigidbody != null)
-                Rigidbody.angularVelocity = Vector3.zero;
-        }
-
-        public override void Reset()
-        {
-            base.Reset();
-
-            Collider      = null;
-            if (Rigidbody != null)
-                Rigidbody.angularVelocity = Vector3.zero;
-            Rigidbody   = null;
-            ScreenPoint = Vector2.zero;
-            AimPosition = Vector2.zero;
-            AimRotation = 0f;
-        }
-
-        public void InitGrabMode()
-        {
-            ResetCurrentTargetLayer();
-
-            _savedData = new SavedData
-            {
-                ColliderIsTrigger      = Collider.isTrigger,
-                RigidbodyInterpolation = Rigidbody.interpolation,
-                CollisionDetectionMode = Rigidbody.collisionDetectionMode,
-                RigidbodyIsKinematic   = Rigidbody.isKinematic
-            };
-
-            Current.gameObject.layer         = 0;
-            Collider.isTrigger               = true;
-            Rigidbody.interpolation          = RigidbodyInterpolation.Interpolate;
-            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            Rigidbody.isKinematic            = true;
-        }
-
-        public void RestoreValues()
-        {
-            if (_savedData == null)
+            if (Current == null)
                 return;
 
-            Collider.isTrigger               = _savedData.ColliderIsTrigger;
-            Rigidbody.interpolation          = _savedData.RigidbodyInterpolation;
-            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            Rigidbody.isKinematic            = _savedData.RigidbodyIsKinematic;
-            Rigidbody.collisionDetectionMode = _savedData.CollisionDetectionMode;
+            ScreenPoint = camera.WorldToScreenPoint(Current.transform.position);
+            AimPosition = aimPosition;
+            AimRotation = aimRotation;
+        }
+
+        public override void Set(ModelConfigurationComponent target)
+        {
+            base.Set(target);
+
+            Collider  = target.GetComponent<Collider>();
+            Rigidbody = target.GetComponent<Rigidbody>();
+            target.gameObject.SetLayerRecursively(_highlightLayer);
+        }
+
+        public void InitAutoMove()
+        {
+            SavePhysicsState();
+
+            if (Collider != null)
+                Collider.isTrigger = true;
+
+            if (Rigidbody != null)
+            {
+                Rigidbody.velocity               = Vector3.zero;
+                Rigidbody.angularVelocity        = Vector3.zero;
+                Rigidbody.interpolation          = RigidbodyInterpolation.None;
+                Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                Rigidbody.isKinematic            = true;
+            }
+        }
+
+        public void DeInitAutoMove()
+        {
+            RestorePhysicsState();
+            ResetFields();
+        }
+
+        private void SavePhysicsState()
+        {
+            _savedData = new PhysicsState();
+
+            if (Collider != null)
+                _savedData.ColliderIsTrigger = Collider.isTrigger;
+
+            if (Rigidbody != null)
+            {
+                _savedData.CollisionDetectionMode = Rigidbody.collisionDetectionMode;
+                _savedData.RigidbodyInterpolation = Rigidbody.interpolation;
+                _savedData.RigidbodyIsKinematic   = Rigidbody.isKinematic;
+            }
+        }
+
+        private void RestorePhysicsState()
+        {
+            if (_savedData is null)
+                return;
+
+            if (Collider != null)
+                Collider.isTrigger = _savedData.ColliderIsTrigger;
+
+            if (Rigidbody != null)
+            {
+                Rigidbody.collisionDetectionMode = _savedData.CollisionDetectionMode;
+                Rigidbody.interpolation          = _savedData.RigidbodyInterpolation;
+                Rigidbody.isKinematic            = _savedData.RigidbodyIsKinematic;
+            }
 
             _savedData = null;
         }
 
-        public void SetAimData(Camera camera, Vector2 aimPosition, float aimRotation)
+        private void ResetFields()
         {
-            ScreenPoint = camera.WorldToScreenPoint(Current.transform.position);
-            AimPosition = aimPosition;
-            AimRotation = aimRotation;
+            ScreenPoint = Vector2.zero;
+            AimPosition = Vector2.zero;
+            AimRotation = 0f;
+            Collider    = null;
+            Rigidbody   = null;
         }
     }
 }

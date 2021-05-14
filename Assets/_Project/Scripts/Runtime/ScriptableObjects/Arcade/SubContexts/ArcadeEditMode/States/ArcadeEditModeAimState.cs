@@ -26,50 +26,66 @@ namespace Arcade
 {
     public sealed class ArcadeEditModeAimState : ArcadeEditModeState
     {
-        private static readonly float _movementSpeedMultiplier = 0.8f;
-        private static readonly float _rotationSpeedMultiplier = 0.8f;
+        [SerializeField] private float _movementSpeedMultiplier = 0.8f;
+        [SerializeField] private float _rotationSpeedMultiplier = 0.8f;
 
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            Context.ArcadeContext.InteractionControllers.EditModeRaycaster.ResetCurrentTarget();
-
-            Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
+            Context.ArcadeContext.InteractionControllers.Reset();
         }
 
         public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
         public override void OnUpdate(float dt)
         {
-            if (Context.ArcadeContext.MouseOverUI)
+            ArcadeContext arcadeContext = Context.ArcadeContext;
+
+            if (arcadeContext.MouseOverUI)
                 return;
 
-            Context.ArcadeContext.InteractionControllers.EditModeRaycaster.UpdateCurrentTarget();
+            InteractionControllers interactionControllers    = arcadeContext.InteractionControllers;
+            EditModeInteractionController editModeController = interactionControllers.EditModeController;
+            Player player                                    = arcadeContext.Player;
 
-            EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
-            if (interactionData.Current == null || !interactionData.Current.Configuration.MoveCabMovable)
+            editModeController.UpdateCurrentTarget(false);
+            if (editModeController.InteractionData.Current == null)
                 return;
 
-            Vector2 positionInput = Context.ArcadeContext.InputActions.FpsMoveCab.Move.ReadValue<Vector2>();
-            float rotationInput   = Context.ArcadeContext.InputActions.FpsMoveCab.Rotate.ReadValue<float>();
+            float dot = Vector3.Dot(editModeController.InteractionData.Current.transform.forward, -player.ActiveTransform.forward);
+            if (dot < 0.6f)
+            {
+                editModeController.UpdateCurrentTarget(true);
+                if (editModeController.InteractionData.Current == null)
+                    return;
+            }
+
+            if (editModeController.InteractionData.Current == null || !editModeController.InteractionData.Current.Configuration.MoveCabMovable)
+                return;
+
+            InputActions inputActions = arcadeContext.InputActions;
+
+            Vector2 positionInput = inputActions.FpsMoveCab.Move.ReadValue<Vector2>();
+            float rotationInput   = inputActions.FpsMoveCab.Rotate.ReadValue<float>();
             Vector2 aimPosition   = positionInput * _movementSpeedMultiplier;
             float aimRotation     = rotationInput * _rotationSpeedMultiplier;
-            interactionData.SetAimData(Context.ArcadeContext.Player.Camera, aimPosition, aimRotation);
 
-            if (!interactionData.Current.Configuration.MoveCabGrabbable)
-                return;
+            interactionControllers.EditModeController.InteractionData.SetAimData(player.Camera, aimPosition, aimRotation);
 
-            if (Context.ArcadeContext.InputActions.FpsMoveCab.Grab.triggered)
-                Context.TransitionTo<ArcadeEditModeGrabState>();
+            if (editModeController.InteractionData.Current.Configuration.MoveCabGrabbable && inputActions.FpsMoveCab.Grab.triggered)
+                Context.TransitionTo<ArcadeEditModeAutoMoveState>();
         }
 
         public override void OnFixedUpdate(float dt)
         {
-            if (Cursor.lockState == CursorLockMode.None)
+            EditModeInteractionController editModeController = Context.ArcadeContext.InteractionControllers.EditModeController;
+            ModelConfigurationComponent currentTarget        = editModeController.InteractionData.Current;
+
+            if (currentTarget == null || !currentTarget.Configuration.MoveCabMovable)
                 return;
 
-            Context.ArcadeContext.InteractionControllers.EditModeController.ManualMoveAndRotate();
+            editModeController.ManualMoveAndRotate();
         }
     }
 }

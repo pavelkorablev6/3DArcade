@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -28,8 +29,16 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionData", fileName = "NormalModeInteractionData")]
     public sealed class NormalModeInteractionData : InteractionData
     {
+        [SerializeField, Layer] private int _selectionLayer;
+
         public void HoverEnteredEventCallback(HoverEnterEventArgs args) => Set(args.interactable.GetComponent<ModelConfigurationComponent>());
 
         public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
+
+        public override void Set(ModelConfigurationComponent target)
+        {
+            base.Set(target);
+            target.gameObject.SetLayerRecursively(_selectionLayer);
+        }
     }
 }

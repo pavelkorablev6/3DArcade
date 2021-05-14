@@ -104,8 +104,7 @@ namespace Arcade
 
             _generalConfigurationVariable.Initialize();
 
-            _interactionControllers.NormalModeRaycaster.Initialize(Player.Camera);
-            _interactionControllers.EditModeRaycaster.Initialize(Player.Camera);
+            _interactionControllers.Construct(Player.Camera);
 
             arcadeConfiguration.ArcadeType = arcadeType;
             arcadeConfiguration.ArcadeMode = arcadeMode;

@@ -35,6 +35,8 @@ namespace Arcade
             if (Cursor.lockState != CursorLockMode.Locked)
                 Context.InputActions.FpsArcade.Look.Disable();
 
+            Context.InteractionControllers.Reset();
+
             Context.UIStateTransitionEvent.Raise(typeof(UIStandardNormalState));
         }
 
@@ -49,6 +51,8 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
+            Context.VideoPlayerController.UpdateVideosState();
+
             if (Context.InputActions.Global.Quit.triggered)
             {
                 ApplicationUtils.ExitApp();
@@ -58,21 +62,16 @@ namespace Arcade
             if (Context.InputActions.Global.ToggleCursor.triggered)
                 HandleCursorToggle();
 
-            Context.VideoPlayerController.UpdateVideosState();
-
-            Context.InteractionControllers.NormalModeRaycaster.UpdateCurrentTarget();
-
-            if (Context.MouseOverUI)
-                return;
-
-            if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsArcade.Interact.triggered)
+            if (Context.InputActions.FpsArcade.ToggleMoveCab.triggered)
             {
-                Context.InteractionControllers.NormalModeController.HandleInteraction();
+                Context.TransitionTo<ArcadeStandardFpsEditModeState>();
                 return;
             }
 
-            if (Context.InputActions.FpsArcade.ToggleMoveCab.triggered)
-                Context.TransitionTo<ArcadeStandardFpsEditModeState>();
+            Context.InteractionControllers.NormalModeController.UpdateCurrentTarget();
+
+            if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsArcade.Interact.triggered)
+                Context.InteractionControllers.NormalModeController.HandleInteraction();
         }
 
         private void HandleCursorToggle()

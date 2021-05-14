@@ -66,16 +66,16 @@ namespace Arcade
 
         public void SetUIData(InteractionData interactionData)
         {
-            if (interactionData.Last == null)
+            if (interactionData.Current == null)
             {
                 ResetUIData();
                 return;
             }
 
-            if (_target == interactionData.Last)
+            if (_target == interactionData.Current)
                 return;
 
-            _target = interactionData.Last;
+            _target = interactionData.Current;
 
             ModelConfiguration modelConfiguration = _target.Configuration;
 

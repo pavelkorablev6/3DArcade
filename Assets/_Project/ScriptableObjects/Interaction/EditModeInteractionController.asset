@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: EditModeInteractionController
   m_EditorClassIdentifier: 
   _interactionData: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4, type: 2}
+  _raycastMask:
+    serializedVersion: 2
+    m_Bits: 3968
+  _raycastMaxDistance: Infinity
+  _targetChangedEvent: {fileID: 11400000, guid: 9743def2eb04e0a48b4a7611bece5092,
+    type: 2}
