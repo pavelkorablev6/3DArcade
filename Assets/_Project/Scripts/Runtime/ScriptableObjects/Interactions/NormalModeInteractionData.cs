@@ -35,10 +35,6 @@ namespace Arcade
 
         public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
 
-        public override void Set(ModelConfigurationComponent target)
-        {
-            base.Set(target);
-            target.gameObject.SetLayerRecursively(_selectionLayer);
-        }
+        protected override void OnSet(ModelConfigurationComponent previous) => Current.gameObject.SetLayerRecursively(_selectionLayer);
     }
 }

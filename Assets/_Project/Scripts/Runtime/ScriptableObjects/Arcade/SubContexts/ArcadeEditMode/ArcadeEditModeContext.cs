@@ -28,8 +28,6 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditModeContext", fileName = "EditModeContext")]
     public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
-        [SerializeField] private ArcadeContext _arcadeContext;
-
-        public ArcadeContext ArcadeContext => _arcadeContext;
+        [field: SerializeField] public ArcadeContext ArcadeContext { get; private set; }
     }
 }

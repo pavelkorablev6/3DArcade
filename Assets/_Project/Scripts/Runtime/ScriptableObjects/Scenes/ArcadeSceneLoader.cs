@@ -35,14 +35,14 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/ArcadeSceneLoader", fileName = "ArcadeSceneLoader")]
     public sealed class ArcadeSceneLoader : AddressableSceneLoaderBase
     {
-        private static int _arcadeModelsLayer = -1;
+        private static int _arcadeModelsLayer = 0;
 
-        private AsyncOperationHandle<SceneInstance> _sceneHandle;
-        private SceneInstance _sceneInstance;
+        [System.NonSerialized] private AsyncOperationHandle<SceneInstance> _sceneHandle;
+        [System.NonSerialized] private SceneInstance _sceneInstance;
 
         public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)
         {
-            if (_arcadeModelsLayer == -1)
+            if (_arcadeModelsLayer == 0)
                 _arcadeModelsLayer = LayerMask.NameToLayer("Arcade/ArcadeModels");
 
             IList<IResourceLocation> resourceLocations = await Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(SceneInstance));

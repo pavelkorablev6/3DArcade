@@ -2,7 +2,7 @@
     "name": "InputActions",
     "maps": [
         {
-            "name": "Global",
+            "name": "GlobalActions",
             "id": "dcef0966-dff4-49e7-a970-23d5259d1a82",
             "actions": [
                 {
@@ -81,7 +81,7 @@
             ]
         },
         {
-            "name": "FpsArcade",
+            "name": "FpsActions",
             "id": "22122fb4-ab81-4a29-9a20-1efdb89252ad",
             "actions": [
                 {
@@ -133,7 +133,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Toggle MoveCab",
+                    "name": "Toggle EditMode",
                     "type": "Button",
                     "id": "c3ac06ce-bcb9-4007-b358-0e03157f5c46",
                     "expectedControlType": "Button",
@@ -391,7 +391,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Toggle MoveCab",
+                    "action": "Toggle EditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -402,7 +402,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Toggle MoveCab",
+                    "action": "Toggle EditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -508,7 +508,7 @@
             ]
         },
         {
-            "name": "FpsMoveCab",
+            "name": "FpsEditActions",
             "id": "826403ab-f082-4a58-8a51-3a726b972945",
             "actions": [
                 {
@@ -724,7 +724,7 @@
             ]
         },
         {
-            "name": "CylArcade",
+            "name": "CylActions",
             "id": "cee92ad0-24ac-4ae8-b5bb-9fd31a285831",
             "actions": [
                 {

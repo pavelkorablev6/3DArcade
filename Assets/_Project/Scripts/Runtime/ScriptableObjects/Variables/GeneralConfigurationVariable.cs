@@ -29,11 +29,7 @@ namespace Arcade
     {
         [SerializeField] private VirtualFileSystem _virtualFileSystem;
 
-        public void Initialize()
-        {
-            Value = _initialValue;
-            Value.Initialize(_virtualFileSystem);
-        }
+        public void Initialize() => Value.Initialize(_virtualFileSystem);
 
         public void SetMouseLookReverse(bool value) => Value.MouseLookReverse = value;
 

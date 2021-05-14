@@ -35,16 +35,16 @@ namespace Arcade
 
             _editModeContext.Start();
 
-            Context.VideoPlayerController.StopAllVideos();
+            Context.VideoPlayerController.Value.StopAllVideos();
 
-            Context.ArcadeController.StoreModelPositions();
+            Context.ArcadeController.Value.StoreModelPositions();
 
-            Context.InputActions.FpsArcade.Enable();
-            Context.InputActions.FpsArcade.Interact.Disable();
+            Context.InputActions.FpsActions.Enable();
+            Context.InputActions.FpsActions.Interact.Disable();
             if (Cursor.lockState != CursorLockMode.Locked)
-                Context.InputActions.FpsArcade.Look.Disable();
+                Context.InputActions.FpsActions.Look.Disable();
 
-            Context.InputActions.FpsMoveCab.Enable();
+            Context.InputActions.FpsEditActions.Enable();
 
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
 
@@ -55,8 +55,8 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            Context.InputActions.FpsArcade.Disable();
-            Context.InputActions.FpsMoveCab.Disable();
+            Context.InputActions.FpsActions.Disable();
+            Context.InputActions.FpsEditActions.Disable();
 
             _editModeContext.TransitionTo<ArcadeEditModeNullState>();
 
@@ -65,35 +65,35 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            if (Context.MouseOverUI)
+            if (Context.MouseOverUI.Value)
             {
-                Context.InputActions.FpsArcade.Disable();
-                Context.InputActions.FpsMoveCab.Grab.Disable();
+                Context.InputActions.FpsActions.Disable();
+                Context.InputActions.FpsEditActions.Grab.Disable();
             }
             else
             {
-                Context.InputActions.FpsArcade.Enable();
-                Context.InputActions.FpsArcade.Interact.Disable();
+                Context.InputActions.FpsActions.Enable();
+                Context.InputActions.FpsActions.Interact.Disable();
                 if (Cursor.lockState != CursorLockMode.Locked)
-                    Context.InputActions.FpsArcade.Look.Disable();
-                Context.InputActions.FpsMoveCab.Grab.Enable();
+                    Context.InputActions.FpsActions.Look.Disable();
+                Context.InputActions.FpsEditActions.Grab.Enable();
             }
 
-            if (Context.InputActions.Global.Quit.triggered)
+            if (Context.InputActions.GlobalActions.Quit.triggered)
             {
                 RevertChanges();
                 Context.TransitionToPrevious();
                 return;
             }
 
-            if (Context.InputActions.FpsArcade.ToggleMoveCab.triggered)
+            if (Context.InputActions.FpsActions.ToggleEditMode.triggered)
             {
                 SaveChanges();
                 Context.TransitionToPrevious();
                 return;
             }
 
-            if (Context.InputActions.Global.ToggleCursor.triggered)
+            if (Context.InputActions.GlobalActions.ToggleCursor.triggered)
                 HandleCursorToggle();
 
             _editModeContext.OnUpdate(dt);
@@ -103,7 +103,7 @@ namespace Arcade
 
         private void RevertChanges()
         {
-            Context.ArcadeController.RestoreModelPositions();
+            Context.ArcadeController.Value.RestoreModelPositions();
             _editModeContext.TransitionTo<ArcadeEditModeNullState>();
         }
 
@@ -117,9 +117,9 @@ namespace Arcade
         {
             CursorUtils.ToggleMouseCursor();
             if (Cursor.lockState == CursorLockMode.Locked)
-                Context.InputActions.FpsArcade.Look.Enable();
+                Context.InputActions.FpsActions.Look.Enable();
             else
-                Context.InputActions.FpsArcade.Look.Disable();
+                Context.InputActions.FpsActions.Look.Disable();
         }
     }
 }

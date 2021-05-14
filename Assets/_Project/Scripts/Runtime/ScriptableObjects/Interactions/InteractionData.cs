@@ -26,17 +26,33 @@ namespace Arcade
 {
     public abstract class InteractionData : ScriptableObject
     {
-        public ModelConfigurationComponent Current => _current;
+        [field: System.NonSerialized] public ModelConfigurationComponent Current { get; private set; }
 
-        [System.NonSerialized] private ModelConfigurationComponent _current;
+        public void Set(ModelConfigurationComponent target)
+        {
+            if (Current != null)
+                Current.RestoreOriginalLayer();
 
-        public virtual void Set(ModelConfigurationComponent target) => _current = target;
+            ModelConfigurationComponent previous = Current;
+
+            Current = target;
+
+            if (Current != null)
+                OnSet(previous);
+        }
+
+        public void RestoreCurrentTargetLayer()
+        {
+            if (Current != null)
+                Current.RestoreOriginalLayer();
+        }
 
         public void Reset()
         {
-            if (_current != null)
-                _current.RestoreOriginalLayer();
-            _current = null;
+            RestoreCurrentTargetLayer();
+            Current = null;
         }
+
+        protected abstract void OnSet(ModelConfigurationComponent previous);
     }
 }

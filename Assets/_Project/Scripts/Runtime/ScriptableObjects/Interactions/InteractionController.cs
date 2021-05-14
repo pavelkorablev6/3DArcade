@@ -28,42 +28,37 @@ namespace Arcade
     public abstract class InteractionController<T> : ScriptableObject
         where T : InteractionData
     {
-        [SerializeField] protected T _interactionData;
+        [field: SerializeField] public T InteractionData { get; protected set; }
+
         [SerializeField] private LayerMask _raycastMask;
         [SerializeField] private float _raycastMaxDistance = math.INFINITY;
         [SerializeField] private InteractionDataEvent _targetChangedEvent;
 
-        public T InteractionData => _interactionData;
-        public Camera Camera => _camera;
+        [field: System.NonSerialized] protected Camera Camera { get; private set; }
 
-        [System.NonSerialized] private Camera _camera;
-
-        public void Construct(Camera camera) => _camera = camera;
+        public void Construct(Camera camera) => Camera = camera;
 
         public void UpdateCurrentTarget(bool resetCurrent = true)
         {
             Ray ray = GetRay();
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
             {
-                if (resetCurrent)
+                if (resetCurrent && _targetChangedEvent.Value != InteractionData.Current)
                 {
-                    _interactionData.Reset();
-                    _targetChangedEvent.Raise(_interactionData);
+                    InteractionData.Set(null);
+                    _targetChangedEvent.Raise(null);
                 }
                 return;
             }
 
-            if (_interactionData.Current == modelConfigurationComponent)
+            if (InteractionData.Current == modelConfigurationComponent)
                 return;
 
-            _interactionData.Set(modelConfigurationComponent);
-
-            _targetChangedEvent.Raise(_interactionData);
-
-            return;
+            InteractionData.Set(modelConfigurationComponent);
+            _targetChangedEvent.Raise(InteractionData);
         }
 
-        public void Reset() => _interactionData.Reset();
+        public void Reset() => InteractionData.Reset();
 
         protected abstract Ray GetRay();
     }

@@ -42,10 +42,10 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            if (!Context.ArcadeController.Loaded)
+            if (!Context.ArcadeController.Value.Loaded)
                 return;
 
-            switch (Context.ArcadeConfiguration.ArcadeType)
+            switch (Context.ArcadeConfiguration.Value.ArcadeType)
             {
                 case ArcadeType.Fps:
                     Context.TransitionTo<ArcadeVirtualRealityFpsNormalState>();

@@ -31,7 +31,7 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            Context.VideoPlayerController.StopAllVideos();
+            Context.VideoPlayerController.Value.StopAllVideos();
 
 #if UNITY_EDITOR_WIN
             SaveUnityWindow();

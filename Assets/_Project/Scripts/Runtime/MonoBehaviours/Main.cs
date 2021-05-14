@@ -103,21 +103,21 @@ namespace Arcade
         {
             if (enable)
             {
-                _arcadeContext.InputActions.FpsArcade.Enable();
+                _arcadeContext.InputActions.FpsActions.Enable();
                 if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.FpsArcade.Look.Disable();
+                    _arcadeContext.InputActions.FpsActions.Look.Disable();
 
-                _arcadeContext.InputActions.FpsMoveCab.Enable();
+                _arcadeContext.InputActions.FpsEditActions.Enable();
 
-                _arcadeContext.InputActions.CylArcade.Enable();
+                _arcadeContext.InputActions.CylActions.Enable();
                 if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.CylArcade.Look.Disable();
+                    _arcadeContext.InputActions.CylActions.Look.Disable();
             }
             else
             {
-                _arcadeContext.InputActions.FpsArcade.Disable();
-                _arcadeContext.InputActions.FpsMoveCab.Disable();
-                _arcadeContext.InputActions.CylArcade.Disable();
+                _arcadeContext.InputActions.FpsActions.Disable();
+                _arcadeContext.InputActions.FpsEditActions.Disable();
+                _arcadeContext.InputActions.CylActions.Disable();
             }
         }
 
@@ -125,31 +125,31 @@ namespace Arcade
         {
             if (enable)
             {
-                _arcadeContext.InputActions.FpsArcade.Enable();
+                _arcadeContext.InputActions.FpsActions.Enable();
                 if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.FpsArcade.Look.Disable();
+                    _arcadeContext.InputActions.FpsActions.Look.Disable();
 
-                _arcadeContext.InputActions.FpsMoveCab.Enable();
+                _arcadeContext.InputActions.FpsEditActions.Enable();
 
-                _arcadeContext.InputActions.CylArcade.Enable();
+                _arcadeContext.InputActions.CylActions.Enable();
                 if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.CylArcade.Look.Disable();
+                    _arcadeContext.InputActions.CylActions.Look.Disable();
             }
             else
             {
-                _arcadeContext.InputActions.FpsArcade.Interact.Disable();
-                _arcadeContext.InputActions.FpsArcade.Look.Disable();
+                _arcadeContext.InputActions.FpsActions.Interact.Disable();
+                _arcadeContext.InputActions.FpsActions.Look.Disable();
 
-                _arcadeContext.InputActions.FpsMoveCab.Grab.Disable();
+                _arcadeContext.InputActions.FpsEditActions.Grab.Disable();
 
-                _arcadeContext.InputActions.CylArcade.Interact.Disable();
-                _arcadeContext.InputActions.CylArcade.Look.Disable();
+                _arcadeContext.InputActions.CylActions.Interact.Disable();
+                _arcadeContext.InputActions.CylActions.Look.Disable();
             }
         }
 
         public void TransitionToFpsNormalState()
         {
-            if (_arcadeContext.GeneralConfiguration.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsNormalState>();
@@ -157,7 +157,7 @@ namespace Arcade
 
         public void TransitionToFpsEditModeState()
         {
-            if (_arcadeContext.GeneralConfiguration.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
             else
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
@@ -178,13 +178,13 @@ namespace Arcade
             Vector3 playerDirection = playerTransform.forward;
             float spawnDistance     = 2f;
 
-            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "id" };
+            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "default_id", Overrides = new ModelConfigurationOverrides { Model = "_editmode_add" } };
 
             Vector3 verticalOffset   = Vector3.up * 0.4f;
             Vector3 spawnPosition    = playerPosition + verticalOffset + playerDirection * spawnDistance;
             Quaternion spawnRotation = Quaternion.LookRotation(-playerDirection);
 
-            GameObject spawnedModel = await _arcadeContext.ArcadeController.SpawnGame(modelConfiguration, spawnPosition, spawnRotation);
+            GameObject spawnedModel = await _arcadeContext.ArcadeController.Value.SpawnGame(modelConfiguration, spawnPosition, spawnRotation);
             _editModeAddedItems.Add(spawnedModel);
         }
 
@@ -204,7 +204,7 @@ namespace Arcade
                 ObjectUtils.DestroyObject(item);
             _editModeAddedItems.Clear();
 
-            _arcadeContext.ArcadeController?.RestoreModelPositions();
+            _arcadeContext.ArcadeController.Value.RestoreModelPositions();
         }
 
         public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);

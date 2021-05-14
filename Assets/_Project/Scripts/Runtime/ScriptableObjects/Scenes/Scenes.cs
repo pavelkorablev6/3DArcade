@@ -27,10 +27,7 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Scenes", fileName = "Scenes")]
     public sealed class Scenes : ScriptableObject
     {
-        [SerializeField] private EntitiesScene _entitiesScene;
-        [SerializeField] private ArcadeScene _arcadeScene;
-
-        public EntitiesScene Entities => _entitiesScene;
-        public ArcadeScene Arcade => _arcadeScene;
+        [field: SerializeField] public EntitiesScene Entities { get; private set; }
+        [field: SerializeField] public ArcadeScene Arcade { get; private set; }
     }
 }

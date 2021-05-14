@@ -88,10 +88,10 @@ namespace Arcade
 
         private async UniTask SpawnGames()
         {
-            if (_arcadeContext.ArcadeConfiguration.Games == null)
+            if (_arcadeContext.ArcadeConfiguration.Value.Games == null)
                 return;
 
-            foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Games)
+            foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Value.Games)
             {
                 GameObject go = await SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
                 _gameModels.Add(go.GetComponent<ModelConfigurationComponent>());
@@ -100,16 +100,16 @@ namespace Arcade
 
         private async UniTask SpawProps()
         {
-            switch (_arcadeContext.ArcadeConfiguration.ArcadeType)
+            switch (_arcadeContext.ArcadeConfiguration.Value.ArcadeType)
             {
                 case ArcadeType.Fps:
-                    await SpawnProps(_arcadeContext.ArcadeConfiguration.FpsArcadeProperties.Props);
+                    await SpawnProps(_arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.Props);
                     break;
                 case ArcadeType.Cyl:
-                    await SpawnProps(_arcadeContext.ArcadeConfiguration.CylArcadeProperties.Props);
+                    await SpawnProps(_arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.Props);
                     break;
                 default:
-                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeConfiguration.ArcadeType}");
+                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeConfiguration.Value.ArcadeType}");
             }
         }
 
@@ -199,7 +199,7 @@ namespace Arcade
             go.AddComponent<ModelConfigurationComponent>()
               .InitialSetup(modelConfiguration, layer);
 
-            if (_arcadeContext.GeneralConfiguration.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _ = go.AddComponent<XRSimpleInteractable>();
             else
             {

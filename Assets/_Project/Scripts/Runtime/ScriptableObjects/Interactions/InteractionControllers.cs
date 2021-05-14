@@ -28,22 +28,19 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/InteractionControllers", fileName = "InteractionControllers")]
     public sealed class InteractionControllers : ScriptableObject
     {
-        [SerializeField] private NormalModeInteractionController _normalModeController;
-        [SerializeField] private EditModeInteractionController _editModeController;
-
-        public NormalModeInteractionController NormalModeController => _normalModeController;
-        public EditModeInteractionController EditModeController => _editModeController;
+        [field: SerializeField] public NormalModeInteractionController NormalModeController { get; private set; }
+        [field: SerializeField] public EditModeInteractionController EditModeController { get; private set; }
 
         public void Construct(Camera camera)
         {
-            _normalModeController.Construct(camera);
-            _editModeController.Construct(camera);
+            NormalModeController.Construct(camera);
+            EditModeController.Construct(camera);
         }
 
         public void Reset()
         {
-            _normalModeController.Reset();
-            _editModeController.Reset();
+            NormalModeController.Reset();
+            EditModeController.Reset();
         }
     }
 }

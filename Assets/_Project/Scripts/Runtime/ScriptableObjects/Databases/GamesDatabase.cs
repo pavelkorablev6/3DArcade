@@ -92,12 +92,12 @@ namespace Arcade
 
         [SerializeField] private VirtualFileSystem _virtualFileSystem;
 
-        private SQLiteDatabase Database { get; set; }
+        [System.NonSerialized] private SQLiteDatabase _database;
 
         public void Initialize()
         {
             string path = _virtualFileSystem.GetFile("game_database");
-            Database    = new SQLiteDatabase(path);
+            _database   = new SQLiteDatabase(path);
             CreateInternalTables();
         }
 
@@ -109,42 +109,42 @@ namespace Arcade
                 return false;
             }
 
-            outGame = Database.Get<GameConfiguration>(gameListName, returnFields, searchFields, new { Name = gameName });
+            outGame = _database.Get<GameConfiguration>(gameListName, returnFields, searchFields, new { Name = gameName });
             return outGame != null;
         }
 
         public void AddGenre(string value)
         {
             if (!string.IsNullOrEmpty(value))
-                Database.Insert(new DBGenre { Genre = value });
+                _database.Insert(new DBGenre { Genre = value });
         }
 
         public void AddYear(string value)
         {
             if (!string.IsNullOrEmpty(value))
-                Database.Insert(new DBYear { Year = value });
+                _database.Insert(new DBYear { Year = value });
         }
 
         public void AddManufacturer(string value)
         {
             if (!string.IsNullOrEmpty(value))
-                Database.Insert(new DBManufacturer { Manufacturer = value });
+                _database.Insert(new DBManufacturer { Manufacturer = value });
         }
 
         public void AddScreenType(string value)
         {
             if (!string.IsNullOrEmpty(value))
-                Database.Insert(new DBScreenType { ScreenType = value });
+                _database.Insert(new DBScreenType { ScreenType = value });
         }
 
-        public void AddScreenRotation(int value) => Database.Insert(new DBScreenRotation { ScreenRotation = value });
+        public void AddScreenRotation(int value) => _database.Insert(new DBScreenRotation { ScreenRotation = value });
 
         public void AddGenres(IReadOnlyCollection<string> values)
         {
             if (values == null || values.Count == 0)
                 return;
 
-            Database.Insert(values.Select(x => new DBGenre { Genre = x })
+            _database.Insert(values.Select(x => new DBGenre { Genre = x })
                                    .OrderBy(x => x.Genre)
                                    .ToArray());
         }
@@ -154,7 +154,7 @@ namespace Arcade
             if (values == null || values.Count == 0)
                 return;
 
-            Database.Insert(values.Select(x => new DBYear { Year = x })
+            _database.Insert(values.Select(x => new DBYear { Year = x })
                                    .OrderBy(x => x.Year)
                                    .ToArray());
         }
@@ -164,7 +164,7 @@ namespace Arcade
             if (values == null || values.Count == 0)
                 return;
 
-            Database.Insert(values.Select(x => new DBManufacturer { Manufacturer = x })
+            _database.Insert(values.Select(x => new DBManufacturer { Manufacturer = x })
                                    .OrderBy(x => x.Manufacturer)
                                    .ToArray());
         }
@@ -174,7 +174,7 @@ namespace Arcade
             if (values == null || values.Count == 0)
                 return;
 
-            Database.Insert(values.Select(x => new DBScreenType { ScreenType = x })
+            _database.Insert(values.Select(x => new DBScreenType { ScreenType = x })
                                    .OrderBy(x => x.ScreenType)
                                    .ToArray());
         }
@@ -184,12 +184,12 @@ namespace Arcade
             if (values == null || values.Count == 0)
                 return;
 
-            Database.Insert(values.Select(x => new DBScreenRotation { ScreenRotation = x })
+            _database.Insert(values.Select(x => new DBScreenRotation { ScreenRotation = x })
                                    .OrderBy(x => x.ScreenRotation)
                                    .ToArray());
         }
 
-        public void AddGameList(string name) => Database.CreateTable(name, false, DBGame.Columns);
+        public void AddGameList(string name) => _database.CreateTable(name, false, DBGame.Columns);
 
         public void AddGame(string gameListName, GameConfiguration game)
         {
@@ -197,7 +197,7 @@ namespace Arcade
                 return;
 
             DBGame gameToInsert = GetDatabaseGame(game);
-            Database.Insert(gameListName, gameToInsert);
+            _database.Insert(gameListName, gameToInsert);
         }
 
         public void AddGames(string gameListName, IReadOnlyCollection<GameConfiguration> games)
@@ -206,7 +206,7 @@ namespace Arcade
                 return;
 
             IEnumerable<DBGame> gamesToInsert = games.Select(game => GetDatabaseGame(game)).ToArray();
-            Database.Insert(gameListName, gamesToInsert);
+            _database.Insert(gameListName, gamesToInsert);
         }
 
         private void CreateInternalTables()
@@ -221,55 +221,55 @@ namespace Arcade
 
         private void CreateGenresTable()
         {
-            Database.CreateTable(INTERNAL_TABLE_NAME_GENRES, false,
+            _database.CreateTable(INTERNAL_TABLE_NAME_GENRES, false,
                 "Id    INTEGER",
                 "Genre TEXT NOT NULL UNIQUE ON CONFLICT IGNORE",
                 "PRIMARY KEY(Id)");
 
-            Database.Insert(new DBGenre { Genre = "Not Set" });
+            _database.Insert(new DBGenre { Genre = "Not Set" });
         }
 
         private void CreateYearsTable()
         {
-            Database.CreateTable(INTERNAL_TABLE_NAME_YEARS, false,
+            _database.CreateTable(INTERNAL_TABLE_NAME_YEARS, false,
                 "Id   INTEGER",
                 "Year TEXT NOT NULL UNIQUE ON CONFLICT IGNORE",
                 "PRIMARY KEY(Id)");
 
-            Database.Insert(new DBYear { Year = "Not Set" });
+            _database.Insert(new DBYear { Year = "Not Set" });
         }
 
         private void CreateManufacturersTable()
         {
-            Database.CreateTable(INTERNAL_TABLE_NAME_MANUFACTURERS, false,
+            _database.CreateTable(INTERNAL_TABLE_NAME_MANUFACTURERS, false,
                 "Id           INTEGER",
                 "Manufacturer TEXT NOT NULL UNIQUE ON CONFLICT IGNORE",
                 "PRIMARY KEY(Id)");
 
-            Database.Insert(new DBManufacturer { Manufacturer = "Not Set" });
+            _database.Insert(new DBManufacturer { Manufacturer = "Not Set" });
         }
 
         private void CreateScreenTypesTable()
         {
-            Database.CreateTable(INTERNAL_TABLE_NAME_SCREEN_TYPES, false,
+            _database.CreateTable(INTERNAL_TABLE_NAME_SCREEN_TYPES, false,
                 "Id   INTEGER",
                 "ScreenType TEXT NOT NULL UNIQUE ON CONFLICT IGNORE",
                 "PRIMARY KEY(Id)");
 
-            Database.Insert(new DBScreenType { ScreenType = "default" });
+            _database.Insert(new DBScreenType { ScreenType = "default" });
         }
 
         private void CreateScreenRotationsTable()
         {
-            Database.CreateTable(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, false,
+            _database.CreateTable(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, false,
                 "Id       INTEGER",
                 "ScreenRotation INTEGER NOT NULL UNIQUE ON CONFLICT IGNORE",
                 "PRIMARY KEY(Id)");
 
-            Database.Insert(new DBScreenRotation { ScreenRotation = 0 });
+            _database.Insert(new DBScreenRotation { ScreenRotation = 0 });
         }
 
-        private void CreateStatsTable() => Database.CreateTable(INTERNAL_TABLE_NAME_STATS, false,
+        private void CreateStatsTable() => _database.CreateTable(INTERNAL_TABLE_NAME_STATS, false,
             "Id        INTEGER",
             "GameList  TEXT    NOT NULL",
             "GameName  TEXT    NOT NULL",
@@ -308,13 +308,13 @@ namespace Arcade
         }
 
         private int GetGenreId(string genre)
-            => Database.GetId(INTERNAL_TABLE_NAME_GENRES, "Genre", new DBGenre { Genre = genre });
+            => _database.GetId(INTERNAL_TABLE_NAME_GENRES, "Genre", new DBGenre { Genre = genre });
 
         private int GetYearId(string year)
-            => Database.GetId(INTERNAL_TABLE_NAME_YEARS, "Year", new DBYear { Year = year });
+            => _database.GetId(INTERNAL_TABLE_NAME_YEARS, "Year", new DBYear { Year = year });
 
         private int GetManufacturerId(string manufacturer)
-            => Database.GetId(INTERNAL_TABLE_NAME_MANUFACTURERS, "Manufacturer", new DBManufacturer { Manufacturer = manufacturer });
+            => _database.GetId(INTERNAL_TABLE_NAME_MANUFACTURERS, "Manufacturer", new DBManufacturer { Manufacturer = manufacturer });
 
         private int GetScreenTypeId(GameScreenType type)
         {
@@ -328,7 +328,7 @@ namespace Arcade
                 _ => throw new System.NotImplementedException($"Unhandled switch case for GameScreenType: {type}")
             };
 
-            return Database.GetId(INTERNAL_TABLE_NAME_SCREEN_TYPES, "ScreenType", new DBScreenType { ScreenType = typeString });
+            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_TYPES, "ScreenType", new DBScreenType { ScreenType = typeString });
         }
 
         private int GetScreenRotationId(GameScreenOrientation orientation)
@@ -343,7 +343,7 @@ namespace Arcade
                 _ => throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {orientation}")
             };
 
-            return Database.GetId(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, "ScreenRotation", new DBScreenRotation { ScreenRotation = rotation });
+            return _database.GetId(INTERNAL_TABLE_NAME_SCREEN_ROTATIONS, "ScreenRotation", new DBScreenRotation { ScreenRotation = rotation });
         }
     }
 }

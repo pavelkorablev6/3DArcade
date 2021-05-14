@@ -27,7 +27,7 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Database/ArcadesDatabase", fileName = "ArcadesDatabase")]
     public sealed class ArcadesDatabase : MultiFileDatabase<ArcadeConfiguration>
     {
-        protected override string DirectoryAlias { get; } = "arcade_cfgs";
+        [field: System.NonSerialized] protected override string DirectoryAlias { get; } = "arcade_cfgs";
 
         protected override void PostInitialize() => LoadAll();
     }

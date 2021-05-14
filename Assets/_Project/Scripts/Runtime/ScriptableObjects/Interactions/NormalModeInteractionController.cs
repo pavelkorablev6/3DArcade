@@ -32,10 +32,10 @@ namespace Arcade
 
         public void HandleInteraction()
         {
-            if (_interactionData.Current == null)
+            if (InteractionData.Current == null)
                 return;
 
-            ModelConfiguration modelConfiguration = _interactionData.Current.Configuration;
+            ModelConfiguration modelConfiguration = InteractionData.Current.Configuration;
             InteractionType interactionType       = modelConfiguration.InteractionType;
 
             switch (interactionType)
@@ -58,7 +58,7 @@ namespace Arcade
                     throw new Exception($"Unhandled switch case for InteractionType: {modelConfiguration.InteractionType}");
             }
 
-            _interactionData.Reset();
+            InteractionData.Reset();
         }
 
         protected override Ray GetRay() => Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
@@ -80,7 +80,7 @@ namespace Arcade
             {
                 case InteractionType.GameInternal:
                 {
-                    if (_arcadeContext.GeneralConfiguration.EnableVR)
+                    if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityInternalGameState>();
                     else
                         _arcadeContext.TransitionTo<ArcadeStandardInternalGameState>();
@@ -88,7 +88,7 @@ namespace Arcade
                 break;
                 case InteractionType.GameExternal:
                 {
-                    if (_arcadeContext.GeneralConfiguration.EnableVR)
+                    if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                         _arcadeContext.TransitionTo<ArcadeVirtualRealityExternalGameState>();
                     else
                         _arcadeContext.TransitionTo<ArcadeStandardExternalGameState>();

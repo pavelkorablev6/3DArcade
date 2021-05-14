@@ -38,11 +38,11 @@ namespace Arcade
         public static int GamesLayer  = 0;
         public static int PropsLayer  = 0;
 
-        public Transform GamesNodeTransform { get; private set; }
-        public Transform PropsNodeTransform { get; private set; }
+        [field: System.NonSerialized] public Transform GamesNodeTransform { get; private set; }
+        [field: System.NonSerialized] public Transform PropsNodeTransform { get; private set; }
 
-        private Scene Scene { get; set; }
-        private Transform ArcadeNodeTransform { get; set; }
+        [field: System.NonSerialized] private Scene _scene;
+        [field: System.NonSerialized] private Transform _arcadeNodeTransform;
 
         [Inject]
         public void Construct(SceneCreatorBase sceneCreator) => _sceneCreator = sceneCreator;
@@ -56,10 +56,10 @@ namespace Arcade
                 PropsLayer  = LayerMask.NameToLayer("Arcade/PropModels");
             }
 
-            if (Scene.IsValid() && Scene.isLoaded)
-                ObjectUtils.DestroyObject(ArcadeNodeTransform.gameObject);
+            if (_scene.IsValid() && _scene.isLoaded)
+                ObjectUtils.DestroyObject(_arcadeNodeTransform.gameObject);
             else
-                Scene = _sceneCreator.Create(ARCADE_SETUP_SCENE_NAME);
+                _scene = _sceneCreator.Create(ARCADE_SETUP_SCENE_NAME);
 
             SetupArcadeNode(arcadeConfiguration);
             SetupGamesNode();
@@ -125,8 +125,8 @@ namespace Arcade
             ArcadeConfigurationComponent arcadeConfigurationComponent = arcadeGameObject.AddComponent<ArcadeConfigurationComponent>();
             arcadeConfigurationComponent.SetArcadeConfiguration(arcadeConfiguration);
 
-            SceneManager.MoveGameObjectToScene(arcadeGameObject, Scene);
-            ArcadeNodeTransform = arcadeGameObject.transform;
+            SceneManager.MoveGameObjectToScene(arcadeGameObject, _scene);
+            _arcadeNodeTransform = arcadeGameObject.transform;
         }
 
         private void SetupGamesNode() => GamesNodeTransform = SetupChildNode<GamesNodeTag>("Games");
@@ -136,7 +136,7 @@ namespace Arcade
         private Transform SetupChildNode<T>(string name) where T : Component
         {
             GameObject nodeGameObject = new GameObject(name, typeof(T));
-            nodeGameObject.transform.SetParent(ArcadeNodeTransform);
+            nodeGameObject.transform.SetParent(_arcadeNodeTransform);
             return nodeGameObject.transform;
         }
     }

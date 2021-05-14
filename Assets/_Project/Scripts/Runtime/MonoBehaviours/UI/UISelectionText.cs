@@ -32,7 +32,7 @@ namespace Arcade
 
         public void SetText(InteractionData interactionData)
         {
-            string description = GetDescription(interactionData.Current);
+            string description = interactionData != null ? GetDescription(interactionData.Current) : string.Empty;
             _text.SetText(description);
             _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
         }

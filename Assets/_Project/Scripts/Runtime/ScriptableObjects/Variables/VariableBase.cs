@@ -28,7 +28,7 @@ namespace Arcade
     {
         [SerializeField] protected T _initialValue;
 
-        public T Value { get; set; }
+        [System.NonSerialized] public T Value;
 
         private void OnEnable() => Value = _initialValue;
     }

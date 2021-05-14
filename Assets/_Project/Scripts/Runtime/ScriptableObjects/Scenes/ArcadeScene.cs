@@ -31,9 +31,6 @@ namespace Arcade
     {
         [SerializeField] private AddressableSceneLoaderBase _sceneLoader;
 
-        [Inject]
-        public void Construct(AddressableSceneLoaderBase sceneLoader) => _sceneLoader = sceneLoader;
-
         public async UniTask<bool> Load(AssetAddresses addressesToTry) => await _sceneLoader.Load(addressesToTry, true);
     }
 }

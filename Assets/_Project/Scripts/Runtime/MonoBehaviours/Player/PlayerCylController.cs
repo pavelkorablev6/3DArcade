@@ -44,13 +44,13 @@ namespace Arcade
 
         public override bool LookEnabled
         {
-            get => _inputActions.CylArcade.Look.enabled;
+            get => _inputActions.CylActions.Look.enabled;
             set
             {
                 if (value)
-                    _inputActions.CylArcade.Look.Enable();
+                    _inputActions.CylActions.Look.Enable();
                 else
-                    _inputActions.CylArcade.Look.Disable();
+                    _inputActions.CylActions.Look.Disable();
             }
         }
 
@@ -59,9 +59,9 @@ namespace Arcade
 
         private void OnEnable() => _lookVertical = 0f;
 
-        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylArcade.NavigationVertical;
+        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylActions.NavigationVertical;
 
-        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylArcade.NavigationHorizontal;
+        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylActions.NavigationHorizontal;
 
         public void SetHorizontalLookLimits(float min, float max)
         {
@@ -71,10 +71,10 @@ namespace Arcade
 
         protected override void HandleHeight(float dt)
         {
-            if (!_inputActions.CylArcade.CameraHeight.enabled)
+            if (!_inputActions.CylActions.CameraHeight.enabled)
                 return;
 
-            float heightInput = _inputActions.CylArcade.CameraHeight.ReadValue<float>();
+            float heightInput = _inputActions.CylActions.CameraHeight.ReadValue<float>();
             if (heightInput == 0f)
                 return;
 
@@ -95,7 +95,7 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            Vector2 lookInputValue = _inputActions.CylArcade.Look.enabled ? _inputActions.CylArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
+            Vector2 lookInputValue = _inputActions.CylActions.Look.enabled ? _inputActions.CylActions.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
 
             _lookHorizontal += lookInputValue.x;
             _lookHorizontal  = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);

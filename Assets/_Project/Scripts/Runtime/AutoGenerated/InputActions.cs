@@ -26,7 +26,7 @@ namespace Arcade
     ""name"": ""InputActions"",
     ""maps"": [
         {
-            ""name"": ""Global"",
+            ""name"": ""GlobalActions"",
             ""id"": ""dcef0966-dff4-49e7-a970-23d5259d1a82"",
             ""actions"": [
                 {
@@ -105,7 +105,7 @@ namespace Arcade
             ]
         },
         {
-            ""name"": ""FpsArcade"",
+            ""name"": ""FpsActions"",
             ""id"": ""22122fb4-ab81-4a29-9a20-1efdb89252ad"",
             ""actions"": [
                 {
@@ -157,7 +157,7 @@ namespace Arcade
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Toggle MoveCab"",
+                    ""name"": ""Toggle EditMode"",
                     ""type"": ""Button"",
                     ""id"": ""c3ac06ce-bcb9-4007-b358-0e03157f5c46"",
                     ""expectedControlType"": ""Button"",
@@ -415,7 +415,7 @@ namespace Arcade
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Toggle MoveCab"",
+                    ""action"": ""Toggle EditMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -426,7 +426,7 @@ namespace Arcade
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Toggle MoveCab"",
+                    ""action"": ""Toggle EditMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -532,7 +532,7 @@ namespace Arcade
             ]
         },
         {
-            ""name"": ""FpsMoveCab"",
+            ""name"": ""FpsEditActions"",
             ""id"": ""826403ab-f082-4a58-8a51-3a726b972945"",
             ""actions"": [
                 {
@@ -748,7 +748,7 @@ namespace Arcade
             ]
         },
         {
-            ""name"": ""CylArcade"",
+            ""name"": ""CylActions"",
             ""id"": ""cee92ad0-24ac-4ae8-b5bb-9fd31a285831"",
             ""actions"": [
                 {
@@ -2045,32 +2045,32 @@ namespace Arcade
         }
     ]
 }");
-            // Global
-            m_Global = asset.FindActionMap("Global", throwIfNotFound: true);
-            m_Global_Quit = m_Global.FindAction("Quit", throwIfNotFound: true);
-            m_Global_ToggleCursor = m_Global.FindAction("Toggle Cursor", throwIfNotFound: true);
-            // FpsArcade
-            m_FpsArcade = asset.FindActionMap("FpsArcade", throwIfNotFound: true);
-            m_FpsArcade_Movement = m_FpsArcade.FindAction("Movement", throwIfNotFound: true);
-            m_FpsArcade_Look = m_FpsArcade.FindAction("Look", throwIfNotFound: true);
-            m_FpsArcade_CameraHeight = m_FpsArcade.FindAction("Camera Height", throwIfNotFound: true);
-            m_FpsArcade_Interact = m_FpsArcade.FindAction("Interact", throwIfNotFound: true);
-            m_FpsArcade_Sprint = m_FpsArcade.FindAction("Sprint", throwIfNotFound: true);
-            m_FpsArcade_Jump = m_FpsArcade.FindAction("Jump", throwIfNotFound: true);
-            m_FpsArcade_ToggleMoveCab = m_FpsArcade.FindAction("Toggle MoveCab", throwIfNotFound: true);
-            // FpsMoveCab
-            m_FpsMoveCab = asset.FindActionMap("FpsMoveCab", throwIfNotFound: true);
-            m_FpsMoveCab_Move = m_FpsMoveCab.FindAction("Move", throwIfNotFound: true);
-            m_FpsMoveCab_Rotate = m_FpsMoveCab.FindAction("Rotate", throwIfNotFound: true);
-            m_FpsMoveCab_Grab = m_FpsMoveCab.FindAction("Grab", throwIfNotFound: true);
-            m_FpsMoveCab_Add = m_FpsMoveCab.FindAction("Add", throwIfNotFound: true);
-            // CylArcade
-            m_CylArcade = asset.FindActionMap("CylArcade", throwIfNotFound: true);
-            m_CylArcade_NavigationVertical = m_CylArcade.FindAction("Navigation Vertical", throwIfNotFound: true);
-            m_CylArcade_NavigationHorizontal = m_CylArcade.FindAction("Navigation Horizontal", throwIfNotFound: true);
-            m_CylArcade_Look = m_CylArcade.FindAction("Look", throwIfNotFound: true);
-            m_CylArcade_CameraHeight = m_CylArcade.FindAction("Camera Height", throwIfNotFound: true);
-            m_CylArcade_Interact = m_CylArcade.FindAction("Interact", throwIfNotFound: true);
+            // GlobalActions
+            m_GlobalActions = asset.FindActionMap("GlobalActions", throwIfNotFound: true);
+            m_GlobalActions_Quit = m_GlobalActions.FindAction("Quit", throwIfNotFound: true);
+            m_GlobalActions_ToggleCursor = m_GlobalActions.FindAction("Toggle Cursor", throwIfNotFound: true);
+            // FpsActions
+            m_FpsActions = asset.FindActionMap("FpsActions", throwIfNotFound: true);
+            m_FpsActions_Movement = m_FpsActions.FindAction("Movement", throwIfNotFound: true);
+            m_FpsActions_Look = m_FpsActions.FindAction("Look", throwIfNotFound: true);
+            m_FpsActions_CameraHeight = m_FpsActions.FindAction("Camera Height", throwIfNotFound: true);
+            m_FpsActions_Interact = m_FpsActions.FindAction("Interact", throwIfNotFound: true);
+            m_FpsActions_Sprint = m_FpsActions.FindAction("Sprint", throwIfNotFound: true);
+            m_FpsActions_Jump = m_FpsActions.FindAction("Jump", throwIfNotFound: true);
+            m_FpsActions_ToggleEditMode = m_FpsActions.FindAction("Toggle EditMode", throwIfNotFound: true);
+            // FpsEditActions
+            m_FpsEditActions = asset.FindActionMap("FpsEditActions", throwIfNotFound: true);
+            m_FpsEditActions_Move = m_FpsEditActions.FindAction("Move", throwIfNotFound: true);
+            m_FpsEditActions_Rotate = m_FpsEditActions.FindAction("Rotate", throwIfNotFound: true);
+            m_FpsEditActions_Grab = m_FpsEditActions.FindAction("Grab", throwIfNotFound: true);
+            m_FpsEditActions_Add = m_FpsEditActions.FindAction("Add", throwIfNotFound: true);
+            // CylActions
+            m_CylActions = asset.FindActionMap("CylActions", throwIfNotFound: true);
+            m_CylActions_NavigationVertical = m_CylActions.FindAction("Navigation Vertical", throwIfNotFound: true);
+            m_CylActions_NavigationHorizontal = m_CylActions.FindAction("Navigation Horizontal", throwIfNotFound: true);
+            m_CylActions_Look = m_CylActions.FindAction("Look", throwIfNotFound: true);
+            m_CylActions_CameraHeight = m_CylActions.FindAction("Camera Height", throwIfNotFound: true);
+            m_CylActions_Interact = m_CylActions.FindAction("Interact", throwIfNotFound: true);
             // XR HMD
             m_XRHMD = asset.FindActionMap("XR HMD", throwIfNotFound: true);
             m_XRHMD_Position = m_XRHMD.FindAction("Position", throwIfNotFound: true);
@@ -2161,34 +2161,34 @@ namespace Arcade
             return asset.FindBinding(bindingMask, out action);
         }
 
-        // Global
-        private readonly InputActionMap m_Global;
-        private IGlobalActions m_GlobalActionsCallbackInterface;
-        private readonly InputAction m_Global_Quit;
-        private readonly InputAction m_Global_ToggleCursor;
-        public struct GlobalActions
+        // GlobalActions
+        private readonly InputActionMap m_GlobalActions;
+        private IGlobalActionsActions m_GlobalActionsActionsCallbackInterface;
+        private readonly InputAction m_GlobalActions_Quit;
+        private readonly InputAction m_GlobalActions_ToggleCursor;
+        public struct GlobalActionsActions
         {
             private @InputActions m_Wrapper;
-            public GlobalActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Quit => m_Wrapper.m_Global_Quit;
-            public InputAction @ToggleCursor => m_Wrapper.m_Global_ToggleCursor;
-            public InputActionMap Get() { return m_Wrapper.m_Global; }
+            public GlobalActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Quit => m_Wrapper.m_GlobalActions_Quit;
+            public InputAction @ToggleCursor => m_Wrapper.m_GlobalActions_ToggleCursor;
+            public InputActionMap Get() { return m_Wrapper.m_GlobalActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(GlobalActions set) { return set.Get(); }
-            public void SetCallbacks(IGlobalActions instance)
+            public static implicit operator InputActionMap(GlobalActionsActions set) { return set.Get(); }
+            public void SetCallbacks(IGlobalActionsActions instance)
             {
-                if (m_Wrapper.m_GlobalActionsCallbackInterface != null)
+                if (m_Wrapper.m_GlobalActionsActionsCallbackInterface != null)
                 {
-                    @Quit.started -= m_Wrapper.m_GlobalActionsCallbackInterface.OnQuit;
-                    @Quit.performed -= m_Wrapper.m_GlobalActionsCallbackInterface.OnQuit;
-                    @Quit.canceled -= m_Wrapper.m_GlobalActionsCallbackInterface.OnQuit;
-                    @ToggleCursor.started -= m_Wrapper.m_GlobalActionsCallbackInterface.OnToggleCursor;
-                    @ToggleCursor.performed -= m_Wrapper.m_GlobalActionsCallbackInterface.OnToggleCursor;
-                    @ToggleCursor.canceled -= m_Wrapper.m_GlobalActionsCallbackInterface.OnToggleCursor;
+                    @Quit.started -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnQuit;
+                    @Quit.performed -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnQuit;
+                    @Quit.canceled -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnQuit;
+                    @ToggleCursor.started -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnToggleCursor;
+                    @ToggleCursor.performed -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnToggleCursor;
+                    @ToggleCursor.canceled -= m_Wrapper.m_GlobalActionsActionsCallbackInterface.OnToggleCursor;
                 }
-                m_Wrapper.m_GlobalActionsCallbackInterface = instance;
+                m_Wrapper.m_GlobalActionsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Quit.started += instance.OnQuit;
@@ -2200,61 +2200,61 @@ namespace Arcade
                 }
             }
         }
-        public GlobalActions @Global => new GlobalActions(this);
+        public GlobalActionsActions @GlobalActions => new GlobalActionsActions(this);
 
-        // FpsArcade
-        private readonly InputActionMap m_FpsArcade;
-        private IFpsArcadeActions m_FpsArcadeActionsCallbackInterface;
-        private readonly InputAction m_FpsArcade_Movement;
-        private readonly InputAction m_FpsArcade_Look;
-        private readonly InputAction m_FpsArcade_CameraHeight;
-        private readonly InputAction m_FpsArcade_Interact;
-        private readonly InputAction m_FpsArcade_Sprint;
-        private readonly InputAction m_FpsArcade_Jump;
-        private readonly InputAction m_FpsArcade_ToggleMoveCab;
-        public struct FpsArcadeActions
+        // FpsActions
+        private readonly InputActionMap m_FpsActions;
+        private IFpsActionsActions m_FpsActionsActionsCallbackInterface;
+        private readonly InputAction m_FpsActions_Movement;
+        private readonly InputAction m_FpsActions_Look;
+        private readonly InputAction m_FpsActions_CameraHeight;
+        private readonly InputAction m_FpsActions_Interact;
+        private readonly InputAction m_FpsActions_Sprint;
+        private readonly InputAction m_FpsActions_Jump;
+        private readonly InputAction m_FpsActions_ToggleEditMode;
+        public struct FpsActionsActions
         {
             private @InputActions m_Wrapper;
-            public FpsArcadeActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Movement => m_Wrapper.m_FpsArcade_Movement;
-            public InputAction @Look => m_Wrapper.m_FpsArcade_Look;
-            public InputAction @CameraHeight => m_Wrapper.m_FpsArcade_CameraHeight;
-            public InputAction @Interact => m_Wrapper.m_FpsArcade_Interact;
-            public InputAction @Sprint => m_Wrapper.m_FpsArcade_Sprint;
-            public InputAction @Jump => m_Wrapper.m_FpsArcade_Jump;
-            public InputAction @ToggleMoveCab => m_Wrapper.m_FpsArcade_ToggleMoveCab;
-            public InputActionMap Get() { return m_Wrapper.m_FpsArcade; }
+            public FpsActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Movement => m_Wrapper.m_FpsActions_Movement;
+            public InputAction @Look => m_Wrapper.m_FpsActions_Look;
+            public InputAction @CameraHeight => m_Wrapper.m_FpsActions_CameraHeight;
+            public InputAction @Interact => m_Wrapper.m_FpsActions_Interact;
+            public InputAction @Sprint => m_Wrapper.m_FpsActions_Sprint;
+            public InputAction @Jump => m_Wrapper.m_FpsActions_Jump;
+            public InputAction @ToggleEditMode => m_Wrapper.m_FpsActions_ToggleEditMode;
+            public InputActionMap Get() { return m_Wrapper.m_FpsActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(FpsArcadeActions set) { return set.Get(); }
-            public void SetCallbacks(IFpsArcadeActions instance)
+            public static implicit operator InputActionMap(FpsActionsActions set) { return set.Get(); }
+            public void SetCallbacks(IFpsActionsActions instance)
             {
-                if (m_Wrapper.m_FpsArcadeActionsCallbackInterface != null)
+                if (m_Wrapper.m_FpsActionsActionsCallbackInterface != null)
                 {
-                    @Movement.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnMovement;
-                    @Movement.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnMovement;
-                    @Movement.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnMovement;
-                    @Look.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnLook;
-                    @Look.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnLook;
-                    @Look.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnLook;
-                    @CameraHeight.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnCameraHeight;
-                    @CameraHeight.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnCameraHeight;
-                    @CameraHeight.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnCameraHeight;
-                    @Interact.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnInteract;
-                    @Interact.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnInteract;
-                    @Interact.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnInteract;
-                    @Sprint.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnSprint;
-                    @Sprint.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnSprint;
-                    @Sprint.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnSprint;
-                    @Jump.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnJump;
-                    @Jump.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnJump;
-                    @Jump.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnJump;
-                    @ToggleMoveCab.started -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnToggleMoveCab;
-                    @ToggleMoveCab.performed -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnToggleMoveCab;
-                    @ToggleMoveCab.canceled -= m_Wrapper.m_FpsArcadeActionsCallbackInterface.OnToggleMoveCab;
+                    @Movement.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnMovement;
+                    @Movement.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnMovement;
+                    @Movement.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnMovement;
+                    @Look.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnLook;
+                    @Look.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnLook;
+                    @Look.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnLook;
+                    @CameraHeight.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnCameraHeight;
+                    @CameraHeight.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnCameraHeight;
+                    @CameraHeight.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnCameraHeight;
+                    @Interact.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnInteract;
+                    @Sprint.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnSprint;
+                    @Sprint.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnSprint;
+                    @Sprint.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnSprint;
+                    @Jump.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnJump;
+                    @Jump.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnJump;
+                    @Jump.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnJump;
+                    @ToggleEditMode.started -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnToggleEditMode;
+                    @ToggleEditMode.performed -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnToggleEditMode;
+                    @ToggleEditMode.canceled -= m_Wrapper.m_FpsActionsActionsCallbackInterface.OnToggleEditMode;
                 }
-                m_Wrapper.m_FpsArcadeActionsCallbackInterface = instance;
+                m_Wrapper.m_FpsActionsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Movement.started += instance.OnMovement;
@@ -2275,52 +2275,52 @@ namespace Arcade
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
-                    @ToggleMoveCab.started += instance.OnToggleMoveCab;
-                    @ToggleMoveCab.performed += instance.OnToggleMoveCab;
-                    @ToggleMoveCab.canceled += instance.OnToggleMoveCab;
+                    @ToggleEditMode.started += instance.OnToggleEditMode;
+                    @ToggleEditMode.performed += instance.OnToggleEditMode;
+                    @ToggleEditMode.canceled += instance.OnToggleEditMode;
                 }
             }
         }
-        public FpsArcadeActions @FpsArcade => new FpsArcadeActions(this);
+        public FpsActionsActions @FpsActions => new FpsActionsActions(this);
 
-        // FpsMoveCab
-        private readonly InputActionMap m_FpsMoveCab;
-        private IFpsMoveCabActions m_FpsMoveCabActionsCallbackInterface;
-        private readonly InputAction m_FpsMoveCab_Move;
-        private readonly InputAction m_FpsMoveCab_Rotate;
-        private readonly InputAction m_FpsMoveCab_Grab;
-        private readonly InputAction m_FpsMoveCab_Add;
-        public struct FpsMoveCabActions
+        // FpsEditActions
+        private readonly InputActionMap m_FpsEditActions;
+        private IFpsEditActionsActions m_FpsEditActionsActionsCallbackInterface;
+        private readonly InputAction m_FpsEditActions_Move;
+        private readonly InputAction m_FpsEditActions_Rotate;
+        private readonly InputAction m_FpsEditActions_Grab;
+        private readonly InputAction m_FpsEditActions_Add;
+        public struct FpsEditActionsActions
         {
             private @InputActions m_Wrapper;
-            public FpsMoveCabActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_FpsMoveCab_Move;
-            public InputAction @Rotate => m_Wrapper.m_FpsMoveCab_Rotate;
-            public InputAction @Grab => m_Wrapper.m_FpsMoveCab_Grab;
-            public InputAction @Add => m_Wrapper.m_FpsMoveCab_Add;
-            public InputActionMap Get() { return m_Wrapper.m_FpsMoveCab; }
+            public FpsEditActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_FpsEditActions_Move;
+            public InputAction @Rotate => m_Wrapper.m_FpsEditActions_Rotate;
+            public InputAction @Grab => m_Wrapper.m_FpsEditActions_Grab;
+            public InputAction @Add => m_Wrapper.m_FpsEditActions_Add;
+            public InputActionMap Get() { return m_Wrapper.m_FpsEditActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(FpsMoveCabActions set) { return set.Get(); }
-            public void SetCallbacks(IFpsMoveCabActions instance)
+            public static implicit operator InputActionMap(FpsEditActionsActions set) { return set.Get(); }
+            public void SetCallbacks(IFpsEditActionsActions instance)
             {
-                if (m_Wrapper.m_FpsMoveCabActionsCallbackInterface != null)
+                if (m_Wrapper.m_FpsEditActionsActionsCallbackInterface != null)
                 {
-                    @Move.started -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnMove;
-                    @Rotate.started -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnRotate;
-                    @Rotate.performed -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnRotate;
-                    @Rotate.canceled -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnRotate;
-                    @Grab.started -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnGrab;
-                    @Grab.performed -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnGrab;
-                    @Grab.canceled -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnGrab;
-                    @Add.started -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnAdd;
-                    @Add.performed -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnAdd;
-                    @Add.canceled -= m_Wrapper.m_FpsMoveCabActionsCallbackInterface.OnAdd;
+                    @Move.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnMove;
+                    @Rotate.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnRotate;
+                    @Rotate.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnRotate;
+                    @Rotate.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnRotate;
+                    @Grab.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
+                    @Grab.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
+                    @Grab.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
+                    @Add.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
+                    @Add.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
+                    @Add.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
                 }
-                m_Wrapper.m_FpsMoveCabActionsCallbackInterface = instance;
+                m_Wrapper.m_FpsEditActionsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Move.started += instance.OnMove;
@@ -2338,51 +2338,51 @@ namespace Arcade
                 }
             }
         }
-        public FpsMoveCabActions @FpsMoveCab => new FpsMoveCabActions(this);
+        public FpsEditActionsActions @FpsEditActions => new FpsEditActionsActions(this);
 
-        // CylArcade
-        private readonly InputActionMap m_CylArcade;
-        private ICylArcadeActions m_CylArcadeActionsCallbackInterface;
-        private readonly InputAction m_CylArcade_NavigationVertical;
-        private readonly InputAction m_CylArcade_NavigationHorizontal;
-        private readonly InputAction m_CylArcade_Look;
-        private readonly InputAction m_CylArcade_CameraHeight;
-        private readonly InputAction m_CylArcade_Interact;
-        public struct CylArcadeActions
+        // CylActions
+        private readonly InputActionMap m_CylActions;
+        private ICylActionsActions m_CylActionsActionsCallbackInterface;
+        private readonly InputAction m_CylActions_NavigationVertical;
+        private readonly InputAction m_CylActions_NavigationHorizontal;
+        private readonly InputAction m_CylActions_Look;
+        private readonly InputAction m_CylActions_CameraHeight;
+        private readonly InputAction m_CylActions_Interact;
+        public struct CylActionsActions
         {
             private @InputActions m_Wrapper;
-            public CylArcadeActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @NavigationVertical => m_Wrapper.m_CylArcade_NavigationVertical;
-            public InputAction @NavigationHorizontal => m_Wrapper.m_CylArcade_NavigationHorizontal;
-            public InputAction @Look => m_Wrapper.m_CylArcade_Look;
-            public InputAction @CameraHeight => m_Wrapper.m_CylArcade_CameraHeight;
-            public InputAction @Interact => m_Wrapper.m_CylArcade_Interact;
-            public InputActionMap Get() { return m_Wrapper.m_CylArcade; }
+            public CylActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @NavigationVertical => m_Wrapper.m_CylActions_NavigationVertical;
+            public InputAction @NavigationHorizontal => m_Wrapper.m_CylActions_NavigationHorizontal;
+            public InputAction @Look => m_Wrapper.m_CylActions_Look;
+            public InputAction @CameraHeight => m_Wrapper.m_CylActions_CameraHeight;
+            public InputAction @Interact => m_Wrapper.m_CylActions_Interact;
+            public InputActionMap Get() { return m_Wrapper.m_CylActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(CylArcadeActions set) { return set.Get(); }
-            public void SetCallbacks(ICylArcadeActions instance)
+            public static implicit operator InputActionMap(CylActionsActions set) { return set.Get(); }
+            public void SetCallbacks(ICylActionsActions instance)
             {
-                if (m_Wrapper.m_CylArcadeActionsCallbackInterface != null)
+                if (m_Wrapper.m_CylActionsActionsCallbackInterface != null)
                 {
-                    @NavigationVertical.started -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationVertical;
-                    @NavigationVertical.performed -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationVertical;
-                    @NavigationVertical.canceled -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationVertical;
-                    @NavigationHorizontal.started -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationHorizontal;
-                    @NavigationHorizontal.performed -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationHorizontal;
-                    @NavigationHorizontal.canceled -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnNavigationHorizontal;
-                    @Look.started -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnLook;
-                    @Look.performed -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnLook;
-                    @Look.canceled -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnLook;
-                    @CameraHeight.started -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnCameraHeight;
-                    @CameraHeight.performed -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnCameraHeight;
-                    @CameraHeight.canceled -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnCameraHeight;
-                    @Interact.started -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnInteract;
-                    @Interact.performed -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnInteract;
-                    @Interact.canceled -= m_Wrapper.m_CylArcadeActionsCallbackInterface.OnInteract;
+                    @NavigationVertical.started -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationVertical;
+                    @NavigationVertical.performed -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationVertical;
+                    @NavigationVertical.canceled -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationVertical;
+                    @NavigationHorizontal.started -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationHorizontal;
+                    @NavigationHorizontal.performed -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationHorizontal;
+                    @NavigationHorizontal.canceled -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnNavigationHorizontal;
+                    @Look.started -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnLook;
+                    @Look.performed -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnLook;
+                    @Look.canceled -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnLook;
+                    @CameraHeight.started -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnCameraHeight;
+                    @CameraHeight.performed -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnCameraHeight;
+                    @CameraHeight.canceled -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnCameraHeight;
+                    @Interact.started -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_CylActionsActionsCallbackInterface.OnInteract;
                 }
-                m_Wrapper.m_CylArcadeActionsCallbackInterface = instance;
+                m_Wrapper.m_CylActionsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @NavigationVertical.started += instance.OnNavigationVertical;
@@ -2403,7 +2403,7 @@ namespace Arcade
                 }
             }
         }
-        public CylArcadeActions @CylArcade => new CylArcadeActions(this);
+        public CylActionsActions @CylActions => new CylActionsActions(this);
 
         // XR HMD
         private readonly InputActionMap m_XRHMD;
@@ -2748,12 +2748,12 @@ namespace Arcade
                 return asset.controlSchemes[m_NoncontinuousMoveSchemeIndex];
             }
         }
-        public interface IGlobalActions
+        public interface IGlobalActionsActions
         {
             void OnQuit(InputAction.CallbackContext context);
             void OnToggleCursor(InputAction.CallbackContext context);
         }
-        public interface IFpsArcadeActions
+        public interface IFpsActionsActions
         {
             void OnMovement(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
@@ -2761,16 +2761,16 @@ namespace Arcade
             void OnInteract(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
-            void OnToggleMoveCab(InputAction.CallbackContext context);
+            void OnToggleEditMode(InputAction.CallbackContext context);
         }
-        public interface IFpsMoveCabActions
+        public interface IFpsEditActionsActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
             void OnGrab(InputAction.CallbackContext context);
             void OnAdd(InputAction.CallbackContext context);
         }
-        public interface ICylArcadeActions
+        public interface ICylActionsActions
         {
             void OnNavigationVertical(InputAction.CallbackContext context);
             void OnNavigationHorizontal(InputAction.CallbackContext context);

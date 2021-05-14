@@ -37,33 +37,31 @@ namespace Arcade
             return Camera.ScreenPointToRay(mousePosition);
         }
 
-        public void ManualMoveAndRotate()
+        public void ManualMoveAndRotate(Vector2 direction, float rotation)
         {
-            if (_interactionData.Rigidbody == null)
+            if (InteractionData.Rigidbody == null)
                 return;
 
-            _interactionData.Rigidbody.constraints = RigidbodyConstraints.None;
+            InteractionData.Rigidbody.constraints = RigidbodyConstraints.None;
 
             // Position
-            Vector2 aimPosition = _interactionData.AimPosition;
-            if (aimPosition.sqrMagnitude > 0.001f)
+            if (direction.sqrMagnitude > 0.001f)
             {
-                _interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+                InteractionData.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
-                _interactionData.Rigidbody.AddForce(-_interactionData.Current.transform.forward * aimPosition.y, ForceMode.VelocityChange);
-                _interactionData.Rigidbody.AddForce(-_interactionData.Current.transform.right * aimPosition.x, ForceMode.VelocityChange);
+                InteractionData.Rigidbody.AddForce(-InteractionData.Current.transform.forward * direction.y, ForceMode.VelocityChange);
+                InteractionData.Rigidbody.AddForce(-InteractionData.Current.transform.right * direction.x, ForceMode.VelocityChange);
             }
-            _interactionData.Rigidbody.AddForce(Vector3.right * -_interactionData.Rigidbody.velocity.x, ForceMode.VelocityChange);
-            _interactionData.Rigidbody.AddForce(Vector3.forward * -_interactionData.Rigidbody.velocity.z, ForceMode.VelocityChange);
+            InteractionData.Rigidbody.AddForce(Vector3.right * -InteractionData.Rigidbody.velocity.x, ForceMode.VelocityChange);
+            InteractionData.Rigidbody.AddForce(Vector3.forward * -InteractionData.Rigidbody.velocity.z, ForceMode.VelocityChange);
 
             // Rotation
-            float aimRotation = _interactionData.AimRotation;
-            if (aimRotation < -0.5f || aimRotation > 0.5f)
+            if (rotation < -0.5f || rotation > 0.5f)
             {
-                _interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                InteractionData.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
-                float angle           = Mathf.Atan2(_interactionData.Current.transform.forward.x, _interactionData.Current.transform.forward.z) * Mathf.Rad2Deg;
-                float targetAngle     = angle + aimRotation;
+                float angle           = Mathf.Atan2(InteractionData.Current.transform.forward.x, InteractionData.Current.transform.forward.z) * Mathf.Rad2Deg;
+                float targetAngle     = angle + rotation;
                 float angleDifference = (targetAngle - angle);
 
                 if (Mathf.Abs(angleDifference) > 180f)
@@ -74,8 +72,8 @@ namespace Arcade
                         angleDifference = (360f - angleDifference) * -1f;
                 }
 
-                _interactionData.Rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
-                _interactionData.Rigidbody.AddTorque(Vector3.up * -_interactionData.Rigidbody.angularVelocity.y, ForceMode.VelocityChange);
+                InteractionData.Rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
+                InteractionData.Rigidbody.AddTorque(Vector3.up * -InteractionData.Rigidbody.angularVelocity.y, ForceMode.VelocityChange);
             }
         }
 
@@ -85,7 +83,7 @@ namespace Arcade
                 return;
 
             Vector3 newPosition;
-            Transform transform = _interactionData.Current.transform;
+            Transform transform = InteractionData.Current.transform;
             Vector3 position    = hitInfo.point;
             Vector3 normal      = hitInfo.normal;
             float dot           = Vector3.Dot(Vector3.up, normal);
@@ -109,7 +107,10 @@ namespace Arcade
             }
 
             // Vertical surface
-            Collider collider       = _interactionData.Collider;
+            Collider collider = InteractionData.Collider;
+            if (collider == null)
+                return;
+
             Vector3 positionOffset  = normal * Mathf.Max(collider.bounds.extents.x + 0.1f, collider.bounds.extents.z + 0.1f);
             newPosition             = new Vector3(position.x, transform.position.y, position.z) + positionOffset;
             transform.position      = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 12f);

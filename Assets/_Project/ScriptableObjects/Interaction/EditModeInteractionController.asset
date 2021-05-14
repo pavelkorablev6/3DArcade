@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b67558c2bf5a14c997622c3a18d6cb, type: 3}
   m_Name: EditModeInteractionController
   m_EditorClassIdentifier: 
-  _interactionData: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4, type: 2}
+  <InteractionData>k__BackingField: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4,
+    type: 2}
   _raycastMask:
     serializedVersion: 2
     m_Bits: 3968

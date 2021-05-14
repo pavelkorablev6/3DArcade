@@ -30,13 +30,16 @@ namespace Arcade
     {
         [SerializeField] private LayerMask _worldRaycastLayerMask;
 
+        [System.NonSerialized] private Vector2 _screenPoint;
+
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-
-            Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.InitAutoMove();
-
             Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
+
+            EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
+            _screenPoint = Context.ArcadeContext.Player.Camera.WorldToScreenPoint(interactionData.Current.transform.position);
+            interactionData.InitAutoMove();
         }
 
         public override void OnExit()
@@ -45,22 +48,27 @@ namespace Arcade
 
             Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.DeInitAutoMove();
 
+            _screenPoint = Vector2.zero;
+
             Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnUpdate(float dt)
         {
-            if (Context.ArcadeContext.InputActions.FpsMoveCab.Grab.triggered)
+            if (Context.ArcadeContext.InputActions.FpsEditActions.Grab.triggered)
             {
                 Context.TransitionToPrevious();
                 return;
             }
 
-            bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
-            Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.ScreenPoint;
-            Ray ray               = Context.ArcadeContext.InteractionControllers.EditModeController.Camera.ScreenPointToRay(rayPosition);
+            EditModeInteractionController editModeController = Context.ArcadeContext.InteractionControllers.EditModeController;
+            Player player                                    = Context.ArcadeContext.Player;
 
-            Context.ArcadeContext.InteractionControllers.EditModeController.AutoMoveAndRotate(ray, Context.ArcadeContext.Player.ActiveTransform.forward, math.INFINITY, _worldRaycastLayerMask);
+            bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
+            Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : _screenPoint;
+            Ray ray               = player.Camera.ScreenPointToRay(rayPosition);
+
+            editModeController.AutoMoveAndRotate(ray, player.ActiveTransform.forward, math.INFINITY, _worldRaycastLayerMask);
         }
     }
 }

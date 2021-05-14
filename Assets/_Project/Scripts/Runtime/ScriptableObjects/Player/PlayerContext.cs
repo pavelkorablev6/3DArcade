@@ -28,7 +28,7 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/PlayerContext", fileName = "PlayerContext")]
     public sealed class PlayerContext : Context<PlayerState>
     {
-        public Player Player { get; private set; }
+        [field: System.NonSerialized] public Player Player { get; private set; }
 
         public void Initialize(Player player) => Player = player;
     }

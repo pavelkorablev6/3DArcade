@@ -32,35 +32,35 @@ namespace Arcade
 
         public override bool MovementEnabled
         {
-            get => _inputActions.FpsArcade.Movement.enabled;
+            get => _inputActions.FpsActions.Movement.enabled;
             set
             {
                 if (value)
-                    _inputActions.FpsArcade.Movement.Enable();
+                    _inputActions.FpsActions.Movement.Enable();
                 else
-                    _inputActions.FpsArcade.Movement.Disable();
+                    _inputActions.FpsActions.Movement.Disable();
             }
         }
 
         public override bool LookEnabled
         {
-            get => _inputActions.FpsArcade.Look.enabled;
+            get => _inputActions.FpsActions.Look.enabled;
             set
             {
                 if (value)
-                    _inputActions.FpsArcade.Look.Enable();
+                    _inputActions.FpsActions.Look.Enable();
                 else
-                    _inputActions.FpsArcade.Look.Disable();
+                    _inputActions.FpsActions.Look.Disable();
             }
         }
 
 
         protected override void HandleHeight(float dt)
         {
-            if (!_inputActions.FpsArcade.CameraHeight.enabled)
+            if (!_inputActions.FpsActions.CameraHeight.enabled)
                 return;
 
-            float heightInput = _inputActions.FpsArcade.CameraHeight.ReadValue<float>();
+            float heightInput = _inputActions.FpsActions.CameraHeight.ReadValue<float>();
             if (heightInput == 0f)
                 return;
 
@@ -75,11 +75,11 @@ namespace Arcade
             bool sprinting;
             bool performJump;
 
-            if (_inputActions.FpsArcade.Movement.enabled)
+            if (_inputActions.FpsActions.Movement.enabled)
             {
-                movementInputValue = _inputActions.FpsArcade.Movement.ReadValue<Vector2>();
-                sprinting          = _inputActions.FpsArcade.Sprint.ReadValue<float>() > 0f;
-                performJump        = _inputActions.FpsArcade.Jump.triggered;
+                movementInputValue = _inputActions.FpsActions.Movement.ReadValue<Vector2>();
+                sprinting          = _inputActions.FpsActions.Sprint.ReadValue<float>() > 0f;
+                performJump        = _inputActions.FpsActions.Jump.triggered;
             }
             else
             {
@@ -109,7 +109,7 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            Vector2 lookInputValue = _inputActions.FpsArcade.Look.enabled ? _inputActions.FpsArcade.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
+            Vector2 lookInputValue = _inputActions.FpsActions.Look.enabled ? _inputActions.FpsActions.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
 
             float lookHorizontal = lookInputValue.x;
             _lookVertical       += lookInputValue.y;

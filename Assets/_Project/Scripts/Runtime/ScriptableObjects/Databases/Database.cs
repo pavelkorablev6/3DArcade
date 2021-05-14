@@ -33,7 +33,7 @@ namespace Arcade
 
         protected abstract string DirectoryAlias { get; }
 
-        protected string Directory { get; private set; }
+        [field: System.NonSerialized] protected string Directory { get; private set; }
 
         protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
 

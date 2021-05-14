@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4ca58cac65ed048855892f53e6aa66, type: 3}
   m_Name: InteractionControllers
   m_EditorClassIdentifier: 
-  _normalModeRaycaster: {fileID: 11400000, guid: 650b124b73c66ec4db092fef6776e2c4,
+  <NormalModeController>k__BackingField: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
     type: 2}
-  _normalModeController: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
-    type: 2}
-  _editModeRaycaster: {fileID: 11400000, guid: cbc79846d7076e74980b97e357b39a84, type: 2}
-  _editModeController: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+  <EditModeController>k__BackingField: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
     type: 2}

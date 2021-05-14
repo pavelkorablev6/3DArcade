@@ -29,9 +29,9 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/StateMachine/UIContext", fileName = "UIContext")]
     public sealed class UIContext : Context<UIState>
     {
-        public UICanvasController StandardUI { get; private set; }
-        public UICanvasController VirtualRealityUI { get; private set; }
-        public MouseOverUIRaycaster MouseOverUIRaycaster { get; private set; }
+        [field: System.NonSerialized] public UICanvasController StandardUI { get; private set; }
+        [field: System.NonSerialized] public UICanvasController VirtualRealityUI { get; private set; }
+        [field: System.NonSerialized] public MouseOverUIRaycaster MouseOverUIRaycaster { get; private set; }
 
         [Inject]
         public void Construct([Inject(Id = "std")] UICanvasController standardUI,

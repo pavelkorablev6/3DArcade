@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367ccdb6de81b66489195989a019df90, type: 3}
   m_Name: EditorScenes
   m_EditorClassIdentifier: 
-  _entitiesScene: {fileID: 11400000, guid: 0265c374a57da4b40874b2a978bdf4f4, type: 2}
-  _arcadeScene: {fileID: 11400000, guid: b3c317673b95776419e433cb36eff4a8, type: 2}
+  <Entities>k__BackingField: {fileID: 11400000, guid: 0265c374a57da4b40874b2a978bdf4f4,
+    type: 2}
+  <Arcade>k__BackingField: {fileID: 11400000, guid: b3c317673b95776419e433cb36eff4a8,
+    type: 2}

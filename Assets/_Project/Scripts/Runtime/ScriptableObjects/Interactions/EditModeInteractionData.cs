@@ -37,71 +37,63 @@ namespace Arcade
         }
 
         [SerializeField, Layer] private int _highlightLayer;
+        [SerializeField, Layer] private int _grabLayer;
 
-        [System.NonSerialized] public Vector2 ScreenPoint;
-        [System.NonSerialized] public Vector2 AimPosition;
-        [System.NonSerialized] public float AimRotation;
-        [System.NonSerialized] public Collider Collider;
-        [System.NonSerialized] public Rigidbody Rigidbody;
+        [field: System.NonSerialized] public Collider Collider { get; private set; }
+        [field: System.NonSerialized] public Rigidbody Rigidbody { get; private set; }
 
         [System.NonSerialized] private PhysicsState _savedData;
 
-        public void SetAimData(Camera camera, Vector2 aimPosition, float aimRotation)
-        {
-            if (Current == null)
-                return;
-
-            ScreenPoint = camera.WorldToScreenPoint(Current.transform.position);
-            AimPosition = aimPosition;
-            AimRotation = aimRotation;
-        }
-
-        public override void Set(ModelConfigurationComponent target)
-        {
-            base.Set(target);
-
-            Collider  = target.GetComponent<Collider>();
-            Rigidbody = target.GetComponent<Rigidbody>();
-            target.gameObject.SetLayerRecursively(_highlightLayer);
-        }
-
         public void InitAutoMove()
         {
-            SavePhysicsState();
+            if (Collider == null || Rigidbody == null)
+                return;
 
-            if (Collider != null)
-                Collider.isTrigger = true;
+            _savedData = SavePhysicsState();
 
-            if (Rigidbody != null)
-            {
-                Rigidbody.velocity               = Vector3.zero;
-                Rigidbody.angularVelocity        = Vector3.zero;
-                Rigidbody.interpolation          = RigidbodyInterpolation.None;
-                Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                Rigidbody.isKinematic            = true;
-            }
+            Current.gameObject.SetLayerRecursively(_grabLayer);
+
+            Collider.isTrigger = true;
+
+            Rigidbody.velocity               = Vector3.zero;
+            Rigidbody.angularVelocity        = Vector3.zero;
+            Rigidbody.interpolation          = RigidbodyInterpolation.None;
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            Rigidbody.isKinematic            = true;
         }
 
         public void DeInitAutoMove()
         {
             RestorePhysicsState();
-            ResetFields();
+
+            Current.gameObject.SetLayerRecursively(_highlightLayer);
+
+            Collider   = null;
+            Rigidbody  = null;
+            _savedData = null;
         }
 
-        private void SavePhysicsState()
+        protected override void OnSet(ModelConfigurationComponent previous)
         {
-            _savedData = new PhysicsState();
-
-            if (Collider != null)
-                _savedData.ColliderIsTrigger = Collider.isTrigger;
-
-            if (Rigidbody != null)
+            if (previous != null && previous.TryGetComponent(out Rigidbody previousRb))
             {
-                _savedData.CollisionDetectionMode = Rigidbody.collisionDetectionMode;
-                _savedData.RigidbodyInterpolation = Rigidbody.interpolation;
-                _savedData.RigidbodyIsKinematic   = Rigidbody.isKinematic;
+                previousRb.velocity        = Vector3.zero;
+                previousRb.angularVelocity = Vector3.zero;
             }
+
+            Current.gameObject.SetLayerRecursively(_highlightLayer);
+
+            Collider  = Current.GetComponent<Collider>();
+            Rigidbody = Current.GetComponent<Rigidbody>();
         }
+
+        private PhysicsState SavePhysicsState() => new PhysicsState
+        {
+            ColliderIsTrigger      = Collider.isTrigger,
+            CollisionDetectionMode = Rigidbody.collisionDetectionMode,
+            RigidbodyInterpolation = Rigidbody.interpolation,
+            RigidbodyIsKinematic   = Rigidbody.isKinematic
+        };
 
         private void RestorePhysicsState()
         {
@@ -117,17 +109,6 @@ namespace Arcade
                 Rigidbody.interpolation          = _savedData.RigidbodyInterpolation;
                 Rigidbody.isKinematic            = _savedData.RigidbodyIsKinematic;
             }
-
-            _savedData = null;
-        }
-
-        private void ResetFields()
-        {
-            ScreenPoint = Vector2.zero;
-            AimPosition = Vector2.zero;
-            AimRotation = 0f;
-            Collider    = null;
-            Rigidbody   = null;
         }
     }
 }

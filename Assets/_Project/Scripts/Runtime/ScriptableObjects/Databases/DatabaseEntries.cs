@@ -22,7 +22,8 @@
 
 namespace Arcade
 {
-    public abstract class DatabaseEntries<T> where T : DatabaseEntry
+    public abstract class DatabaseEntries<T>
+        where T : DatabaseEntry
     {
         public T[] Entries;
     }

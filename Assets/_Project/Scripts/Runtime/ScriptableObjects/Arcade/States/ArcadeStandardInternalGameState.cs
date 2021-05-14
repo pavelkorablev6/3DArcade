@@ -21,25 +21,24 @@
  * SOFTWARE. */
 
 using Cinemachine;
-using UnityEngine;
 
 namespace Arcade
 {
     public sealed class ArcadeStandardInternalGameState : ArcadeInternalGameState
     {
-        private CinemachineNewVirtualCamera CinemachineVirtualCamera { get; set; }
+        [System.NonSerialized] private CinemachineNewVirtualCamera _cinemachineVirtualCamera;
 
         protected override void OnStateEnter()
         {
-            CinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.Current.GetComponentInChildren<CinemachineNewVirtualCamera>();
-            if (CinemachineVirtualCamera != null)
-                CinemachineVirtualCamera.Priority = 20;
+            _cinemachineVirtualCamera = Context.InteractionControllers.NormalModeController.InteractionData.Current.GetComponentInChildren<CinemachineNewVirtualCamera>();
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 20;
         }
 
         protected override void OnStateExit()
         {
-            if (CinemachineVirtualCamera != null)
-                CinemachineVirtualCamera.Priority = 0;
+            if (_cinemachineVirtualCamera != null)
+                _cinemachineVirtualCamera.Priority = 0;
         }
     }
 }

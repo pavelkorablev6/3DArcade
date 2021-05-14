@@ -27,10 +27,10 @@ namespace Arcade
 {
     public abstract class ArcadeInternalGameState : ArcadeState
     {
-        private ScreenNodeTag ScreenNode { get; set; }
-        private Renderer ScreenRenderer { get; set; }
-        private Material SavedMaterial { get; set; }
-        private DynamicArtworkComponent DynamicArtworkComponent { get; set; }
+        [System.NonSerialized] private ScreenNodeTag _screenNode;
+        [System.NonSerialized] private Renderer _screenRenderer;
+        [System.NonSerialized] private Material _savedMaterial;
+        [System.NonSerialized] private DynamicArtworkComponent _dynamicArtworkComponent;
 
         public sealed override void OnEnter()
         {
@@ -51,7 +51,7 @@ namespace Arcade
             }
 
             if (screenNodeTag.TryGetComponent(out VideoPlayer videoPlayer))
-                Context.VideoPlayerController.StopVideo(videoPlayer);
+                Context.VideoPlayerController.Value.StopVideo(videoPlayer);
 
             if (!Context.GameControllers.Internal.StartGame(screenNodeTag, currentTarget.Configuration))
             {
@@ -59,15 +59,15 @@ namespace Arcade
                 return;
             }
 
-            ScreenNode = screenNodeTag;
+            _screenNode = screenNodeTag;
 
-            DynamicArtworkComponent = ScreenNode.GetComponent<DynamicArtworkComponent>();
-            if (DynamicArtworkComponent != null)
-                DynamicArtworkComponent.enabled = false;
+            _dynamicArtworkComponent = _screenNode.GetComponent<DynamicArtworkComponent>();
+            if (_dynamicArtworkComponent != null)
+                _dynamicArtworkComponent.enabled = false;
 
-            ScreenRenderer = ScreenNode.GetComponent<Renderer>();
-            SavedMaterial  = ScreenRenderer.material;
-            ScreenRenderer.material = Context.GameControllers.Internal.ScreenMaterial;
+            _screenRenderer = _screenNode.GetComponent<Renderer>();
+            _savedMaterial  = _screenRenderer.material;
+            _screenRenderer.material = Context.GameControllers.Internal.ScreenMaterial;
 
             OnStateEnter();
         }
@@ -80,16 +80,16 @@ namespace Arcade
 
             Context.GameControllers.Internal.StopGame();
 
-            if (ScreenRenderer != null)
-                ScreenRenderer.material = SavedMaterial;
+            if (_screenRenderer != null)
+                _screenRenderer.material = _savedMaterial;
 
-            if (DynamicArtworkComponent != null)
-                DynamicArtworkComponent.enabled = true;
+            if (_dynamicArtworkComponent != null)
+                _dynamicArtworkComponent.enabled = true;
         }
 
         public sealed override void OnUpdate(float dt)
         {
-            if (Context.InputActions.Global.Quit.triggered)
+            if (Context.InputActions.GlobalActions.Quit.triggered)
             {
                 Context.TransitionToPrevious();
                 return;

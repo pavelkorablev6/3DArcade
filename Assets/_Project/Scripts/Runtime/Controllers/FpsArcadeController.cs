@@ -30,8 +30,8 @@ namespace Arcade
         public override float AudioMaxDistance { get; protected set; }
         public override AnimationCurve VolumeCurve { get; protected set; }
 
-        protected override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.FpsArcadeProperties.CameraSettings;
-        protected override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.FpsArcadeProperties.RenderSettings;
+        protected override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.CameraSettings;
+        protected override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.RenderSettings;
         protected override bool GameModelsSpawnAtPositionWithRotation => true;
 
         //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
@@ -52,7 +52,7 @@ namespace Arcade
 
         protected override void SetupPlayer()
         {
-            if (_arcadeContext.GeneralConfiguration.EnableVR)
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
                 _arcadeContext.Player.TransitionTo<PlayerVirtualRealityFpsState>();
             else
                 _arcadeContext.Player.TransitionTo<PlayerStandardFpsState>();

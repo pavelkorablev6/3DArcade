@@ -31,7 +31,7 @@ namespace Arcade
         where T : DatabaseEntry, new()
         where U : DatabaseEntries<T>, new()
     {
-        protected string FilePath { get; private set; }
+        [field: System.NonSerialized] protected string FilePath { get; private set; }
 
         [SerializeField] private string _fileName;
 

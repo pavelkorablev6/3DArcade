@@ -66,7 +66,7 @@ namespace Arcade
 
         public void SetUIData(InteractionData interactionData)
         {
-            if (interactionData.Current == null)
+            if (interactionData == null || interactionData.Current == null)
             {
                 ResetUIData();
                 return;

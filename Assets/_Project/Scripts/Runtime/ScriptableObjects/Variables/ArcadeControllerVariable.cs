@@ -27,6 +27,5 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Variable/ArcadeController", fileName = "ArcadeController")]
     public sealed class ArcadeControllerVariable : VariableBase<ArcadeController>
     {
-        public void Initialize(ArcadeController arcadeController) => Value = arcadeController;
     }
 }

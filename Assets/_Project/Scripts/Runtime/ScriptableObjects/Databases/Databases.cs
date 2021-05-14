@@ -27,15 +27,10 @@ namespace Arcade
     [CreateAssetMenu(menuName = "Arcade/Databases", fileName = "Databases")]
     public sealed class Databases : ScriptableObject
     {
-        public EmulatorsDatabase Emulators => _emulatorsDatabase;
-        public PlatformsDatabase Platforms => _platformsDatabase;
-        public ArcadesDatabase Arcades => _arcadesDatabase;
-        public GamesDatabase Games => _gamesDatabase;
-
-        [SerializeField] private EmulatorsDatabase _emulatorsDatabase;
-        [SerializeField] private PlatformsDatabase _platformsDatabase;
-        [SerializeField] private ArcadesDatabase _arcadesDatabase;
-        [SerializeField] private GamesDatabase _gamesDatabase;
+        [field: SerializeField] public EmulatorsDatabase Emulators { get; private set; }
+        [field: SerializeField] public PlatformsDatabase Platforms { get; private set; }
+        [field: SerializeField] public ArcadesDatabase Arcades { get; private set; }
+        [field: SerializeField] public GamesDatabase Games { get; private set; }
 
         public void Initialize()
         {
