@@ -29,7 +29,6 @@ MonoBehaviour:
   _scenes: {fileID: 11400000, guid: 047531b08b6756a44bf09e356e93b719, type: 2}
   _interactionControllers: {fileID: 11400000, guid: 7174b68e664731b459625626624ac374,
     type: 2}
-  _gameControllers: {fileID: 11400000, guid: b6657db6b74f2bd4ba717f0e1f7ee5bc, type: 2}
   _mouseOverUIVariable: {fileID: 11400000, guid: 119e176c94a22d84b8ebbdc7831e3850,
     type: 2}
   _generalConfigurationVariable: {fileID: 11400000, guid: e73c346bff35ea041864153f6973108b,
