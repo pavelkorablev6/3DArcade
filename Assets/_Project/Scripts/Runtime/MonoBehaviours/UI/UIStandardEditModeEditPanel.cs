@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,118 +32,65 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UIStandardEditModeEditPanel: MonoBehaviour
     {
-        [SerializeField] private TMP_InputField _id;
-        [SerializeField] private TMP_Dropdown _interactionType;
-        [SerializeField] private TMP_Dropdown _platform;
-        [SerializeField] private Toggle _grabbable;
-        [SerializeField] private Toggle _movecabMovable;
-        [SerializeField] private Toggle _movecabGrabbable;
-        [SerializeField] private ArcadeContext _arcadeContext;
+        [SerializeField] private TMP_InputField _idInputField;
+        [SerializeField] private TMP_Dropdown _interactionTypeDropdown;
+        [SerializeField] private TMP_Dropdown _platformDropdown;
+        [SerializeField] private Toggle _grabbableToggle;
+        [SerializeField] private Toggle _movecabMovableToggle;
+        [SerializeField] private Toggle _movecabGrabbableToggle;
 
         private RectTransform _transform;
-        private ModelConfigurationComponent _target;
 
         private void Awake() => _transform = transform as RectTransform;
 
-        private void OnEnable()
+        private void Start()
         {
-            _arcadeContext.Databases.Platforms.Initialize();
-
-            _interactionType.ClearOptions();
-            _interactionType.AddOptions(System.Enum.GetNames(typeof(InteractionType)).ToList());
-
-            _platform.ClearOptions();
-            _platform.AddOptions(new List<string> { "" }.Concat(_arcadeContext.Databases.Platforms.GetNames()).ToList());
-
-            Show();
+            _interactionTypeDropdown.ClearOptions();
+            _interactionTypeDropdown.AddOptions(System.Enum.GetNames(typeof(InteractionType)).ToList());
         }
 
-        private void OnDisable() => Hide();
+        public void Show(PlatformsDatabase platformsDatabase)
+        {
+            _platformDropdown.ClearOptions();
+            _platformDropdown.AddOptions(new List<string> { "" }.Concat(platformsDatabase.GetNames()).ToList());
 
-        public void Show() => _transform.DOAnchorPosX(20f, 0.4f);
+            _ = _transform.DOAnchorPosX(20f, 0.4f);
+        }
 
         public void Hide() => _transform.DOAnchorPosX(-340f, 0.4f);
 
-        public void SetUIData(InteractionData interactionData)
+        public void SetUIData(ModelConfiguration modelConfiguration)
         {
-            if (interactionData == null || interactionData.Current == null)
-            {
-                ResetUIData();
-                return;
-            }
-
-            if (_target == interactionData.Current)
-                return;
-
-            _target = interactionData.Current;
-
-            ModelConfiguration modelConfiguration = _target.Configuration;
-
-            _id.text               = modelConfiguration.Id;
-            _interactionType.value = (int)modelConfiguration.InteractionType;
-            _platform.value        = modelConfiguration.PlatformConfiguration != null
-                                     ? _platform.options.FindIndex(x => x.text == modelConfiguration.PlatformConfiguration.Id)
-                                     : 0;
-            _grabbable.isOn        = modelConfiguration.Grabbable;
-            _movecabMovable.isOn   = modelConfiguration.MoveCabMovable;
-            _movecabGrabbable.isOn = modelConfiguration.MoveCabGrabbable;
+            _idInputField.text             = modelConfiguration.Id;
+            _interactionTypeDropdown.value = (int)modelConfiguration.InteractionType;
+            _platformDropdown.value        = modelConfiguration.PlatformConfiguration != null
+                                           ? _platformDropdown.options.FindIndex(x => x.text == modelConfiguration.PlatformConfiguration.Id)
+                                           : 0;
+            _grabbableToggle.isOn        = modelConfiguration.Grabbable;
+            _movecabMovableToggle.isOn   = modelConfiguration.MoveCabMovable;
+            _movecabGrabbableToggle.isOn = modelConfiguration.MoveCabGrabbable;
         }
 
-        public void ApplyChanges()
+        public void ResetUIData()
         {
-            if (_target == null)
-                return;
-
-            _target.Configuration.Id                 = _id.text;
-            _target.Configuration.InteractionType    = (InteractionType)_interactionType.value;
-            _target.Configuration.Platform           =_platform.options[_platform.value].text;
-            _target.Configuration.Grabbable          =_grabbable.isOn;
-            _target.Configuration.MoveCabMovable     =_movecabMovable.isOn;
-            _target.Configuration.MoveCabGrabbable   =_movecabGrabbable.isOn;
-
-            _ = _arcadeContext.SaveCurrentArcade();
+            _idInputField.text             = null;
+            _interactionTypeDropdown.value = 0;
+            _platformDropdown.value        = 0;
+            _grabbableToggle.isOn          = false;
+            _movecabMovableToggle.isOn     = false;
+            _movecabGrabbableToggle.isOn   = false;
         }
 
-        public void SpawnGame() => SpawnGameAsync().Forget();
-
-        private async UniTaskVoid SpawnGameAsync()
+        public ModelConfiguration UpdatedModelConfigurationValues(ModelConfiguration modelConfiguration)
         {
-            ModelConfiguration modelConfiguration = new ModelConfiguration
-            {
-                Id                 = _id.text,
-                InteractionType    = (InteractionType)_interactionType.value,
-                Platform           =_platform.options[_platform.value].text,
-                Grabbable          =_grabbable.isOn,
-                MoveCabMovable     =_movecabMovable.isOn,
-                MoveCabGrabbable   =_movecabGrabbable.isOn,
-            };
+            modelConfiguration.Id               = _idInputField.text;
+            modelConfiguration.InteractionType  = (InteractionType)_interactionTypeDropdown.value;
+            modelConfiguration.Platform         = _platformDropdown.options[_platformDropdown.value].text;
+            modelConfiguration.Grabbable        = _grabbableToggle.isOn;
+            modelConfiguration.MoveCabMovable   = _movecabMovableToggle.isOn;
+            modelConfiguration.MoveCabGrabbable = _movecabGrabbableToggle.isOn;
 
-            Transform playerTransform = _arcadeContext.Player.ActiveTransform;
-            Vector3 playerPosition    = playerTransform.position;
-            Vector3 playerDirection   = playerTransform.forward;
-            float spawnDistance       = 2f;
-            Vector3 verticalOffset    = Vector3.up * 0.4f;
-            Vector3 spawnPosition     = playerPosition + verticalOffset + playerDirection * spawnDistance;
-            Quaternion spawnRotation  = Quaternion.LookRotation(-playerDirection);
-
-            GameObject spawnedGame = await _arcadeContext.ArcadeController.Value.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
-            if (spawnedGame != null)
-            {
-
-            }
-
-            ResetUIData();
-        }
-
-        private void ResetUIData()
-        {
-            _target                = null;
-            _id.text               = null;
-            _interactionType.value = 0;
-            _platform.value        = 0;
-            _grabbable.isOn        = false;
-            _movecabMovable.isOn   = false;
-            _movecabGrabbable.isOn = false;
+            return modelConfiguration;
         }
     }
 }

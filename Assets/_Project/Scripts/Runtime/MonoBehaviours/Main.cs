@@ -163,51 +163,16 @@ namespace Arcade
                 _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
         }
 
-        private readonly List<GameObject> _editModeAddedItems = new List<GameObject>();
+        //public void RestoreCurrentArcadeModels()
+        //{
+        //    foreach (GameObject item in _editModeAddedItems)
+        //        ObjectUtils.DestroyObject(item);
+        //    _editModeAddedItems.Clear();
 
-        public void AddGameModel() => AddGameModelAsync().Forget();
+        //    _arcadeContext.ArcadeController.Value.RestoreModelPositions();
+        //}
 
-        private async UniTaskVoid AddGameModelAsync()
-        {
-            if (_arcadeContext.ArcadeController == null)
-                return;
-
-            Transform playerTransform = _arcadeContext.Player.ActiveTransform;
-
-            Vector3 playerPosition  = playerTransform.position;
-            Vector3 playerDirection = playerTransform.forward;
-            float spawnDistance     = 2f;
-
-            ModelConfiguration modelConfiguration = new ModelConfiguration { Id = "default_id" };
-
-            Vector3 verticalOffset   = Vector3.up * 0.4f;
-            Vector3 spawnPosition    = playerPosition + verticalOffset + playerDirection * spawnDistance;
-            Quaternion spawnRotation = Quaternion.LookRotation(-playerDirection);
-
-            GameObject spawnedModel = await _arcadeContext.ArcadeController.Value.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
-            _editModeAddedItems.Add(spawnedModel);
-        }
-
-        public void RemoveModel()
-        {
-            ModelConfigurationComponent target = _arcadeContext.InteractionControllers.EditModeController.InteractionData.Current;
-            if (target == null)
-                return;
-
-            _ = _editModeAddedItems.Remove(target.gameObject);
-            ObjectUtils.DestroyObject(target.gameObject);
-        }
-
-        public void RestoreCurrentArcadeModels()
-        {
-            foreach (GameObject item in _editModeAddedItems)
-                ObjectUtils.DestroyObject(item);
-            _editModeAddedItems.Clear();
-
-            _arcadeContext.ArcadeController.Value.RestoreModelPositions();
-        }
-
-        public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);
+        //public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);
 
         private void ValidateCurrentOS()
         {

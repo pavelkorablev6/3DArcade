@@ -28,16 +28,18 @@ namespace Arcade
 {
     public sealed class UISelectionText : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _text;
+        private TMP_Text _text;
 
-        public void SetText(InteractionData interactionData)
+        private void Awake() => _text = GetComponent<TMP_Text>();
+
+        public void SetText(ModelConfigurationComponent modelConfigurationComponent)
         {
-            string description = interactionData != null ? GetDescription(interactionData.Current) : string.Empty;
+            string description = modelConfigurationComponent != null ? GetDescription(modelConfigurationComponent) : string.Empty;
             _text.SetText(description);
             _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
         }
 
-        private string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
+        private static string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
         {
             if (modelConfigurationComponent == null)
                 return string.Empty;

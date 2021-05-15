@@ -32,12 +32,8 @@ namespace Arcade
 
         private void Awake() => _transform = transform as RectTransform;
 
-        private void OnEnable() => Show();
+        public void Show() => _transform.DOAnchorPosY(0f, 0.8f);
 
-        private void OnDisable() => Hide();
-
-        public void Show() => _transform.DOAnchorPosY(0f, 0.4f);
-
-        public void Hide() => _transform.DOAnchorPosY(-50f, 0.4f);
+        public void Hide() => _transform.DOAnchorPosY(-42f, 0.8f);
     }
 }
