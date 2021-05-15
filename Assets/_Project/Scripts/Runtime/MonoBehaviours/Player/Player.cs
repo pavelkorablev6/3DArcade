@@ -24,14 +24,13 @@ using UnityEngine;
 
 namespace Arcade
 {
+    [DisallowMultipleComponent]
     public sealed class Player : MonoBehaviour
     {
-        [SerializeField] private Camera _mainCamera;
+        [field: SerializeField] public Camera Camera { get; private set; }
         [SerializeField] private PlayerControls _standardControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
         [SerializeField] private PlayerContext _playerContext;
-
-        public Camera Camera => _mainCamera;
 
         private void Awake() => Initialize();
 
@@ -54,12 +53,16 @@ namespace Arcade
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 
         public void EnableNormalFpsControls() => _standardControls.EnableFpsController();
+
         public void EnableNormalCylControls() => _standardControls.EnableCylController();
-        public void DisableNormalControls()   => _standardControls.Disable();
+
+        public void DisableNormalControls() => _standardControls.Disable();
 
         public void EnableVirtualRealityFpsControls() => _virtualRealityControls.EnableFpsController();
+
         public void EnableVirtualRealityCylControls() => _virtualRealityControls.EnableCylController();
-        public void DisableVirtualRealityControls()   => _virtualRealityControls.Disable();
+
+        public void DisableVirtualRealityControls() => _virtualRealityControls.Disable();
 
         public void Disable()
         {

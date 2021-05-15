@@ -140,7 +140,7 @@ namespace Arcade
                 List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
                 UnityEngine.XR.InputDevices.GetDevices(devices);
                 if (devices.Count == 0)
-                    GeneralConfiguration.SetEnableVR(false);
+                    GeneralConfiguration.Value.EnableVR = false;
 
                 if (GeneralConfiguration.Value.EnableVR)
                     TransitionTo<ArcadeVirtualRealityLoadState>();

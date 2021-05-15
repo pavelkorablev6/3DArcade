@@ -16,7 +16,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19ad35045c95e954fbf74e6c4e1a8e06, type: 2}
   - {fileID: 11400000, guid: 23ef29bf91eae1d4d87a537818a30480, type: 2}
   - {fileID: 11400000, guid: f1732058103614d43b3ad515cd4d6948, type: 2}
-  - {fileID: 11400000, guid: 8d4a15fafee3dc5479486d4e79b4c279, type: 2}
   - {fileID: 11400000, guid: a75b48a567d20324fb89cab2ab443416, type: 2}
   <ArcadeContext>k__BackingField: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198,
     type: 2}

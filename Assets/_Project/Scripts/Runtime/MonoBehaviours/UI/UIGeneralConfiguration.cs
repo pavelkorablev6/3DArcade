@@ -77,8 +77,8 @@ namespace Arcade
                 EnableVR           = _enableVRToggle.isOn
             };
 
-            _generalConfiguration.Save();
-            _generalConfiguration.Initialize();
+            if (_generalConfiguration.Value.Save())
+                _generalConfiguration.Initialize();
         }
     }
 }

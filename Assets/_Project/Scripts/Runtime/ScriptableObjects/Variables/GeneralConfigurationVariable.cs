@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -30,11 +30,5 @@ namespace Arcade
         [SerializeField] private VirtualFileSystem _virtualFileSystem;
 
         public void Initialize() => Value.Initialize(_virtualFileSystem);
-
-        public void SetMouseLookReverse(bool value) => Value.MouseLookReverse = value;
-
-        public void SetEnableVR(bool value) => Value.EnableVR = value;
-
-        public void Save() => Value.Save();
     }
 }

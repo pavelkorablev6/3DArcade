@@ -55,7 +55,12 @@ namespace Arcade
             if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
                 return;
 
-            DefaultMediaDirectory ??= _virtualFileSystem.GetDirectory("medias");
+            if (DefaultMediaDirectory == null)
+            {
+                if (!_virtualFileSystem.TryGetDirectory("medias", out string defaultMediaDirectory))
+                    throw new System.Exception("Directory 'medias' not mapped in VirtualFileSystem.");
+                DefaultMediaDirectory = defaultMediaDirectory;
+            }
 
             string[] gameDirectories     = directoryNamesProvider.GetModelImageDirectories(modelConfiguration);
             string[] platformDirectories = directoryNamesProvider.GetPlatformImageDirectories(modelConfiguration.PlatformConfiguration);

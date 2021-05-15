@@ -45,26 +45,41 @@ namespace Arcade
             return this;
         }
 
-        public string GetDirectory(string alias)
+        public bool TryGetDirectory(string alias, out string outDirectory)
         {
-            if (_mountedDirectories.TryGetValue(alias, out string result))
-                return result;
-            return null;
+            if (!_mountedDirectories.TryGetValue(alias, out string result))
+            {
+                Debug.LogError($"[VirtualFileSystem] Directory using alias '{alias}' not mounted.");
+                outDirectory = null;
+                return false;
+            }
+
+            outDirectory = result;
+            return true;
         }
 
-        public string GetFile(string alias)
+        public bool TryGetFile(string alias, out string outFile)
         {
-            if (_mountedFiles.TryGetValue(alias, out string result))
-                return result;
-            return null;
+            if (!_mountedFiles.TryGetValue(alias, out string result))
+            {
+                Debug.LogError($"[VirtualFileSystem] File using alias '{alias}' not mounted.");
+                outFile = null;
+                return false;
+            }
+
+            outFile = result;
+            return true;
         }
 
-        public string[] GetFiles(string alias, string searchPattern, bool searchAllDirectories)
+        public bool TryGetFiles(string alias, string searchPattern, bool searchAllDirectories, out string[] outFiles)
         {
-            string directory = GetDirectory(alias);
-            if (directory != null)
-                return FileSystemUtils.GetFiles(directory, searchPattern, searchAllDirectories);
-            return new string[0];
+            if (!TryGetDirectory(alias, out string directory))
+            {
+                outFiles = null;
+                return false;
+            }
+
+            return FileSystemUtils.TryGetFiles(directory, searchPattern, searchAllDirectories, out outFiles);
         }
     }
 }

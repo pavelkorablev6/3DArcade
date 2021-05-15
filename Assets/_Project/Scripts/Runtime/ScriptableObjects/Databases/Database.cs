@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -39,12 +39,13 @@ namespace Arcade
 
         public void Initialize()
         {
-            Directory = _virtualFileSystem.GetDirectory(DirectoryAlias);
-            if (Directory == null)
+            if (!_virtualFileSystem.TryGetDirectory(DirectoryAlias, out string directory))
             {
                 Debug.LogWarning($"[{GetType().Name}.Initialize] Directory not mapped in VirtualFileSystem, using default values");
                 return;
             }
+
+            Directory = directory;
 
             PostInitialize();
         }

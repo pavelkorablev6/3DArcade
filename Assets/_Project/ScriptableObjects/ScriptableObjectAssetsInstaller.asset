@@ -10,9 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 121a0bda456049d45976f729587c514e, type: 3}
-  m_Name: ToSortInstaller
+  m_Name: ScriptableObjectAssetsInstaller
   m_EditorClassIdentifier: 
+  _virtualFileSystem: {fileID: 11400000, guid: f64f31db46bd5a44aba8c580ece02a1f, type: 2}
   _databases: {fileID: 11400000, guid: e8c64f039a7454e4db81906a8ece05df, type: 2}
   _sceneCreator: {fileID: 11400000, guid: 12da2c96881d572479bc16820705614a, type: 2}
   _sceneLoader: {fileID: 11400000, guid: 92c4efd98176a9a43b020b0462045070, type: 2}
+  _libretroScreenMaterial: {fileID: 2100000, guid: dc3bd9336a0611a408bb58512aba394f,
+    type: 2}
+  _uddScreenMaterial: {fileID: 2100000, guid: 1882637da6cf2e342911093f399b38d8, type: 2}
   _gameControllers: {fileID: 11400000, guid: b6657db6b74f2bd4ba717f0e1f7ee5bc, type: 2}
+  _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}
+  _mouseOverUIVariable: {fileID: 11400000, guid: 119e176c94a22d84b8ebbdc7831e3850,
+    type: 2}
+  _arcadeConfigurationVariable: {fileID: 11400000, guid: 66a0ee11fcdbf554aa5522e160d4c342,
+    type: 2}

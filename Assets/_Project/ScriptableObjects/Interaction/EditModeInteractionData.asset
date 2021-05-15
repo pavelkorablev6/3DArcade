@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c411789027408d42bf705ea9f73f97c, type: 3}
   m_Name: EditModeInteractionData
   m_EditorClassIdentifier: 
-  _selectionLayer: 10
   _highlightLayer: 11
+  _grabLayer: 12

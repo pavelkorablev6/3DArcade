@@ -29,7 +29,7 @@ namespace Arcade
         public static void Clear(this TMP_Text text)
         {
             if (text != null)
-                text.text = string.Empty;
+                text.SetText(string.Empty);
         }
     }
 }

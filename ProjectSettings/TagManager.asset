@@ -17,14 +17,12 @@ TagManager:
   - Arcade/PropModels
   - Arcade/Selection
   - Arcade/Highlight
-  - ArcadeCamera
+  - Arcade/Grab
   - Menu
   - Menu/ArcadeModels
   - Menu/GameModels
   - Menu/PropModels
   - Menu/Selection
-  - Menu/Highlight
-  - MenuCamera
   - 
   - 
   - 
@@ -36,7 +34,9 @@ TagManager:
   - 
   - 
   - 
-  - Render Canvas
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

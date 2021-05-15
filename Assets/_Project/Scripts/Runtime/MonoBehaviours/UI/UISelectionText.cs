@@ -30,13 +30,23 @@ namespace Arcade
     {
         private TMP_Text _text;
 
+        private Tween _colorTween;
+
         private void Awake() => _text = GetComponent<TMP_Text>();
 
-        public void SetText(ModelConfigurationComponent modelConfigurationComponent)
+        public void SetValue(ModelConfigurationComponent modelConfigurationComponent)
         {
             string description = modelConfigurationComponent != null ? GetDescription(modelConfigurationComponent) : string.Empty;
-            _text.SetText(description);
-            _ = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.8f);
+            _colorTween.Kill();
+            _colorTween = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.6f)
+                               .OnStart(() => _text.SetText(description));
+        }
+
+        public void ResetValue()
+        {
+            _colorTween.Kill();
+            _colorTween = _text.DOColor(Color.clear, 0.6f)
+                               .OnComplete(() => _text.Clear());
         }
 
         private static string GetDescription(ModelConfigurationComponent modelConfigurationComponent)

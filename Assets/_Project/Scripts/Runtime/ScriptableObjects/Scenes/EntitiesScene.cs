@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using SK.Utilities.Unity;
-using Zenject;
 
 namespace Arcade
 {
@@ -43,9 +42,6 @@ namespace Arcade
 
         [field: System.NonSerialized] private Scene _scene;
         [field: System.NonSerialized] private Transform _arcadeNodeTransform;
-
-        [Inject]
-        public void Construct(SceneCreatorBase sceneCreator) => _sceneCreator = sceneCreator;
 
         public void Initialize(ArcadeConfiguration arcadeConfiguration)
         {

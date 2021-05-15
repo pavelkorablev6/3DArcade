@@ -25,13 +25,19 @@ using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Installers", fileName = "ToSortInstaller")]
-    public sealed class ToSortInstaller : ScriptableObjectInstaller<ToSortInstaller>
+    [CreateAssetMenu(menuName = "3DArcade/ScriptableObjectAssetsInstaller", fileName = "ScriptableObjectAssetsInstaller")]
+    public sealed class ScriptableObjectAssetsInstaller : ScriptableObjectInstaller<ScriptableObjectAssetsInstaller>
     {
+        [SerializeField] private VirtualFileSystem _virtualFileSystem;
         [SerializeField] private Databases _databases;
         [SerializeField] private SceneCreatorBase _sceneCreator;
         [SerializeField] private AddressableSceneLoaderBase _sceneLoader;
+        [SerializeField] private Material _libretroScreenMaterial;
+        [SerializeField] private Material _uddScreenMaterial;
         [SerializeField] private GameControllers _gameControllers;
+        [SerializeField] private ArcadeContext _arcadeContext;
+        [SerializeField] private BoolVariable _mouseOverUIVariable;
+        [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
 
         //[SerializeField] private GeneralConfigurationVariable _generalConfigurationVariable;
         //[SerializeField] private NormalModeInteractionRaycaster _normalModeInteractionRaycaster;
@@ -42,20 +48,14 @@ namespace Arcade
 
         public override void InstallBindings()
         {
-            //_ = Container.Bind<GeneralConfigurationVariable>().FromScriptableObject(_generalConfigurationVariable).AsSingle();
+            _ = Container.Bind<InputActions>().AsSingle().NonLazy();
 
-            //_ = Container.Bind<MultiFileDatabase<EmulatorConfiguration>>().To<EmulatorsDatabase>().AsSingle().NonLazy();
-            //_ = Container.Bind<MultiFileDatabase<PlatformConfiguration>>().To<PlatformsDatabase>().AsSingle().NonLazy();
-            //_ = Container.Bind<MultiFileDatabase<ArcadeConfiguration>>().To<ArcadesDatabase>().AsSingle().NonLazy();
-            //_ = Container.Bind<GamesDatabase>().AsSingle().NonLazy();
+            _ = Container.Bind<VirtualFileSystem>().FromScriptableObject(_virtualFileSystem).AsSingle();
 
             _ = Container.Bind<Databases>().FromScriptableObject(_databases).AsSingle();
 
             _ = Container.Bind<SceneCreatorBase>().FromScriptableObject(_sceneCreator).AsSingle();
             _ = Container.Bind<AddressableSceneLoaderBase>().FromScriptableObject(_sceneLoader).AsSingle();
-            //_ = Container.Bind<EntitiesScene>().AsSingle().NonLazy();
-            //_ = Container.Bind<ArcadeScene>().AsSingle().NonLazy();
-            //_ = Container.Bind<Scenes>().AsSingle().NonLazy();
 
             _ = Container.Bind<IAssetAddressesProvider<ArcadeConfiguration>>().To<ArcadeSceneAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<IAssetAddressesProvider<ModelConfiguration>>().WithId("game").To<GamePrefabAddressesProvider>().AsSingle().NonLazy();
@@ -76,19 +76,16 @@ namespace Arcade
             _ = Container.Bind<NodeController<GenericNodeTag>>().AsSingle().NonLazy();
             _ = Container.Bind<NodeControllers>().AsSingle().NonLazy();
 
-            //_ = Container.Bind<NormalModeInteractionRaycaster>().FromScriptableObject(_normalModeInteractionRaycaster).AsSingle();
-            //_ = Container.Bind<NormalModeInteractionController>().FromScriptableObject(_normalModeInteractionController).AsSingle();
-            //_ = Container.Bind<EditModeInteractionRaycaster>().FromScriptableObject(_editModeInteractionRaycaster).AsSingle();
-            //_ = Container.Bind<EditModeInteractionController>().FromScriptableObject(_editModeInteractionController).AsSingle();
-            //_ = Container.Bind<InteractionControllers>().AsSingle().NonLazy();
-
-            _ = Container.Bind<Material>().FromResource("Materials/_libretroScreen").WhenInjectedInto<InternalGameController>();
-            _ = Container.Bind<Material>().FromResource("Materials/_uddScreen").WhenInjectedInto<ExternalGameController>();
+            _ = Container.Bind<Material>().FromInstance(_libretroScreenMaterial).WhenInjectedInto<InternalGameController>();
+            _ = Container.Bind<Material>().FromInstance(_uddScreenMaterial).WhenInjectedInto<ExternalGameController>();
             _ = Container.Bind<ExternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<InternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<GameControllers>().FromScriptableObject(_gameControllers).AsSingle();
 
-            //_ = Container.Bind<TypeEvent>().FromScriptableObject(_uiStateTransitionEvent).AsSingle();
+            _ = Container.Bind<BoolVariable>().WithId("mouse_over_ui").FromScriptableObject(_mouseOverUIVariable).AsSingle();
+            _ = Container.Bind<ArcadeConfigurationVariable>().FromScriptableObject(_arcadeConfigurationVariable).AsSingle();
+
+            _ = Container.Bind<ArcadeContext>().FromScriptableObject(_arcadeContext).AsSingle();
         }
     }
 }

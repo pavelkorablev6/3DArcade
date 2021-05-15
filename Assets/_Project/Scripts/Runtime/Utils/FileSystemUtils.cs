@@ -63,10 +63,13 @@ namespace Arcade
             return Path.Combine(path1, path2);
         }
 
-        public static string[] GetFiles(string dirPath, string searchPattern, bool searchAllDirectories)
+        public static bool TryGetFiles(string dirPath, string searchPattern, bool searchAllDirectories, out string[] outFiles)
         {
             if (!Directory.Exists(dirPath))
-                return null;
+            {
+                outFiles = null;
+                return false;
+            }
 
             SearchOption searchOption;
             if (string.IsNullOrEmpty(searchPattern))
@@ -75,7 +78,14 @@ namespace Arcade
                 searchOption = searchAllDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             string[] files = Directory.GetFiles(dirPath, searchPattern, searchOption);
-            return files.Length > 0 ? files : null;
+            if (files.Length == 0)
+            {
+                outFiles = null;
+                return false;
+            }
+
+            outFiles = files;
+            return true;
         }
     }
 }

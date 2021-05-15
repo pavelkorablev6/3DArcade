@@ -1,4 +1,4 @@
-﻿using Dapper.Contrib.Extensions;
+using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -91,13 +91,14 @@ namespace Arcade
         private const string INTERNAL_TABLE_NAME_STATS            = "_stats_";
 
         [SerializeField] private VirtualFileSystem _virtualFileSystem;
-
         [System.NonSerialized] private SQLiteDatabase _database;
 
         public void Initialize()
         {
-            string path = _virtualFileSystem.GetFile("game_database");
-            _database   = new SQLiteDatabase(path);
+            if (!_virtualFileSystem.TryGetFile("game_database", out string path))
+                throw new System.Exception("File with alias 'game_database' not mapped in VirtualFileSystem.");
+
+            _database = new SQLiteDatabase(path);
             CreateInternalTables();
         }
 

@@ -49,8 +49,8 @@ namespace Arcade
 
         public void Initialize(VirtualFileSystem virtualFileSystem)
         {
-            _filePath = virtualFileSystem.GetFile(VFS_FILE_ALIAS);
-            Load();
+            if (virtualFileSystem.TryGetFile(VFS_FILE_ALIAS, out _filePath))
+                Load();
         }
 
         public void Load()

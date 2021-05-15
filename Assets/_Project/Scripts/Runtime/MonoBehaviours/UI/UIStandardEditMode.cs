@@ -52,7 +52,7 @@ namespace Arcade
 
             if (_target != null)
             {
-                _selectionText.SetText(_target);
+                _selectionText.SetValue(_target);
                 _editModePanel.SetUIData(_target.Configuration);
             }
         }
@@ -70,7 +70,7 @@ namespace Arcade
         {
             if (interactionData == null)
             {
-                _selectionText.SetText(null);
+                _selectionText.ResetValue();
                 _editModePanel.ResetUIData();
                 return;
             }
@@ -80,14 +80,14 @@ namespace Arcade
 
             _target = interactionData.Current;
 
-            _selectionText.SetText(_target);
+            _selectionText.SetValue(_target);
             _editModePanel.SetUIData(_target.Configuration);
         }
 
         public void ResetUIData()
         {
             _target = null;
-            _selectionText.SetText(null);
+            _selectionText.ResetValue();
             _editModePanel.ResetUIData();
         }
 

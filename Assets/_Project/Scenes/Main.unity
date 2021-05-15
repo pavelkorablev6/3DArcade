@@ -173,7 +173,7 @@ Transform:
   - {fileID: 1716827552}
   - {fileID: 1979082605}
   m_Father: {fileID: 96214925}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &96214924
 GameObject:
@@ -185,7 +185,6 @@ GameObject:
   m_Component:
   - component: {fileID: 96214925}
   - component: {fileID: 4720070918826908351}
-  - component: {fileID: 96214927}
   - component: {fileID: 96214926}
   m_Layer: 0
   m_Name: Player
@@ -205,10 +204,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1457968336}
   - {fileID: 599590487}
   - {fileID: 38413210}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &96214926
 MonoBehaviour:
@@ -224,18 +224,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ActionAssets:
   - {fileID: -944628639613478452, guid: 1050b2433651de04f9e12b6866b9546f, type: 3}
---- !u!114 &96214927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 96214924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f30b16a6e0b0cc4d86c19c9d3eb1994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &118017228
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +573,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &404805610
 PrefabInstance:
@@ -2118,7 +2106,7 @@ Transform:
   - {fileID: 1640022277}
   - {fileID: 1613447069}
   m_Father: {fileID: 96214925}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &622012833
 GameObject:
@@ -2801,12 +2789,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872067991}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1712348952}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &896552227
 GameObject:
@@ -3105,6 +3093,7 @@ GameObject:
   - component: {fileID: 988080951}
   - component: {fileID: 988080950}
   - component: {fileID: 988080949}
+  - component: {fileID: 988080952}
   - component: {fileID: 7668087893796177104}
   m_Layer: 5
   m_Name: Standard_Normal
@@ -3196,6 +3185,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &988080952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988080947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b173835f74cf16459983b672e70b2b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectionText: {fileID: 7990358591048463157}
 --- !u!1001 &1023925044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3376,6 +3378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1203112236}
   - component: {fileID: 1203112237}
+  - component: {fileID: 1203112238}
   - component: {fileID: 1203112235}
   m_Layer: 0
   m_Name: Main
@@ -3423,13 +3426,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: 79c9c3789231813428f5ec7f12b4fd8f, type: 2}
-  - {fileID: 11400000, guid: 660704a554cbb8a47bfbfd5a7a92cdee, type: 2}
   - {fileID: 11400000, guid: a5ef7df5708a40b49bbbe649c99e1640, type: 2}
-  - {fileID: 11400000, guid: b870eeff8cff00643962d707a646c10c, type: 2}
-  - {fileID: 11400000, guid: cf8eaf97a9c01a542ab306e62016883e, type: 2}
   _monoInstallers:
-  - {fileID: 96214927}
+  - {fileID: 1203112238}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -3447,6 +3446,19 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames: []
   _parentContractNames: []
+--- !u!114 &1203112238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203112234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f30b16a6e0b0cc4d86c19c9d3eb1994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 4720070918826908351}
 --- !u!1 &1214545103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3475,7 +3487,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1224026738
 GameObject:
@@ -3946,12 +3958,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457968335}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 96214925}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 10.617, z: 0}
 --- !u!114 &1457968337
 MonoBehaviour:
@@ -5339,8 +5351,9 @@ Transform:
   m_Children:
   - {fileID: 804997875}
   - {fileID: 309567347039351585}
+  - {fileID: 872067994}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1716827551
 GameObject:
@@ -15791,7 +15804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc00ccbf597b7f84db975cc7db38d4ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 1457968340}
+  <Camera>k__BackingField: {fileID: 1457968340}
   _standardControls: {fileID: 7064439643649170218}
   _virtualRealityControls: {fileID: 7984420611464707651}
   _playerContext: {fileID: 11400000, guid: 6b51ece490350db4fb6b2adcecdf9c55, type: 2}
@@ -22665,9 +22678,9 @@ MonoBehaviour:
   _response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7990358591048463157}
-        m_TargetAssemblyTypeName: Arcade.UISelectionText, Arcade.Runtime
-        m_MethodName: SetText
+      - m_Target: {fileID: 988080952}
+        m_TargetAssemblyTypeName: Arcade.UIStandardNormalMode, Arcade.Runtime
+        m_MethodName: SetUIData
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

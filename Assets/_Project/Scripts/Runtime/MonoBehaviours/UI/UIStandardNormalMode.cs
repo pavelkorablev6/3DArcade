@@ -21,15 +21,25 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Installers/VirtualFileSystem", fileName = "VirtualFileSystemInstaller")]
-    public sealed class VirtualFileSystemInstaller : ScriptableObjectInstaller<VirtualFileSystemInstaller>
+    [DisallowMultipleComponent]
+    public sealed class UIStandardNormalMode : MonoBehaviour
     {
-        [SerializeField] private VirtualFileSystem _virtualFileSystem;
+        [SerializeField] private UISelectionText _selectionText;
 
-        public override void InstallBindings() => Container.Bind<VirtualFileSystem>().FromScriptableObject(_virtualFileSystem).AsSingle();
+        public void SetUIData(InteractionData interactionData)
+        {
+            if (interactionData == null)
+            {
+                _selectionText.ResetValue();
+                return;
+            }
+
+            _selectionText.SetValue(interactionData.Current);
+        }
+
+        public void ResetUIData() => _selectionText.ResetValue();
     }
 }

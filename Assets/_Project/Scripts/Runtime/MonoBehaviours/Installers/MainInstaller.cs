@@ -25,16 +25,10 @@ using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Installers/Variables", fileName = "Variables")]
-    public sealed class VariablesInstaller : ScriptableObjectInstaller<VariablesInstaller>
+    public sealed class MainInstaller : MonoInstaller<MainInstaller>
     {
-        [SerializeField] private BoolVariable _mouseOverUIVariable;
-        [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
+        [SerializeField] private Player _player;
 
-        public override void InstallBindings()
-        {
-            _ = Container.Bind<BoolVariable>().WithId("mouse_over_ui").FromScriptableObject(_mouseOverUIVariable).AsSingle();
-            _ = Container.Bind<ArcadeConfigurationVariable>().FromScriptableObject(_arcadeConfigurationVariable).AsSingle();
-        }
+        public override void InstallBindings() => Container.Bind<Player>().FromInstance(_player).AsSingle();
     }
 }
