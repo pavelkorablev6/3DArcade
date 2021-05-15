@@ -78,10 +78,10 @@ namespace Arcade
             RestoreModelPositions(_propModels);
         }
 
-        public async UniTask<GameObject> SpawnGame(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation)
+        public async UniTask<GameObject> SpawnGameAsync(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation)
         {
-            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, position, rotation, _arcadeContext.Scenes.Entities.GamesNodeTransform, EntitiesScene.GamesLayer, addressesToTry);
+            AssetAddresses addressesToTry = ProcessGameConfigurationAndGetAddressesToTry(modelConfiguration);
+            return await SpawnModel(modelConfiguration, position, rotation, _arcadeContext.Scenes.Entities.GamesNodeTransform, EntitiesScene.GamesLayer, addressesToTry, true);
         }
 
         protected abstract void SetupPlayer();
@@ -93,9 +93,15 @@ namespace Arcade
 
             foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Value.Games)
             {
-                GameObject go = await SpawnGame(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
+                GameObject go = await SpawnGameAsync(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
                 _gameModels.Add(go.GetComponent<ModelConfigurationComponent>());
             }
+        }
+
+        private async UniTask<GameObject> SpawnGameAsync(ModelConfiguration modelConfiguration, Transform parent)
+        {
+            AssetAddresses addressesToTry = ProcessGameConfigurationAndGetAddressesToTry(modelConfiguration);
+            return await SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, true);
         }
 
         private async UniTask SpawProps()
@@ -125,7 +131,75 @@ namespace Arcade
             }
         }
 
-        private async UniTask<GameObject> SpawnGame(ModelConfiguration modelConfiguration, Transform parent)
+        private async UniTask<GameObject> SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
+        {
+            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
+            return await SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry, false);
+        }
+
+        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, bool applyArtworks)
+        {
+            Vector3 position;
+            Quaternion rotation;
+
+            if (spawnAtPositionWithRotation)
+            {
+                position = modelConfiguration.Position;
+                rotation = Quaternion.Euler(modelConfiguration.Rotation);
+            }
+            else
+            {
+                position = Vector3.zero;
+                rotation = Quaternion.identity;
+            }
+
+            return await SpawnModel(modelConfiguration, position, rotation, parent, layer, addressesToTry, applyArtworks);
+        }
+
+        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation, Transform parent, int layer, AssetAddresses addressesToTry, bool applyArtworks)
+        {
+            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
+            if (go == null)
+                return null;
+
+            go.AddComponent<ModelConfigurationComponent>()
+              .InitialSetup(modelConfiguration, layer);
+
+            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
+                _ = go.AddComponent<XRSimpleInteractable>();
+            else
+            {
+                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
+                if (vCam != null)
+                    vCam.Priority = 0;
+            }
+
+            if (applyArtworks)
+                await ApplyArtworks(go, modelConfiguration);
+
+            return go;
+        }
+
+        private async UniTask ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
+        {
+            // Look for artworks only in play mode / runtime
+            if (!Application.isPlaying)
+                return;
+
+            await _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
+
+            float screenIntensity = GetScreenIntensity(modelConfiguration.GameConfiguration);
+            await _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
+
+            await _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
+
+            //if (gameModels)
+            //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
+            //else
+            //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
+        }
+
+        private AssetAddresses ProcessGameConfigurationAndGetAddressesToTry(ModelConfiguration modelConfiguration)
         {
             GameConfiguration game = null;
             if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
@@ -155,79 +229,7 @@ namespace Arcade
             modelConfiguration.GameConfiguration     = game;
 
             AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, true);
-        }
-
-        private async UniTask<GameObject> SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
-        {
-            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry, false);
-        }
-
-        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, bool applyArtworks)
-        {
-            Vector3 position;
-            Quaternion rotation;
-
-            if (spawnAtPositionWithRotation)
-            {
-                position = modelConfiguration.Position;
-                rotation = Quaternion.Euler(modelConfiguration.Rotation);
-            }
-            else
-            {
-                position = Vector3.zero;
-                rotation = Quaternion.identity;
-            }
-
-            GameObject go = await SpawnModel(modelConfiguration, position, rotation, parent, layer, addressesToTry);
-            if (go == null)
-                return null;
-
-            if (applyArtworks)
-                await ApplyArtworks(go, modelConfiguration);
-
-            return go;
-        }
-
-        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation, Transform parent, int layer, AssetAddresses addressesToTry)
-        {
-            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
-            if (go == null)
-                return null;
-
-            go.AddComponent<ModelConfigurationComponent>()
-              .InitialSetup(modelConfiguration, layer);
-
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
-                _ = go.AddComponent<XRSimpleInteractable>();
-            else
-            {
-                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
-                if (vCam != null)
-                    vCam.Priority = 0;
-            }
-
-            return go;
-        }
-
-        private async UniTask ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
-        {
-            // Look for artworks only in play mode / runtime
-            if (!Application.isPlaying)
-                return;
-
-            await _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
-
-            float screenIntensity = GetScreenIntensity(modelConfiguration.GameConfiguration);
-            await _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
-
-            await _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
-
-            //if (gameModels)
-            //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-            //else
-            //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
+            return addressesToTry;
         }
 
         private float GetScreenIntensity(GameConfiguration game)

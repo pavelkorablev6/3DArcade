@@ -20,68 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
-using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
     public sealed class UIConfiguration : MonoBehaviour
     {
-        [SerializeField] private Databases _databases;
-        [SerializeField] private GeneralConfigurationVariable _generalConfiguration;
-        [SerializeField] private RectTransform _generalConfigurationPanel;
-        [SerializeField] private TMP_Dropdown _startingArcadeDropdown;
-        [SerializeField] private TMP_Dropdown _startingArcadeTypeDropdown;
-        [SerializeField] private Toggle _mouseLookReverseToggle;
-        [SerializeField] private Toggle _enableVRToggle;
+        [SerializeField] private UIGeneralConfiguration _generalConfiguration;
 
-        public void ShowGeneralConfiguration()
-        {
-            _generalConfiguration.Initialize();
+        public void Show() => gameObject.SetActive(true);
 
-            _startingArcadeDropdown.ClearOptions();
-            _startingArcadeDropdown.AddOptions(_databases.Arcades.GetNames());
-            _startingArcadeDropdown.value = _startingArcadeDropdown.options.FindIndex(x => x.text == _generalConfiguration.Value.StartingArcade);
+        public void Hide() => gameObject.SetActive(false);
 
-            _startingArcadeTypeDropdown.options = System.Enum.GetNames(typeof(ArcadeType)).Select(x => new TMP_Dropdown.OptionData(x)).ToList();
-            _startingArcadeTypeDropdown.value   = _startingArcadeTypeDropdown.options.FindIndex(x => x.text == _generalConfiguration.Value.StartingArcadeType.ToString());
+        public void ShowGeneralConfiguration() => _generalConfiguration.Show();
 
-            _mouseLookReverseToggle.isOn = _generalConfiguration.Value.MouseLookReverse;
+        public void HideGeneralConfiguration() => _generalConfiguration.Hide();
 
-            _enableVRToggle.isOn = _generalConfiguration.Value.EnableVR;
-
-            _ = _generalConfigurationPanel.DOAnchorPosX(0f, 0.3f)
-                                          .OnStart(() =>
-                                          {
-                                              gameObject.SetActive(true);
-                                              _generalConfigurationPanel.gameObject.SetActive(true);
-                                          });
-        }
-
-        public void SaveGeneralConfiguration()
-        {
-            _generalConfiguration.Value.StartingArcade = _startingArcadeDropdown.options[_startingArcadeDropdown.value].text;
-
-            if (System.Enum.TryParse(_startingArcadeTypeDropdown.options[_startingArcadeTypeDropdown.value].text, out ArcadeType arcadeType))
-                _generalConfiguration.Value.StartingArcadeType = arcadeType;
-
-            _generalConfiguration.Value.MouseLookReverse = _mouseLookReverseToggle.isOn;
-
-            _generalConfiguration.Value.EnableVR = _enableVRToggle.isOn;
-
-            _generalConfiguration.Save();
-            _generalConfiguration.Initialize();
-        }
-
-        public void HideGeneralConfiguration() => _generalConfigurationPanel.DOAnchorPosX(-500f, 0.3f)
-                                                                            .OnComplete(() =>
-                                                                            {
-                                                                                _generalConfigurationPanel.gameObject.SetActive(false);
-                                                                                gameObject.SetActive(false);
-                                                                            });
+        public void SaveGeneralConfiguration() => _generalConfiguration.Save();
     }
 }

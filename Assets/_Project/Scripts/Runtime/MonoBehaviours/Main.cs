@@ -184,7 +184,7 @@ namespace Arcade
             Vector3 spawnPosition    = playerPosition + verticalOffset + playerDirection * spawnDistance;
             Quaternion spawnRotation = Quaternion.LookRotation(-playerDirection);
 
-            GameObject spawnedModel = await _arcadeContext.ArcadeController.Value.SpawnGame(modelConfiguration, spawnPosition, spawnRotation);
+            GameObject spawnedModel = await _arcadeContext.ArcadeController.Value.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
             _editModeAddedItems.Add(spawnedModel);
         }
 

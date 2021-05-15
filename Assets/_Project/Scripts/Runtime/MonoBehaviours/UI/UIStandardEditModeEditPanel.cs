@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace Arcade
             _id.text               = modelConfiguration.Id;
             _interactionType.value = (int)modelConfiguration.InteractionType;
             _platform.value        = modelConfiguration.PlatformConfiguration != null
-                                     ? _platform.options.FindIndex(x => x.text.Equals(modelConfiguration.PlatformConfiguration.Id))
+                                     ? _platform.options.FindIndex(x => x.text == modelConfiguration.PlatformConfiguration.Id)
                                      : 0;
             _grabbable.isOn        = modelConfiguration.Grabbable;
             _movecabMovable.isOn   = modelConfiguration.MoveCabMovable;
@@ -102,6 +103,35 @@ namespace Arcade
             _target.Configuration.MoveCabGrabbable   =_movecabGrabbable.isOn;
 
             _ = _arcadeContext.SaveCurrentArcade();
+        }
+
+        public void SpawnGame() => SpawnGameAsync().Forget();
+
+        private async UniTaskVoid SpawnGameAsync()
+        {
+            ModelConfiguration modelConfiguration = new ModelConfiguration
+            {
+                Id                 = _id.text,
+                InteractionType    = (InteractionType)_interactionType.value,
+                Platform           =_platform.options[_platform.value].text,
+                Grabbable          =_grabbable.isOn,
+                MoveCabMovable     =_movecabMovable.isOn,
+                MoveCabGrabbable   =_movecabGrabbable.isOn,
+            };
+
+            Transform playerTransform = _arcadeContext.Player.ActiveTransform;
+            Vector3 playerPosition    = playerTransform.position;
+            Vector3 playerDirection   = playerTransform.forward;
+            float spawnDistance       = 2f;
+            Vector3 verticalOffset    = Vector3.up * 0.4f;
+            Vector3 spawnPosition     = playerPosition + verticalOffset + playerDirection * spawnDistance;
+            Quaternion spawnRotation  = Quaternion.LookRotation(-playerDirection);
+
+            GameObject spawnedGame = await _arcadeContext.ArcadeController.Value.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
+            if (spawnedGame != null)
+            {
+
+            }
 
             ResetUIData();
         }
