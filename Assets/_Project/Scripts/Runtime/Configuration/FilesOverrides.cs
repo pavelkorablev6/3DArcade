@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -27,28 +27,13 @@ namespace Arcade
     [System.Serializable]
     public sealed class FilesOverrides
     {
-        [XmlArray("marquee_image_files"), XmlArrayItem("file")]
-        public string[] MarqueeImageFiles = new string[0];
-
-        [XmlArray("marquee_video_files"), XmlArrayItem("file")]
-        public string[] MarqueeVideoFiles = new string[0];
-
-        [XmlArray("screen_snap_files"), XmlArrayItem("file")]
-        public string[] ScreenSnapFiles = new string[0];
-
-        [XmlArray("screen_title_files"), XmlArrayItem("file")]
-        public string[] ScreenTitleFiles = new string[0];
-
-        [XmlArray("screen_video_files"), XmlArrayItem("file")]
-        public string[] ScreenVideoFiles = new string[0];
-
-        [XmlArray("generic_image_files"), XmlArrayItem("file")]
-        public string[] GenericImageFiles = new string[0];
-
-        [XmlArray("generic_video_files"), XmlArrayItem("file")]
-        public string[] GenericVideoFiles = new string[0];
-
-        [XmlArray("info_files"), XmlArrayItem("file")]
-        public string[] InfoFiles = new string[0];
+        [XmlArray("marquee_image_files"), XmlArrayItem("file")] public string[] MarqueeImageFiles = new string[0];
+        [XmlArray("marquee_video_files"), XmlArrayItem("file")] public string[] MarqueeVideoFiles = new string[0];
+        [XmlArray("screen_snap_files"), XmlArrayItem("file")]   public string[] ScreenSnapFiles   = new string[0];
+        [XmlArray("screen_title_files"), XmlArrayItem("file")]  public string[] ScreenTitleFiles  = new string[0];
+        [XmlArray("screen_video_files"), XmlArrayItem("file")]  public string[] ScreenVideoFiles  = new string[0];
+        [XmlArray("generic_image_files"), XmlArrayItem("file")] public string[] GenericImageFiles = new string[0];
+        [XmlArray("generic_video_files"), XmlArrayItem("file")] public string[] GenericVideoFiles = new string[0];
+        [XmlArray("info_files"), XmlArrayItem("file")]          public string[] InfoFiles         = new string[0];
     }
 }

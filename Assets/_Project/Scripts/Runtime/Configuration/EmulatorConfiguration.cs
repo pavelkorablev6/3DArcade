@@ -27,26 +27,13 @@ namespace Arcade
     [System.Serializable, XmlRoot("emulator")]
     public sealed class EmulatorConfiguration : DatabaseEntry
     {
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType = InteractionType.Default;
-
-        [XmlElement("directory")]
-        public string Directory = "";
-
-        [XmlElement("working_directory")]
-        public string WorkingDirectory = "";
-
-        [XmlElement("executable")]
-        public string Executable = "";
-
-        [XmlElement("arguments")]
-        public string Arguments = "";
-
-        [XmlArray("supported_extensions"), XmlArrayItem("extension")]
-        public string[] SupportedExtensions = new string[0];
-
-        [XmlArray("games_directories"), XmlArrayItem("directory")]
-        public string[] GamesDirectories = new string[0];
+        [XmlElement("interaction_type")]                              public InteractionType InteractionType = InteractionType.Default;
+        [XmlElement("directory")]                                     public string Directory                = "";
+        [XmlElement("working_directory")]                             public string WorkingDirectory         = "";
+        [XmlElement("executable")]                                    public string Executable               = "";
+        [XmlElement("arguments")]                                     public string Arguments                = "";
+        [XmlArray("supported_extensions"), XmlArrayItem("extension")] public string[] SupportedExtensions    = new string[0];
+        [XmlArray("games_directories"), XmlArrayItem("directory")]    public string[] GamesDirectories       = new string[0];
     }
 
 }

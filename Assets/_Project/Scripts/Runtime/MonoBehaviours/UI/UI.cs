@@ -28,10 +28,15 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UI : MonoBehaviour
     {
+        private ArcadeContext _arcadeContext;
         private UIContext _uiContext;
 
         [Inject]
-        public void Construct(UIContext uiContext) => _uiContext = uiContext;
+        public void Construct(ArcadeContext arcadeContext, UIContext uiContext)
+        {
+            _arcadeContext = arcadeContext;
+            _uiContext     = uiContext;
+        }
 
         private void Start() => _uiContext.Start();
 

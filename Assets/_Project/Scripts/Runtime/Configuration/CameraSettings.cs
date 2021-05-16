@@ -27,31 +27,14 @@ namespace Arcade
     [System.Serializable]
     public sealed class CameraSettings
     {
-        [XmlElement("position")]
-        public DatabaseVector3 Position = DatabaseVector3.Zero;
-
-        [XmlElement("rotation")]
-        public DatabaseVector3 Rotation = DatabaseVector3.Zero;
-
-        [XmlElement("height")]
-        public float Height = 0.6f;
-
-        [XmlAttribute("orthographic")]
-        public bool Orthographic = false;
-
-        [XmlElement("field_of_view")]
-        public float FieldOfView = 60f;
-
-        [XmlElement("aspect_ratio")]
-        public float AspectRatio = 1f;
-
-        [XmlElement("near_clip")]
-        public float NearClipPlane = 0.1f;
-
-        [XmlElement("far_clip")]
-        public float FarClipPlane = 300f;
-
-        [XmlElement("viewport_rect")]
-        public DatabaseRect ViewportRect = new DatabaseRect();
+        [XmlElement("position")]       public DatabaseVector3 Position  = DatabaseVector3.Zero;
+        [XmlElement("rotation")]       public DatabaseVector3 Rotation  = DatabaseVector3.Zero;
+        [XmlElement("height")]         public float Height              = 0.6f;
+        [XmlAttribute("orthographic")] public bool Orthographic         = false;
+        [XmlElement("field_of_view")]  public float FieldOfView         = 60f;
+        [XmlElement("aspect_ratio")]   public float AspectRatio         = 1f;
+        [XmlElement("near_clip")]      public float NearClipPlane       = 0.1f;
+        [XmlElement("far_clip")]       public float FarClipPlane        = 300f;
+        [XmlElement("viewport_rect")]  public DatabaseRect ViewportRect = new DatabaseRect();
     }
 }

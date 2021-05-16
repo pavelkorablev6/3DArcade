@@ -35,8 +35,8 @@ namespace Arcade
         [SerializeField] private UIStandardEditModeEditPanel _editModePanel;
         [SerializeField] private UIStandardEditModeActionBar _editModeActionBar;
 
-        private readonly List<GameObject> _addedItems                    = new List<GameObject>();
-        private readonly List<ModelConfigurationComponent> _removedItems = new List<ModelConfigurationComponent>();
+        private readonly List<GameObject> _addedItems   = new List<GameObject>();
+        private readonly List<GameObject> _removedItems = new List<GameObject>();
 
         private ModelConfigurationComponent _target;
 
@@ -104,13 +104,43 @@ namespace Arcade
             if (_target == null)
                 return;
 
-            _ = _addedItems.Remove(_target.gameObject);
-            _removedItems.Add(_target);
+            GameObject targetObject = _target.gameObject;
 
-            ObjectUtils.DestroyObject(_target.gameObject);
+            if (_addedItems.Contains(targetObject))
+            {
+                _ = _addedItems.Remove(targetObject);
+                ObjectUtils.DestroyObject(targetObject);
+            }
+            else
+            {
+                _removedItems.Add(targetObject);
+                targetObject.SetActive(false);
+            }
 
             if (resetUIData)
                 ResetUIData();
+        }
+
+        public void RestoreCurrentArcadeModels()
+        {
+            foreach (GameObject item in _addedItems)
+                ObjectUtils.DestroyObject(item);
+            _addedItems.Clear();
+
+            foreach (GameObject item in _removedItems)
+                item.SetActive(true);
+            _removedItems.Clear();
+
+            //_arcadeContext.ArcadeController.Value.RestoreModelPositions();
+        }
+
+        public void SaveCurrentArcadeModels()
+        {
+            foreach (GameObject item in _removedItems)
+                ObjectUtils.DestroyObject(item);
+
+            _removedItems.Clear();
+            _ = _arcadeContext.SaveCurrentArcade(true);
         }
 
         private async UniTaskVoid SpawnGameAsync(ModelConfigurationComponent existing)
@@ -133,7 +163,7 @@ namespace Arcade
             }
             else
             {
-                modelConfiguration = existing.Configuration;
+                modelConfiguration = ClassUtils.DeepCopy(existing.Configuration);
 
                 spawnPosition = existing.transform.position;
                 spawnRotation = existing.transform.localRotation;
@@ -143,7 +173,7 @@ namespace Arcade
 
             modelConfiguration = _editModePanel.UpdatedModelConfigurationValues(modelConfiguration);
 
-            GameObject spawnedGame = await _arcadeContext.ArcadeController.Value.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
+            GameObject spawnedGame = await _arcadeContext.ArcadeController.Value.ModelSpawner.SpawnGameAsync(modelConfiguration, spawnPosition, spawnRotation);
             _addedItems.Add(spawnedGame);
         }
     }

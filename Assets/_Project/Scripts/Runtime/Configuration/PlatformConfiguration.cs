@@ -27,37 +27,16 @@ namespace Arcade
     [System.Serializable, XmlRoot("platform")]
     public sealed class PlatformConfiguration : DatabaseEntry
     {
-        [XmlElement("master_list")]
-        public string MasterList = "";
-
-        [XmlElement("emulator")]
-        public string Emulator = "";
-
-        [XmlElement("model")]
-        public string Model = "";
-
-        [XmlArray("marquee_images_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeImagesDirectories = new string[0];
-
-        [XmlArray("marquee_videos_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeVideosDirectories = new string[0];
-
-        [XmlArray("screen_snaps_directories"), XmlArrayItem("directory")]
-        public string[] ScreenSnapsDirectories = new string[0];
-
-        [XmlArray("screen_titles_directories"), XmlArrayItem("directory")]
-        public string[] ScreenTitlesDirectories = new string[0];
-
-        [XmlArray("screen_videos_directories"), XmlArrayItem("directory")]
-        public string[] ScreenVideosDirectories = new string[0];
-
-        [XmlArray("generic_images_directories"), XmlArrayItem("directory")]
-        public string[] GenericImagesDirectories = new string[0];
-
-        [XmlArray("generic_videos_directories"), XmlArrayItem("directory")]
-        public string[] GenericVideosDirectories = new string[0];
-
-        [XmlArray("info_directories"), XmlArrayItem("directory")]
-        public string[] InfoDirectories = new string[0];
+        [XmlElement("master_list")]                                         public string MasterList                 = "";
+        [XmlElement("emulator")]                                            public string Emulator                   = "";
+        [XmlElement("model")]                                               public string Model                      = "";
+        [XmlArray("marquee_images_directories"), XmlArrayItem("directory")] public string[] MarqueeImagesDirectories = new string[0];
+        [XmlArray("marquee_videos_directories"), XmlArrayItem("directory")] public string[] MarqueeVideosDirectories = new string[0];
+        [XmlArray("screen_snaps_directories"), XmlArrayItem("directory")]   public string[] ScreenSnapsDirectories   = new string[0];
+        [XmlArray("screen_titles_directories"), XmlArrayItem("directory")]  public string[] ScreenTitlesDirectories  = new string[0];
+        [XmlArray("screen_videos_directories"), XmlArrayItem("directory")]  public string[] ScreenVideosDirectories  = new string[0];
+        [XmlArray("generic_images_directories"), XmlArrayItem("directory")] public string[] GenericImagesDirectories = new string[0];
+        [XmlArray("generic_videos_directories"), XmlArrayItem("directory")] public string[] GenericVideosDirectories = new string[0];
+        [XmlArray("info_directories"), XmlArrayItem("directory")]           public string[] InfoDirectories          = new string[0];
     }
 }

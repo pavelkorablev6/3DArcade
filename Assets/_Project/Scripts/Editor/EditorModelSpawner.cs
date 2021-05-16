@@ -26,9 +26,10 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class EditorModelSpawner : IModelSpawner
+    [CreateAssetMenu(menuName = "3DArcade/Editor/ModelSpawner", fileName = "EditorModelSpawner")]
+    public sealed class EditorModelSpawner : ModelSpawnerBase
     {
-        public async UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
+        protected override async UniTask<GameObject> SpawnAsync(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
         {
             foreach (string addressToTry in addressesToTry)
             {
@@ -36,7 +37,7 @@ namespace Arcade
                 {
                     GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(addressToTry);
                     if (prefab != null)
-                        return Object.Instantiate(prefab, position, orientation, parent);
+                        return Instantiate(prefab, position, orientation, parent);
                 }
                 catch
                 {

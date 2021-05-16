@@ -28,22 +28,10 @@ namespace Arcade
     [System.Serializable]
     public sealed class AudioSettings
     {
-        [XmlElement("main_volume")]
-        [Range(0f, 1f)]
-        public float MainVolume = 1f;
-
-        [XmlElement("music_volume")]
-        [Range(0f, 1f)]
-        public float MusicVolume = 0.6f;
-
-        [XmlElement("ambient_volume")]
-        [Range(0f, 1f)]
-        public float AmbientVolume = 0.4f;
-
-        [XmlElement("minimum_distance")]
-        public float MinimumDistance = 1f;
-
-        [XmlElement("maximum_distance")]
-        public float MaximumDistance = 3f;
+        [XmlElement("main_volume"), Range(0f, 1f)]    public float MainVolume      = 1f;
+        [XmlElement("music_volume"), Range(0f, 1f)]   public float MusicVolume     = 0.6f;
+        [XmlElement("ambient_volume"), Range(0f, 1f)] public float AmbientVolume   = 0.4f;
+        [XmlElement("minimum_distance")]              public float MinimumDistance = 1f;
+        [XmlElement("maximum_distance")]              public float MaximumDistance = 3f;
     }
 }

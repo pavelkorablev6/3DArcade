@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -27,28 +27,13 @@ namespace Arcade
     [System.Serializable]
     public sealed class DirectoriesOverrides
     {
-        [XmlArray("marquee_image_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeImageDirectories = new string[0];
-
-        [XmlArray("marquee_video_directories"), XmlArrayItem("directory")]
-        public string[] MarqueeVideoDirectories = new string[0];
-
-        [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]
-        public string[] ScreenSnapDirectories = new string[0];
-
-        [XmlArray("screen_title_directories"), XmlArrayItem("directory")]
-        public string[] ScreenTitleDirectories = new string[0];
-
-        [XmlArray("screen_video_directories"), XmlArrayItem("directory")]
-        public string[] ScreenVideoDirectories = new string[0];
-
-        [XmlArray("generic_image_directories"), XmlArrayItem("directory")]
-        public string[] GenericImageDirectories = new string[0];
-
-        [XmlArray("generic_video_directories"), XmlArrayItem("directory")]
-        public string[] GenericVideoDirectories = new string[0];
-
-        [XmlArray("info_directories"), XmlArrayItem("directory")]
-        public string[] InfoDirectories = new string[0];
+        [XmlArray("marquee_image_directories"), XmlArrayItem("directory")] public string[] MarqueeImageDirectories = new string[0];
+        [XmlArray("marquee_video_directories"), XmlArrayItem("directory")] public string[] MarqueeVideoDirectories = new string[0];
+        [XmlArray("screen_snap_directories"), XmlArrayItem("directory")]   public string[] ScreenSnapDirectories   = new string[0];
+        [XmlArray("screen_title_directories"), XmlArrayItem("directory")]  public string[] ScreenTitleDirectories  = new string[0];
+        [XmlArray("screen_video_directories"), XmlArrayItem("directory")]  public string[] ScreenVideoDirectories  = new string[0];
+        [XmlArray("generic_image_directories"), XmlArrayItem("directory")] public string[] GenericImageDirectories = new string[0];
+        [XmlArray("generic_video_directories"), XmlArrayItem("directory")] public string[] GenericVideoDirectories = new string[0];
+        [XmlArray("info_directories"), XmlArrayItem("directory")]          public string[] InfoDirectories         = new string[0];
     }
 }

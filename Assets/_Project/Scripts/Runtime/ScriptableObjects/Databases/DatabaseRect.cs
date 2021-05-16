@@ -25,25 +25,14 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public sealed class DatabaseRect
+    public struct DatabaseRect
     {
-        [XmlAttribute("x")]
-        public float X = 0f;
+        [XmlAttribute("x")]      public float X;
+        [XmlAttribute("y")]      public float Y;
+        [XmlAttribute("width")]  public float Width;
+        [XmlAttribute("height")] public float Height;
 
-        [XmlAttribute("y")]
-        public float Y = 0f;
-
-        [XmlAttribute("width")]
-        public float Width = 1f;
-
-        [XmlAttribute("height")]
-        public float Height = 1f;
-
-        public DatabaseRect()
-        {
-        }
-
-        public DatabaseRect(float x, float y, float width, float height)
+        public DatabaseRect(float x = 0f, float y = 0f, float width = 1f, float height = 1f)
         {
             X      = x;
             Y      = y;

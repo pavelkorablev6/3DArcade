@@ -69,13 +69,10 @@ namespace Arcade
 
         public void Save()
         {
-            _generalConfiguration.Value = new GeneralConfiguration
-            {
-                StartingArcade     = _startingArcadeDropdown.options[_startingArcadeDropdown.value].text,
-                StartingArcadeType = (ArcadeType)_startingArcadeDropdown.value,
-                MouseLookReverse   = _mouseLookReverseToggle.isOn,
-                EnableVR           = _enableVRToggle.isOn
-            };
+            _generalConfiguration.Value.StartingArcade     = _startingArcadeDropdown.options[_startingArcadeDropdown.value].text;
+            _generalConfiguration.Value.StartingArcadeType = (ArcadeType)_startingArcadeTypeDropdown.value;
+            _generalConfiguration.Value.MouseLookReverse   = _mouseLookReverseToggle.isOn;
+            _generalConfiguration.Value.EnableVR           = _enableVRToggle.isOn;
 
             if (_generalConfiguration.Value.Save())
                 _generalConfiguration.Initialize();

@@ -37,7 +37,7 @@ namespace Arcade
             GamesNodeTag gamesRoot = FindObjectOfType<GamesNodeTag>();
             if (gamesRoot != null)
             {
-                ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>();
+                ModelConfigurationComponent[] components = gamesRoot.GetComponentsInChildren<ModelConfigurationComponent>(false);
                 _arcadeConfiguration.Games = components.Select(x => x.GetModelConfigurationWithUpdatedTransforms()).ToArray();
             }
 

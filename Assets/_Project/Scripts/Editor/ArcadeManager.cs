@@ -69,10 +69,8 @@ namespace Arcade.UnityEditor
                                                                                                     gamePrefabAddressesProvider,
                                                                                                     propPrefabAddressesProvider);
 
-            IModelSpawner modelSpawner = new EditorModelSpawner();
-
             ArcadeContext = AssetDatabase.LoadAssetAtPath<ArcadeContext>(ARCADE_CONTEXT_SO_PATH);
-            ArcadeContext.Construct(null, player, addressesProviders, modelSpawner);
+            ArcadeContext.Construct(null, player, addressesProviders);
         }
 
         public void LoadArcade(string name, ArcadeType arcadeType)

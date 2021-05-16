@@ -71,7 +71,7 @@ namespace Arcade
 
         private static void VideoSetPlayingState(VideoPlayer videoPlayer, bool state)
         {
-            if (!videoPlayer.enabled)
+            if (videoPlayer == null || !videoPlayer.enabled)
                 return;
 
             videoPlayer.EnableAudioTrack(0, state);

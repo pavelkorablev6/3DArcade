@@ -24,9 +24,9 @@ using System.Xml.Serialization;
 
 namespace Arcade
 {
+    [System.Serializable]
     public abstract class ArcadeObject
     {
-        [System.NonSerialized, XmlIgnore]
-        public string Id = "";
+        [System.NonSerialized, XmlIgnore] public string Id = "";
     }
 }

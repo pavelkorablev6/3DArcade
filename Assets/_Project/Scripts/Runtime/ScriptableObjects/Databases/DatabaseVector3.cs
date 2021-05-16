@@ -26,20 +26,16 @@ using UnityEngine;
 namespace Arcade
 {
     [System.Serializable]
-    public sealed class DatabaseVector3
+    public struct DatabaseVector3
     {
-        public static DatabaseVector3 Zero => new DatabaseVector3();
-        public static DatabaseVector3 One => new DatabaseVector3(1f, 1f, 1f);
+        public static readonly DatabaseVector3 Zero = new DatabaseVector3();
+        public static readonly DatabaseVector3 One  = new DatabaseVector3(1f, 1f, 1f);
 
-        [XmlAttribute("x")] public float X = 0f;
-        [XmlAttribute("y")] public float Y = 0f;
-        [XmlAttribute("z")] public float Z = 0f;
+        [XmlAttribute("x")] public float X;
+        [XmlAttribute("y")] public float Y;
+        [XmlAttribute("z")] public float Z;
 
-        public DatabaseVector3()
-        {
-        }
-
-        public DatabaseVector3(float x, float y, float z)
+        public DatabaseVector3(float x = 0f, float y = 0f, float z = 0f)
         {
             X = x;
             Y = y;

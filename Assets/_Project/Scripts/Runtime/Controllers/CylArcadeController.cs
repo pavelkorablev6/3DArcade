@@ -29,10 +29,9 @@ namespace Arcade
         public sealed override float AudioMinDistance { get; protected set; }
         public sealed override float AudioMaxDistance { get; protected set; }
         public sealed override AnimationCurve VolumeCurve { get; protected set; }
-
-        protected sealed override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.CameraSettings;
-        protected sealed override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.RenderSettings;
-        protected sealed override bool GameModelsSpawnAtPositionWithRotation => false;
+        public sealed override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.CameraSettings;
+        public sealed override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.RenderSettings;
+        public sealed override bool GameModelsSpawnAtPositionWithRotation => false;
 
         //protected abstract Transform TransformAnchor { get; }
         //protected abstract Vector3 TransformVector { get; }

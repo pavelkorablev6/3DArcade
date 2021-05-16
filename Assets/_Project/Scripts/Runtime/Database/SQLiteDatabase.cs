@@ -38,6 +38,7 @@ namespace Arcade
             [Key] public int Id { get; set; }
         }
 
+        [System.Serializable]
         public abstract class ReflectedEntry
         {
         }
@@ -62,7 +63,8 @@ namespace Arcade
             return connection.Execute(statement) > 0;
         }
 
-        public T Get<T>(string tableName, string[] columns, string[] parameters, object obj) where T : class
+        public T Get<T>(string tableName, string[] columns, string[] parameters, object obj)
+            where T : class
         {
             StringBuilder statement = new StringBuilder($"SELECT {JoinWithCommas(columns)} FROM '{tableName}' WHERE ");
             for (int i = 0; i < parameters.Length; ++i)
@@ -90,7 +92,8 @@ namespace Arcade
             }
         }
 
-        public int GetId<TParameter>(string tableName, string where, TParameter parameter) where TParameter : MappedEntry
+        public int GetId<TParameter>(string tableName, string where, TParameter parameter)
+            where TParameter : MappedEntry
         {
             string statement= $"SELECT (Id) FROM '{tableName}' WHERE {where}=@{where};";
 
@@ -106,7 +109,8 @@ namespace Arcade
             _ = connection.Insert(item);
         }
 
-        public void Insert<T>(IEnumerable<T> items) where T : MappedEntry
+        public void Insert<T>(IEnumerable<T> items)
+            where T : MappedEntry
         {
             using IDbConnection connection = GetConnection();
             connection.Open();
@@ -115,7 +119,8 @@ namespace Arcade
             transaction.Commit();
         }
 
-        public void Insert<T>(string tableName, T item) where T : ReflectedEntry
+        public void Insert<T>(string tableName, T item)
+            where T : ReflectedEntry
         {
             string statement = GetInsertIntoStatement<T>(tableName);
 
@@ -123,7 +128,8 @@ namespace Arcade
             _ = connection.Execute(statement, item);
         }
 
-        public void Insert<T>(string tableName, IEnumerable<T> items) where T : ReflectedEntry
+        public void Insert<T>(string tableName, IEnumerable<T> items)
+            where T : ReflectedEntry
         {
             string statement = GetInsertIntoStatement<T>(tableName);
 
@@ -138,13 +144,15 @@ namespace Arcade
 
         private IDbConnection GetConnection() => new SqliteConnection(_connectionString);
 
-        private static string GetInsertIntoStatement<T>(string tableName) where T : ReflectedEntry
+        private static string GetInsertIntoStatement<T>(string tableName)
+            where T : ReflectedEntry
         {
             (string columns, string parameters) = GetTypeColumnsAndParameters<T>();
             return $"INSERT INTO '{tableName}'({columns}) VALUES({parameters});";
         }
 
-        private static (string, string) GetTypeColumnsAndParameters<T>() where T : ReflectedEntry
+        private static (string, string) GetTypeColumnsAndParameters<T>()
+            where T : ReflectedEntry
         {
             IEnumerable<string> columns    = GetTypeProperties<T>();
             IEnumerable<string> parameters = GetParameterNames(columns);
@@ -153,7 +161,8 @@ namespace Arcade
             return (columnsString, parametersString);
         }
 
-        private static IEnumerable<string> GetTypeProperties<T>() where T : ReflectedEntry
+        private static IEnumerable<string> GetTypeProperties<T>()
+            where T : ReflectedEntry
         {
             PropertyInfo[] propertiesInfo = typeof(T).GetProperties();
             return propertiesInfo.Select(x => x.Name);

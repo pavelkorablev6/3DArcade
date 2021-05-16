@@ -62,7 +62,7 @@ namespace Arcade
             _ = Container.Bind<IAssetAddressesProvider<ModelConfiguration>>().WithId("prop").To<PropPrefabAddressesProvider>().AsSingle().NonLazy();
             _ = Container.Bind<AssetAddressesProviders>().AsSingle().NonLazy();
 
-            _ = Container.Bind<IModelSpawner>().To<ModelSpawner>().AsSingle().NonLazy();
+            _ = Container.Bind<ModelSpawnerBase>().To<ModelSpawner>().AsSingle().NonLazy();
 
             _ = Container.Bind<AssetCache<Texture>>().To<TextureCache>().AsSingle().NonLazy();
             _ = Container.Bind<ArtworkController>().AsSingle().NonLazy();

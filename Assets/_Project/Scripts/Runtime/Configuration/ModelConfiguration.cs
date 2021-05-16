@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -21,50 +21,30 @@
  * SOFTWARE. */
 
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace Arcade
 {
     [System.Serializable]
     public sealed class ModelConfiguration : ArcadeObject
     {
-        [XmlAttribute("id")]
-        public new string Id = "";
+        [XmlAttribute("id")]                      public new string Id                         = "";
+        [XmlElement("interaction_type")]          public InteractionType InteractionType       = InteractionType.Default;
+        [XmlAttribute("platform")]                public string Platform                       = "";
+        [XmlElement("grabbable")]                 public bool Grabbable                        = true;
+        [XmlElement("movecab_movable")]           public bool MoveCabMovable                   = true;
+        [XmlElement("movecab_grabbable")]         public bool MoveCabGrabbable                 = true;
+        [XmlElement("overrides")]                 public ModelConfigurationOverrides Overrides = new ModelConfigurationOverrides();
+        [XmlElement("position"), HideInInspector] public DatabaseVector3 Position              = DatabaseVector3.Zero;
+        [XmlElement("rotation"), HideInInspector] public DatabaseVector3 Rotation              = DatabaseVector3.Zero;
+        [XmlElement("scale"), HideInInspector]    public DatabaseVector3 Scale                 = DatabaseVector3.One;
 
-        [XmlElement("interaction_type")]
-        public InteractionType InteractionType = InteractionType.Default;
+        [XmlIgnore, HideInInspector]              public PlatformConfiguration PlatformConfiguration = null;
+        [XmlIgnore, HideInInspector]              public EmulatorConfiguration EmulatorConfiguration = null;
+        [XmlIgnore, HideInInspector]              public GameConfiguration GameConfiguration         = null;
+        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModePosition      = DatabaseVector3.Zero;
+        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModeRotation      = DatabaseVector3.Zero;
+        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModeScale         = DatabaseVector3.One;
 
-        [XmlAttribute("platform")]
-        public string Platform = "";
-
-        [XmlElement("grabbable")]
-        public bool Grabbable = true;
-
-        [XmlElement("movecab_movable")]
-        public bool MoveCabMovable = true;
-
-        [XmlElement("movecab_grabbable")]
-        public bool MoveCabGrabbable = true;
-
-        [XmlElement("overrides")]
-        public ModelConfigurationOverrides Overrides = new ModelConfigurationOverrides();
-
-        [XmlElement("position")]
-        [UnityEngine.HideInInspector]
-        public DatabaseVector3 Position = DatabaseVector3.Zero;
-
-        [XmlElement("rotation")]
-        [UnityEngine.HideInInspector]
-        public DatabaseVector3 Rotation = DatabaseVector3.Zero;
-
-        [XmlElement("scale")]
-        [UnityEngine.HideInInspector]
-        public DatabaseVector3 Scale = DatabaseVector3.One;
-
-        [XmlIgnore] public PlatformConfiguration PlatformConfiguration { get; set; }
-        [XmlIgnore] public EmulatorConfiguration EmulatorConfiguration { get; set; }
-        [XmlIgnore] public GameConfiguration GameConfiguration { get; set; }
-        [XmlIgnore] public DatabaseVector3 BeforeEditModePosition { get; set; }
-        [XmlIgnore] public DatabaseVector3 BeforeEditModeRotation { get; set; }
-        [XmlIgnore] public DatabaseVector3 BeforeEditModeScale { get; set; }
     }
 }

@@ -29,12 +29,9 @@ namespace Arcade
         public override float AudioMinDistance { get; protected set; }
         public override float AudioMaxDistance { get; protected set; }
         public override AnimationCurve VolumeCurve { get; protected set; }
-
-        protected override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.CameraSettings;
-        protected override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.RenderSettings;
-        protected override bool GameModelsSpawnAtPositionWithRotation => true;
-
-        //protected override PlayerControls PlayerControls => _main.PlayerFpsControls;
+        public override CameraSettings CameraSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.CameraSettings;
+        public override RenderSettings RenderSettings => _arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.RenderSettings;
+        public override bool GameModelsSpawnAtPositionWithRotation => true;
 
         public FpsArcadeController(ArcadeContext arcadeContext)
         : base(arcadeContext)
@@ -56,21 +53,6 @@ namespace Arcade
                 _arcadeContext.Player.TransitionTo<PlayerVirtualRealityFpsState>();
             else
                 _arcadeContext.Player.TransitionTo<PlayerStandardFpsState>();
-
-            //PlayerControls.transform.SetPositionAndRotation(CameraSettings.Position, Quaternion.Euler(0f, CameraSettings.Rotation.y, 0f));
-
-            //PlayerControls.Camera.rect = CameraSettings.ViewportRect;
-
-            //CinemachineNewVirtualCamera vCam = PlayerControls.VirtualCamera;
-            //vCam.transform.eulerAngles    = new Vector3(0f, CameraSettings.Rotation.y, 0f);
-            //vCam.m_Lens.Orthographic      = CameraSettings.Orthographic;
-            //vCam.m_Lens.FieldOfView       = CameraSettings.FieldOfView;
-            //vCam.m_Lens.OrthographicSize  = CameraSettings.AspectRatio;
-            //vCam.m_Lens.NearClipPlane     = CameraSettings.NearClipPlane;
-            //vCam.m_Lens.FarClipPlane      = CameraSettings.FarClipPlane;
-
-            //CinemachineTransposer transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
-            //transposer.m_FollowOffset.y      = CameraSettings.Height;
         }
     }
 }

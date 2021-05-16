@@ -28,9 +28,10 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Arcade
 {
-    public sealed class ModelSpawner : IModelSpawner
+    [CreateAssetMenu(menuName = "3DArcade/ModelSpawner", fileName = "ModelSpawner")]
+    public sealed class ModelSpawner : ModelSpawnerBase
     {
-        public async UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
+        protected override async UniTask<GameObject> SpawnAsync(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent)
         {
             IList<IResourceLocation> resourceLocations = await Addressables.LoadResourceLocationsAsync(addressesToTry, Addressables.MergeMode.UseFirst, typeof(GameObject));
             if (resourceLocations.Count == 0)

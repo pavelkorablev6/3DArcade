@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
  * Copyright (c) 2020 Skurdt
  *
@@ -27,8 +27,7 @@ namespace Arcade
     [System.Serializable]
     public abstract class DatabaseEntry : ArcadeObject
     {
-        [XmlAttribute("description")]
-        public string Description = "";
+        [XmlAttribute("description")] public string Description = "";
 
         public override string ToString() => $"{Description} ({Id})";
     }

@@ -20,44 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cinemachine;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
     public abstract class ArcadeController
     {
+        public ModelSpawnerBase ModelSpawner { get; private set; }
         public bool Loaded { get; private set; } = false;
 
         public abstract float AudioMinDistance { get; protected set; }
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
-
-        protected abstract CameraSettings CameraSettings { get; }
-        protected abstract RenderSettings RenderSettings { get; }
-        protected abstract bool GameModelsSpawnAtPositionWithRotation { get; }
+        public abstract CameraSettings CameraSettings { get; }
+        public abstract RenderSettings RenderSettings { get; }
+        public abstract bool GameModelsSpawnAtPositionWithRotation { get; }
 
         protected readonly ArcadeContext _arcadeContext;
 
-        private readonly List<ModelConfigurationComponent> _gameModels = new List<ModelConfigurationComponent>();
-        private readonly List<ModelConfigurationComponent> _propModels = new List<ModelConfigurationComponent>();
-
-        private IModelSpawner _modelSpawner;
+        private List<ModelConfigurationComponent> _gameModels;
+        private List<ModelConfigurationComponent> _propModels;
 
         public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
-        public async UniTask Initialize(IModelSpawner modelSpawner)
+        public async UniTask Initialize(ModelSpawnerBase modelSpawner)
         {
             Loaded = false;
 
-            _modelSpawner = modelSpawner;
+            ModelSpawner = modelSpawner;
 
             SetupPlayer();
-            await SpawnGames();
-            await SpawProps();
+            _gameModels = await ModelSpawner.SpawnGamesAsync();
+            _propModels = await ModelSpawner.SpawPropsAsync();
 
             ReflectionProbe[] probes = Object.FindObjectsOfType<ReflectionProbe>();
             foreach (ReflectionProbe probe in probes)
@@ -66,216 +62,48 @@ namespace Arcade
             Loaded = true;
         }
 
-        public void StoreModelPositions()
-        {
-            StoreModelPositions(_gameModels);
-            StoreModelPositions(_propModels);
-        }
+        //public void StoreModelPositions()
+        //{
+        //    StoreModelPositions(_gameModels);
+        //    StoreModelPositions(_propModels);
+        //}
 
-        public void RestoreModelPositions()
-        {
-            RestoreModelPositions(_gameModels);
-            RestoreModelPositions(_propModels);
-        }
-
-        public async UniTask<GameObject> SpawnGameAsync(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation)
-        {
-            AssetAddresses addressesToTry = ProcessGameConfigurationAndGetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, position, rotation, _arcadeContext.Scenes.Entities.GamesNodeTransform, EntitiesScene.GamesLayer, addressesToTry, true);
-        }
+        //public void RestoreModelPositions()
+        //{
+        //    RestoreModelPositions(_gameModels);
+        //    RestoreModelPositions(_propModels);
+        //}
 
         protected abstract void SetupPlayer();
 
-        private async UniTask SpawnGames()
-        {
-            if (_arcadeContext.ArcadeConfiguration.Value.Games == null)
-                return;
+        //private static void StoreModelPositions(List<ModelConfigurationComponent> models)
+        //{
+        //    foreach (ModelConfigurationComponent model in models)
+        //    {
+        //        ModelConfiguration cfg     = model.Configuration;
+        //        cfg.BeforeEditModePosition = cfg.Position;
+        //        cfg.BeforeEditModeRotation = cfg.Rotation;
+        //        cfg.BeforeEditModeScale    = cfg.Scale;
+        //    }
+        //}
 
-            foreach (ModelConfiguration modelConfiguration in _arcadeContext.ArcadeConfiguration.Value.Games)
-            {
-                GameObject go = await SpawnGameAsync(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
-                _gameModels.Add(go.GetComponent<ModelConfigurationComponent>());
-            }
-        }
+        //private static void RestoreModelPositions(List<ModelConfigurationComponent> models)
+        //{
+        //    foreach (ModelConfigurationComponent model in models)
+        //    {
+        //        if (model == null)
+        //            continue;
 
-        private async UniTask<GameObject> SpawnGameAsync(ModelConfiguration modelConfiguration, Transform parent)
-        {
-            AssetAddresses addressesToTry = ProcessGameConfigurationAndGetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, parent, EntitiesScene.GamesLayer, GameModelsSpawnAtPositionWithRotation, addressesToTry, true);
-        }
+        //        ModelConfiguration cfg = model.Configuration;
+        //        cfg.Position           = cfg.BeforeEditModePosition;
+        //        cfg.Rotation           = cfg.BeforeEditModeRotation;
+        //        cfg.Scale              = cfg.BeforeEditModeScale;
 
-        private async UniTask SpawProps()
-        {
-            switch (_arcadeContext.ArcadeConfiguration.Value.ArcadeType)
-            {
-                case ArcadeType.Fps:
-                    await SpawnProps(_arcadeContext.ArcadeConfiguration.Value.FpsArcadeProperties.Props);
-                    break;
-                case ArcadeType.Cyl:
-                    await SpawnProps(_arcadeContext.ArcadeConfiguration.Value.CylArcadeProperties.Props);
-                    break;
-                default:
-                    throw new System.NotImplementedException($"Unhandled switch case for ArcadeType: {_arcadeContext.ArcadeConfiguration.Value.ArcadeType}");
-            }
-        }
-
-        private async UniTask SpawnProps(ModelConfiguration[] modelConfigurations)
-        {
-            if (modelConfigurations == null)
-                return;
-
-            foreach (ModelConfiguration modelConfiguration in modelConfigurations)
-            {
-                GameObject go = await SpawnProp(modelConfiguration, _arcadeContext.Scenes.Entities.PropsNodeTransform);
-                _propModels.Add(go.GetComponent<ModelConfigurationComponent>());
-            }
-        }
-
-        private async UniTask<GameObject> SpawnProp(ModelConfiguration modelConfiguration, Transform parent)
-        {
-            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Prop.GetAddressesToTry(modelConfiguration);
-            return await SpawnModel(modelConfiguration, parent, EntitiesScene.PropsLayer, true, addressesToTry, false);
-        }
-
-        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Transform parent, int layer, bool spawnAtPositionWithRotation, AssetAddresses addressesToTry, bool applyArtworks)
-        {
-            Vector3 position;
-            Quaternion rotation;
-
-            if (spawnAtPositionWithRotation)
-            {
-                position = modelConfiguration.Position;
-                rotation = Quaternion.Euler(modelConfiguration.Rotation);
-            }
-            else
-            {
-                position = Vector3.zero;
-                rotation = Quaternion.identity;
-            }
-
-            return await SpawnModel(modelConfiguration, position, rotation, parent, layer, addressesToTry, applyArtworks);
-        }
-
-        private async UniTask<GameObject> SpawnModel(ModelConfiguration modelConfiguration, Vector3 position, Quaternion rotation, Transform parent, int layer, AssetAddresses addressesToTry, bool applyArtworks)
-        {
-            GameObject go = await _modelSpawner.Spawn(addressesToTry, position, rotation, parent);
-            if (go == null)
-                return null;
-
-            go.AddComponent<ModelConfigurationComponent>()
-              .InitialSetup(modelConfiguration, layer);
-
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
-                _ = go.AddComponent<XRSimpleInteractable>();
-            else
-            {
-                CinemachineNewVirtualCamera vCam = go.GetComponentInChildren<CinemachineNewVirtualCamera>();
-                if (vCam != null)
-                    vCam.Priority = 0;
-            }
-
-            if (applyArtworks)
-                await ApplyArtworks(go, modelConfiguration);
-
-            return go;
-        }
-
-        private async UniTask ApplyArtworks(GameObject gameObject, ModelConfiguration modelConfiguration)
-        {
-            // Look for artworks only in play mode / runtime
-            if (!Application.isPlaying)
-                return;
-
-            await _arcadeContext.NodeControllers.Marquee.Setup(this, gameObject, modelConfiguration, RenderSettings.MarqueeIntensity);
-
-            float screenIntensity = GetScreenIntensity(modelConfiguration.GameConfiguration);
-            await _arcadeContext.NodeControllers.Screen.Setup(this, gameObject, modelConfiguration, screenIntensity);
-
-            await _arcadeContext.NodeControllers.Generic.Setup(this, gameObject, modelConfiguration, 1f);
-
-            //if (gameModels)
-            //    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-            //else
-            //    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
-        }
-
-        private AssetAddresses ProcessGameConfigurationAndGetAddressesToTry(ModelConfiguration modelConfiguration)
-        {
-            GameConfiguration game = null;
-            if (_arcadeContext.Databases.Platforms.TryGet(modelConfiguration.Platform, out PlatformConfiguration platform))
-            {
-                string[] returnFields = new string[]
-                {
-                    "Description",
-                    "CloneOf",
-                    "RomOf",
-                    "Genre",
-                    "Year",
-                    "Manufacturer",
-                    "ScreenType",
-                    "ScreenRotation",
-                    "Mature",
-                    "Playable",
-                    "IsBios",
-                    "IsDevice",
-                    "IsMechanical",
-                    "Available",
-                };
-                string[] searchFields = new string[] { "Name" };
-                _ = _arcadeContext.Databases.Games.TryGet(platform.MasterList, modelConfiguration.Id, returnFields, searchFields, out game);
-            }
-
-            modelConfiguration.PlatformConfiguration = platform;
-            modelConfiguration.GameConfiguration     = game;
-
-            AssetAddresses addressesToTry = _arcadeContext.AssetAddressesProviders.Game.GetAddressesToTry(modelConfiguration);
-            return addressesToTry;
-        }
-
-        private float GetScreenIntensity(GameConfiguration game)
-        {
-            if (game == null)
-                return 1f;
-
-            return game.ScreenType switch
-            {
-                GameScreenType.Default => 1f,
-                GameScreenType.Lcd     => RenderSettings.ScreenLcdIntensity,
-                GameScreenType.Raster  => RenderSettings.ScreenRasterIntensity,
-                GameScreenType.Svg     => RenderSettings.ScreenSvgIntensity,
-                GameScreenType.Vector  => RenderSettings.ScreenVectorIntenstity,
-                _                      => throw new System.NotImplementedException($"Unhandled switch case for GameScreenType: {game.ScreenType}")
-            };
-        }
-
-        private static void StoreModelPositions(List<ModelConfigurationComponent> models)
-        {
-            foreach (ModelConfigurationComponent model in models)
-            {
-                ModelConfiguration cfg     = model.Configuration;
-                cfg.BeforeEditModePosition = cfg.Position;
-                cfg.BeforeEditModeRotation = cfg.Rotation;
-                cfg.BeforeEditModeScale    = cfg.Scale;
-            }
-        }
-
-        private static void RestoreModelPositions(List<ModelConfigurationComponent> models)
-        {
-            foreach (ModelConfigurationComponent model in models)
-            {
-                if (model == null)
-                    continue;
-
-                ModelConfiguration cfg = model.Configuration;
-                cfg.Position           = cfg.BeforeEditModePosition;
-                cfg.Rotation           = cfg.BeforeEditModeRotation;
-                cfg.Scale              = cfg.BeforeEditModeScale;
-
-                model.transform.position   = cfg.Position;
-                model.transform.rotation   = Quaternion.Euler(cfg.Rotation);
-                model.transform.localScale = cfg.Scale;
-            }
-        }
+        //        model.transform.position   = cfg.Position;
+        //        model.transform.rotation   = Quaternion.Euler(cfg.Rotation);
+        //        model.transform.localScale = cfg.Scale;
+        //    }
+        //}
 
         /*
         public void NavigateForward(float dt)

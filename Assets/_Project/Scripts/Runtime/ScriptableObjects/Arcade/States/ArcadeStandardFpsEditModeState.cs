@@ -37,8 +37,6 @@ namespace Arcade
 
             Context.VideoPlayerController.Value.StopAllVideos();
 
-            Context.ArcadeController.Value.StoreModelPositions();
-
             Context.InputActions.FpsActions.Enable();
             Context.InputActions.FpsActions.Interact.Disable();
             if (Cursor.lockState != CursorLockMode.Locked)
@@ -79,19 +77,19 @@ namespace Arcade
                 Context.InputActions.FpsEditActions.Grab.Enable();
             }
 
-            if (Context.InputActions.GlobalActions.Quit.triggered)
-            {
-                RevertChanges();
-                Context.TransitionToPrevious();
-                return;
-            }
+            //if (Context.InputActions.GlobalActions.Quit.triggered)
+            //{
+            //    RevertChanges();
+            //    Context.TransitionToPrevious();
+            //    return;
+            //}
 
-            if (Context.InputActions.FpsActions.ToggleEditMode.triggered)
-            {
-                SaveChanges();
-                Context.TransitionToPrevious();
-                return;
-            }
+            //if (Context.InputActions.FpsActions.ToggleEditMode.triggered)
+            //{
+            //    SaveChanges();
+            //    Context.TransitionToPrevious();
+            //    return;
+            //}
 
             if (Context.InputActions.GlobalActions.ToggleCursor.triggered)
                 HandleCursorToggle();
@@ -101,17 +99,17 @@ namespace Arcade
 
         public override void OnFixedUpdate(float dt) => _editModeContext.OnFixedUpdate(dt);
 
-        private void RevertChanges()
-        {
-            Context.ArcadeController.Value.RestoreModelPositions();
-            _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-        }
+        //private void RevertChanges()
+        //{
+        //    Context.ArcadeController.Value.RestoreModelPositions();
+        //    _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+        //}
 
-        private void SaveChanges()
-        {
-            _ = Context.SaveCurrentArcade(true);
-            _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-        }
+        //private void SaveChanges()
+        //{
+        //    _ = Context.SaveCurrentArcade(true);
+        //    _editModeContext.TransitionTo<ArcadeEditModeNullState>();
+        //}
 
         private void HandleCursorToggle()
         {

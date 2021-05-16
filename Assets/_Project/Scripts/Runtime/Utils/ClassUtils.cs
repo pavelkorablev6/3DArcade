@@ -20,13 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cysharp.Threading.Tasks;
-using UnityEngine;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Arcade
 {
-    public interface IModelSpawner
+    public static class ClassUtils
     {
-        UniTask<GameObject> Spawn(AssetAddresses addressesToTry, Vector3 position, Quaternion orientation, Transform parent);
+        public static T DeepCopy<T>(T obj)
+            where T : class
+        {
+            using MemoryStream ms = new MemoryStream();
+            IFormatter formatter  = new BinaryFormatter();
+            formatter.Serialize(ms, obj);
+            _ = ms.Seek(0, SeekOrigin.Begin);
+            return formatter.Deserialize(ms) as T;
+        }
     }
 }

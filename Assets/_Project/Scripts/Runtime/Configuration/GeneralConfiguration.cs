@@ -27,21 +27,13 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [System.Serializable]
-    [XmlRoot("general")]
+    [System.Serializable, XmlRoot("general")]
     public sealed class GeneralConfiguration
     {
-        [XmlElement("starting_arcade")]
-        public string StartingArcade;
-
-        [XmlElement("starting_arcade_type")]
-        public ArcadeType StartingArcadeType;
-
-        [XmlElement("mouselook_reverse")]
-        public bool MouseLookReverse;
-
-        [XmlElement("enable_vr")]
-        public bool EnableVR;
+        [XmlElement("starting_arcade")]      public string StartingArcade         = "_dummy";
+        [XmlElement("starting_arcade_type")] public ArcadeType StartingArcadeType = ArcadeType.Fps;
+        [XmlElement("mouselook_reverse")]    public bool MouseLookReverse         = false;
+        [XmlElement("enable_vr")]            public bool EnableVR                 = false;
 
         private const string VFS_FILE_ALIAS = "general_cfg";
 
@@ -53,16 +45,12 @@ namespace Arcade
                 Load();
         }
 
-        public void Load()
+        private void Load()
         {
             try
             {
                 if (_filePath == null)
-                {
-                    Debug.LogWarning($"[{GetType().Name}.Load] File not mapped in VirtualFileSystem, using default values");
-                    SetDefaultValues();
                     return;
-                }
 
                 if (!File.Exists(_filePath))
                 {
@@ -108,18 +96,8 @@ namespace Arcade
             }
         }
 
-        private void SetDefaultValues()
-        {
-            StartingArcade     = "_dummy";
-            StartingArcadeType = ArcadeType.Fps;
-            MouseLookReverse   = false;
-            EnableVR           = false;
-        }
-
         private void CreateDefaultConfiguration()
         {
-            SetDefaultValues();
-
             if (Save())
                 Debug.Log($"[{GetType().Name}.CreateDefaultConfiguration] Created default general configuration.");
             else

@@ -38,6 +38,7 @@ namespace Arcade
         [field: SerializeField] public BoolVariable MouseOverUI { get; private set; }
         [field: SerializeField] public GeneralConfigurationVariable GeneralConfiguration { get; private set; }
         [field: SerializeField] public ArcadeConfigurationVariable ArcadeConfiguration { get; private set; }
+        [field: SerializeField] public ModelSpawnerBase ModelSpawner { get; private set; }
         [field: SerializeField] public ArcadeControllerVariable ArcadeController { get; private set; }
         [field: SerializeField] public VideoPlayerControllerVariable VideoPlayerController { get; private set; }
         [field: SerializeField] public TypeEvent UIStateTransitionEvent { get; private set; }
@@ -45,17 +46,15 @@ namespace Arcade
         [field: System.NonSerialized] public InputActions InputActions { get; private set; }
         [field: System.NonSerialized] public Player Player { get; private set; }
         [field: System.NonSerialized] public AssetAddressesProviders AssetAddressesProviders { get; private set; }
-        [field: System.NonSerialized] public IModelSpawner ModelSpawner { get; private set; }
         [field: System.NonSerialized] public NodeControllers NodeControllers { get; private set; }
         [field: System.NonSerialized] public GameControllers GameControllers { get; private set; }
 
         [Inject]
-        public void Construct(InputActions inputActions, Player player, AssetAddressesProviders assetAddressesProviders, IModelSpawner modelSpawner, NodeControllers nodeControllers = null, GameControllers gameControllers = null)
+        public void Construct(InputActions inputActions, Player player, AssetAddressesProviders assetAddressesProviders, NodeControllers nodeControllers = null, GameControllers gameControllers = null)
         {
             InputActions            = inputActions;
             Player                  = player;
             AssetAddressesProviders = assetAddressesProviders;
-            ModelSpawner            = modelSpawner;
             NodeControllers         = nodeControllers;
             GameControllers         = gameControllers;
         }

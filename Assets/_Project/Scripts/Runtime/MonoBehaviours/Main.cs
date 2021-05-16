@@ -99,7 +99,7 @@ namespace Arcade
         private void OnDisable() => DOTween.KillAll();
 
         // TODO: Replace/Remove the public functions...
-        public void ToggleInput(bool enable)
+        public void TEMP_ToggleInput(bool enable)
         {
             if (enable)
             {
@@ -121,7 +121,7 @@ namespace Arcade
             }
         }
 
-        public void ToggleInteractionsInput(bool enable)
+        public void TEMP_ToggleInteractionsInput(bool enable)
         {
             if (enable)
             {
@@ -146,33 +146,6 @@ namespace Arcade
                 _arcadeContext.InputActions.CylActions.Look.Disable();
             }
         }
-
-        public void TransitionToFpsNormalState()
-        {
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
-                _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsNormalState>();
-            else
-                _arcadeContext.TransitionTo<ArcadeStandardFpsNormalState>();
-        }
-
-        public void TransitionToFpsEditModeState()
-        {
-            if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
-                _arcadeContext.TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
-            else
-                _arcadeContext.TransitionTo<ArcadeStandardFpsEditModeState>();
-        }
-
-        //public void RestoreCurrentArcadeModels()
-        //{
-        //    foreach (GameObject item in _editModeAddedItems)
-        //        ObjectUtils.DestroyObject(item);
-        //    _editModeAddedItems.Clear();
-
-        //    _arcadeContext.ArcadeController.Value.RestoreModelPositions();
-        //}
-
-        //public void SaveCurrentArcadeModels() => _arcadeContext.SaveCurrentArcade(true);
 
         private void ValidateCurrentOS()
         {

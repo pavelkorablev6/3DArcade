@@ -28,25 +28,11 @@ namespace Arcade
     [System.Serializable]
     public abstract class ArcadeProperties
     {
-        [Tooltip("First priority arcade scene name lookup.\nSecond priority is the 'Id' string.")]
-        [XmlElement("scene")]
-        public string Scene = "";
-
-        [XmlElement("camera_settings")]
-        public CameraSettings CameraSettings = new CameraSettings();
-
-        [XmlElement("render_settings")]
-        public RenderSettings RenderSettings = new RenderSettings();
-
-        [XmlElement("audio_settings")]
-        public AudioSettings AudioSettings = new AudioSettings();
-
-        [Tooltip("If this is set, all games in the arcade will use this.")]
-        [XmlElement("model")]
-        public string Model = "";
-
-        [XmlArray("props"), XmlArrayItem("prop")]
-        [HideInInspector]
-        public ModelConfiguration[] Props = new ModelConfiguration[0];
+        [XmlElement("scene")]                                      public string Scene                  = "";
+        [XmlElement("camera_settings")]                            public CameraSettings CameraSettings = new CameraSettings();
+        [XmlElement("render_settings")]                            public RenderSettings RenderSettings = new RenderSettings();
+        [XmlElement("audio_settings")]                             public AudioSettings AudioSettings   = new AudioSettings();
+        [XmlElement("model")]                                      public string Model                  = "";
+        [XmlArray("props"), XmlArrayItem("prop"), HideInInspector] public ModelConfiguration[] Props    = new ModelConfiguration[0];
     }
 }
