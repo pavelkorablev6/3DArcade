@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Event/Int", fileName = "NewIntEvent")]
+    [CreateAssetMenu(menuName = "3DArcade/Event/Int", fileName = "NewIntEvent")]
     public sealed class IntEvent : EventBase<int>
     {
     }

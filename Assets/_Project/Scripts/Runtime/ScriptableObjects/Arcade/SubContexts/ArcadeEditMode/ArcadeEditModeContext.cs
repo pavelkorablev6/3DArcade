@@ -25,9 +25,10 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/SubContexts/EditModeContext", fileName = "EditModeContext")]
+    [CreateAssetMenu(menuName = "3DArcade/StateMachine/SubContexts/EditModeContext", fileName = "EditModeContext")]
     public sealed class ArcadeEditModeContext : Context<ArcadeEditModeState>
     {
         [field: SerializeField] public ArcadeContext ArcadeContext { get; private set; }
+        [field: SerializeField] public ArcadeEditModeStateEvent ArcadeEditModeStateChangeEvent { get; private set; }
     }
 }

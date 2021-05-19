@@ -20,46 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class InteractionController<T> : ScriptableObject
-        where T : InteractionData
+    public abstract class InteractionController<TRaycaster, TData> : ScriptableObject
+        where TRaycaster : InteractionRaycaster<TData>
+        where TData : InteractionData
     {
-        [field: SerializeField] public T InteractionData { get; protected set; }
+        [SerializeField] protected TRaycaster _raycaster;
 
-        [SerializeField] private LayerMask _raycastMask;
-        [SerializeField] private float _raycastMaxDistance = math.INFINITY;
-        [SerializeField] private InteractionDataEvent _targetChangedEvent;
+        public TData InteractionData => _raycaster.InteractionData;
 
-        [field: System.NonSerialized] protected Camera Camera { get; private set; }
-
-        public void Construct(Camera camera) => Camera = camera;
-
-        public void UpdateCurrentTarget(bool resetCurrent = true)
-        {
-            Ray ray = GetRay();
-            if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
-            {
-                if (resetCurrent && _targetChangedEvent.Value != InteractionData.Current)
-                {
-                    InteractionData.Set(null);
-                    _targetChangedEvent.Raise(null);
-                }
-                return;
-            }
-
-            if (InteractionData.Current == modelConfigurationComponent)
-                return;
-
-            InteractionData.Set(modelConfigurationComponent);
-            _targetChangedEvent.Raise(InteractionData);
-        }
+        public void UpdateCurrentTarget(Camera camera) => _raycaster.UpdateCurrentTarget(camera);
 
         public void Reset() => InteractionData.Reset();
-
-        protected abstract Ray GetRay();
     }
 }

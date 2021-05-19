@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Database/PlatformsDatabase", fileName = "PlatformsDatabase")]
+    [CreateAssetMenu(menuName = "3DArcade/Database/PlatformsDatabase", fileName = "PlatformsDatabase")]
     public sealed class PlatformsDatabase : MultiFileDatabase<PlatformConfiguration>
     {
         [field: System.NonSerialized] protected override string DirectoryAlias { get; } = "platform_cfgs";

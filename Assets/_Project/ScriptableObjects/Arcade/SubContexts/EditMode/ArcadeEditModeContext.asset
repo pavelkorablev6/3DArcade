@@ -19,3 +19,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a75b48a567d20324fb89cab2ab443416, type: 2}
   <ArcadeContext>k__BackingField: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198,
     type: 2}
+  <ArcadeEditModeStateChangeEvent>k__BackingField: {fileID: 11400000, guid: 7cd6e9839018a604daa258badb89b36a,
+    type: 2}

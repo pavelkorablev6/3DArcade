@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/GeneralConfiguration", fileName = "GeneralConfiguration")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/GeneralConfiguration", fileName = "GeneralConfiguration")]
     public sealed class GeneralConfigurationVariable : VariableBase<GeneralConfiguration>
     {
         [SerializeField] private VirtualFileSystem _virtualFileSystem;

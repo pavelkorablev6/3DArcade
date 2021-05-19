@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/Float", fileName = "NewFloatVariable")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/Float", fileName = "NewFloatVariable")]
     public sealed class FloatVariable : VariableBase<float>
     {
     }

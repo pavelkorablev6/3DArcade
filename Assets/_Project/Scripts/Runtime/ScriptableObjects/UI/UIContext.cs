@@ -22,21 +22,19 @@
 
 using SK.Utilities.Unity.StateMachine;
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/UIContext", fileName = "UIContext")]
+    [CreateAssetMenu(menuName = "3DArcade/StateMachine/UIContext", fileName = "UIContext")]
     public sealed class UIContext : Context<UIState>
     {
         [field: System.NonSerialized] public UICanvasController StandardUI { get; private set; }
         [field: System.NonSerialized] public UICanvasController VirtualRealityUI { get; private set; }
         [field: System.NonSerialized] public MouseOverUIRaycaster MouseOverUIRaycaster { get; private set; }
 
-        [Inject]
-        public void Construct([Inject(Id = "std")] UICanvasController standardUI,
-                              [Inject(Id = "vr")] UICanvasController virtualRealityUI,
-                              MouseOverUIRaycaster mouseOverUIRaycaster)
+        public void Initialize(UICanvasController standardUI,
+                               UICanvasController virtualRealityUI,
+                               MouseOverUIRaycaster mouseOverUIRaycaster)
         {
             StandardUI           = standardUI;
             VirtualRealityUI     = virtualRealityUI;

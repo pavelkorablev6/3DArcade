@@ -21,36 +21,52 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
     public sealed class UI : MonoBehaviour
     {
-        private ArcadeContext _arcadeContext;
-        private UIContext _uiContext;
+        [SerializeField] private UICanvasController _standardUI;
+        [SerializeField] private UICanvasController _virtualRealityUI;
+        [SerializeField] private BoolVariable _mouseOverUIVariable;
+        [SerializeField] private MouseOverUIRaycaster _mouseOverUIRaycaster;
+        [SerializeField] private UIContext _uiContext;
 
-        [Inject]
-        public void Construct(ArcadeContext arcadeContext, UIContext uiContext)
+        private void Awake() => _uiContext.Initialize(_standardUI, _virtualRealityUI, _mouseOverUIRaycaster);
+
+        public void HandleArcadeStateChange(ArcadeState arcadeState)
         {
-            _arcadeContext = arcadeContext;
-            _uiContext     = uiContext;
+            if (arcadeState is ArcadeStandardLoadState)
+            {
+                _uiContext.TransitionTo<UIStandardLoadingState>();
+                return;
+            }
+
+            if (arcadeState is ArcadeStandardFpsNormalState)
+            {
+                _uiContext.TransitionTo<UIStandardNormalState>();
+                return;
+            }
+
+            if (arcadeState is ArcadeStandardFpsEditModeState)
+            {
+                _uiContext.TransitionTo<UIStandardEditModeState>();
+                return;
+            }
+
+            _uiContext.TransitionTo<UIDisabledState>();
         }
 
-        private void Start() => _uiContext.Start();
-
-        private void Update() => _uiContext.OnUpdate(Time.deltaTime);
-
-        public void TransitionTo(System.Type type)
+        public void HandleArcadeEditModeStateChange(ArcadeEditModeState editModeState)
         {
-            if (type.BaseType != typeof(UIState))
+            if (editModeState is ArcadeEditModeAutoMoveState)
+            {
+                _uiContext.TransitionTo<UIDisabledState>();
                 return;
+            }
 
-            System.Type uiContextType                  = typeof(UIContext);
-            System.Reflection.MethodInfo methodInfo    = uiContextType.GetMethod(nameof(UIContext.TransitionTo));
-            System.Reflection.MethodInfo genericMethod = methodInfo.MakeGenericMethod(type);
-            _ = genericMethod.Invoke(_uiContext, new object[] { });
+            _uiContext.TransitionTo<UIDisabledState>();
         }
     }
 }

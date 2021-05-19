@@ -32,7 +32,7 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/ArcadeSceneLoader", fileName = "ArcadeSceneLoader")]
+    [CreateAssetMenu(menuName = "3DArcade/ArcadeSceneLoader", fileName = "ArcadeSceneLoader")]
     public sealed class ArcadeSceneLoader : AddressableSceneLoaderBase
     {
         private static int _arcadeModelsLayer = 0;

@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/PlayerContext", fileName = "PlayerContext")]
+    [CreateAssetMenu(menuName = "3DArcade/StateMachine/PlayerContext", fileName = "PlayerContext")]
     public sealed class PlayerContext : Context<PlayerState>
     {
         [field: System.NonSerialized] public Player Player { get; private set; }

@@ -30,18 +30,12 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+            Context.ArcadeStateChangeEvent.Raise(this);
 
             CursorUtils.HideMouseCursor();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIStandardLoadingState));
         }
 
-        public override void OnExit()
-        {
-            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
-        }
+        public override void OnExit() => Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
         public override void OnUpdate(float dt)
         {

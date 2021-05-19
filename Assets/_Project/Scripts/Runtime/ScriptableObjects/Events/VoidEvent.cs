@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Event/Void", fileName = "NewVoidEvent")]
+    [CreateAssetMenu(menuName = "3DArcade/Event/Void", fileName = "NewVoidEvent")]
     public sealed class VoidEvent : EventBase<Void>
     {
         public void Raise() => Raise(default);

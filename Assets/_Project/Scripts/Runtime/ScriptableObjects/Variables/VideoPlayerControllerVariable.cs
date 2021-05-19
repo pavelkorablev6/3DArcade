@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/VideoPlayerController", fileName = "VideoPlayerController")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/VideoPlayerController", fileName = "VideoPlayerController")]
     public sealed class VideoPlayerControllerVariable : VariableBase<VideoPlayerController>
     {
     }

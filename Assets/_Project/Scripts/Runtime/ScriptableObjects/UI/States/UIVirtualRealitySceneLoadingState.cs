@@ -24,8 +24,8 @@ namespace Arcade
 {
     public sealed class UIVirtualRealitySceneLoadingState : UIState
     {
-        public override void OnEnter() => Context.VirtualRealityUI.EnableSceneLoadingUI();
+        public override void OnEnter() => Context.VirtualRealityUI.ShowSceneLoadingUI();
 
-        public override void OnExit() => Context.VirtualRealityUI.DisableSceneLoadingUI();
+        public override void OnExit() => Context.VirtualRealityUI.HideSceneLoadingUI();
     }
 }

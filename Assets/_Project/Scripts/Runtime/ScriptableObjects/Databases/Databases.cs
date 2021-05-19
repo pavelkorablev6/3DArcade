@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Databases", fileName = "Databases")]
+    [CreateAssetMenu(menuName = "3DArcade/Databases", fileName = "Databases")]
     public sealed class Databases : ScriptableObject
     {
         [field: SerializeField] public EmulatorsDatabase Emulators { get; private set; }

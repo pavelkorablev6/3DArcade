@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae002d823f0ba1418ea9f08f9645f79, type: 3}
   m_Name: NormalModeInteractionData
   m_EditorClassIdentifier: 
+  _targetChangedEvent: {fileID: 11400000, guid: 9743def2eb04e0a48b4a7611bece5092,
+    type: 2}
   _selectionLayer: 10

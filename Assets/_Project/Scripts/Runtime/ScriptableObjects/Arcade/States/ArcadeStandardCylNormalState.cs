@@ -33,8 +33,7 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIStandardNormalState));
+            Context.ArcadeStateChangeEvent.Raise(this);
 
             Context.InputActions.CylActions.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)
@@ -84,8 +83,6 @@ namespace Arcade
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
             Context.InputActions.CylActions.Disable();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)

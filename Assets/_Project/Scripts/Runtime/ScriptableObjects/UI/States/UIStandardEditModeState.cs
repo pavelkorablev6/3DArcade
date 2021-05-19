@@ -24,8 +24,8 @@ namespace Arcade
 {
     public sealed class UIStandardEditModeState : UIState
     {
-        public override void OnEnter() => Context.StandardUI.EnableSceneEditModeUI();
+        public override void OnEnter() => Context.StandardUI.ShowSceneEditModeUI();
 
-        public override void OnExit() => Context.StandardUI.DisableSceneEditModeUI();
+        public override void OnExit() => Context.StandardUI.HideSceneEditModeUI();
     }
 }

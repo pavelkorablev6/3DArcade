@@ -61,7 +61,7 @@ namespace Arcade
                                   .MountDirectory("medias", $"{dataPath}/3darcade~/Media")
                                   .MountFile("game_database", $"{dataPath}/3darcade~/GameDatabase.db");
 
-            _arcadeContext.Start();
+            _arcadeContext.OnStart();
 
             //string mameSupportDirectory = $"{Application.streamingAssetsPath}/3darcade~/Dats";
             //string listXmlPath          = $"{mameSupportDirectory}/mame2003-plus.xml";

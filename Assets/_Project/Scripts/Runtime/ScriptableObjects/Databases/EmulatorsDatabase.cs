@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Database/EmulatorsDatabase", fileName = "EmulatorsDatabase")]
+    [CreateAssetMenu(menuName = "3DArcade/Database/EmulatorsDatabase", fileName = "EmulatorsDatabase")]
     public sealed class EmulatorsDatabase : MultiFileDatabase<EmulatorConfiguration>
     {
         public static readonly EmulatorConfiguration FpsArcadeLauncher = MakeInternalEmulator("_fps_arcade_launcher", "InternalFpsArcadeLauncher", InteractionType.FpsArcadeConfiguration);

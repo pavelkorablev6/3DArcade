@@ -27,33 +27,24 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UICanvasController : MonoBehaviour
     {
-        [SerializeField] private GameObject _loadingUI;
-        [SerializeField] private GameObject _normalUI;
-        [SerializeField] private GameObject _moveCabUI;
-        [SerializeField] private GameObject _configurationUI;
+        [SerializeField] private UILoading _loading;
+        [SerializeField] private UINormal _normal;
+        [SerializeField] private UIEdit _edit;
 
-        public void EnableSceneLoadingUI() => _loadingUI.SetActive(true);
+        public void ShowSceneLoadingUI() => _loading.Show();
+        public void HideSceneLoadingUI() => _loading.Hide();
 
-        public void EnableSceneNormalUI() => _normalUI.SetActive(true);
+        public void ShowSceneNormalUI() => _normal.Show();
+        public void HideSceneNormalUI() => _normal.Hide();
 
-        public void EnableSceneEditModeUI() => _moveCabUI.SetActive(true);
+        public void ShowSceneEditModeUI() => _edit.Show();
+        public void HideSceneEditModeUI() => _edit.Hide();
 
-        public void EnableConfigurationUI() => _configurationUI.SetActive(true);
-
-        public void DisableSceneLoadingUI() => _loadingUI.SetActive(false);
-
-        public void DisableSceneNormalUI() => _normalUI.SetActive(false);
-
-        public void DisableSceneEditModeUI() => _moveCabUI.SetActive(false);
-
-        public void DisableConfigurationUI() => _configurationUI.SetActive(false);
-
-        public void Disable()
+        public void Hide()
         {
-            DisableSceneLoadingUI();
-            DisableSceneNormalUI();
-            DisableSceneEditModeUI();
-            DisableConfigurationUI();
+            HideSceneLoadingUI();
+            HideSceneNormalUI();
+            HideSceneEditModeUI();
         }
     }
 }

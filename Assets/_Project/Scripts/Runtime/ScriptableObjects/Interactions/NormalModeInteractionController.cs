@@ -25,17 +25,17 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionController", fileName = "NormalModeInteractionController")]
-    public sealed class NormalModeInteractionController : InteractionController<NormalModeInteractionData>
+    [CreateAssetMenu(menuName = "3DArcade/Interaction/NormalModeController", fileName = "NormalModeInteractionController")]
+    public sealed class NormalModeInteractionController : InteractionController<NormalModeInteractionRaycaster, NormalModeInteractionData>
     {
         [SerializeField] private ArcadeContext _arcadeContext;
 
         public void HandleInteraction()
         {
-            if (InteractionData.Current == null)
+            if (_raycaster.InteractionData.Current == null)
                 return;
 
-            ModelConfiguration modelConfiguration = InteractionData.Current.Configuration;
+            ModelConfiguration modelConfiguration = _raycaster.InteractionData.Current.Configuration;
             InteractionType interactionType       = modelConfiguration.InteractionType;
 
             switch (interactionType)
@@ -58,10 +58,8 @@ namespace Arcade
                     throw new Exception($"Unhandled switch case for InteractionType: {modelConfiguration.InteractionType}");
             }
 
-            InteractionData.Reset();
+            _raycaster.InteractionData.Reset();
         }
-
-        protected override Ray GetRay() => Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
 
         private void HandleEmulatorInteraction(ModelConfiguration modelConfiguration)
         {

@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/VirtualFileSystem", fileName = "VirtualFileSystem")]
+    [CreateAssetMenu(menuName = "3DArcade/VirtualFileSystem", fileName = "VirtualFileSystem")]
     public sealed class VirtualFileSystem : ScriptableObject
     {
         private readonly Dictionary<string, string> _mountedDirectories = new Dictionary<string, string>();

@@ -28,7 +28,7 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    [CreateAssetMenu(menuName = "Arcade/Editor/ArcadeSceneLoader", fileName = "EditorArcadeSceneLoader")]
+    [CreateAssetMenu(menuName = "3DArcade/Editor/ArcadeSceneLoader", fileName = "EditorArcadeSceneLoader")]
     public sealed class EditorArcadeSceneLoader : AddressableSceneLoaderBase
     {
         public override async UniTask<bool> Load(AssetAddresses addressesToTry, bool triggerReload)

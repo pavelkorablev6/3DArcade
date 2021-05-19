@@ -21,46 +21,38 @@
  * SOFTWARE. */
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionController", fileName = "EditModeInteractionController")]
-    public sealed class EditModeInteractionController : InteractionController<EditModeInteractionData>
+    [CreateAssetMenu(menuName = "3DArcade/Interaction/EditModeController", fileName = "EditModeInteractionController")]
+    public sealed class EditModeInteractionController : InteractionController<EditModeInteractionRaycaster, EditModeInteractionData>
     {
-        protected override Ray GetRay()
-        {
-            if (Cursor.lockState == CursorLockMode.Locked || Mouse.current == null)
-                return Camera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
-
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-            return Camera.ScreenPointToRay(mousePosition);
-        }
-
         public void ManualMoveAndRotate(Vector2 direction, float rotation)
         {
-            if (InteractionData.Rigidbody == null)
+            EditModeInteractionData interactionData = _raycaster.InteractionData;
+
+            if (interactionData.Rigidbody == null)
                 return;
 
-            InteractionData.Rigidbody.constraints = RigidbodyConstraints.None;
+            interactionData.Rigidbody.constraints = RigidbodyConstraints.None;
 
             // Position
             if (direction.sqrMagnitude > 0.001f)
             {
-                InteractionData.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+                interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
-                InteractionData.Rigidbody.AddForce(-InteractionData.Current.transform.forward * direction.y, ForceMode.VelocityChange);
-                InteractionData.Rigidbody.AddForce(-InteractionData.Current.transform.right * direction.x, ForceMode.VelocityChange);
+                interactionData.Rigidbody.AddForce(-interactionData.Current.transform.forward * direction.y, ForceMode.VelocityChange);
+                interactionData.Rigidbody.AddForce(-interactionData.Current.transform.right * direction.x, ForceMode.VelocityChange);
             }
-            InteractionData.Rigidbody.AddForce(Vector3.right * -InteractionData.Rigidbody.velocity.x, ForceMode.VelocityChange);
-            InteractionData.Rigidbody.AddForce(Vector3.forward * -InteractionData.Rigidbody.velocity.z, ForceMode.VelocityChange);
+            interactionData.Rigidbody.AddForce(Vector3.right * -interactionData.Rigidbody.velocity.x, ForceMode.VelocityChange);
+            interactionData.Rigidbody.AddForce(Vector3.forward * -interactionData.Rigidbody.velocity.z, ForceMode.VelocityChange);
 
             // Rotation
             if (rotation < -0.5f || rotation > 0.5f)
             {
-                InteractionData.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                interactionData.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
-                float angle           = Mathf.Atan2(InteractionData.Current.transform.forward.x, InteractionData.Current.transform.forward.z) * Mathf.Rad2Deg;
+                float angle           = Mathf.Atan2(interactionData.Current.transform.forward.x, interactionData.Current.transform.forward.z) * Mathf.Rad2Deg;
                 float targetAngle     = angle + rotation;
                 float angleDifference = (targetAngle - angle);
 
@@ -72,8 +64,8 @@ namespace Arcade
                         angleDifference = (360f - angleDifference) * -1f;
                 }
 
-                InteractionData.Rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
-                InteractionData.Rigidbody.AddTorque(Vector3.up * -InteractionData.Rigidbody.angularVelocity.y, ForceMode.VelocityChange);
+                interactionData.Rigidbody.AddTorque(Vector3.up * angleDifference, ForceMode.VelocityChange);
+                interactionData.Rigidbody.AddTorque(Vector3.up * -interactionData.Rigidbody.angularVelocity.y, ForceMode.VelocityChange);
             }
         }
 
@@ -82,8 +74,10 @@ namespace Arcade
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, layerMask))
                 return;
 
+            EditModeInteractionData interactionData = _raycaster.InteractionData;
+
             Vector3 newPosition;
-            Transform transform = InteractionData.Current.transform;
+            Transform transform = interactionData.Current.transform;
             Vector3 position    = hitInfo.point;
             Vector3 normal      = hitInfo.normal;
             float dot           = Vector3.Dot(Vector3.up, normal);
@@ -107,7 +101,7 @@ namespace Arcade
             }
 
             // Vertical surface
-            Collider collider = InteractionData.Collider;
+            Collider collider = interactionData.Collider;
             if (collider == null)
                 return;
 

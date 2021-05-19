@@ -35,6 +35,7 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
+            //Context.ArcadeEditModeStateChangeEvent.Raise(this);
 
             Context.ArcadeContext.InteractionControllers.EditModeController.Reset();
         }
@@ -51,11 +52,10 @@ namespace Arcade
             InteractionControllers interactionControllers    = arcadeContext.InteractionControllers;
             EditModeInteractionController editModeController = interactionControllers.EditModeController;
 
-            editModeController.UpdateCurrentTarget(false);
-            if (editModeController.InteractionData.Current == null)
-                return;
+            editModeController.UpdateCurrentTarget(arcadeContext.Player.Camera);
 
-            if (editModeController.InteractionData.Current == null || !editModeController.InteractionData.Current.Configuration.MoveCabMovable)
+            ModelConfigurationComponent currentTarget = editModeController.InteractionData.Current;
+            if (currentTarget == null || !currentTarget.Configuration.MoveCabMovable)
                 return;
 
             InputActions inputActions = arcadeContext.InputActions;
@@ -65,7 +65,7 @@ namespace Arcade
             _aimPosition          = positionInput * _movementSpeedMultiplier;
             _aimRotation          = rotationInput * _rotationSpeedMultiplier;
 
-            if (editModeController.InteractionData.Current.Configuration.MoveCabGrabbable && inputActions.FpsEditActions.Grab.triggered)
+            if (currentTarget.Configuration.MoveCabGrabbable && inputActions.FpsEditActions.Grab.triggered)
                 Context.TransitionTo<ArcadeEditModeAutoMoveState>();
         }
 

@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Event/Float", fileName = "NewFloatEvent")]
+    [CreateAssetMenu(menuName = "3DArcade/Event/Float", fileName = "NewFloatEvent")]
     public sealed class FloatEvent : EventBase<float>
     {
     }

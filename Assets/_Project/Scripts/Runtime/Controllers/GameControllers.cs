@@ -25,7 +25,7 @@ using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/GameControllers", fileName = "GameControllers")]
+    [CreateAssetMenu(menuName = "3DArcade/GameControllers", fileName = "GameControllers")]
     public sealed class GameControllers : ScriptableObject
     {
         public ExternalGameController External { get; private set; }

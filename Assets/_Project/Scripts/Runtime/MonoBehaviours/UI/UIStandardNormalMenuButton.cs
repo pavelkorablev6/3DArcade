@@ -31,7 +31,6 @@ namespace Arcade
     public class UIStandardNormalMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TMP_Text _text;
-        [SerializeField] private UIStandardNormalMenu _menu;
 
         public void OnPointerEnter(PointerEventData eventData) => ShowText();
 

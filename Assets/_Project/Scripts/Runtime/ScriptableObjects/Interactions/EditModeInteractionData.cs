@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/EditModeInteractionData", fileName = "EditModeInteractionData")]
+    [CreateAssetMenu(menuName = "3DArcade/Interaction/EditModeData", fileName = "EditModeInteractionData")]
     public sealed class EditModeInteractionData : InteractionData
     {
         private sealed class PhysicsState
@@ -43,6 +43,36 @@ namespace Arcade
         [field: System.NonSerialized] public Rigidbody Rigidbody { get; private set; }
 
         [System.NonSerialized] private PhysicsState _savedData;
+
+        public override void Set(ModelConfigurationComponent target)
+        {
+            if (Current == target)
+            {
+                if (target != null)
+                    target.gameObject.SetLayerRecursively(_highlightLayer);
+                return;
+            }
+
+            if (Current != null)
+                Current.RestoreOriginalLayer();
+
+            if (target == null)
+                return;
+
+            if (Rigidbody != null)
+            {
+                Rigidbody.velocity        = Vector3.zero;
+                Rigidbody.angularVelocity = Vector3.zero;
+            }
+
+            target.gameObject.SetLayerRecursively(_highlightLayer);
+
+            Collider  = target.GetComponent<Collider>();
+            Rigidbody = target.GetComponent<Rigidbody>();
+
+            Current = target;
+            _targetChangedEvent.Raise(target);
+        }
 
         public void InitAutoMove()
         {
@@ -71,20 +101,6 @@ namespace Arcade
             Collider   = null;
             Rigidbody  = null;
             _savedData = null;
-        }
-
-        protected override void OnSet(ModelConfigurationComponent previous)
-        {
-            if (previous != null && previous.TryGetComponent(out Rigidbody previousRb))
-            {
-                previousRb.velocity        = Vector3.zero;
-                previousRb.angularVelocity = Vector3.zero;
-            }
-
-            Current.gameObject.SetLayerRecursively(_highlightLayer);
-
-            Collider  = Current.GetComponent<Collider>();
-            Rigidbody = Current.GetComponent<Rigidbody>();
         }
 
         private PhysicsState SavePhysicsState() => new PhysicsState

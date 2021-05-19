@@ -30,13 +30,10 @@ namespace Arcade
 {
     public sealed class MouseOverUIRaycaster : MonoBehaviour
     {
+        [SerializeField] private BoolVariable _mouseOverUIVariable;
+
         private readonly PointerEventData _pointerEventData  = new PointerEventData(EventSystem.current);
         private readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
-
-        private BoolVariable _mouseOverUIVariable;
-
-        [Inject]
-        public void Construct([Inject(Id = "mouse_over_ui")] BoolVariable mouseOverUIVariable) => _mouseOverUIVariable = mouseOverUIVariable;
 
         private void Update()
         {

@@ -49,6 +49,10 @@ MonoBehaviour:
     m_Address: Textures/_default_marquee_07
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 0bc6948d9f3a91540bd57400af7b6102
+    m_Address: Materials/_dynamic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:

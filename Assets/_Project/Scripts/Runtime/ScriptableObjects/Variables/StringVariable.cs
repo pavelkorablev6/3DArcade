@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/String", fileName = "NewStringVariable")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/String", fileName = "NewStringVariable")]
     public sealed class StringVariable : VariableBase<string>
     {
     }

@@ -25,17 +25,11 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/InteractionControllers", fileName = "InteractionControllers")]
+    [CreateAssetMenu(menuName = "3DArcade/InteractionControllers", fileName = "InteractionControllers")]
     public sealed class InteractionControllers : ScriptableObject
     {
         [field: SerializeField] public NormalModeInteractionController NormalModeController { get; private set; }
         [field: SerializeField] public EditModeInteractionController EditModeController { get; private set; }
-
-        public void Construct(Camera camera)
-        {
-            NormalModeController.Construct(camera);
-            EditModeController.Construct(camera);
-        }
 
         public void Reset()
         {

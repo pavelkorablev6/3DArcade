@@ -35,7 +35,7 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-            Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
+            //Context.ArcadeEditModeStateChangeEvent.Raise(this);
 
             EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
             _screenPoint = Context.ArcadeContext.Player.Camera.WorldToScreenPoint(interactionData.Current.transform.position);
@@ -49,8 +49,6 @@ namespace Arcade
             Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.DeInitAutoMove();
 
             _screenPoint = Vector2.zero;
-
-            Context.ArcadeContext.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnUpdate(float dt)

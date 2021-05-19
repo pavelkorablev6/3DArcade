@@ -26,7 +26,7 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Scenes/EntitiesScene", fileName = "EntitiesScene")]
+    [CreateAssetMenu(menuName = "3DArcade/Scenes/EntitiesScene", fileName = "EntitiesScene")]
     public sealed class EntitiesScene : ScriptableObject
     {
         [SerializeField] private SceneCreatorBase _sceneCreator;

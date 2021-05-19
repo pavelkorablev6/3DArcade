@@ -30,14 +30,13 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+            Context.ArcadeStateChangeEvent.Raise(this);
 
             Context.InputActions.FpsActions.Enable();
             if (Cursor.lockState != CursorLockMode.Locked)
                 Context.InputActions.FpsActions.Look.Disable();
 
             Context.InteractionControllers.Reset();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIStandardNormalState));
         }
 
         public override void OnExit()
@@ -45,8 +44,6 @@ namespace Arcade
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
             Context.InputActions.FpsActions.Disable();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)
@@ -68,7 +65,7 @@ namespace Arcade
                 return;
             }
 
-            Context.InteractionControllers.NormalModeController.UpdateCurrentTarget();
+            Context.InteractionControllers.NormalModeController.UpdateCurrentTarget(Context.Player.Camera);
 
             if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsActions.Interact.triggered)
                 Context.InteractionControllers.NormalModeController.HandleInteraction();

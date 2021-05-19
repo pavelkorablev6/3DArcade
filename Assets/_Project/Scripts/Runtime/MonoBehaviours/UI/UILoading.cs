@@ -22,23 +22,26 @@
 
 using TMPro;
 using UnityEngine;
-using Zenject;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
     public sealed class UILoading : MonoBehaviour
     {
+        [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
         [SerializeField] private TMP_Text _statusText;
 
-        private ArcadeConfigurationVariable _arcadeConfigurationVariable;
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            InitStatusBar();
+        }
 
-        [Inject]
-        public void Construct(ArcadeConfigurationVariable arcadeConfigurationVariable) => _arcadeConfigurationVariable = arcadeConfigurationVariable;
-
-        private void OnEnable() => InitStatusBar();
-
-        private void OnDisable() => ResetStatusBar();
+        public void Hide()
+        {
+            ResetStatusBar();
+            gameObject.SetActive(false);
+        }
 
         private void InitStatusBar() => _statusText.SetText(_arcadeConfigurationVariable.Value.ToString());
 

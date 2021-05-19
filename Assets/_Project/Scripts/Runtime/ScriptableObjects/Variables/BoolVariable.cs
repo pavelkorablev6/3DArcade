@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/Bool", fileName = "NewBoolVariable")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/Bool", fileName = "NewBoolVariable")]
     public sealed class BoolVariable : VariableBase<bool>
     {
     }

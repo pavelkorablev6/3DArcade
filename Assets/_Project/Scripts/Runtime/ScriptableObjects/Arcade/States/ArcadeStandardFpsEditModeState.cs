@@ -32,8 +32,9 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
+            Context.ArcadeStateChangeEvent.Raise(this);
 
-            _editModeContext.Start();
+            _editModeContext.OnStart();
 
             Context.VideoPlayerController.Value.StopAllVideos();
 
@@ -45,8 +46,6 @@ namespace Arcade
             Context.InputActions.FpsEditActions.Enable();
 
             _editModeContext.TransitionTo<ArcadeEditModeAimState>();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIStandardEditModeState));
         }
 
         public override void OnExit()
@@ -57,8 +56,6 @@ namespace Arcade
             Context.InputActions.FpsEditActions.Disable();
 
             _editModeContext.TransitionTo<ArcadeEditModeNullState>();
-
-            Context.UIStateTransitionEvent.Raise(typeof(UIDisabledState));
         }
 
         public override void OnUpdate(float dt)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Database/GamesDatabase", fileName = "GamesDatabase")]
+    [CreateAssetMenu(menuName = "3DArcade/Database/GamesDatabase", fileName = "GamesDatabase")]
     public sealed class GamesDatabase : ScriptableObject
     {
         [Table(INTERNAL_TABLE_NAME_GENRES)]

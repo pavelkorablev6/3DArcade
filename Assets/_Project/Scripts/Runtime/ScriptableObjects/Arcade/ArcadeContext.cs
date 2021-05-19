@@ -29,7 +29,7 @@ using Zenject;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/StateMachine/ArcadeContext", fileName = "ArcadeContext")]
+    [CreateAssetMenu(menuName = "3DArcade/StateMachine/ArcadeContext", fileName = "ArcadeContext")]
     public sealed class ArcadeContext : Context<ArcadeState>
     {
         [field: SerializeField] public Databases Databases { get; private set; }
@@ -41,7 +41,7 @@ namespace Arcade
         [field: SerializeField] public ModelSpawnerBase ModelSpawner { get; private set; }
         [field: SerializeField] public ArcadeControllerVariable ArcadeController { get; private set; }
         [field: SerializeField] public VideoPlayerControllerVariable VideoPlayerController { get; private set; }
-        [field: SerializeField] public TypeEvent UIStateTransitionEvent { get; private set; }
+        [field: SerializeField] public ArcadeStateEvent ArcadeStateChangeEvent { get; private set; }
 
         [field: System.NonSerialized] public InputActions InputActions { get; private set; }
         [field: System.NonSerialized] public Player Player { get; private set; }
@@ -57,6 +57,14 @@ namespace Arcade
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
             GameControllers         = gameControllers;
+        }
+
+        public void TransitionToFpsEditModeState()
+        {
+            if (GeneralConfiguration.Value.EnableVR)
+                TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
+            else
+                TransitionTo<ArcadeStandardFpsEditModeState>();
         }
 
         protected override void OnContextStart() => Restart();
@@ -91,8 +99,6 @@ namespace Arcade
             InputActions?.Enable();
 
             GeneralConfiguration.Initialize();
-
-            InteractionControllers.Construct(Player.Camera);
 
             arcadeConfiguration.ArcadeType = arcadeType;
             arcadeConfiguration.ArcadeMode = arcadeMode;

@@ -26,7 +26,7 @@ using UnityEngine.SceneManagement;
 
 namespace Arcade.UnityEditor
 {
-    [CreateAssetMenu(menuName = "Arcade/Editor/EntitiesSceneCreator", fileName = "EditorEntitiesSceneCreator")]
+    [CreateAssetMenu(menuName = "3DArcade/Editor/EntitiesSceneCreator", fileName = "EditorEntitiesSceneCreator")]
     public sealed class EditorEntitiesSceneCreator : SceneCreatorBase
     {
         public override Scene Create(string name)

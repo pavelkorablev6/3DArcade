@@ -12,11 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b67558c2bf5a14c997622c3a18d6cb, type: 3}
   m_Name: EditModeInteractionController
   m_EditorClassIdentifier: 
-  <InteractionData>k__BackingField: {fileID: 11400000, guid: ab3332b7821f2b044ba9780ae3b52ed4,
-    type: 2}
-  _raycastMask:
-    serializedVersion: 2
-    m_Bits: 3968
-  _raycastMaxDistance: Infinity
-  _targetChangedEvent: {fileID: 11400000, guid: 9743def2eb04e0a48b4a7611bece5092,
-    type: 2}
+  _raycaster: {fileID: 11400000, guid: a0e4e56e7e5d4a84d8040906c1fb87e4, type: 2}

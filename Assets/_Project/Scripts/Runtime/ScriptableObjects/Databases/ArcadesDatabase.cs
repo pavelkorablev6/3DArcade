@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Database/ArcadesDatabase", fileName = "ArcadesDatabase")]
+    [CreateAssetMenu(menuName = "3DArcade/Database/ArcadesDatabase", fileName = "ArcadesDatabase")]
     public sealed class ArcadesDatabase : MultiFileDatabase<ArcadeConfiguration>
     {
         [field: System.NonSerialized] protected override string DirectoryAlias { get; } = "arcade_cfgs";

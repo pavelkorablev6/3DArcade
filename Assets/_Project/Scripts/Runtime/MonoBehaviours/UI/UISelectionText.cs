@@ -28,25 +28,27 @@ namespace Arcade
 {
     public sealed class UISelectionText : MonoBehaviour
     {
-        private TMP_Text _text;
+        [SerializeField] private float _animationSpeed = 0.6f;
 
-        private Tween _colorTween;
+        private TMP_Text _text;
+        private Tween _tween;
 
         private void Awake() => _text = GetComponent<TMP_Text>();
 
         public void SetValue(ModelConfigurationComponent modelConfigurationComponent)
         {
             string description = modelConfigurationComponent != null ? GetDescription(modelConfigurationComponent) : string.Empty;
-            _colorTween.Kill();
-            _colorTween = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, 0.6f)
-                               .OnStart(() => _text.SetText(description));
+            _text.SetText(description);
+
+            _tween?.Kill();
+            _tween = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, _animationSpeed);
         }
 
         public void ResetValue()
         {
-            _colorTween.Kill();
-            _colorTween = _text.DOColor(Color.clear, 0.6f)
-                               .OnComplete(() => _text.Clear());
+            _tween?.Kill();
+            _tween = _text.DOColor(Color.clear, _animationSpeed)
+                          .OnComplete(() => _text.Clear());
         }
 
         private static string GetDescription(ModelConfigurationComponent modelConfigurationComponent)

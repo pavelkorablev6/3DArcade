@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Event/Bool", fileName = "NewBoolEvent")]
+    [CreateAssetMenu(menuName = "3DArcade/Event/Bool", fileName = "NewBoolEvent")]
     public sealed class BoolEvent : EventBase<bool>
     {
     }

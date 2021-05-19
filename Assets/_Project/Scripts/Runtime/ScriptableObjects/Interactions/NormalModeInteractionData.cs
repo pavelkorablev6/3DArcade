@@ -26,7 +26,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Interaction/NormalModeInteractionData", fileName = "NormalModeInteractionData")]
+    [CreateAssetMenu(menuName = "3DArcade/Interaction/NormalModeData", fileName = "NormalModeInteractionData")]
     public sealed class NormalModeInteractionData : InteractionData
     {
         [SerializeField, Layer] private int _selectionLayer;
@@ -35,6 +35,19 @@ namespace Arcade
 
         public void HoverExitEventCallback(HoverExitEventArgs _) => Reset();
 
-        protected override void OnSet(ModelConfigurationComponent previous) => Current.gameObject.SetLayerRecursively(_selectionLayer);
+        public override void Set(ModelConfigurationComponent target)
+        {
+            if (Current == target)
+                return;
+
+            if (Current != null)
+                Current.RestoreOriginalLayer();
+
+            if (target != null)
+                target.gameObject.SetLayerRecursively(_selectionLayer);
+
+            Current = target;
+            _targetChangedEvent.Raise(target);
+        }
     }
 }

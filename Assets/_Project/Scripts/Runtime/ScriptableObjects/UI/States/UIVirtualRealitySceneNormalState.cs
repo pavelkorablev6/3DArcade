@@ -24,8 +24,8 @@ namespace Arcade
 {
     public sealed class UIVirtualRealitySceneNormalState : UIState
     {
-        public override void OnEnter() => Context.VirtualRealityUI.EnableSceneNormalUI();
+        public override void OnEnter() => Context.VirtualRealityUI.ShowSceneNormalUI();
 
-        public override void OnExit() => Context.VirtualRealityUI.DisableSceneNormalUI();
+        public override void OnExit() => Context.VirtualRealityUI.HideSceneNormalUI();
     }
 }

@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Variable/ArcadeConfiguration", fileName = "ArcadeConfiguration")]
+    [CreateAssetMenu(menuName = "3DArcade/Variable/ArcadeConfiguration", fileName = "ArcadeConfiguration")]
     public sealed class ArcadeConfigurationVariable : VariableBase<ArcadeConfiguration>
     {
     }

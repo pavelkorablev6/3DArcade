@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arcade
 {
-    [CreateAssetMenu(menuName = "Arcade/Event/String", fileName = "NewStringEvent")]
+    [CreateAssetMenu(menuName = "3DArcade/Event/String", fileName = "NewStringEvent")]
     public sealed class StringEvent : EventBase<string>
     {
     }
