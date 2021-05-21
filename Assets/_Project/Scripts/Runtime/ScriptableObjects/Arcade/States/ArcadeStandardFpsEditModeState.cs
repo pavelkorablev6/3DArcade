@@ -60,19 +60,19 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            if (Context.MouseOverUI.Value)
-            {
-                Context.InputActions.FpsActions.Disable();
-                Context.InputActions.FpsEditActions.Grab.Disable();
-            }
-            else
-            {
-                Context.InputActions.FpsActions.Enable();
-                Context.InputActions.FpsActions.Interact.Disable();
-                if (Cursor.lockState != CursorLockMode.Locked)
-                    Context.InputActions.FpsActions.Look.Disable();
-                Context.InputActions.FpsEditActions.Grab.Enable();
-            }
+            //if (Context.MouseOverUI.Value)
+            //{
+            //    Context.InputActions.FpsActions.Disable();
+            //    Context.InputActions.FpsEditActions.Grab.Disable();
+            //}
+            //else
+            //{
+            //    Context.InputActions.FpsActions.Enable();
+            //    Context.InputActions.FpsActions.Interact.Disable();
+            //    if (Cursor.lockState != CursorLockMode.Locked)
+            //        Context.InputActions.FpsActions.Look.Disable();
+            //    Context.InputActions.FpsEditActions.Grab.Enable();
+            //}
 
             //if (Context.InputActions.GlobalActions.Quit.triggered)
             //{

@@ -21,6 +21,7 @@
  * SOFTWARE. */
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Arcade
 {
@@ -46,7 +47,12 @@ namespace Arcade
         {
             ArcadeContext arcadeContext = Context.ArcadeContext;
 
-            if (arcadeContext.MouseOverUI.Value)
+            //if (arcadeContext.MouseOverUI.Value)
+            //    return;
+
+            bool pointerOverUI = EventSystem.current.IsPointerOverGameObject();
+            Debug.Log(pointerOverUI);
+            if (pointerOverUI)
                 return;
 
             InteractionControllers interactionControllers    = arcadeContext.InteractionControllers;

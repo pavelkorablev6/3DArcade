@@ -35,7 +35,6 @@ namespace Arcade
         [field: SerializeField] public Databases Databases { get; private set; }
         [field: SerializeField] public Scenes Scenes { get; private set; }
         [field: SerializeField] public InteractionControllers InteractionControllers { get; private set; }
-        [field: SerializeField] public BoolVariable MouseOverUI { get; private set; }
         [field: SerializeField] public GeneralConfigurationVariable GeneralConfiguration { get; private set; }
         [field: SerializeField] public ArcadeConfigurationVariable ArcadeConfiguration { get; private set; }
         [field: SerializeField] public ModelSpawnerBase ModelSpawner { get; private set; }

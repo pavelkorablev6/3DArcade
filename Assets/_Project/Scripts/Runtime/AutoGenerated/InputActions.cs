@@ -558,14 +558,6 @@ namespace Arcade
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Add"",
-                    ""type"": ""Button"",
-                    ""id"": ""3b4cdfb5-a154-4ec7-af71-6918230a09a7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -700,17 +692,6 @@ namespace Arcade
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e4abb522-babd-4918-9659-68a20604bf3f"",
-                    ""path"": ""<Keyboard>/n"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Add"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -2063,7 +2044,6 @@ namespace Arcade
             m_FpsEditActions_Move = m_FpsEditActions.FindAction("Move", throwIfNotFound: true);
             m_FpsEditActions_Rotate = m_FpsEditActions.FindAction("Rotate", throwIfNotFound: true);
             m_FpsEditActions_Grab = m_FpsEditActions.FindAction("Grab", throwIfNotFound: true);
-            m_FpsEditActions_Add = m_FpsEditActions.FindAction("Add", throwIfNotFound: true);
             // CylActions
             m_CylActions = asset.FindActionMap("CylActions", throwIfNotFound: true);
             m_CylActions_NavigationVertical = m_CylActions.FindAction("Navigation Vertical", throwIfNotFound: true);
@@ -2289,7 +2269,6 @@ namespace Arcade
         private readonly InputAction m_FpsEditActions_Move;
         private readonly InputAction m_FpsEditActions_Rotate;
         private readonly InputAction m_FpsEditActions_Grab;
-        private readonly InputAction m_FpsEditActions_Add;
         public struct FpsEditActionsActions
         {
             private @InputActions m_Wrapper;
@@ -2297,7 +2276,6 @@ namespace Arcade
             public InputAction @Move => m_Wrapper.m_FpsEditActions_Move;
             public InputAction @Rotate => m_Wrapper.m_FpsEditActions_Rotate;
             public InputAction @Grab => m_Wrapper.m_FpsEditActions_Grab;
-            public InputAction @Add => m_Wrapper.m_FpsEditActions_Add;
             public InputActionMap Get() { return m_Wrapper.m_FpsEditActions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -2316,9 +2294,6 @@ namespace Arcade
                     @Grab.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
                     @Grab.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
                     @Grab.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnGrab;
-                    @Add.started -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
-                    @Add.performed -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
-                    @Add.canceled -= m_Wrapper.m_FpsEditActionsActionsCallbackInterface.OnAdd;
                 }
                 m_Wrapper.m_FpsEditActionsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -2332,9 +2307,6 @@ namespace Arcade
                     @Grab.started += instance.OnGrab;
                     @Grab.performed += instance.OnGrab;
                     @Grab.canceled += instance.OnGrab;
-                    @Add.started += instance.OnAdd;
-                    @Add.performed += instance.OnAdd;
-                    @Add.canceled += instance.OnAdd;
                 }
             }
         }
@@ -2768,7 +2740,6 @@ namespace Arcade
             void OnMove(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
             void OnGrab(InputAction.CallbackContext context);
-            void OnAdd(InputAction.CallbackContext context);
         }
         public interface ICylActionsActions
         {

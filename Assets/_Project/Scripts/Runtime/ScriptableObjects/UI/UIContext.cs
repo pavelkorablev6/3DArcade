@@ -30,15 +30,12 @@ namespace Arcade
     {
         [field: System.NonSerialized] public UICanvasController StandardUI { get; private set; }
         [field: System.NonSerialized] public UICanvasController VirtualRealityUI { get; private set; }
-        [field: System.NonSerialized] public MouseOverUIRaycaster MouseOverUIRaycaster { get; private set; }
 
         public void Initialize(UICanvasController standardUI,
-                               UICanvasController virtualRealityUI,
-                               MouseOverUIRaycaster mouseOverUIRaycaster)
+                               UICanvasController virtualRealityUI)
         {
-            StandardUI           = standardUI;
-            VirtualRealityUI     = virtualRealityUI;
-            MouseOverUIRaycaster = mouseOverUIRaycaster;
+            StandardUI       = standardUI;
+            VirtualRealityUI = virtualRealityUI;
         }
     }
 }

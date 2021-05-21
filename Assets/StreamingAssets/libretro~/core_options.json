@@ -34,6 +34,50 @@
                 "mame2003-plus_vector_resolution;1024x768;1024x768|640x480|1280x960|1440x1080|1600x1200|1707x1280|original;",
                 "mame2003-plus_vector_translucency;enabled;enabled|disabled;"
             ]
+        },
+        {
+            "CoreName": "snes9x",
+            "Options": [
+                "snes9x_aspect;4:3;4:3|uncorrected|auto|ntsc|pal;",
+                "snes9x_audio_interpolation;gaussian;gaussian|cubic|sinc|none|linear;",
+                "snes9x_blargg;disabled;disabled|monochrome|rf|composite|s-video|rgb;",
+                "snes9x_block_invalid_vram_access;enabled;enabled|disabled;",
+                "snes9x_echo_buffer_hack;disabled;disabled|enabled;",
+                "snes9x_gfx_clip;enabled;enabled|disabled;",
+                "snes9x_gfx_hires;enabled;enabled|disabled;",
+                "snes9x_gfx_transp;enabled;enabled|disabled;",
+                "snes9x_hires_blend;disabled;disabled|merge|blur;",
+                "snes9x_justifier1_color;Blue;Blue|Blue (blend)|Violet|Violet (blend)|Pink|Pink (blend)|Purple|Purple (blend)|Black|Black (blend)|25% Grey|25% Grey (blend)|50% Grey|50% Grey (blend)|75% Grey|75% Grey (blend)|White|White (blend)|Red|Red (blend)|Orange|Orange (blend)|Yellow|Yellow (blend)|Green|Green (blend)|Cyan|Cyan (blend)|Sky|Sky (blend);",
+                "snes9x_justifier1_crosshair;4;4|0|1|2|3|5|6|7|8|9|10|11|12|13|14|15|16;",
+                "snes9x_justifier2_color;Pink;Pink|Pink (blend)|Purple|Purple (blend)|Black|Black (blend)|25% Grey|25% Grey (blend)|50% Grey|50% Grey (blend)|75% Grey|75% Grey (blend)|White|White (blend)|Red|Red (blend)|Orange|Orange (blend)|Yellow|Yellow (blend)|Green|Green (blend)|Cyan|Cyan (blend)|Sky|Sky (blend)|Blue|Blue (blend)|Violet|Violet (blend);",
+                "snes9x_justifier2_crosshair;4;4|0|1|2|3|5|6|7|8|9|10|11|12|13|14|15|16;",
+                "snes9x_layer_1;enabled;enabled|disabled;",
+                "snes9x_layer_2;enabled;enabled|disabled;",
+                "snes9x_layer_3;enabled;enabled|disabled;",
+                "snes9x_layer_4;enabled;enabled|disabled;",
+                "snes9x_layer_5;enabled;enabled|disabled;",
+                "snes9x_lightgun_mode;Lightgun;Lightgun|Touchscreen;",
+                "snes9x_overclock_cycles;disabled;disabled|light|compatible|max;",
+                "snes9x_overclock_superfx;100%;100%|50%|60%|70%|80%|90%|150%|200%|250%|300%|350%|400%|450%|500%;",
+                "snes9x_overscan;enabled;enabled|12_pixels|16_pixels|auto|disabled;",
+                "snes9x_randomize_memory;disabled;disabled|enabled;",
+                "snes9x_reduce_sprite_flicker;disabled;disabled|enabled;",
+                "snes9x_region;auto;auto|ntsc|pal;",
+                "snes9x_rifle_color;White;White|White (blend)|Red|Red (blend)|Orange|Orange (blend)|Yellow|Yellow (blend)|Green|Green (blend)|Cyan|Cyan (blend)|Sky|Sky (blend)|Blue|Blue (blend)|Violet|Violet (blend)|Pink|Pink (blend)|Purple|Purple (blend)|Black|Black (blend)|25% Grey|25% Grey (blend)|50% Grey|50% Grey (blend)|75% Grey|75% Grey (blend);",
+                "snes9x_rifle_crosshair;2;2|0|1|3|4|5|6|7|8|9|10|11|12|13|14|15|16;",
+                "snes9x_sndchan_1;enabled;enabled|disabled;",
+                "snes9x_sndchan_2;enabled;enabled|disabled;",
+                "snes9x_sndchan_3;enabled;enabled|disabled;",
+                "snes9x_sndchan_4;enabled;enabled|disabled;",
+                "snes9x_sndchan_5;enabled;enabled|disabled;",
+                "snes9x_sndchan_6;enabled;enabled|disabled;",
+                "snes9x_sndchan_7;enabled;enabled|disabled;",
+                "snes9x_sndchan_8;enabled;enabled|disabled;",
+                "snes9x_superscope_color;White;White|White (blend)|Red|Red (blend)|Orange|Orange (blend)|Yellow|Yellow (blend)|Green|Green (blend)|Cyan|Cyan (blend)|Sky|Sky (blend)|Blue|Blue (blend)|Violet|Violet (blend)|Pink|Pink (blend)|Purple|Purple (blend)|Black|Black (blend)|25% Grey|25% Grey (blend)|50% Grey|50% Grey (blend)|75% Grey|75% Grey (blend);",
+                "snes9x_superscope_crosshair;2;2|0|1|3|4|5|6|7|8|9|10|11|12|13|14|15|16;",
+                "snes9x_superscope_reverse_buttons;disabled;disabled|enabled;",
+                "snes9x_up_down_allowed;disabled;disabled|enabled;"
+            ]
         }
     ]
 }

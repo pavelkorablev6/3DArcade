@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
 
 namespace Arcade
@@ -27,5 +28,13 @@ namespace Arcade
     [CreateAssetMenu(menuName = "3DArcade/Variable/ArcadeController", fileName = "ArcadeController")]
     public sealed class ArcadeControllerVariable : VariableBase<ArcadeController>
     {
+        public void EnableGlobalInputs() => Value.EnableGlobalInputs();
+        public void DisableGlobalInputs() => Value.DisableGlobalInputs();
+
+        public void EnableMovementInputs() => Value.EnableMovementInputs();
+        public void DisableMovementInputs() => Value.DisableMovementInputs();
+
+        public void EnableEditModeInputs() => Value.EnableEditModeInputs();
+        public void DisableEditModeInputs() => Value.DisableEditModeInputs();
     }
 }

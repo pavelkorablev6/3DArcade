@@ -20,32 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using Zenject;
+using UnityEngine.UI;
 
 namespace Arcade
 {
-    public sealed class MouseOverUIRaycaster : MonoBehaviour
+    [DisallowMultipleComponent]
+    public sealed class UIEmulatorsListButton : MonoBehaviour
     {
-        [SerializeField] private BoolVariable _mouseOverUIVariable;
-
-        private readonly PointerEventData _pointerEventData  = new PointerEventData(EventSystem.current);
-        private readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
-
-        private void Update()
-        {
-            if (Mouse.current is null)
-            {
-                _mouseOverUIVariable.Value = false;
-                return;
-            }
-
-            _pointerEventData.position = Mouse.current.position.ReadValue();
-            EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
-            _mouseOverUIVariable.Value = _raycastResults.Count > 0;
-        }
+        [field: SerializeField] public Image EmulatorIcon { get; private set; }
+        [field: SerializeField] public Button EmulatorButton { get; private set; }
+        [field: SerializeField] public TMP_Text EmulatorButtonText { get; private set; }
+        [field: SerializeField] public Button DeleteButton { get; private set; }
     }
 }

@@ -103,7 +103,7 @@
           <Genre />
           <Year />
           <Manufacturer />
-          <ScreenType>Default</ScreenType>
+          <ScreenType>Raster</ScreenType>
           <ScreenOrientation>Default</ScreenOrientation>
           <Mature>false</Mature>
           <Playable>false</Playable>
@@ -117,7 +117,7 @@
       <rotation x="-0" y="-160.88" z="-0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="tempest" platform="arcade">
+    <game id="Super Mario All-Stars (USA)" platform="snes">
       <interaction_type>Default</interaction_type>
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
@@ -153,7 +153,7 @@
           <Genre />
           <Year />
           <Manufacturer />
-          <ScreenType>Default</ScreenType>
+          <ScreenType>Raster</ScreenType>
           <ScreenOrientation>Default</ScreenOrientation>
           <Mature>false</Mature>
           <Playable>false</Playable>

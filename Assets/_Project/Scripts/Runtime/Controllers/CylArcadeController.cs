@@ -59,6 +59,23 @@ namespace Arcade
             });
         }
 
+        public sealed override void EnableMovementInputs()
+        {
+            _arcadeContext.InputActions.CylActions.Enable();
+            if (Cursor.lockState == CursorLockMode.None)
+                _arcadeContext.InputActions.CylActions.Look.Disable();
+        }
+
+        public sealed override void DisableMovementInputs() => _arcadeContext.InputActions.CylActions.Disable();
+
+        public sealed override void EnableEditModeInputs()
+        {
+        }
+
+        public sealed override void DisableEditModeInputs()
+        {
+        }
+
         protected sealed override void SetupPlayer()
         {
             if (_arcadeContext.GeneralConfiguration.Value.EnableVR)

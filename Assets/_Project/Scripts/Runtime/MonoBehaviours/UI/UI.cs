@@ -29,11 +29,9 @@ namespace Arcade
     {
         [SerializeField] private UICanvasController _standardUI;
         [SerializeField] private UICanvasController _virtualRealityUI;
-        [SerializeField] private BoolVariable _mouseOverUIVariable;
-        [SerializeField] private MouseOverUIRaycaster _mouseOverUIRaycaster;
         [SerializeField] private UIContext _uiContext;
 
-        private void Awake() => _uiContext.Initialize(_standardUI, _virtualRealityUI, _mouseOverUIRaycaster);
+        private void Awake() => _uiContext.Initialize(_standardUI, _virtualRealityUI);
 
         public void HandleArcadeStateChange(ArcadeState arcadeState)
         {

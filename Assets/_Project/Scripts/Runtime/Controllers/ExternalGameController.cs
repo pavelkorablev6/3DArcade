@@ -80,7 +80,7 @@ namespace Arcade
         {
             if (emulator.SupportedExtensions == null || emulator.GamesDirectories == null)
                 return null;
-            return ProcessExtensions(emulator.SupportedExtensions, emulator.GamesDirectories, gameName);
+            return ProcessExtensions(emulator.SupportedExtensions.Split(';'), emulator.GamesDirectories, gameName);
         }
 
         private static string ProcessExtensions(string[] extensions, string[] directories, string gameName)

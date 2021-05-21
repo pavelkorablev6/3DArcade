@@ -21,7 +21,11 @@
  * SOFTWARE. */
 
 using DG.Tweening;
+using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Arcade
 {
@@ -29,6 +33,13 @@ namespace Arcade
     public sealed class UIConfigurationEmulators : MonoBehaviour
     {
         [SerializeField] private EmulatorsDatabase _emulatorsDatabase;
+        [SerializeField] private Button _addButton;
+        [SerializeField] private TMP_InputField _addInputField;
+        [SerializeField] private RectTransform _listContent;
+        [SerializeField] private UIEmulatorsListButton _listButtonPrefab;
+        [SerializeField] private UIConfigurationEmulatorEdit _emulatorEdit;
+
+        private readonly List<UIEmulatorsListButton> _buttons = new List<UIEmulatorsListButton>();
 
         private RectTransform _transform;
 
@@ -36,11 +47,61 @@ namespace Arcade
 
         public void Show()
         {
-            _emulatorsDatabase.Initialize();
+            _addButton.onClick.AddListener(() =>
+            {
+                if (string.IsNullOrEmpty(_addInputField.text))
+                    return;
 
+                string text = _addInputField.text;
+                EmulatorConfiguration cfg = new EmulatorConfiguration { Id = text, Description = text };
+                if (_emulatorsDatabase.Add(cfg) == null)
+                    return;
+
+                _addInputField.text = null;
+                InitializeList();
+            });
+
+            InitializeList();
             _ = _transform.DOAnchorPosX(0f, 0.3f);
         }
 
-        public void Hide() => _transform.DOAnchorPosX(-500f, 0.3f);
+        public void Hide()
+        {
+            _addButton.onClick.RemoveAllListeners();
+            _ = _transform.DOAnchorPosX(-500f, 0.3f);
+        }
+
+        private void InitializeList()
+        {
+            foreach (UIEmulatorsListButton button in _buttons)
+                Destroy(button.gameObject);
+            _buttons.Clear();
+
+            _emulatorsDatabase.Initialize();
+
+            EmulatorConfiguration[] emulators = _emulatorsDatabase.GetValues();
+            foreach (EmulatorConfiguration emulator in emulators)
+            {
+                UIEmulatorsListButton buttonObject = Instantiate(_listButtonPrefab, _listContent);
+                _buttons.Add(buttonObject);
+
+                buttonObject.name = emulator.Id;
+
+                buttonObject.EmulatorButtonText.SetText(emulator.Description);
+
+                buttonObject.EmulatorButton.onClick.AddListener(() =>
+                {
+                    Hide();
+                    _emulatorEdit.TitleText.SetText(emulator.ToString());
+                    _emulatorEdit.Show(emulator);
+                });
+
+                buttonObject.DeleteButton.onClick.AddListener(() =>
+                {
+                    _ = _emulatorsDatabase.Delete(emulator.Id);
+                    InitializeList();
+                });
+            }
+        }
     }
 }

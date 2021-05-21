@@ -36,15 +36,7 @@ namespace Arcade
         [SerializeField] private Material _uddScreenMaterial;
         [SerializeField] private GameControllers _gameControllers;
         [SerializeField] private ArcadeContext _arcadeContext;
-        [SerializeField] private BoolVariable _mouseOverUIVariable;
         [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
-
-        //[SerializeField] private GeneralConfigurationVariable _generalConfigurationVariable;
-        //[SerializeField] private NormalModeInteractionRaycaster _normalModeInteractionRaycaster;
-        //[SerializeField] private NormalModeInteractionController _normalModeInteractionController;
-        //[SerializeField] private EditModeInteractionRaycaster _editModeInteractionRaycaster;
-        //[SerializeField] private EditModeInteractionController _editModeInteractionController;
-        //[SerializeField] private TypeEvent _uiStateTransitionEvent;
 
         public override void InstallBindings()
         {
@@ -82,7 +74,6 @@ namespace Arcade
             _ = Container.Bind<InternalGameController>().AsSingle().NonLazy();
             _ = Container.Bind<GameControllers>().FromScriptableObject(_gameControllers).AsSingle();
 
-            _ = Container.Bind<BoolVariable>().WithId("mouse_over_ui").FromScriptableObject(_mouseOverUIVariable).AsSingle();
             _ = Container.Bind<ArcadeConfigurationVariable>().FromScriptableObject(_arcadeConfigurationVariable).AsSingle();
 
             _ = Container.Bind<ArcadeContext>().FromScriptableObject(_arcadeContext).AsSingle();

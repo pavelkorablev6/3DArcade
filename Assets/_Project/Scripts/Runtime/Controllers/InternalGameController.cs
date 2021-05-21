@@ -62,7 +62,8 @@ namespace Arcade
 
             foreach (string gameDirectory in emulator.GamesDirectories)
             {
-                if (!_libretroBridge.Start(emulator.Id, gameDirectory, modelConfiguration.Id))
+                string coreName = !string.IsNullOrEmpty(emulator.Executable) ? emulator.Executable : emulator.Id;
+                if (!_libretroBridge.Start(coreName, gameDirectory, modelConfiguration.Id))
                 {
                     _libretroBridge.Stop();
                     continue;

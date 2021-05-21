@@ -137,5 +137,6 @@ $RECYCLE.BIN/
 # Libretro
 /[Aa]ssets/StreamingAssets/libretro~/**
 !/[Aa]ssets/StreamingAssets/libretro~/core_options.json
+!/[Aa]ssets/StreamingAssets/libretro~/cores_using_options_intl.json
 
 uDesktopDuplication.log

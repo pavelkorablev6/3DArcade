@@ -74,6 +74,15 @@ namespace Arcade
         //    RestoreModelPositions(_propModels);
         //}
 
+        public void EnableGlobalInputs() => _arcadeContext.InputActions.GlobalActions.Enable();
+        public void DisableGlobalInputs() => _arcadeContext.InputActions.GlobalActions.Disable();
+
+        public abstract void EnableMovementInputs();
+        public abstract void DisableMovementInputs();
+
+        public abstract void EnableEditModeInputs();
+        public abstract void DisableEditModeInputs();
+
         protected abstract void SetupPlayer();
 
         //private static void StoreModelPositions(List<ModelConfigurationComponent> models)

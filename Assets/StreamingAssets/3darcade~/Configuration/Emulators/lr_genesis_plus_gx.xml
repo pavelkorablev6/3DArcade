@@ -1,0 +1,11 @@
+<emulator description="Libretro: Genesis Plus GX">
+  <interaction_type>GameInternal</interaction_type>
+  <directory />
+  <working_directory />
+  <executable>genesis_plus_gx</executable>
+  <arguments />
+  <supported_extensions />
+  <games_directories>
+    <directory />
+  </games_directories>
+</emulator>
