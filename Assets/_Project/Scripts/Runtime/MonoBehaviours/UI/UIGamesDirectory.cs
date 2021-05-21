@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -58,7 +59,9 @@ namespace Arcade
                         _pathInputField.text = paths[0];
                 }));
 
-            _deleteButton.onClick.AddListener(() => uiGamesDirectories.RemoveDirectory(this));
+            _moveUpButton.onClick.AddListener(()   => uiGamesDirectories.MoveDirectoryUp(this));
+            _moveDownButton.onClick.AddListener(() => uiGamesDirectories.MoveDirectoryDown(this));
+            _deleteButton.onClick.AddListener(()   => uiGamesDirectories.RemoveDirectory(this));
         }
     }
 }

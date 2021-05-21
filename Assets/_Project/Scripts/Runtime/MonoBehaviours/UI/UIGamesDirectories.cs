@@ -48,6 +48,20 @@ namespace Arcade
             ++_valuesCount;
         }
 
+        public void MoveDirectoryUp(UIGamesDirectory directory)
+        {
+            int index = directory.transform.GetSiblingIndex();
+            if (index > 0)
+                directory.transform.SetSiblingIndex(index - 1);
+        }
+
+        public void MoveDirectoryDown(UIGamesDirectory directory)
+        {
+            int index = directory.transform.GetSiblingIndex();
+            if (index < _gamesDirectoriesValues.childCount - 1)
+                directory.transform.SetSiblingIndex(index + 1);
+        }
+
         public void RemoveDirectory(UIGamesDirectory directory)
         {
             Destroy(directory.gameObject);
