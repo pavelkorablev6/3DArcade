@@ -74,7 +74,7 @@ namespace Arcade
             if (videoPlayer == null || !videoPlayer.enabled)
                 return;
 
-            videoPlayer.EnableAudioTrack(0, state);
+            videoPlayer.EnableAudioTrack(0, state && videoPlayer.GetComponent<ScreenNodeTag>() != null);
 
             if (state)
                 videoPlayer.Play();

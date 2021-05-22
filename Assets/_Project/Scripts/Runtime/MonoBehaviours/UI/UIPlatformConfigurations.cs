@@ -20,24 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using DG.Tweening;
-using TMPro;
-using UnityEngine;
-using UnityEngine.EventSystems;
-
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public class UIStandardNormalMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public sealed class UIPlatformConfigurations : UIConfigurations<PlatformsDatabase, PlatformConfiguration, UIPlatformConfiguration>
     {
-        [SerializeField] private TMP_Text _tooltipText;
-
-        public void OnPointerEnter(PointerEventData eventData) => ShowTooltip();
-
-        public void OnPointerExit(PointerEventData eventData) => HideTooltip();
-
-        public void ShowTooltip() => _tooltipText.DOColor(Color.white, 0.3f);
-
-        public void HideTooltip() => _tooltipText.DOColor(Color.clear, 0.3f);
     }
 }

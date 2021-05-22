@@ -35,7 +35,6 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-            //Context.ArcadeEditModeStateChangeEvent.Raise(this);
 
             EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
             _screenPoint = Context.ArcadeContext.Player.Camera.WorldToScreenPoint(interactionData.Current.transform.position);

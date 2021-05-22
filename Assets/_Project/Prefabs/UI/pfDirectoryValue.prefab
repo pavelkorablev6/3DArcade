@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 1760972702215022278}
   - component: {fileID: 5718812837085791771}
   m_Layer: 5
-  m_Name: pfGamesDirectoryValue
+  m_Name: pfDirectoryValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 1760972702234196615}
   - component: {fileID: 1760972702234196633}
   m_Layer: 5
-  m_Name: GamesDirectory_Edit_InputField
+  m_Name: EditInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 1760972702634919906}
   - component: {fileID: 1760972702634919905}
   m_Layer: 5
-  m_Name: GamesDirectory_Edit_InputField_Text Area
+  m_Name: Text Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 1760972702908134928}
   - component: {fileID: 1760972702908134929}
   m_Layer: 5
-  m_Name: GamesDirectory_Browse_Button
+  m_Name: BrowseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 1760972702919614227}
   - component: {fileID: 1760972702919614228}
   m_Layer: 5
-  m_Name: GamesDirectory_Edit_InputField_Text
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 1760972703138678109}
   - component: {fileID: 1760972703138678110}
   m_Layer: 5
-  m_Name: GamesDirectory_Browse_ButtonText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1088,7 +1088,7 @@ GameObject:
   - component: {fileID: 1765095652003878649}
   - component: {fileID: 9071840768065533564}
   m_Layer: 5
-  m_Name: GamesDirectory_Delete_Button
+  m_Name: DeleteButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1209,7 +1209,7 @@ GameObject:
   - component: {fileID: 749695460690438627}
   - component: {fileID: 3785041798104589845}
   m_Layer: 5
-  m_Name: GamesDirectory_MoveUp_Button
+  m_Name: MoveUpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 1059446384245694327}
   - component: {fileID: 464688553488257683}
   m_Layer: 5
-  m_Name: GamesDirectory_MoveDown_Button
+  m_Name: MoveDownButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -20,14 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Arcade
 {
-    public sealed class ArcadeEditModeAddState : ArcadeEditModeState
+    [DisallowMultipleComponent]
+    public sealed class UIListButton : MonoBehaviour
     {
-        public override void OnEnter() => Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-
-        public override void OnExit() => Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
+        [field: SerializeField] public Image Icon { get; private set; }
+        [field: SerializeField] public Button SelectButton { get; private set; }
+        [field: SerializeField] public TMP_Text SelectButtonText { get; private set; }
+        [field: SerializeField] public Button DeleteButton { get; private set; }
     }
 }

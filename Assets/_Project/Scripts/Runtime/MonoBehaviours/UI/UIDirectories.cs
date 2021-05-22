@@ -22,14 +22,16 @@
 
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIGamesDirectories : MonoBehaviour
+    public sealed class UIDirectories : MonoBehaviour
     {
-        [SerializeField] private RectTransform _gamesDirectoriesValues;
-        [SerializeField] private UIGamesDirectory _uiGamesDirectoryPrefab;
+        [SerializeField] private Button _addButton;
+        [SerializeField] private RectTransform _directoryValues;
+        [SerializeField] private UIDirectory _uiDirectoryPrefab;
 
         private RectTransform _transform;
         private float _initialHeight;
@@ -41,28 +43,47 @@ namespace Arcade
             _initialHeight = _transform.rect.height;
         }
 
+        public void Init(FileExplorer fileExplorer, string[] paths)
+        {
+            _addButton.onClick.AddListener(()
+                => fileExplorer.OpenDirectoryDialog(paths =>
+                {
+                    if (paths == null || paths.Length == 0)
+                        return;
+                    AddDirectory(fileExplorer, paths[0]);
+                    AdjustHeight();
+                }));
+
+            if (paths.Length > 0)
+            {
+                for (int i = 0; i < paths.Length; ++i)
+                    AddDirectory(fileExplorer, paths[i]);
+                AdjustHeight();
+            }
+        }
+
         public void AddDirectory(FileExplorer fileExplorer, string path)
         {
-            UIGamesDirectory uiGamesDirectory = Instantiate(_uiGamesDirectoryPrefab, _gamesDirectoriesValues);
-            uiGamesDirectory.Initialize(this, fileExplorer, path);
+            UIDirectory uiDirectory = Instantiate(_uiDirectoryPrefab, _directoryValues);
+            uiDirectory.Initialize(this, fileExplorer, path);
             ++_valuesCount;
         }
 
-        public void MoveDirectoryUp(UIGamesDirectory directory)
+        public void MoveDirectoryUp(UIDirectory directory)
         {
             int index = directory.transform.GetSiblingIndex();
             if (index > 0)
                 directory.transform.SetSiblingIndex(index - 1);
         }
 
-        public void MoveDirectoryDown(UIGamesDirectory directory)
+        public void MoveDirectoryDown(UIDirectory directory)
         {
             int index = directory.transform.GetSiblingIndex();
-            if (index < _gamesDirectoriesValues.childCount - 1)
+            if (index < _directoryValues.childCount - 1)
                 directory.transform.SetSiblingIndex(index + 1);
         }
 
-        public void RemoveDirectory(UIGamesDirectory directory)
+        public void RemoveDirectory(UIDirectory directory)
         {
             Destroy(directory.gameObject);
             --_valuesCount;
@@ -71,31 +92,33 @@ namespace Arcade
 
         public void Clear()
         {
-            for (int i = _gamesDirectoriesValues.childCount - 1; i >= 0; --i)
-                Destroy(_gamesDirectoriesValues.GetChild(i).gameObject);
+            _addButton.onClick.RemoveAllListeners();
+
+            for (int i = _directoryValues.childCount - 1; i >= 0; --i)
+                Destroy(_directoryValues.GetChild(i).gameObject);
+            _valuesCount = 0;
 
             _transform.sizeDelta = new Vector2(_transform.rect.width, _initialHeight);
+            // Force canvas refresh...
             gameObject.SetActive(false);
             gameObject.SetActive(true);
-
-            _valuesCount = 0;
         }
 
         public void AdjustHeight()
         {
-            float height = _valuesCount * _initialHeight;
+            float height = _valuesCount > 0 ?_valuesCount * _initialHeight : _initialHeight;
 
             _transform.sizeDelta = new Vector2(_transform.rect.width, height);
-
+            // Force canvas refresh...
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }
 
         public string[] GetValues()
         {
-            if (_gamesDirectoriesValues.childCount == 0)
+            if (_directoryValues.childCount == 0)
                 return new string[0];
-            return _gamesDirectoriesValues.GetComponentsInChildren<UIGamesDirectory>().Select(x => x.InputFieldText).ToArray();
+            return _directoryValues.GetComponentsInChildren<UIDirectory>().Select(x => x.InputFieldText).ToArray();
         }
     }
 }

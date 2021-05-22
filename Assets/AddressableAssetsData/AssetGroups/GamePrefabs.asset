@@ -20,15 +20,18 @@ MonoBehaviour:
   - m_GUID: d78b79c35072c8d4eb917546a38b1364
     m_Address: Games/_80_horizontal
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - GameModels
   - m_GUID: 8e38ea18ffbe3c048a0fba8f4c779367
     m_Address: Games/1942
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - GameModels
   - m_GUID: d9c649d0df6c37a4da99958c0c01da7a
     m_Address: Games/1943
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - GameModels
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a791319076b3e034bb0f17c6bf81a76f, type: 2}
   m_SchemaSet:

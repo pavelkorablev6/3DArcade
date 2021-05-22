@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +27,7 @@ using UnityEngine.UI;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIGamesDirectory : MonoBehaviour
+    public sealed class UIDirectory : MonoBehaviour
     {
         [SerializeField] private TMP_InputField _pathInputField;
         [SerializeField] private Button _browseButton;
@@ -38,30 +37,22 @@ namespace Arcade
 
         public string InputFieldText => _pathInputField.text;
 
-        private void OnDestroy()
+        public void Initialize(UIDirectories uiDirectories, FileExplorer fileExplorer, string path)
         {
-            _pathInputField.text = "";
-            _browseButton.onClick.RemoveAllListeners();
-            _moveUpButton.onClick.RemoveAllListeners();
-            _moveDownButton.onClick.RemoveAllListeners();
-            _deleteButton.onClick.RemoveAllListeners();
-        }
-
-        public void Initialize(UIGamesDirectories uiGamesDirectories, FileExplorer fileExplorer, string path)
-        {
-            gameObject.name      = $"GamesDirectory_Value";
-            _pathInputField.text = path;
+            _pathInputField.text = FileSystemUtils.GetRelativePath(path);
 
             _browseButton.onClick.AddListener(()
-                => fileExplorer.OpenSingleDirectoryDialog(paths =>
+                => fileExplorer.OpenDirectoryDialog(paths =>
                 {
-                    if (paths != null && paths.Length > 0)
-                        _pathInputField.text = paths[0];
+                    if (paths == null || paths.Length == 0)
+                        return;
+                    _pathInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
+                    _pathInputField.caretPosition = 0;
                 }));
 
-            _moveUpButton.onClick.AddListener(()   => uiGamesDirectories.MoveDirectoryUp(this));
-            _moveDownButton.onClick.AddListener(() => uiGamesDirectories.MoveDirectoryDown(this));
-            _deleteButton.onClick.AddListener(()   => uiGamesDirectories.RemoveDirectory(this));
+            _moveUpButton.onClick.AddListener(() => uiDirectories.MoveDirectoryUp(this));
+            _moveDownButton.onClick.AddListener(() => uiDirectories.MoveDirectoryDown(this));
+            _deleteButton.onClick.AddListener(() => uiDirectories.RemoveDirectory(this));
         }
     }
 }

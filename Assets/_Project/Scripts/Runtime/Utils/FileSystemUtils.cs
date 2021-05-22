@@ -37,6 +37,18 @@ namespace Arcade
             return PathCombine(SystemUtils.GetDataPath(), path.TrimStart('@'));
         }
 
+        public static string GetRelativePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            string dataPath = SystemUtils.GetDataPath();
+            if (path.StartsWith(dataPath))
+                return path.Replace(dataPath, "@");
+
+            return path;
+        }
+
         public static string[] CorrectPaths(string[] paths)
         {
             if (paths == null)

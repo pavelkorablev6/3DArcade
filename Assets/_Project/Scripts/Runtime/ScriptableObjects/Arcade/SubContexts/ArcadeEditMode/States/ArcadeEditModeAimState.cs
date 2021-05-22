@@ -36,7 +36,6 @@ namespace Arcade
         public override void OnEnter()
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
-            //Context.ArcadeEditModeStateChangeEvent.Raise(this);
 
             Context.ArcadeContext.InteractionControllers.EditModeController.Reset();
         }
@@ -45,15 +44,10 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            ArcadeContext arcadeContext = Context.ArcadeContext;
-
-            //if (arcadeContext.MouseOverUI.Value)
-            //    return;
-
-            bool pointerOverUI = EventSystem.current.IsPointerOverGameObject();
-            Debug.Log(pointerOverUI);
-            if (pointerOverUI)
+            if (EventSystem.current.IsPointerOverGameObject())
                 return;
+
+            ArcadeContext arcadeContext = Context.ArcadeContext;
 
             InteractionControllers interactionControllers    = arcadeContext.InteractionControllers;
             EditModeInteractionController editModeController = interactionControllers.EditModeController;

@@ -21,7 +21,6 @@
  * SOFTWARE. */
 
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,16 +29,19 @@ using UnityEngine.UI;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIConfigurationEmulators : MonoBehaviour
+    public abstract class UIConfigurations<TDatabase, TConfiguration, TUIConfiguration> : MonoBehaviour
+        where TDatabase : MultiFileDatabase<TConfiguration>
+        where TConfiguration : DatabaseEntry, new()
+        where TUIConfiguration : UIConfiguration<TDatabase, TConfiguration>
     {
-        [SerializeField] private EmulatorsDatabase _emulatorsDatabase;
+        [SerializeField] private TDatabase _database;
         [SerializeField] private Button _addButton;
         [SerializeField] private TMP_InputField _addInputField;
         [SerializeField] private RectTransform _listContent;
-        [SerializeField] private UIEmulatorsListButton _listButtonPrefab;
-        [SerializeField] private UIConfigurationEmulatorEdit _emulatorEdit;
+        [SerializeField] private UIListButton _listButtonPrefab;
+        [SerializeField] private TUIConfiguration _uiConfiguration;
 
-        private readonly List<UIEmulatorsListButton> _buttons = new List<UIEmulatorsListButton>();
+        private readonly List<UIListButton> _buttons = new List<UIListButton>();
 
         private RectTransform _transform;
 
@@ -53,8 +55,8 @@ namespace Arcade
                     return;
 
                 string text = _addInputField.text;
-                EmulatorConfiguration cfg = new EmulatorConfiguration { Id = text, Description = text };
-                if (_emulatorsDatabase.Add(cfg) == null)
+                TConfiguration cfg = new TConfiguration { Id = text, Description = text };
+                if (_database.Add(cfg) == null)
                     return;
 
                 _addInputField.text = null;
@@ -73,32 +75,32 @@ namespace Arcade
 
         private void InitializeList()
         {
-            foreach (UIEmulatorsListButton button in _buttons)
+            foreach (UIListButton button in _buttons)
                 Destroy(button.gameObject);
             _buttons.Clear();
 
-            _emulatorsDatabase.Initialize();
+            _database.Initialize();
 
-            EmulatorConfiguration[] emulators = _emulatorsDatabase.GetValues();
-            foreach (EmulatorConfiguration emulator in emulators)
+            TConfiguration[] configurations = _database.GetValues();
+            foreach (TConfiguration configuration in configurations)
             {
-                UIEmulatorsListButton buttonObject = Instantiate(_listButtonPrefab, _listContent);
+                UIListButton buttonObject = Instantiate(_listButtonPrefab, _listContent);
                 _buttons.Add(buttonObject);
 
-                buttonObject.name = emulator.Id;
+                buttonObject.name = configuration.Id;
 
-                buttonObject.EmulatorButtonText.SetText(emulator.Description);
+                buttonObject.SelectButtonText.SetText(configuration.Description);
 
-                buttonObject.EmulatorButton.onClick.AddListener(() =>
+                buttonObject.SelectButton.onClick.AddListener(() =>
                 {
                     Hide();
-                    _emulatorEdit.TitleText.SetText(emulator.ToString());
-                    _emulatorEdit.Show(emulator);
+                    _uiConfiguration.TitleText.SetText(configuration.ToString());
+                    _uiConfiguration.Show(configuration);
                 });
 
                 buttonObject.DeleteButton.onClick.AddListener(() =>
                 {
-                    _ = _emulatorsDatabase.Delete(emulator.Id);
+                    _ = _database.Delete(configuration.Id);
                     InitializeList();
                 });
             }

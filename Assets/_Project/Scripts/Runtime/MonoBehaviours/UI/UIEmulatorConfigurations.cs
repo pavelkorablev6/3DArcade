@@ -20,18 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-
 namespace Arcade
 {
-    [DisallowMultipleComponent]
-    public sealed class UIEmulatorsListButton : MonoBehaviour
+    public sealed class UIEmulatorConfigurations : UIConfigurations<EmulatorsDatabase, EmulatorConfiguration, UIEmulatorConfiguration>
     {
-        [field: SerializeField] public Image EmulatorIcon { get; private set; }
-        [field: SerializeField] public Button EmulatorButton { get; private set; }
-        [field: SerializeField] public TMP_Text EmulatorButtonText { get; private set; }
-        [field: SerializeField] public Button DeleteButton { get; private set; }
     }
 }

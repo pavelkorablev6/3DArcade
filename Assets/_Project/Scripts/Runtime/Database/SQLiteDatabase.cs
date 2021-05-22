@@ -63,6 +63,14 @@ namespace Arcade
             return connection.Execute(statement) > 0;
         }
 
+        public IEnumerable<string> GetTables()
+        {
+            string statement = "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';";
+
+            using IDbConnection connection = GetConnection();
+            return connection.Query<string>(statement);
+        }
+
         public T Get<T>(string tableName, string[] columns, string[] parameters, object obj)
             where T : class
         {

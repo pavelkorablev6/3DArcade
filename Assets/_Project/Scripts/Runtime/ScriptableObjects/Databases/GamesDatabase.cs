@@ -102,6 +102,8 @@ namespace Arcade
             CreateInternalTables();
         }
 
+        public IEnumerable<string> GetGameLists() => _database.GetTables().Where(x => !x.StartsWith("_"));
+
         public bool TryGet(string gameListName, string gameName, string[] returnFields, string[] searchFields, out GameConfiguration outGame)
         {
             if (string.IsNullOrEmpty(gameListName) || string.IsNullOrEmpty(gameName))

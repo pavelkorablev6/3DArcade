@@ -29,7 +29,7 @@ using UnityEngine.UI;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UIConfigurationGeneral : MonoBehaviour
+    public sealed class UIGeneralConfiguration : MonoBehaviour
     {
         [SerializeField] private GeneralConfigurationVariable _generalConfiguration;
         [SerializeField] private ArcadesDatabase _arcadeDatabase;

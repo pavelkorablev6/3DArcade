@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4960289764698423779}
   - component: {fileID: 3497362988034891867}
   m_Layer: 5
-  m_Name: Delete_Button
+  m_Name: DeleteButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 8523093587692784056}
   - component: {fileID: 6187511194665646078}
   m_Layer: 5
-  m_Name: Emulator_Icon
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 2429019510529049008}
   - component: {fileID: 2429019510529049015}
   m_Layer: 5
-  m_Name: Emulator_ButtonText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: <description>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 2429019510875714487}
   - component: {fileID: 2429019510875714486}
   m_Layer: 5
-  m_Name: Emulator_Button
+  m_Name: SelectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 3047552079958321863}
   - component: {fileID: 7590244660610691395}
   m_Layer: 5
-  m_Name: pfEmulatorsListButton
+  m_Name: pfListButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -502,9 +502,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0261e2e50602ca04a8bb1a1df35e7b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <EmulatorIcon>k__BackingField: {fileID: 6187511194665646078}
-  <EmulatorButton>k__BackingField: {fileID: 2429019510875714486}
-  <EmulatorButtonText>k__BackingField: {fileID: 2429019510529049015}
+  <Icon>k__BackingField: {fileID: 6187511194665646078}
+  <SelectButton>k__BackingField: {fileID: 2429019510875714486}
+  <SelectButtonText>k__BackingField: {fileID: 2429019510529049015}
   <DeleteButton>k__BackingField: {fileID: 3497362988034891867}
 --- !u!1 &8007508412125655655
 GameObject:
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 8952258680710593212}
   - component: {fileID: 5048978617461654538}
   m_Layer: 5
-  m_Name: Delete_ButtonText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,8 +580,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

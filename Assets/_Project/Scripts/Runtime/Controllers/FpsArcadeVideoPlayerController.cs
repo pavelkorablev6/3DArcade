@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Video;
@@ -49,12 +50,16 @@ namespace Arcade
 
             _ = Physics.OverlapSphereNonAlloc(playerTransform.position, OVERLAPSPHERE_RADIUS, _overlapSphereHits, _layerMask);
 
-            return _overlapSphereHits.Where(col => col != null)
-                                     .OrderBy(col => Vector3.Distance(col.transform.position, playerTransform.position))
-                                     .Take(NUM_CABS_WITH_VIDEOS_PLAYING)
-                                     .Select(col => col.GetComponentInChildren<VideoPlayer>())
-                                     .Where(mc => mc != null)
-                                     .ToArray();
+            IEnumerable<VideoPlayer[]> filteredHits = _overlapSphereHits.Where(col => col != null)
+                                                                        .OrderBy(col => Vector3.Distance(col.transform.position, playerTransform.position))
+                                                                        .Take(NUM_CABS_WITH_VIDEOS_PLAYING)
+                                                                        .Select(col => col.GetComponentsInChildren<VideoPlayer>())
+                                                                        .Where(vps => vps != null && vps.Length > 0);
+
+            List<VideoPlayer> result = new List<VideoPlayer>();
+            foreach (VideoPlayer[] videoPlayers in filteredHits)
+                result.AddRange(videoPlayers);
+            return result.ToArray();
         }
     }
 }

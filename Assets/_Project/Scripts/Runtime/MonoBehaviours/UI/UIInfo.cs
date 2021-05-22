@@ -26,7 +26,7 @@ using UnityEngine;
 namespace Arcade
 {
     [DisallowMultipleComponent]
-    public sealed class UISelectionInfo : MonoBehaviour
+    public sealed class UIInfo : MonoBehaviour
     {
         [SerializeField] private RectTransform _leftPanel;
         [SerializeField] private RectTransform _rightPanel;

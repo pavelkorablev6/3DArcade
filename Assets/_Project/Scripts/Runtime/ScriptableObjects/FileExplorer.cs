@@ -20,10 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SimpleFileBrowser;
 using System.IO;
-using System.Linq;
 using UnityEngine;
+#if !UNITY_EDITOR
+using SimpleFileBrowser;
+using System.Linq;
+#endif
 
 namespace Arcade
 {
@@ -32,10 +34,21 @@ namespace Arcade
     {
         [System.NonSerialized] private string _lastDirectory;
         [System.NonSerialized] private string _lastFileDirectory;
+#if !UNITY_EDITOR
         [System.NonSerialized] private System.Action<string[]> _callback;
-
-        public void OpenSingleDirectoryDialog(System.Action<string[]> callback)
+#endif
+        public void OpenDirectoryDialog(System.Action<string[]> callback)
         {
+#if UNITY_EDITOR
+            string result = UnityEditor.EditorUtility.OpenFolderPanel("Select directory", _lastDirectory, null);
+            if (string.IsNullOrEmpty(result))
+            {
+                callback.Invoke(null);
+                return;
+            }
+            _lastDirectory = Path.GetDirectoryName(_lastDirectory);
+            callback.Invoke(new[] { result.Replace('\\', '/') });
+#else
             _callback = callback;
             _ = FileBrowser.ShowLoadDialog(OpenDirectoryDialogSuccessCallback,
                                            OpenDirectoryDialogCancelCallback,
@@ -45,23 +58,21 @@ namespace Arcade
                                            null,
                                            "Select directory",
                                            "Select");
+#endif
         }
 
-        public void OpenMultipleDirectoriesDialog(System.Action<string[]> callback)
+        public void OpenFileDialog(System.Action<string[]> callback)
         {
-            _callback = callback;
-            _ = FileBrowser.ShowLoadDialog(OpenDirectoryDialogSuccessCallback,
-                                           OpenDirectoryDialogCancelCallback,
-                                           FileBrowser.PickMode.Folders,
-                                           true,
-                                           _lastDirectory,
-                                           null,
-                                           "Select directories",
-                                           "Select");
-        }
-
-        public void OpenSingleFileDialog(System.Action<string[]> callback)
-        {
+#if UNITY_EDITOR
+            string result = UnityEditor.EditorUtility.OpenFilePanel("Select file", _lastFileDirectory, null);
+            if (string.IsNullOrEmpty(result))
+            {
+                callback.Invoke(null);
+                return;
+            }
+            _lastFileDirectory = Path.GetDirectoryName(result);
+            callback.Invoke(new[] { result.Replace('\\', '/') });
+#else
             _callback = callback;
             _ = FileBrowser.ShowLoadDialog(OpenFileDialogSuccessCallback,
                                            OpenFileDialogCancelCallback,
@@ -71,21 +82,10 @@ namespace Arcade
                                            null,
                                            "Select file",
                                            "Select");
+#endif
         }
 
-        public void OpenMultipleFilesDialog(System.Action<string[]> callback)
-        {
-            _callback = callback;
-            _ = FileBrowser.ShowLoadDialog(OpenFileDialogSuccessCallback,
-                                           OpenFileDialogCancelCallback,
-                                           FileBrowser.PickMode.Files,
-                                           true,
-                                           _lastFileDirectory,
-                                           null,
-                                           "Select files",
-                                           "Select");
-        }
-
+#if !UNITY_EDITOR
         private void OpenDirectoryDialogSuccessCallback(string[] paths)
         {
             paths = paths.Select(x => x.Replace('\\', '/')).ToArray();
@@ -115,5 +115,6 @@ namespace Arcade
             _callback?.Invoke(null);
             _callback = null;
         }
+#endif
     }
 }
