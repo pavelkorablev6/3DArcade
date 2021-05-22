@@ -1,6 +1,7 @@
 {
     "Cores": [
         "vecx",
-        "snes9x"
+        "snes9x",
+        "genesis_plus_gx"
     ]
 }
