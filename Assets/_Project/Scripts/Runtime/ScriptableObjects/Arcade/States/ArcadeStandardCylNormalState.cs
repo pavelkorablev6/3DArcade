@@ -35,7 +35,6 @@ namespace Arcade
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
             Context.ArcadeStateChangeEvent.Raise(this);
 
-            Context.InputActions.CylNormal.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)
             //    _context.Main.PlayerCylControls.CylArcadeActions.Look.Disable();
 

@@ -26,5 +26,6 @@ namespace Arcade
 {
     public abstract class ArcadeState : State<ArcadeContext, ArcadeState>
     {
+        public void DisableInput() => Context.InputActions.Disable();
     }
 }

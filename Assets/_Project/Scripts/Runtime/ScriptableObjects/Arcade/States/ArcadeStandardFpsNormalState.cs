@@ -64,6 +64,18 @@ namespace Arcade
                 return;
             }
 
+            if (Context.InputActions.Global.Reload.triggered)
+            {
+                Context.ReloadCurrentArcade();
+                return;
+            }
+
+            if (Context.InputActions.Global.Restart.triggered)
+            {
+                Context.Restart();
+                return;
+            }
+
             if (Context.InputActions.FpsNormal.EditPositions.triggered)
             {
                 Context.TransitionTo<ArcadeStandardFpsEditPositionsState>();
@@ -75,6 +87,14 @@ namespace Arcade
                 Context.TransitionTo<ArcadeStandardFpsEditContentState>();
                 return;
             }
+        }
+
+        public void EnableInput()
+        {
+            Context.InputActions.Global.Enable();
+            Context.InputActions.FpsNormal.Enable();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                Context.InputActions.FpsNormal.Look.Disable();
         }
 
         private void HandleCursorToggle()

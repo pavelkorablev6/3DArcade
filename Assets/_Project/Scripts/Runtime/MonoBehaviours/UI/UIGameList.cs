@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using Cysharp.Threading.Tasks;
+using Dapper;
 using DG.Tweening;
 using PolyAndCode.UI;
 using System;
@@ -36,6 +38,7 @@ namespace Arcade
         [SerializeField] private FloatVariable _animationDuration;
         [SerializeField] private Databases _databases;
         [SerializeField] private TMP_InputField _idInputField;
+        [SerializeField] private TMP_InputField _searchInputField;
 
         private readonly Dictionary<int, GameConfiguration[]> _allGames = new Dictionary<int, GameConfiguration[]>();
 
@@ -60,6 +63,8 @@ namespace Arcade
 
         public void SetVisibility(bool visible)
         {
+            _searchInputField.SetTextWithoutNotify("");
+            _filteredGames.Clear();
             _recyclableScrollRect.ReloadData();
             if (visible)
                 Show();
@@ -69,12 +74,17 @@ namespace Arcade
 
         public void Show() => _transform.DOAnchorPosX(_endPositionX, _animationDuration.Value);
 
-        public void Hide() => _transform.DOAnchorPosX(_startPositionX, _animationDuration.Value);
+        public void Hide()
+        {
+            ResetLists();
+            _ = _transform.DOAnchorPosX(_startPositionX, _animationDuration.Value);
+        }
 
         public void Refresh(int index)
         {
             if (index == 0)
             {
+                _searchInputField.SetTextWithoutNotify("");
                 _filteredGames.Clear();
                 _recyclableScrollRect.ReloadData();
                 return;
@@ -86,37 +96,90 @@ namespace Arcade
                 if (_allGames[_platformIndex] is null)
                     _filteredGames.Clear();
                 else
-                    _filteredGames = _allGames[_platformIndex].ToList();
+                    _filteredGames = _allGames[_platformIndex].Where(x => x.Description.IndexOf(_searchInputField.text, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
                 _recyclableScrollRect.ReloadData();
                 return;
             }
 
-            //RefreshAsync().Forget();
-            _databases.Games.Initialize();
-            GameConfiguration[] games = _databases.Games.GetGames(_databases.Platforms[_platformIndex].MasterList);
-            _allGames.Add(_platformIndex, games);
-            if (!(games is null) && games.Length > 0)
-                _filteredGames = games.ToList();
-            _recyclableScrollRect.ReloadData();
+            RefreshAsync().Forget();
         }
 
         public void Search(string lookUp)
         {
-            _filteredGames = _allGames[_platformIndex].Where(x => x.Description.IndexOf(lookUp, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            if (!_allGames.ContainsKey(_platformIndex))
+            {
+                _filteredGames.Clear();
+                _recyclableScrollRect.ReloadData();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(lookUp))
+            {
+                _filteredGames = _allGames[_platformIndex].ToList();
+                _recyclableScrollRect.ReloadData();
+                return;
+            }
+
+            string[] lookUpSplit = lookUp.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            bool isID = lookUpSplit.Length > 1 && lookUpSplit[0].Equals(":id");
+            if (isID)
+            {
+                if (lookUpSplit.Length < 2)
+                {
+                    _filteredGames = _allGames[_platformIndex].ToList();
+                    _recyclableScrollRect.ReloadData();
+                    return;
+                }
+
+                _filteredGames = _allGames[_platformIndex].Where(x =>
+                {
+                    for (int i = 1; i < lookUpSplit.Length; ++i)
+                    {
+                        string partialWord = lookUpSplit[i];
+                        if (x.Name.IndexOf(partialWord, StringComparison.OrdinalIgnoreCase) == -1)
+                            return false;
+                    }
+                    return true;
+                }).ToList();
+                _recyclableScrollRect.ReloadData();
+                return;
+            }
+
+            _filteredGames = _allGames[_platformIndex].Where(x =>
+            {
+                for (int i = 0; i < lookUpSplit.Length; ++i)
+                {
+                    string partialWord = lookUpSplit[i];
+                    if (x.Description.IndexOf(partialWord, StringComparison.OrdinalIgnoreCase) == -1)
+                        return false;
+                }
+                return true;
+            }).ToList();
             _recyclableScrollRect.ReloadData();
         }
 
         public void ResetLists()
         {
+            _searchInputField.SetTextWithoutNotify("");
             _allGames.Clear();
             _filteredGames.Clear();
         }
 
-        //private async UniTaskVoid RefreshAsync() => _games.Add(_platformIndex, await UniTask.Run(() =>
-        //{
-        //    _databases.Games.Initialize();
-        //    return _databases.Games.GetGames(_databases.Platforms[_platformIndex].MasterList);
-        //}));
+        private async UniTaskVoid RefreshAsync()
+        {
+            await UniTask.Run(() =>
+            {
+                _searchInputField.SetTextWithoutNotify("");
+                _databases.Games.Initialize();
+                GameConfiguration[] games = _databases.Games.GetGames(_databases.Platforms[_platformIndex].MasterList);
+                _allGames.Add(_platformIndex, games);
+                if (!(games is null) && games.Length > 0)
+                    _filteredGames = games.ToList();
+            });
+            _recyclableScrollRect.ReloadData();
+        }
 
         public int GetItemCount() => _filteredGames.Count;
 

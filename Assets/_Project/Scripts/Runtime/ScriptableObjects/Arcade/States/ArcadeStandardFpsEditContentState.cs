@@ -22,7 +22,6 @@
 
 using SK.Utilities.Unity;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Arcade
 {
@@ -68,28 +67,19 @@ namespace Arcade
                 return;
             }
 
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                Context.InputActions.Global.ToggleCursor.Disable();
-                Context.InputActions.FpsNormal.Disable();
-            }
-            else
-            {
-                Context.InputActions.Global.ToggleCursor.Enable();
-                Context.InputActions.FpsNormal.Enable();
-                if (Cursor.lockState == CursorLockMode.Locked)
-                    Context.InputActions.FpsNormal.Look.Enable();
-                else
-                    Context.InputActions.FpsNormal.Look.Disable();
-            }
-
             InteractionControllers interactionControllers               = Context.InteractionControllers;
             EditModeEditContentInteractionController editModeController = interactionControllers.EditModeEditContentController;
 
             editModeController.UpdateCurrentTarget(Context.Player.Value.Camera);
         }
 
-        private void HandleCursorToggle() => CursorUtils.ToggleMouseCursor();
+        public void EnableInput()
+        {
+            Context.InputActions.Global.Enable();
+            Context.InputActions.FpsNormal.Enable();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                Context.InputActions.FpsNormal.Look.Disable();
+        }
 
         private void SetupInput()
         {
@@ -99,6 +89,15 @@ namespace Arcade
             Context.InputActions.Global.Restart.Disable();
             Context.InputActions.FpsNormal.Enable();
             if (Cursor.lockState != CursorLockMode.Locked)
+                Context.InputActions.FpsNormal.Look.Disable();
+        }
+
+        private void HandleCursorToggle()
+        {
+            CursorUtils.ToggleMouseCursor();
+            if (Cursor.lockState == CursorLockMode.Locked)
+                Context.InputActions.FpsNormal.Look.Enable();
+            else
                 Context.InputActions.FpsNormal.Look.Disable();
         }
     }

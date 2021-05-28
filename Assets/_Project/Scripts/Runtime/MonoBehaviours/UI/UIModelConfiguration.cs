@@ -93,7 +93,11 @@ namespace Arcade
             _ = _transform.DOAnchorPosX(_endPositionX, _animationDuration.Value);
         }
 
-        public void Hide() => _transform.DOAnchorPosX(_startPositionX, _animationDuration.Value);
+        public void Hide()
+        {
+            ResetUIData();
+            _ = _transform.DOAnchorPosX(_startPositionX, _animationDuration.Value);
+        }
 
         public void SetUIData(ModelConfigurationComponent modelConfigurationComponent)
         {
@@ -122,20 +126,6 @@ namespace Arcade
                                             : 0;
         }
 
-        public void ResetUIData()
-        {
-            _idInputField.text = null;
-            _idInputField.DeactivateInputField();
-
-            _interactionTypeDropdown.value  = 0;
-            _platformDropdown.value         = 0;
-            _grabbableToggle.isOn           = false;
-            _editMovableToggle.isOn         = false;
-            _editGrabbableToggle.isOn       = false;
-            _modelOverrideDropdown.value    = 0;
-            _emulatorOverrideDropdown.value = 0;
-        }
-
         public void SetupButtonsStates(ModelConfigurationComponent modelConfigurationComponent)
         {
             bool state = modelConfigurationComponent != null;
@@ -157,6 +147,20 @@ namespace Arcade
             modelConfiguration.MoveCabGrabbable   = _editGrabbableToggle.isOn;
             modelConfiguration.Overrides.Model    = _modelOverrideDropdown.options[_modelOverrideDropdown.value].text;
             modelConfiguration.Overrides.Emulator = _emulatorOverrideDropdown.options[_emulatorOverrideDropdown.value].text;
+        }
+
+        private void ResetUIData()
+        {
+            _idInputField.text = null;
+            _idInputField.DeactivateInputField();
+
+            _interactionTypeDropdown.value  = 0;
+            _platformDropdown.value         = 0;
+            _grabbableToggle.isOn           = false;
+            _editMovableToggle.isOn         = false;
+            _editGrabbableToggle.isOn       = false;
+            _modelOverrideDropdown.value    = 0;
+            _emulatorOverrideDropdown.value = 0;
         }
     }
 }

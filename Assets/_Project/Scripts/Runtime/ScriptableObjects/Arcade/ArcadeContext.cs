@@ -24,7 +24,6 @@ using Cysharp.Threading.Tasks;
 using SK.Utilities.Unity.StateMachine;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Arcade
@@ -60,17 +59,8 @@ namespace Arcade
 
         protected override void OnContextStart() => Restart();
 
-        protected override void OnContextUpdate(float dt)
-        {
-            if (Keyboard.current is null)
-                return;
-
-            if (Keyboard.current.insertKey.wasPressedThisFrame)
-                StartArcade(ArcadeConfiguration.Value.Id, ArcadeConfiguration.Value.ArcadeType, ArcadeConfiguration.Value.ArcadeMode).Forget();
-
-            if (Keyboard.current.homeKey.wasPressedThisFrame)
-                Restart();
-        }
+        public void ReloadCurrentArcade()
+            => StartArcade(ArcadeConfiguration.Value.Id, ArcadeConfiguration.Value.ArcadeType, ArcadeConfiguration.Value.ArcadeMode).Forget();
 
         public void Restart()
         {

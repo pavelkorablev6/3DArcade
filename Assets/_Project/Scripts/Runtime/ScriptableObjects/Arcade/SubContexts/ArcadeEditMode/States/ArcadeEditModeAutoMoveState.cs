@@ -23,6 +23,7 @@
 using SK.Utilities.Unity;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Arcade
@@ -63,7 +64,8 @@ namespace Arcade
             ArcadeContext arcadeContext = Context.ArcadeContext;
             InputActions inputActions   = arcadeContext.InputActions;
 
-            if (inputActions.FpsEditPositions.Grab.triggered || inputActions.Global.Quit.triggered)
+            bool mouseIsOverUI = EventSystem.current.IsPointerOverGameObject();
+            if ((!mouseIsOverUI && inputActions.FpsEditPositions.Grab.triggered) || inputActions.Global.Quit.triggered)
             {
                 Context.TransitionToPrevious();
                 return;
