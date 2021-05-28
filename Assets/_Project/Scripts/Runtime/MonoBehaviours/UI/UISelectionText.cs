@@ -26,45 +26,43 @@ using UnityEngine;
 
 namespace Arcade
 {
+    [DisallowMultipleComponent, RequireComponent(typeof(TMP_Text))]
     public sealed class UISelectionText : MonoBehaviour
     {
-        [SerializeField] private float _animationSpeed = 0.6f;
+        [SerializeField] private FloatVariable _animationDuration;
 
         private TMP_Text _text;
         private Tween _tween;
 
         private void Awake() => _text = GetComponent<TMP_Text>();
 
-        public void SetValue(ModelConfigurationComponent modelConfigurationComponent)
+        public void SetVisibility(bool visible)
         {
-            string description = modelConfigurationComponent != null ? GetDescription(modelConfigurationComponent) : string.Empty;
-            _text.SetText(description);
-
-            _tween?.Kill();
-            _tween = _text.DOColor(!string.IsNullOrEmpty(description) ? Color.white : Color.clear, _animationSpeed);
+            if (visible)
+                SetText(null);
+            else
+                ResetText();
         }
 
-        public void ResetValue()
-        {
-            _tween?.Kill();
-            _tween = _text.DOColor(Color.clear, _animationSpeed)
-                          .OnComplete(() => _text.Clear());
-        }
-
-        private static string GetDescription(ModelConfigurationComponent modelConfigurationComponent)
+        public void SetText(ModelConfigurationComponent modelConfigurationComponent)
         {
             if (modelConfigurationComponent == null)
-                return string.Empty;
+            {
+                ResetText();
+                return;
+            }
 
-            ModelConfiguration modelConfiguration = modelConfigurationComponent.Configuration;
+            string description = modelConfigurationComponent.Configuration.GetDescription();
+            _tween?.Kill();
+            _text.SetText(description);
+            _tween = _text.DOColor(Color.white, _animationDuration.Value);
+        }
 
-            if (!string.IsNullOrEmpty(modelConfiguration.Overrides.Description))
-                return modelConfiguration.Overrides.Description;
-
-            if (modelConfiguration.GameConfiguration != null && !string.IsNullOrEmpty(modelConfiguration.GameConfiguration.Description))
-                return modelConfiguration.GameConfiguration.Description;
-
-            return modelConfiguration.Id;
+        public void ResetText()
+        {
+            _tween?.Kill();
+            _tween = _text.DOColor(Color.clear, _animationDuration.Value)
+                          .OnComplete(() => _text.Clear());
         }
     }
 }

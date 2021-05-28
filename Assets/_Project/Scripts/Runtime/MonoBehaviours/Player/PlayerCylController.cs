@@ -32,7 +32,7 @@ namespace Arcade
 
         public override bool MovementEnabled
         {
-            get => _movementAction != null && _movementAction.enabled;
+            get => !(_movementAction is null) && _movementAction.enabled;
             set
             {
                 if (value)
@@ -44,13 +44,13 @@ namespace Arcade
 
         public override bool LookEnabled
         {
-            get => _inputActions.CylActions.Look.enabled;
+            get => _inputActions.CylNormal.Look.enabled;
             set
             {
                 if (value)
-                    _inputActions.CylActions.Look.Enable();
+                    _inputActions.CylNormal.Look.Enable();
                 else
-                    _inputActions.CylActions.Look.Disable();
+                    _inputActions.CylNormal.Look.Disable();
             }
         }
 
@@ -59,9 +59,9 @@ namespace Arcade
 
         private void OnEnable() => _lookVertical = 0f;
 
-        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylActions.NavigationVertical;
+        public void SetupForHorizontalWheel() => _movementAction = _inputActions.CylNormal.NavigationVertical;
 
-        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylActions.NavigationHorizontal;
+        public void SetupForVerticalWheel() => _movementAction = _inputActions.CylNormal.NavigationHorizontal;
 
         public void SetHorizontalLookLimits(float min, float max)
         {
@@ -71,10 +71,10 @@ namespace Arcade
 
         protected override void HandleHeight(float dt)
         {
-            if (!_inputActions.CylActions.CameraHeight.enabled)
+            if (!_inputActions.CylNormal.CameraHeight.enabled)
                 return;
 
-            float heightInput = _inputActions.CylActions.CameraHeight.ReadValue<float>();
+            float heightInput = _inputActions.CylNormal.CameraHeight.ReadValue<float>();
             if (heightInput == 0f)
                 return;
 
@@ -85,9 +85,9 @@ namespace Arcade
 
         protected override void HandleMovement(float dt)
         {
-            float movementInputValue = _movementAction != null && _movementAction.enabled ? _movementAction.ReadValue<float>() : 0f;
+            float movementInputValue = !(_movementAction is null) && _movementAction.enabled ? _movementAction.ReadValue<float>() : 0f;
 
-            _ = _characterController.Move(new Vector3(0f, 0f, movementInputValue) * _walkSpeed * dt);
+            _ = _characterController.Move(_walkSpeed * dt * new Vector3(0f, 0f, movementInputValue));
 
             if (transform.localPosition.z < 0f)
                 transform.localPosition = new Vector3(0f, transform.localPosition.y, 0f);
@@ -95,7 +95,7 @@ namespace Arcade
 
         protected override void HandleLook()
         {
-            Vector2 lookInputValue = _inputActions.CylActions.Look.enabled ? _inputActions.CylActions.Look.ReadValue<Vector2>() * _turnSensitivity * 0.01f : Vector2.zero;
+            Vector2 lookInputValue = _inputActions.CylNormal.Look.enabled ? _turnSensitivity * 0.01f * _inputActions.CylNormal.Look.ReadValue<Vector2>() : Vector2.zero;
 
             _lookHorizontal += lookInputValue.x;
             _lookHorizontal  = Mathf.Clamp(_lookHorizontal, _minHorizontalLookAngle, _maxHorizontalLookAngle);

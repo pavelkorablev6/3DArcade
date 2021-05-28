@@ -100,6 +100,26 @@ namespace Arcade
             }
         }
 
+        public T[] GetTableEntries<T>(string tableName, string[] columns, object obj)
+            where T : class
+        {
+            if (string.IsNullOrEmpty(tableName))
+                return null;
+
+            string statement = $"SELECT {JoinWithCommas(columns)} FROM '{tableName}';";
+
+            try
+            {
+                using IDbConnection connection   = GetConnection();
+                using SqlMapper.GridReader multi = connection.QueryMultiple(statement.ToString(), obj);
+                return multi.Read<T>().ToArray();
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
+        }
+
         public int GetId<TParameter>(string tableName, string where, TParameter parameter)
             where TParameter : MappedEntry
         {

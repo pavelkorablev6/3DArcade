@@ -52,7 +52,7 @@ namespace Arcade.UnityEditor
             Entries = DatabaseEditorWindow.Database.GetValues();
         }
 
-        public bool AddEntry(T entry) => DatabaseEditorWindow.Database.Add(entry) != null;
+        public bool AddEntry(T entry) => !(DatabaseEditorWindow.Database.Add(entry) is null);
 
         public bool SaveEntry(T entry) => DatabaseEditorWindow.Database.Save(entry);
 

@@ -45,14 +45,11 @@ namespace Arcade
         {
             StopGame();
 
-            if (screenNodeTag == null)
-                return false;
-
-            if (modelConfiguration == null)
+            if (screenNodeTag == null || modelConfiguration is null)
                 return false;
 
             EmulatorConfiguration emulator = modelConfiguration.EmulatorConfiguration;
-            if (emulator == null)
+            if (emulator is null)
                 return false;
 
             _screenNode = screenNodeTag;

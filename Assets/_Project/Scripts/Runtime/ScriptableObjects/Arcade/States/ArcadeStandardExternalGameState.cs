@@ -32,7 +32,6 @@ namespace Arcade
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
             Context.VideoPlayerController.Value.StopAllVideos();
-
 #if UNITY_EDITOR_WIN
             SaveUnityWindow();
 #endif
@@ -41,7 +40,6 @@ namespace Arcade
         protected override void OnExitState()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
-
 #if UNITY_EDITOR_WIN
             RestoreUnityWindow();
 #endif

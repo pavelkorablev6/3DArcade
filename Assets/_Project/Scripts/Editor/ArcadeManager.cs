@@ -48,7 +48,7 @@ namespace Arcade.UnityEditor
 
             player.Initialize();
 
-            string dataPath       = SystemUtils.GetDataPath();
+            string dataPath = SystemUtils.GetDataPath();
             _ = AssetDatabase.LoadAssetAtPath<VirtualFileSystem>(VIRTUAL_FILE_SYSTEM_SO_PATH)
                 .MountFile("general_cfg", $"{dataPath}/3darcade~/Configuration/GeneralConfiguration.xml")
                 .MountDirectory("emulator_cfgs", $"{dataPath}/3darcade~/Configuration/Emulators")
@@ -94,9 +94,7 @@ namespace Arcade.UnityEditor
 
         public void SaveCurrentArcade()
         {
-            if (!ArcadeContext.SaveCurrentArcade())
-                return;
-
+            ArcadeContext.SaveCurrentArcade();
             SaveCurrentArcadeStateInEditorPrefs();
             ReloadCurrentArcade();
         }

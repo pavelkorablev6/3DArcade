@@ -62,7 +62,7 @@ namespace Arcade
             try
             {
                 U entryList = Deserialize();
-                if (entryList == null)
+                if (entryList is null)
                     return false;
 
                 foreach (T entry in entryList.Entries)

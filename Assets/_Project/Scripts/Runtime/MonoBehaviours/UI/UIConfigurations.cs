@@ -56,7 +56,7 @@ namespace Arcade
 
                 string text = _addInputField.text;
                 TConfiguration cfg = new TConfiguration { Id = text, Description = text };
-                if (_database.Add(cfg) == null)
+                if (_database.Add(cfg) is null)
                     return;
 
                 _addInputField.text = null;

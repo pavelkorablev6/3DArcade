@@ -54,7 +54,7 @@ namespace Arcade
                                                                         .OrderBy(col => Vector3.Distance(col.transform.position, playerTransform.position))
                                                                         .Take(NUM_CABS_WITH_VIDEOS_PLAYING)
                                                                         .Select(col => col.GetComponentsInChildren<VideoPlayer>())
-                                                                        .Where(vps => vps != null && vps.Length > 0);
+                                                                        .Where(vps => !(vps is null) && vps.Length > 0);
 
             List<VideoPlayer> result = new List<VideoPlayer>();
             foreach (VideoPlayer[] videoPlayers in filteredHits)

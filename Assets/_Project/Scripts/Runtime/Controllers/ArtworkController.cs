@@ -52,10 +52,10 @@ namespace Arcade
 
         public async UniTask SetupImages(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float emissionIntensity)
         {
-            if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
+            if (modelConfiguration is null || fileNamesToTry is null || renderers is null)
                 return;
 
-            if (DefaultMediaDirectory == null)
+            if (DefaultMediaDirectory is null)
             {
                 if (!_virtualFileSystem.TryGetDirectory("medias", out string defaultMediaDirectory))
                     throw new System.Exception("Directory 'medias' not mapped in VirtualFileSystem.");
@@ -78,7 +78,7 @@ namespace Arcade
                 return;
 
             Texture[] textures = await _textureCache.LoadMultipleAsync(files);
-            if (textures == null || textures.Length == 0)
+            if (textures is null || textures.Length == 0)
             {
                 if (directoryNamesProvider is GenericArtworkDirectoriesProvider)
                     SetRandomColors(renderers);
@@ -90,7 +90,7 @@ namespace Arcade
 
         public async UniTask SetupVideos(IArtworkDirectoriesProvider directoryNamesProvider, ModelConfiguration modelConfiguration, string[] fileNamesToTry, Renderer[] renderers, float audioMinDistance, float audioMaxDistance, AnimationCurve volumeCurve)
         {
-            if (modelConfiguration == null || fileNamesToTry == null || renderers == null)
+            if (modelConfiguration is null || fileNamesToTry is null || renderers is null)
                 return;
 
             string[] gameDirectories     = directoryNamesProvider.GetModelVideoDirectories(modelConfiguration);

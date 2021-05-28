@@ -29,7 +29,7 @@ namespace Arcade
         [SerializeField] private GameObject _fpsController;
         [SerializeField] private GameObject _cylController;
 
-        public bool Active { get; private set; }
+        public bool Active { get; private set; } = true;
 
         public Transform ActiveTransform => _fpsController.activeInHierarchy
                                           ? _fpsController.transform

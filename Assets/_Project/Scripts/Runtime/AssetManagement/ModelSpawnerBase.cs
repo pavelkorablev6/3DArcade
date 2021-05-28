@@ -32,7 +32,7 @@ namespace Arcade
     {
         [SerializeField] private ArcadeContext _arcadeContext;
 
-        public async UniTask<List<ModelConfigurationComponent>> SpawnGamesAsync()
+        public async UniTask<ModelConfigurationComponent[]> SpawnGamesAsync()
         {
             ArcadeConfiguration arcadeConfiguration  = _arcadeContext.ArcadeConfiguration.Value;
             ModelConfiguration[] modelConfigurations = arcadeConfiguration.Games;
@@ -45,10 +45,10 @@ namespace Arcade
                 GameObject go = await SpawnGameAsync(modelConfiguration, _arcadeContext.Scenes.Entities.GamesNodeTransform);
                 result.Add(go.GetComponent<ModelConfigurationComponent>());
             }
-            return result;
+            return result.ToArray();
         }
 
-        public async UniTask<List<ModelConfigurationComponent>> SpawPropsAsync()
+        public async UniTask<ModelConfigurationComponent[]> SpawPropsAsync()
         {
             ArcadeConfiguration arcadeConfiguration  = _arcadeContext.ArcadeConfiguration.Value;
             ModelConfiguration[] modelConfigurations = arcadeConfiguration.ArcadeType switch
@@ -77,7 +77,7 @@ namespace Arcade
             return await SpawnModelAsync(modelConfiguration, parent, EntitiesScene.GamesLayer, _arcadeContext.ArcadeController.Value.GameModelsSpawnAtPositionWithRotation, addressesToTry, true);
         }
 
-        private async UniTask<List<ModelConfigurationComponent>> SpawnPropsAsync(ModelConfiguration[] modelConfigurations)
+        private async UniTask<ModelConfigurationComponent[]> SpawnPropsAsync(ModelConfiguration[] modelConfigurations)
         {
             List<ModelConfigurationComponent> result = new List<ModelConfigurationComponent>();
             foreach (ModelConfiguration modelConfiguration in modelConfigurations)
@@ -85,7 +85,7 @@ namespace Arcade
                 GameObject go = await SpawnPropAsync(modelConfiguration, _arcadeContext.Scenes.Entities.PropsNodeTransform);
                 result.Add(go.GetComponent<ModelConfigurationComponent>());
             }
-            return result;
+            return result.ToArray();
         }
 
         private async UniTask<GameObject> SpawnPropAsync(ModelConfiguration modelConfiguration, Transform parent)
@@ -189,7 +189,7 @@ namespace Arcade
 
         private float GetScreenIntensity(GameConfiguration game)
         {
-            if (game == null)
+            if (game is null)
                 return 1f;
 
             RenderSettings renderSettings = _arcadeContext.ArcadeController.Value.RenderSettings;

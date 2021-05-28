@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
 
 namespace Arcade
@@ -29,22 +30,23 @@ namespace Arcade
     {
         [SerializeField] private UILoading _loading;
         [SerializeField] private UINormal _normal;
-        [SerializeField] private UIEdit _edit;
+        [SerializeField] private UIEditPositions _editPositions;
+        [SerializeField] private UIEditContent _editContent;
 
-        public void ShowSceneLoadingUI() => _loading.Show();
-        public void HideSceneLoadingUI() => _loading.Hide();
+        public void SetSceneLoadingUIVisibility(bool visible) => _loading.SetVisibility(visible);
 
-        public void ShowSceneNormalUI() => _normal.Show();
-        public void HideSceneNormalUI() => _normal.Hide();
+        public void SetNormalUIVisibility(bool visible) => _normal.SetVisibility(visible);
 
-        public void ShowSceneEditModeUI() => _edit.Show();
-        public void HideSceneEditModeUI() => _edit.Hide();
+        public void SetEditPositionsUIVisibility(bool visible) => _editPositions.SetVisibility(visible);
+
+        public void SetEditContentUIVisibility(bool visible) => _editContent.SetVisibility(visible);
 
         public void Hide()
         {
-            HideSceneLoadingUI();
-            HideSceneNormalUI();
-            HideSceneEditModeUI();
+            SetSceneLoadingUIVisibility(false);
+            SetNormalUIVisibility(false);
+            SetEditPositionsUIVisibility(false);
+            SetEditContentUIVisibility(false);
         }
     }
 }

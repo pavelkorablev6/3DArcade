@@ -48,7 +48,7 @@ namespace Arcade
             _addButton.onClick.AddListener(()
                 => fileExplorer.OpenDirectoryDialog(paths =>
                 {
-                    if (paths == null || paths.Length == 0)
+                    if (paths is null || paths.Length == 0)
                         return;
                     AddDirectory(fileExplorer, paths[0]);
                     AdjustHeight();

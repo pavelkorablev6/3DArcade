@@ -20,30 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Arcade
 {
     [DisallowMultipleComponent]
     public sealed class UINormal : MonoBehaviour
     {
-        [SerializeField] private UISelectionText _selectionText;
+        [SerializeField] private UnityEvent<bool> _onVisibilityChange;
 
-        public void Show() => gameObject.SetActive(true);
-
-        public void Hide() => gameObject.SetActive(false);
-
-        public void SetUIData(ModelConfigurationComponent target)
-        {
-            if (target == null)
-            {
-                _selectionText.ResetValue();
-                return;
-            }
-
-            _selectionText.SetValue(target);
-        }
-
-        public void ResetUIData() => _selectionText.ResetValue();
+        public void SetVisibility(bool visible) => _onVisibilityChange.Invoke(visible);
     }
 }

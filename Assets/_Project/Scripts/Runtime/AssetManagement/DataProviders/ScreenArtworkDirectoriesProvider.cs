@@ -62,12 +62,22 @@ namespace Arcade
         {
             string[] screenSnapDirectories  = modelConfiguration.Overrides.ArtworkDirectories.ScreenSnapDirectories;
             string[] screenTitleDirectories = modelConfiguration.Overrides.ArtworkDirectories.ScreenTitleDirectories;
+
+            if (screenSnapDirectories is null && screenTitleDirectories is null)
+                return null;
+
+            if (screenSnapDirectories is null && !(screenTitleDirectories is null))
+                return screenTitleDirectories;
+
+            if (screenTitleDirectories is null && !(screenSnapDirectories is null))
+                return screenSnapDirectories;
+
             return screenSnapDirectories.Concat(screenTitleDirectories).ToArray();
         }
 
         public string[] GetPlatformImageDirectories(PlatformConfiguration platform)
         {
-            if (platform == null)
+            if (platform is null)
                 return null;
 
             string[] screenSnapsDirectories  = platform.ScreenSnapsDirectories;

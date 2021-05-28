@@ -38,23 +38,27 @@ namespace Arcade
         protected override void AddValues(AssetAddresses addresses, ModelConfiguration cfg)
         {
             addresses.TryAdd(cfg.Overrides.Model);
-            addresses.TryAdd(cfg.Id);
+
+            addresses.TryAdd(cfg.Overrides.Game.Name);
             addresses.TryAdd(cfg.Overrides.Game.CloneOf);
             addresses.TryAdd(cfg.Overrides.Game.RomOf);
 
+            addresses.TryAdd(cfg.GameConfiguration?.Name);
             addresses.TryAdd(cfg.GameConfiguration?.CloneOf);
             addresses.TryAdd(cfg.GameConfiguration?.RomOf);
 
+            addresses.TryAdd(cfg.Id);
+
             addresses.TryAdd(cfg.PlatformConfiguration?.Model);
 
-            addresses.TryAdd(GetName(cfg.GameConfiguration));
+            addresses.TryAdd(GetGenericName(cfg.GameConfiguration));
 
             addresses.TryAdd(DEFAULT_HOR_PREFAB_NAME);
         }
 
-        private static string GetName(GameConfiguration game)
+        private static string GetGenericName(GameConfiguration game)
         {
-            if (game == null)
+            if (game is null)
                 return null;
 
             switch (game.ScreenOrientation)
@@ -62,28 +66,30 @@ namespace Arcade
                 case GameScreenOrientation.Default:
                 case GameScreenOrientation.Horizontal:
                 case GameScreenOrientation.FlippedHorizontal:
-                    return GetHorizontalNameForYear(game.Year);
+                    return GetGenericHorizontalNameForYear(game.Year);
                 case GameScreenOrientation.Vertical:
                 case GameScreenOrientation.FlippedVertical:
-                    return GetVerticalNameForYear(game.Year);
+                    return GetGenericVerticalNameForYear(game.Year);
                 default:
                     throw new System.NotImplementedException($"Unhandled switch case for GameScreenOrientation: {game.ScreenOrientation}");
             }
         }
 
-        private static string GetHorizontalNameForYear(string yearString) => GetNameForYear(yearString,
-                                                                                            DEFAULT_70_HOR_PREFAB_NAME,
-                                                                                            DEFAULT_80_HOR_PREFAB_NAME,
-                                                                                            DEFAULT_90_HOR_PREFAB_NAME,
-                                                                                            DEFAULT_HOR_PREFAB_NAME);
+        private static string GetGenericHorizontalNameForYear(string yearString)
+            => GetGenericNameForYear(yearString,
+                                     DEFAULT_70_HOR_PREFAB_NAME,
+                                     DEFAULT_80_HOR_PREFAB_NAME,
+                                     DEFAULT_90_HOR_PREFAB_NAME,
+                                     DEFAULT_HOR_PREFAB_NAME);
 
-        private static string GetVerticalNameForYear(string yearString) => GetNameForYear(yearString,
-                                                                                          DEFAULT_70_VER_PREFAB_NAME,
-                                                                                          DEFAULT_80_VER_PREFAB_NAME,
-                                                                                          DEFAULT_90_VER_PREFAB_NAME,
-                                                                                          DEFAULT_VER_PREFAB_NAME);
+        private static string GetGenericVerticalNameForYear(string yearString)
+            => GetGenericNameForYear(yearString,
+                                     DEFAULT_70_VER_PREFAB_NAME,
+                                     DEFAULT_80_VER_PREFAB_NAME,
+                                     DEFAULT_90_VER_PREFAB_NAME,
+                                     DEFAULT_VER_PREFAB_NAME);
 
-        private static string GetNameForYear(string yearString, string model70, string model80, string model90, string modelDefault)
+        private static string GetGenericNameForYear(string yearString, string model70, string model80, string model90, string modelDefault)
         {
             if (!string.IsNullOrEmpty(yearString) && int.TryParse(yearString, out int year) && year > 0)
             {

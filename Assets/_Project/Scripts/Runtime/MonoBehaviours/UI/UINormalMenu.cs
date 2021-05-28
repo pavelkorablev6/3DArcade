@@ -28,20 +28,29 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UINormalMenu : MonoBehaviour
     {
-        [SerializeField] private Vector2 _animationEndPosition = Vector2.zero;
-        [SerializeField] private float _animationDuration      = 0.6f;
+        [SerializeField] private FloatVariable _animationDuration;
 
         private RectTransform _transform;
         private Vector2 _animationStartPosition;
+        private Vector2 _animationEndPosition;
 
         private void Awake()
         {
             _transform              = transform as RectTransform;
             _animationStartPosition = _transform.anchoredPosition;
+            _animationEndPosition  = _animationStartPosition + new Vector2(_transform.rect.width, 0f);
         }
 
-        public void Show() => _transform.DOAnchorPos(_animationEndPosition, _animationDuration);
+        public void SetVisibility(bool visible)
+        {
+            if (visible)
+                Show();
+            else
+                Hide();
+        }
 
-        public void Hide() => _transform.DOAnchorPos(_animationStartPosition, _animationDuration);
+        private void Show() => _transform.DOAnchorPos(_animationEndPosition, _animationDuration.Value);
+
+        private void Hide() => _transform.DOAnchorPos(_animationStartPosition, _animationDuration.Value);
     }
 }

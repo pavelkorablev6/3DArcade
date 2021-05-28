@@ -46,7 +46,7 @@ namespace Arcade
 
         public async UniTask<T[]> LoadMultipleAsync(Files files)
         {
-            if (files == null || files.Count == 0)
+            if (files is null || files.Count == 0)
                 return null;
 
             List<T> result = new List<T>();

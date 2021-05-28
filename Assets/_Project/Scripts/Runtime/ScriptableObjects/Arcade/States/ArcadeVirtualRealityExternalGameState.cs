@@ -63,7 +63,7 @@ namespace Arcade
                 return;
 
             if (_screenNode.TryGetComponent(out uDesktopDuplication.Texture uddTexture))
-                Object.Destroy(uddTexture);
+                Destroy(uddTexture);
 
             Renderer renderer = _screenNode.GetComponent<Renderer>();
             renderer.material = _savedMaterial;

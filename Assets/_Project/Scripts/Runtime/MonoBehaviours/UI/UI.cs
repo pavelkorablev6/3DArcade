@@ -27,6 +27,7 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UI : MonoBehaviour
     {
+        [SerializeField] private GeneralConfigurationVariable _generalConfiguration;
         [SerializeField] private UICanvasController _standardUI;
         [SerializeField] private UICanvasController _virtualRealityUI;
         [SerializeField] private UIContext _uiContext;
@@ -35,32 +36,51 @@ namespace Arcade
 
         public void HandleArcadeStateChange(ArcadeState arcadeState)
         {
-            if (arcadeState is ArcadeStandardLoadState)
+            if (arcadeState is ArcadeStandardLoadingState)
             {
-                _uiContext.TransitionTo<UIStandardLoadingState>();
+                if (_generalConfiguration.Value.EnableVR)
+                    _uiContext.TransitionTo<UIVirtualRealityLoadingState>();
+                else
+                    _uiContext.TransitionTo<UIStandardLoadingState>();
                 return;
             }
 
             if (arcadeState is ArcadeStandardFpsNormalState)
             {
-                _uiContext.TransitionTo<UIStandardNormalState>();
+                if (_generalConfiguration.Value.EnableVR)
+                    _uiContext.TransitionTo<UIVirtualRealityNormalState>();
+                else
+                    _uiContext.TransitionTo<UIStandardNormalState>();
                 return;
             }
 
-            if (arcadeState is ArcadeStandardFpsEditModeState)
+            if (arcadeState is ArcadeStandardFpsEditPositionsState)
             {
-                _uiContext.TransitionTo<UIStandardEditModeState>();
+                if (_generalConfiguration.Value.EnableVR)
+                    _uiContext.TransitionTo<UIVirtualRealityEditPositionsState>();
+                else
+                    _uiContext.TransitionTo<UIStandardEditPositionsState>();
                 return;
             }
 
-            _uiContext.TransitionTo<UIDisabledState>();
+            if (arcadeState is ArcadeStandardFpsEditContentState)
+            {
+                if (_generalConfiguration.Value.EnableVR)
+                    _uiContext.TransitionTo<UIVirtualRealityEditContentState>();
+                else
+                    _uiContext.TransitionTo<UIStandardEditContentState>();
+                return;
+            }
         }
 
         public void HandleArcadeEditModeStateChange(ArcadeEditModeState editModeState)
         {
-            if (editModeState is ArcadeEditModeAutoMoveState)
+            if (editModeState is ArcadeEditModeManualMoveState || editModeState is ArcadeEditModeAutoMoveState)
             {
-                _uiContext.TransitionTo<UIDisabledState>();
+                if (_generalConfiguration.Value.EnableVR)
+                    _uiContext.TransitionTo<UIVirtualRealityEditPositionsState>();
+                else
+                    _uiContext.TransitionTo<UIStandardEditPositionsState>();
                 return;
             }
 

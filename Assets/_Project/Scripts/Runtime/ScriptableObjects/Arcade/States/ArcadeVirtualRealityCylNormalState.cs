@@ -35,7 +35,7 @@ namespace Arcade
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
             Context.ArcadeStateChangeEvent.Raise(this);
 
-            Context.InputActions.CylActions.Enable();
+            Context.InputActions.CylNormal.Enable();
             //if (!_context.Main.PlayerCylControls.MouseLookEnabled)
             //    _context.Main.PlayerCylControls.CylArcadeActions.Look.Disable();
 
@@ -82,12 +82,12 @@ namespace Arcade
         {
             Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
-            Context.InputActions.CylActions.Disable();
+            Context.InputActions.CylNormal.Disable();
         }
 
         public override void OnUpdate(float dt)
         {
-            if (Context.InputActions.GlobalActions.Quit.triggered)
+            if (Context.InputActions.Global.Quit.triggered)
                 ApplicationUtils.ExitApp();
 
             //    HandleNavigation(dt);

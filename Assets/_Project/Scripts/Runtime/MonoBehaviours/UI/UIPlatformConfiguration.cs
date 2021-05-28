@@ -24,9 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Arcade
 {
@@ -34,6 +31,7 @@ namespace Arcade
     {
         [SerializeField] private EmulatorsDatabase _emulatorsDatabase;
         [SerializeField] private GamesDatabase _gamesDatabase;
+        [SerializeField] private AvailableModels _availableModels;
 
         [SerializeField] private TMP_Dropdown _masterListDropdown;
         [SerializeField] private TMP_Dropdown _emulatorDropdown;
@@ -47,16 +45,6 @@ namespace Arcade
         [SerializeField] private UIDirectories _genericVideosDirectories;
         [SerializeField] private UIDirectories _infoDirectories;
 
-        private List<string> _gameModels;
-
-        private void Start()
-        {
-            AsyncOperationHandle<IList<IResourceLocation>> gameModels = Addressables.LoadResourceLocationsAsync("GameModels");
-            IList<IResourceLocation> items = gameModels.WaitForCompletion();
-            _gameModels = new List<string> { "" }.Concat(items.Select(x => x.PrimaryKey.Substring(6))).ToList();
-            Addressables.Release(gameModels);
-        }
-
         protected override void SetUIValues()
         {
             _gamesDatabase.Initialize();
@@ -69,8 +57,9 @@ namespace Arcade
             _emulatorDropdown.AddOptions(new List<string> { "" }.Concat(_emulatorsDatabase.GetNames()).ToList());
             _emulatorDropdown.value = _emulatorDropdown.options.FindIndex(x => x.text == _configuration.Emulator);
 
+            _availableModels.Refresh();
             _modelDropdown.ClearOptions();
-            _modelDropdown.AddOptions(_gameModels);
+            _modelDropdown.AddOptions(_availableModels.GameModels);
             _modelDropdown.value = _modelDropdown.options.FindIndex(x => x.text == _configuration.Model);
 
             _marqueeImagesDirectories.Init(_fileExplorer, _configuration.MarqueeImagesDirectories);

@@ -67,7 +67,7 @@ namespace Arcade
             _directoryButton.onClick.AddListener(()
                 => _fileExplorer.OpenDirectoryDialog(paths =>
                 {
-                    if (paths == null || paths.Length == 0)
+                    if (paths is null || paths.Length == 0)
                         return;
                     _directoryInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
                     _directoryInputField.caretPosition = 0;
@@ -77,7 +77,7 @@ namespace Arcade
             _workingDirectoryButton.onClick.AddListener(()
                 => _fileExplorer.OpenDirectoryDialog(paths =>
                 {
-                    if (paths == null || paths.Length == 0)
+                    if (paths is null || paths.Length == 0)
                         return;
                     _workingDirectoryInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
                     _workingDirectoryInputField.caretPosition = 0;
@@ -87,7 +87,7 @@ namespace Arcade
             _executableButton.onClick.AddListener(()
                 => _fileExplorer.OpenFileDialog(paths =>
                 {
-                    if (paths == null || paths.Length == 0)
+                    if (paths is null || paths.Length == 0)
                         return;
                     if (string.IsNullOrEmpty(_directoryInputField.text))
                     {

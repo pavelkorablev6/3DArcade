@@ -32,52 +32,58 @@ namespace Arcade
             Debug.Log($"> <color=green>Entered</color> {GetType().Name}");
             Context.ArcadeStateChangeEvent.Raise(this);
 
-            Context.InputActions.FpsActions.Enable();
+            Context.InputActions.Disable();
+            Context.InputActions.Global.Enable();
+            Context.InputActions.FpsNormal.Enable();
             if (Cursor.lockState != CursorLockMode.Locked)
-                Context.InputActions.FpsActions.Look.Disable();
+                Context.InputActions.FpsNormal.Look.Disable();
 
-            Context.InteractionControllers.Reset();
+            Context.InteractionControllers.ResetControllers();
         }
 
-        public override void OnExit()
-        {
-            Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
-
-            Context.InputActions.FpsActions.Disable();
-        }
+        public override void OnExit() => Debug.Log($"> <color=orange>Exited</color> {GetType().Name}");
 
         public override void OnUpdate(float dt)
         {
+            if (Context.InputActions.Global.ToggleCursor.triggered)
+                HandleCursorToggle();
+
             Context.VideoPlayerController.Value.UpdateVideosState();
 
-            if (Context.InputActions.GlobalActions.Quit.triggered)
+            Context.InteractionControllers.NormalModeController.UpdateCurrentTarget(Context.Player.Value.Camera);
+
+            if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsNormal.Interact.triggered)
+            {
+                Context.InteractionControllers.NormalModeController.HandleInteraction();
+                return;
+            }
+
+            if (Context.InputActions.Global.Quit.triggered)
             {
                 ApplicationUtils.ExitApp();
                 return;
             }
 
-            if (Context.InputActions.GlobalActions.ToggleCursor.triggered)
-                HandleCursorToggle();
-
-            if (Context.InputActions.FpsActions.ToggleEditMode.triggered)
+            if (Context.InputActions.FpsNormal.EditPositions.triggered)
             {
-                Context.TransitionTo<ArcadeStandardFpsEditModeState>();
+                Context.TransitionTo<ArcadeStandardFpsEditPositionsState>();
                 return;
             }
 
-            Context.InteractionControllers.NormalModeController.UpdateCurrentTarget(Context.Player.Camera);
-
-            if (Cursor.lockState == CursorLockMode.Locked && Context.InputActions.FpsActions.Interact.triggered)
-                Context.InteractionControllers.NormalModeController.HandleInteraction();
+            if (Context.InputActions.FpsNormal.EditContent.triggered)
+            {
+                Context.TransitionTo<ArcadeStandardFpsEditContentState>();
+                return;
+            }
         }
 
         private void HandleCursorToggle()
         {
             CursorUtils.ToggleMouseCursor();
             if (Cursor.lockState == CursorLockMode.Locked)
-                Context.InputActions.FpsActions.Look.Enable();
+                Context.InputActions.FpsNormal.Look.Enable();
             else
-                Context.InputActions.FpsActions.Look.Disable();
+                Context.InputActions.FpsNormal.Look.Disable();
         }
     }
 }

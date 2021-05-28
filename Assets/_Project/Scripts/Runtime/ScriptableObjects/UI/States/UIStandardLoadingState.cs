@@ -24,8 +24,16 @@ namespace Arcade
 {
     public sealed class UIStandardLoadingState : UIState
     {
-        public override void OnEnter() => Context.StandardUI.ShowSceneLoadingUI();
+        public override void OnEnter()
+        {
+            if (Context.StandardUI != null)
+                Context.StandardUI.SetSceneLoadingUIVisibility(true);
+        }
 
-        public override void OnExit() => Context.StandardUI.HideSceneLoadingUI();
+        public override void OnExit()
+        {
+            if (Context.StandardUI != null)
+                Context.StandardUI.SetSceneLoadingUIVisibility(false);
+        }
     }
 }

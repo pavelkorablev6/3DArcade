@@ -69,6 +69,9 @@ namespace Arcade
             _savedMaterial  = _screenRenderer.material;
             _screenRenderer.material = Context.GameControllers.Internal.ScreenMaterial;
 
+            Context.InputActions.Disable();
+            Context.InputActions.Global.Quit.Enable();
+
             OnStateEnter();
         }
 
@@ -89,7 +92,7 @@ namespace Arcade
 
         public sealed override void OnUpdate(float dt)
         {
-            if (Context.InputActions.GlobalActions.Quit.triggered)
+            if (Context.InputActions.Global.Quit.triggered)
             {
                 Context.TransitionToPrevious();
                 return;

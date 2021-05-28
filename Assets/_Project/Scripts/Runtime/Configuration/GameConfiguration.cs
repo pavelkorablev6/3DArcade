@@ -40,5 +40,7 @@ namespace Arcade
         public bool IsDevice                             = false;
         public bool IsMechanical                         = false;
         public bool Available                            = false;
+
+        public override string ToString() => $"{Description} ({Name})";
     }
 }

@@ -47,7 +47,7 @@ namespace Arcade
                 return false;
             }
 
-            if (emulator == null)
+            if (emulator is null)
             {
                 Debug.LogError("[ExternalGameController.StartGame] emulator is null.");
                 return false;
@@ -59,7 +59,7 @@ namespace Arcade
             {
                 Name             = emulator.Description,
                 Id               = emulator.Id,
-                Path             = System.IO.Path.Combine(emulator.Directory, emulator.Executable),
+                Path             = Path.Combine(emulator.Directory, emulator.Executable),
                 WorkingDirectory = emulator.WorkingDirectory,
                 Extension        = extension,
                 CommandLine      = emulator.Arguments,
@@ -78,7 +78,7 @@ namespace Arcade
 
         private static string GetFileExtension(EmulatorConfiguration emulator, string gameName)
         {
-            if (emulator.SupportedExtensions == null || emulator.GamesDirectories == null)
+            if (string.IsNullOrEmpty(emulator.SupportedExtensions) || emulator.GamesDirectories is null)
                 return null;
             return ProcessExtensions(emulator.SupportedExtensions.Split(';'), emulator.GamesDirectories, gameName);
         }

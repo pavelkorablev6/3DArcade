@@ -51,7 +51,7 @@ namespace Arcade
 
         public static string[] CorrectPaths(string[] paths)
         {
-            if (paths == null)
+            if (paths is null)
                 return null;
 
             for (int i = 0; i < paths.Length; ++i)

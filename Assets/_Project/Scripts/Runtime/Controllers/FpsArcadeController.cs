@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using SK.Utilities.Unity;
 using UnityEngine;
 
 namespace Arcade
@@ -51,21 +50,9 @@ namespace Arcade
         protected override void SetupPlayer()
         {
             if (_arcadeContext.GeneralConfiguration.Value.EnableVR)
-                _arcadeContext.Player.TransitionTo<PlayerVirtualRealityFpsState>();
+                _arcadeContext.Player.Value.TransitionTo<PlayerVirtualRealityFpsState>();
             else
-                _arcadeContext.Player.TransitionTo<PlayerStandardFpsState>();
+                _arcadeContext.Player.Value.TransitionTo<PlayerStandardFpsState>();
         }
-
-        public override void EnableMovementInputs()
-        {
-            _arcadeContext.InputActions.FpsActions.Enable();
-            if (Cursor.lockState == CursorLockMode.None)
-                _arcadeContext.InputActions.FpsActions.Look.Disable();
-        }
-
-        public override void DisableMovementInputs() => _arcadeContext.InputActions.FpsActions.Disable();
-
-        public override void EnableEditModeInputs() => _arcadeContext.InputActions.FpsEditActions.Enable();
-        public override void DisableEditModeInputs() => _arcadeContext.InputActions.FpsEditActions.Disable();
     }
 }

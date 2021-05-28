@@ -22,6 +22,7 @@
 
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Arcade
@@ -35,13 +36,14 @@ namespace Arcade
         public abstract float AudioMaxDistance { get; protected set; }
         public abstract AnimationCurve VolumeCurve { get; protected set; }
         public abstract CameraSettings CameraSettings { get; }
+
         public abstract RenderSettings RenderSettings { get; }
         public abstract bool GameModelsSpawnAtPositionWithRotation { get; }
 
         protected readonly ArcadeContext _arcadeContext;
 
-        private List<ModelConfigurationComponent> _gameModels;
-        private List<ModelConfigurationComponent> _propModels;
+        private ModelConfigurationComponent[] _gameModels;
+        private ModelConfigurationComponent[] _propModels;
 
         public ArcadeController(ArcadeContext arcadeContext) => _arcadeContext = arcadeContext;
 
@@ -52,6 +54,8 @@ namespace Arcade
             ModelSpawner = modelSpawner;
 
             SetupPlayer();
+            _arcadeContext.Player.SaveTransformState();
+
             _gameModels = await ModelSpawner.SpawnGamesAsync();
             _propModels = await ModelSpawner.SpawPropsAsync();
 
@@ -62,155 +66,42 @@ namespace Arcade
             Loaded = true;
         }
 
-        //public void StoreModelPositions()
-        //{
-        //    StoreModelPositions(_gameModels);
-        //    StoreModelPositions(_propModels);
-        //}
+        public void UpdateLists()
+        {
+            _gameModels = _arcadeContext.Scenes.Entities.GamesNodeTransform.GetComponentsInChildren<ModelConfigurationComponent>(false);
+            _propModels = _arcadeContext.Scenes.Entities.PropsNodeTransform.GetComponentsInChildren<ModelConfigurationComponent>(false);
+        }
 
-        //public void RestoreModelPositions()
-        //{
-        //    RestoreModelPositions(_gameModels);
-        //    RestoreModelPositions(_propModels);
-        //}
+        public void SaveTransformStates()
+        {
+            SaveTransformState(_gameModels);
+            SaveTransformState(_propModels);
+        }
 
-        public void EnableGlobalInputs() => _arcadeContext.InputActions.GlobalActions.Enable();
-        public void DisableGlobalInputs() => _arcadeContext.InputActions.GlobalActions.Disable();
-
-        public abstract void EnableMovementInputs();
-        public abstract void DisableMovementInputs();
-
-        public abstract void EnableEditModeInputs();
-        public abstract void DisableEditModeInputs();
+        public void RestoreModelPositions()
+        {
+            RestoreTransformState(_gameModels);
+            RestoreTransformState(_propModels);
+        }
 
         protected abstract void SetupPlayer();
 
-        //private static void StoreModelPositions(List<ModelConfigurationComponent> models)
-        //{
-        //    foreach (ModelConfigurationComponent model in models)
-        //    {
-        //        ModelConfiguration cfg     = model.Configuration;
-        //        cfg.BeforeEditModePosition = cfg.Position;
-        //        cfg.BeforeEditModeRotation = cfg.Rotation;
-        //        cfg.BeforeEditModeScale    = cfg.Scale;
-        //    }
-        //}
-
-        //private static void RestoreModelPositions(List<ModelConfigurationComponent> models)
-        //{
-        //    foreach (ModelConfigurationComponent model in models)
-        //    {
-        //        if (model == null)
-        //            continue;
-
-        //        ModelConfiguration cfg = model.Configuration;
-        //        cfg.Position           = cfg.BeforeEditModePosition;
-        //        cfg.Rotation           = cfg.BeforeEditModeRotation;
-        //        cfg.Scale              = cfg.BeforeEditModeScale;
-
-        //        model.transform.position   = cfg.Position;
-        //        model.transform.rotation   = Quaternion.Euler(cfg.Rotation);
-        //        model.transform.localScale = cfg.Scale;
-        //    }
-        //}
-
-        /*
-        public void NavigateForward(float dt)
+        private static void SaveTransformState(ModelConfigurationComponent[] models)
         {
-            if (!_animating)
-                _ = _main.StartCoroutine(CoNavigateForward(dt));
+            if (models is null)
+                return;
+
+            foreach (ModelConfigurationComponent model in models)
+                model.SaveTransformState();
         }
 
-        public void NavigateBackward(float dt)
+        private static void RestoreTransformState(ModelConfigurationComponent[] models)
         {
-            if (!_animating)
-                _ = _main.StartCoroutine(CoNavigateBackward(dt));
+            if (models is null)
+                return;
+
+            foreach (ModelConfigurationComponent model in models)
+                model.RestoreTransformState();
         }
-
-        protected abstract void PreSetupPlayer();
-
-        protected virtual void AddModelsToWorldAdditionalLoopStepsForGames(GameObject instantiatedModel)
-        {
-        }
-
-        protected virtual void AddModelsToWorldAdditionalLoopStepsForProps(GameObject instantiatedModel)
-        {
-        }
-
-        protected virtual void LateSetupWorld()
-        {
-        }
-
-        protected virtual IEnumerator CoNavigateForward(float dt)
-        {
-            yield break;
-        }
-
-        protected virtual IEnumerator CoNavigateBackward(float dt)
-        {
-            yield break;
-        }
-
-        protected IEnumerator AddModelsToWorld(bool gameModels, ModelConfiguration[] modelConfigurations, Transform parent, RenderSettings renderSettings, string resourceDirectory, ModelMatcher.GetNamesToTryDelegate getNamesToTry)
-        {
-            if (modelConfigurations == null)
-                yield break;
-
-            if (gameModels)
-            {
-                _gameModelsLoaded = false;
-                _allGames.Clear();
-            }
-
-            foreach (ModelConfiguration modelConfiguration in modelConfigurations)
-            {
-                List<string> namesToTry = getNamesToTry(modelConfiguration);
-
-                GameObject prefab = _gameObjectCache.Load(resourceDirectory, namesToTry);
-                if (prefab == null)
-                    continue;
-
-                GameObject instantiatedModel = InstantiatePrefab(prefab, parent, modelConfiguration, !gameModels || UseModelTransforms);
-
-                // Look for artworks only in play mode / runtime
-                if (Application.isPlaying)
-                {
-
-                    PlatformConfiguration platform = null;
-                    //if (!string.IsNullOrEmpty(modelConfiguration.Platform))
-                    //    platform = _platformDatabase.Get(modelConfiguration.Platform);
-
-                    GameConfiguration game = null;
-                    if (platform != null && platform.MasterList != null)
-                    {
-                        //game = _gameDatabase.Get(modelConfiguration.platform.MasterList, game.Id);
-                        if (game != null)
-                        {
-                        }
-                    }
-
-                    _marqueeNodeController.Setup(this, instantiatedModel, modelConfiguration, renderSettings.MarqueeIntensity);
-                    _screenNodeController.Setup(this, instantiatedModel, modelConfiguration, GetScreenIntensity(game, renderSettings));
-                    _genericNodeController.Setup(this, instantiatedModel, modelConfiguration, 1f);
-                }
-
-                if (gameModels)
-                {
-                    _allGames.Add(instantiatedModel.transform);
-                    AddModelsToWorldAdditionalLoopStepsForGames(instantiatedModel);
-                }
-                else
-                    AddModelsToWorldAdditionalLoopStepsForProps(instantiatedModel);
-
-                // Instantiate asynchronously only when loaded from the editor menu / auto reload
-                if (Application.isPlaying)
-                    yield return null;
-            }
-
-            if (gameModels)
-                _gameModelsLoaded = true;
-        }
-
-        */
     }
 }

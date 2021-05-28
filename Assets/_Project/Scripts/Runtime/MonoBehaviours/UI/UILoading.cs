@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Arcade
 {
@@ -29,22 +29,19 @@ namespace Arcade
     public sealed class UILoading : MonoBehaviour
     {
         [SerializeField] private ArcadeConfigurationVariable _arcadeConfigurationVariable;
-        [SerializeField] private TMP_Text _statusText;
+        [SerializeField] private UnityEvent<string> _onVisibilityChange;
 
-        public void Show()
+        public void SetVisibility(bool visible)
         {
-            gameObject.SetActive(true);
-            InitStatusBar();
-        }
+            if (visible)
+            {
+                gameObject.SetActive(true);
+                _onVisibilityChange.Invoke(_arcadeConfigurationVariable.Value.ToString());
+                return;
+            }
 
-        public void Hide()
-        {
-            ResetStatusBar();
+            _onVisibilityChange.Invoke("");
             gameObject.SetActive(false);
         }
-
-        private void InitStatusBar() => _statusText.SetText(_arcadeConfigurationVariable.Value.ToString());
-
-        private void ResetStatusBar() => _statusText.Clear();
     }
 }

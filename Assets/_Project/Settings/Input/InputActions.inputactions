@@ -2,7 +2,7 @@
     "name": "InputActions",
     "maps": [
         {
-            "name": "GlobalActions",
+            "name": "Global",
             "id": "dcef0966-dff4-49e7-a970-23d5259d1a82",
             "actions": [
                 {
@@ -17,6 +17,22 @@
                     "name": "Toggle Cursor",
                     "type": "Button",
                     "id": "111e58fd-0332-48ec-a8c5-6a8f4028d3af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "cb2d9f19-398a-4951-b9c3-c9c7f5070a30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "ca909354-b0f0-41f4-b5a6-835ff5586264",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -69,19 +85,30 @@
                 },
                 {
                     "name": "",
-                    "id": "2ee846d6-4a8e-491a-af01-c96c7c9e00c1",
-                    "path": "<Gamepad>/dpad/right",
+                    "id": "8e276d68-d6d5-4ed8-8e8f-9b790f8fbbbc",
+                    "path": "<Keyboard>/insert",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Toggle Cursor",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64626142-595b-4b40-8c62-4f62a2e73f05",
+                    "path": "<Keyboard>/home",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "FpsActions",
+            "name": "FpsNormal",
             "id": "22122fb4-ab81-4a29-9a20-1efdb89252ad",
             "actions": [
                 {
@@ -133,9 +160,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Toggle EditMode",
+                    "name": "Edit Positions",
                     "type": "Button",
                     "id": "c3ac06ce-bcb9-4007-b358-0e03157f5c46",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Edit Content",
+                    "type": "Button",
+                    "id": "5eb19e11-f343-42e6-83b4-d4d04d9ceb82",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -387,22 +422,22 @@
                 {
                     "name": "",
                     "id": "23902d4e-e621-4abd-a958-022bff195241",
-                    "path": "<Keyboard>/m",
+                    "path": "<Keyboard>/pageUp",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Toggle EditMode",
+                    "action": "Edit Positions",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "c8a668ba-0a38-4d76-b692-b8fe5c53c28f",
-                    "path": "<Gamepad>/dpad/left",
+                    "id": "7f4b2eef-afa1-4f3b-8ec5-37441b148ee2",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Toggle EditMode",
+                    "action": "Edit Positions",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -440,7 +475,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "DPad",
+                    "name": "Triggers",
                     "id": "f3b06e97-b2db-43a2-96ef-5a12f1382aa7",
                     "path": "1DAxis",
                     "interactions": "",
@@ -504,11 +539,22 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f85976a9-b3d0-4e6d-aca9-71fdc9393424",
+                    "path": "<Keyboard>/pageDown",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Edit Content",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "FpsEditActions",
+            "name": "FpsEditPositions",
             "id": "826403ab-f082-4a58-8a51-3a726b972945",
             "actions": [
                 {
@@ -705,14 +751,14 @@
             ]
         },
         {
-            "name": "CylActions",
+            "name": "CylNormal",
             "id": "cee92ad0-24ac-4ae8-b5bb-9fd31a285831",
             "actions": [
                 {
                     "name": "Navigation Vertical",
                     "type": "Value",
                     "id": "e1f0c0ad-badd-44d1-a958-cb657e58637d",
-                    "expectedControlType": "Analog",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 },
@@ -720,7 +766,7 @@
                     "name": "Navigation Horizontal",
                     "type": "Value",
                     "id": "ab61ee91-1a7d-471b-bc23-8f1c4a0e8260",
-                    "expectedControlType": "Analog",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 },
@@ -938,7 +984,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Negative",
+                    "name": "positive",
                     "id": "0c3ced21-82b0-4fa9-8cd6-e40b12b063f0",
                     "path": "<Keyboard>/t",
                     "interactions": "",
@@ -949,7 +995,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Positive",
+                    "name": "negative",
                     "id": "c6474c29-88d2-491f-b759-7a4f0b1de030",
                     "path": "<Keyboard>/g",
                     "interactions": "",
@@ -960,7 +1006,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "DPad",
+                    "name": "Triggers",
                     "id": "412ac7a8-42e3-4fc9-a11b-4fa7a0d6378c",
                     "path": "1DAxis",
                     "interactions": "",

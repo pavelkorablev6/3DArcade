@@ -25,24 +25,17 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class InteractionRaycaster<T> : ScriptableObject
-        where T : InteractionData
+    public abstract class InteractionRaycaster : ScriptableObject
     {
-        [field: SerializeField] public T InteractionData { get; protected set; }
-
-        [SerializeField] private LayerMask _raycastMask;
         [SerializeField] private float _raycastMaxDistance = math.INFINITY;
+        [SerializeField] private LayerMask _raycastMask;
 
-        public void UpdateCurrentTarget(Camera camera)
+        public ModelConfigurationComponent GetCurrentTarget(Camera camera)
         {
             Ray ray = GetRay(camera);
-            if (!Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) || !hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
-            {
-                InteractionData.Set(null);
-                return;
-            }
-
-            InteractionData.Set(modelConfigurationComponent);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, _raycastMaxDistance, _raycastMask) && hitInfo.transform.TryGetComponent(out ModelConfigurationComponent modelConfigurationComponent))
+                return modelConfigurationComponent;
+            return null;
         }
 
         protected abstract Ray GetRay(Camera camera);

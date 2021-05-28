@@ -44,7 +44,7 @@ namespace Arcade
             _browseButton.onClick.AddListener(()
                 => fileExplorer.OpenDirectoryDialog(paths =>
                 {
-                    if (paths == null || paths.Length == 0)
+                    if (paths is null || paths.Length == 0)
                         return;
                     _pathInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
                     _pathInputField.caretPosition = 0;

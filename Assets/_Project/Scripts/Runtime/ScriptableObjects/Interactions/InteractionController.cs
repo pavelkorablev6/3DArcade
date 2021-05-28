@@ -24,16 +24,14 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class InteractionController<TRaycaster, TData> : ScriptableObject
-        where TRaycaster : InteractionRaycaster<TData>
-        where TData : InteractionData
+    public abstract class InteractionController : ScriptableObject
     {
-        [SerializeField] protected TRaycaster _raycaster;
+        [field: SerializeField] public InteractionData InteractionData { get; private set; }
 
-        public TData InteractionData => _raycaster.InteractionData;
+        [SerializeField] protected InteractionRaycaster _raycaster;
 
-        public void UpdateCurrentTarget(Camera camera) => _raycaster.UpdateCurrentTarget(camera);
+        public abstract void UpdateCurrentTarget(Camera camera);
 
-        public void Reset() => InteractionData.Reset();
+        public void ResetData() => InteractionData.Reset();
     }
 }

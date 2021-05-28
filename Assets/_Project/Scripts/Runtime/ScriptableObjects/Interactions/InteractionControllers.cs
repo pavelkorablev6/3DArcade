@@ -29,12 +29,14 @@ namespace Arcade
     public sealed class InteractionControllers : ScriptableObject
     {
         [field: SerializeField] public NormalModeInteractionController NormalModeController { get; private set; }
-        [field: SerializeField] public EditModeInteractionController EditModeController { get; private set; }
+        [field: SerializeField] public EditModeEditPositionsInteractionController EditModeEditPositionsController { get; private set; }
+        [field: SerializeField] public EditModeEditContentInteractionController EditModeEditContentController { get; private set; }
 
-        public void Reset()
+        public void ResetControllers()
         {
-            NormalModeController.Reset();
-            EditModeController.Reset();
+            NormalModeController.ResetData();
+            EditModeEditPositionsController.ResetData();
+            EditModeEditContentController.ResetData();
         }
     }
 }

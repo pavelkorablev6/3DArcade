@@ -24,8 +24,16 @@ namespace Arcade
 {
     public sealed class UIStandardNormalState : UIState
     {
-        public override void OnEnter() => Context.StandardUI.ShowSceneNormalUI();
+        public override void OnEnter()
+        {
+            if (Context.StandardUI != null)
+                Context.StandardUI.SetNormalUIVisibility(true);
+        }
 
-        public override void OnExit() => Context.StandardUI.HideSceneNormalUI();
+        public override void OnExit()
+        {
+            if (Context.StandardUI != null)
+                Context.StandardUI.SetNormalUIVisibility(false);
+        }
     }
 }

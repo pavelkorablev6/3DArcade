@@ -39,12 +39,19 @@ namespace Arcade
         [XmlElement("rotation"), HideInInspector] public DatabaseVector3 Rotation              = DatabaseVector3.Zero;
         [XmlElement("scale"), HideInInspector]    public DatabaseVector3 Scale                 = DatabaseVector3.One;
 
-        [XmlIgnore, HideInInspector]              public PlatformConfiguration PlatformConfiguration = null;
-        [XmlIgnore, HideInInspector]              public EmulatorConfiguration EmulatorConfiguration = null;
-        [XmlIgnore, HideInInspector]              public GameConfiguration GameConfiguration         = null;
-        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModePosition      = DatabaseVector3.Zero;
-        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModeRotation      = DatabaseVector3.Zero;
-        [XmlIgnore, HideInInspector]              public DatabaseVector3 BeforeEditModeScale         = DatabaseVector3.One;
+        [XmlIgnore, HideInInspector] public PlatformConfiguration PlatformConfiguration = null;
+        [XmlIgnore, HideInInspector] public EmulatorConfiguration EmulatorConfiguration = null;
+        [XmlIgnore, HideInInspector] public GameConfiguration GameConfiguration         = null;
 
+        public string GetDescription()
+        {
+            if (!string.IsNullOrEmpty(Overrides.Game.Description))
+                return Overrides.Game.Description;
+
+            if (!(GameConfiguration is null) && !string.IsNullOrEmpty(GameConfiguration.Description))
+                return GameConfiguration.Description;
+
+            return Id;
+        }
     }
 }

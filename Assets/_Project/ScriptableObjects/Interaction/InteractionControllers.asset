@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <NormalModeController>k__BackingField: {fileID: 11400000, guid: 831f186e2a6157646b5438454323f1c8,
     type: 2}
-  <EditModeController>k__BackingField: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+  <EditModeEditPositionsController>k__BackingField: {fileID: 11400000, guid: 992f1679a28b8b1419016d94935a02aa,
+    type: 2}
+  <EditModeEditContentController>k__BackingField: {fileID: 11400000, guid: 27e65619ac7fc024c90d51bcd7c82fa5,
     type: 2}

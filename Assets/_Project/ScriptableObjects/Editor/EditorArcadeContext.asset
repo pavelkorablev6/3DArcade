@@ -29,9 +29,9 @@ MonoBehaviour:
     type: 2}
   <Scenes>k__BackingField: {fileID: 11400000, guid: 98754515938a3184d86d49dcac0561f1,
     type: 2}
-  <InteractionControllers>k__BackingField: {fileID: 11400000, guid: 7174b68e664731b459625626624ac374,
+  <Player>k__BackingField: {fileID: 11400000, guid: c6ffbff9aa57ec24f99a3e7382c3a61d,
     type: 2}
-  <MouseOverUI>k__BackingField: {fileID: 11400000, guid: 119e176c94a22d84b8ebbdc7831e3850,
+  <InteractionControllers>k__BackingField: {fileID: 11400000, guid: 7174b68e664731b459625626624ac374,
     type: 2}
   <GeneralConfiguration>k__BackingField: {fileID: 11400000, guid: e73c346bff35ea041864153f6973108b,
     type: 2}
@@ -43,5 +43,5 @@ MonoBehaviour:
     type: 2}
   <VideoPlayerController>k__BackingField: {fileID: 11400000, guid: b7f7746e13bd6f14b8677b9b12ec7d5a,
     type: 2}
-  <UIStateTransitionEvent>k__BackingField: {fileID: 11400000, guid: 0110be78fa93dff4abf86fbed129b27e,
+  <ArcadeStateChangeEvent>k__BackingField: {fileID: 11400000, guid: 0110be78fa93dff4abf86fbed129b27e,
     type: 2}

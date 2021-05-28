@@ -121,7 +121,7 @@ csharp_new_line_between_query_expression_clauses = true
 
 # Indentation preferences
 csharp_indent_block_contents = true
-csharp_indent_braces = false
+csharp_indent_braces =false
 csharp_indent_case_contents = true
 csharp_indent_case_contents_when_block = false
 csharp_indent_labels = one_less_than_current
@@ -215,3 +215,16 @@ dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
 
 dotnet_naming_style.constant_style.capitalization = all_upper
+dotnet_diagnostic.UNT0004.severity=warning
+dotnet_diagnostic.UNT0005.severity=warning
+dotnet_diagnostic.UNT0007.severity=warning
+dotnet_diagnostic.UNT0008.severity=warning
+dotnet_diagnostic.UNT0023.severity=warning
+
+[*.{cs,vb}]
+dotnet_style_prefer_conditional_expression_over_return=false:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment=false:suggestion
+dotnet_style_parentheses_in_arithmetic_binary_operators=always_for_clarity:suggestion
+dotnet_style_parentheses_in_other_binary_operators=always_for_clarity:suggestion
+dotnet_style_parentheses_in_relational_binary_operators=always_for_clarity:suggestion
+dotnet_style_parentheses_in_other_operators=always_for_clarity:suggestion

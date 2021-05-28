@@ -30,7 +30,7 @@ namespace Arcade
 
         public AssetAddresses GetAddressesToTry(ModelConfiguration cfg)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
+            if (cfg is null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
             AssetAddresses addresses = new AssetAddresses(FILE_EXTENSION, AddressablesPrefix);

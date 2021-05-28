@@ -72,7 +72,7 @@
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <overrides description="">
+      <overrides>
         <model />
         <emulator />
         <artwork_files>
@@ -113,58 +113,33 @@
           <Available>false</Available>
         </game>
       </overrides>
-      <position x="-1.88" y="-0" z="1.93" />
-      <rotation x="-0" y="146.96" z="-0" />
+      <position x="-0.24" y="-0" z="2.2" />
+      <rotation x="0" y="178.72" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
-    <game id="19xx" platform="arcade">
+    <game id="1942" platform="arcade">
       <interaction_type>Default</interaction_type>
       <grabbable>true</grabbable>
       <movecab_movable>true</movecab_movable>
       <movecab_grabbable>true</movecab_grabbable>
-      <overrides description="">
-        <model>1942</model>
+      <overrides>
+        <model />
         <emulator />
-        <artwork_files>
-          <marquee_image_files />
-          <marquee_video_files />
-          <screen_snap_files />
-          <screen_title_files />
-          <screen_video_files />
-          <generic_image_files />
-          <generic_video_files />
-          <info_files />
-        </artwork_files>
-        <artwork_directories>
-          <marquee_image_directories />
-          <marquee_video_directories />
-          <screen_snap_directories />
-          <screen_title_directories />
-          <screen_video_directories />
-          <generic_image_directories />
-          <generic_video_directories />
-          <info_directories />
-        </artwork_directories>
+        <artwork_files />
+        <artwork_directories />
         <game>
-          <Name />
-          <Description />
-          <CloneOf />
-          <RomOf />
-          <Genre />
-          <Year />
-          <Manufacturer />
-          <ScreenType>Raster</ScreenType>
-          <ScreenOrientation>Default</ScreenOrientation>
-          <Mature>false</Mature>
-          <Playable>false</Playable>
-          <IsBios>false</IsBios>
-          <IsDevice>false</IsDevice>
-          <IsMechanical>false</IsMechanical>
-          <Available>false</Available>
+          <ScreenType p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <ScreenOrientation p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <Mature p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <Playable p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <IsBios p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <IsDevice p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <IsMechanical p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
+          <Available p6:nil="true" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" />
         </game>
       </overrides>
-      <position x="1.4" y="-0.01" z="1.78" />
-      <rotation x="-0" y="-159.58" z="-0" />
+      <position x="1.05" y="-0.01" z="2.12" />
+      <rotation x="0" y="-168.64" z="0" />
       <scale x="1" y="1" z="1" />
     </game>
   </games>

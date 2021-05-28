@@ -34,6 +34,7 @@ namespace Arcade
     {
         [field: SerializeField] public Databases Databases { get; private set; }
         [field: SerializeField] public Scenes Scenes { get; private set; }
+        [field: SerializeField] public PlayerVariable Player { get; private set; }
         [field: SerializeField] public InteractionControllers InteractionControllers { get; private set; }
         [field: SerializeField] public GeneralConfigurationVariable GeneralConfiguration { get; private set; }
         [field: SerializeField] public ArcadeConfigurationVariable ArcadeConfiguration { get; private set; }
@@ -43,7 +44,6 @@ namespace Arcade
         [field: SerializeField] public ArcadeStateEvent ArcadeStateChangeEvent { get; private set; }
 
         [field: System.NonSerialized] public InputActions InputActions { get; private set; }
-        [field: System.NonSerialized] public Player Player { get; private set; }
         [field: System.NonSerialized] public AssetAddressesProviders AssetAddressesProviders { get; private set; }
         [field: System.NonSerialized] public NodeControllers NodeControllers { get; private set; }
         [field: System.NonSerialized] public GameControllers GameControllers { get; private set; }
@@ -52,18 +52,10 @@ namespace Arcade
         public void Construct(InputActions inputActions, Player player, AssetAddressesProviders assetAddressesProviders, NodeControllers nodeControllers = null, GameControllers gameControllers = null)
         {
             InputActions            = inputActions;
-            Player                  = player;
             AssetAddressesProviders = assetAddressesProviders;
             NodeControllers         = nodeControllers;
             GameControllers         = gameControllers;
-        }
-
-        public void TransitionToFpsEditModeState()
-        {
-            if (GeneralConfiguration.Value.EnableVR)
-                TransitionTo<ArcadeVirtualRealityFpsEditModeState>();
-            else
-                TransitionTo<ArcadeStandardFpsEditModeState>();
+            Player.Value            = player;
         }
 
         protected override void OnContextStart() => Restart();
@@ -109,13 +101,13 @@ namespace Arcade
             VideoPlayerController.Value?.StopAllVideos();
             VideoPlayerController.Value = null;
 
-            Player.TransitionTo<PlayerDisabledState>();
+            Player.Value.TransitionTo<PlayerDisabledState>();
 
             switch (arcadeConfiguration.ArcadeType)
             {
                 case ArcadeType.Fps:
                 {
-                    VideoPlayerController.Value = new FpsArcadeVideoPlayerController(Player, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection"));
+                    VideoPlayerController.Value = new FpsArcadeVideoPlayerController(Player.Value, LayerMask.GetMask("Arcade/GameModels", "Arcade/PropModels", "Arcade/Selection"));
                     ArcadeController.Value      = new FpsArcadeController(this);
                 }
                 break;
@@ -136,7 +128,7 @@ namespace Arcade
                 break;
             }
 
-            if (ArcadeController.Value == null)
+            if (ArcadeController.Value is null)
                 return;
 
             if (Application.isPlaying)
@@ -147,9 +139,9 @@ namespace Arcade
                     GeneralConfiguration.Value.EnableVR = false;
 
                 if (GeneralConfiguration.Value.EnableVR)
-                    TransitionTo<ArcadeVirtualRealityLoadState>();
+                    TransitionTo<ArcadeVirtualRealityLoadingState>();
                 else
-                    TransitionTo<ArcadeStandardLoadState>();
+                    TransitionTo<ArcadeStandardLoadingState>();
             }
 
             Scenes.Entities.Initialize(arcadeConfiguration);
@@ -163,10 +155,11 @@ namespace Arcade
             await ArcadeController.Value.Initialize(ModelSpawner);
         }
 
-        public bool SaveCurrentArcade(bool modelsOnly = false)
+        // TODO: save all arcade properties
+        public void SaveCurrentArcade(bool modelsOnly = false)
         {
             if (!EntitiesScene.TryGetArcadeConfiguration(out ArcadeConfigurationComponent arcadeConfigurationComponent))
-                return false;
+                return;
 
             ArcadeConfiguration arcadeConfiguration = arcadeConfigurationComponent.GetArcadeConfigurationWithUpdatedEntries();
             foreach (ModelConfiguration game in arcadeConfiguration.Games)
@@ -176,13 +169,16 @@ namespace Arcade
                 game.Scale.RoundValues();
             }
 
+            if (!modelsOnly)
+            {
+                // TODO: implement
+            }
+
             if (!Databases.Arcades.Save(arcadeConfiguration))
-                return false;
+                return;
 
-            if (modelsOnly)
-                return true;
-
-            return Databases.Arcades.LoadAll();
+            ArcadeController.Value.UpdateLists();
+            _ = Databases.Arcades.LoadAll();
         }
     }
 }

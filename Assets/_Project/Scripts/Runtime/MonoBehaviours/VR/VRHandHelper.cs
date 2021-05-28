@@ -30,26 +30,26 @@ namespace Arcade
         [SerializeField] private Animator _animator;
         [SerializeField] private InputDeviceCharacteristics _inputDeviceCharacteristics;
 
-        private const string ANIMATOR_LAYER_NAME_BASE  = "Base Layer";
-        private const string ANIMATOR_LAYER_NAME_THUMB = "Thumb Layer";
-        private const string ANIMATOR_LAYER_NAME_POINT = "Point Layer";
+        //private const string ANIMATOR_LAYER_NAME_BASE  = "Base Layer";
+        //private const string ANIMATOR_LAYER_NAME_THUMB = "Thumb Layer";
+        //private const string ANIMATOR_LAYER_NAME_POINT = "Point Layer";
 
-        private const string ANIMATOR_PARAM_NAME_POSE  = "Pose";
+        //private const string ANIMATOR_PARAM_NAME_POSE  = "Pose";
         private const string ANIMATOR_PARAM_NAME_FLEX  = "Flex";
         private const string ANIMATOR_PARAM_NAME_PINCH = "Pinch";
 
         private static bool _animatorIdsSet = false;
 
-        private static int _animatorLayerBase;
-        private static int _animatorLayerThumb;
-        private static int _animatorLayerPoint;
+        //private static int _animatorLayerBase;
+        //private static int _animatorLayerThumb;
+        //private static int _animatorLayerPoint;
 
-        private static int _animatorParamPose;
+        //private static int _animatorParamPose;
         private static int _animatorParamFlex;
         private static int _animatorParamPinch;
 
         private InputDevice _inputDevice;
-        private bool _isThumbUp;
+        //private bool _isThumbUp;
         private bool _isPointing;
 
         private void Awake()
@@ -57,11 +57,11 @@ namespace Arcade
             if (_animatorIdsSet)
                 return;
 
-            _animatorLayerBase  = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_BASE);
-            _animatorLayerThumb = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_THUMB);
-            _animatorLayerPoint = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_POINT);
+            //_animatorLayerBase  = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_BASE);
+            //_animatorLayerThumb = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_THUMB);
+            //_animatorLayerPoint = _animator.GetLayerIndex(ANIMATOR_LAYER_NAME_POINT);
 
-            _animatorParamPose  = Animator.StringToHash(ANIMATOR_PARAM_NAME_POSE);
+            //_animatorParamPose  = Animator.StringToHash(ANIMATOR_PARAM_NAME_POSE);
             _animatorParamFlex  = Animator.StringToHash(ANIMATOR_PARAM_NAME_FLEX);
             _animatorParamPinch = Animator.StringToHash(ANIMATOR_PARAM_NAME_PINCH);
 
@@ -77,9 +77,9 @@ namespace Arcade
             if (!_inputDevice.isValid)
                 return;
 
-            _isThumbUp = _inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisTouch, out bool primaryStickTouch) && !primaryStickTouch
-                      && _inputDevice.TryGetFeatureValue(CommonUsages.primaryTouch, out bool primaryButtonTouch) && !primaryButtonTouch
-                      && _inputDevice.TryGetFeatureValue(CommonUsages.secondaryTouch, out bool secondaryButtonTouch) && !secondaryButtonTouch;
+            //_isThumbUp = _inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisTouch, out bool primaryStickTouch) && !primaryStickTouch
+            //          && _inputDevice.TryGetFeatureValue(CommonUsages.primaryTouch, out bool primaryButtonTouch) && !primaryButtonTouch
+            //          && _inputDevice.TryGetFeatureValue(CommonUsages.secondaryTouch, out bool secondaryButtonTouch) && !secondaryButtonTouch;
 
             _isPointing = _inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisTouch, out bool triggerTouch) && !triggerTouch;
 

@@ -31,7 +31,7 @@ namespace Arcade
     {
         public bool Save(T item)
         {
-            if (item == null || string.IsNullOrEmpty(item.Id))
+            if (item is null || string.IsNullOrEmpty(item.Id))
             {
                 Debug.LogWarning($"[{GetType().Name}] Failed to save configuration, data is null or invalid");
                 return false;
@@ -63,7 +63,7 @@ namespace Arcade
 
         protected sealed override void PostAdd(T item)
         {
-            if (item == null || string.IsNullOrEmpty(item.Id))
+            if (item is null || string.IsNullOrEmpty(item.Id))
             {
                 Debug.LogWarning($"[{GetType().Name}] Entry is null or invalid");
                 return;
@@ -95,11 +95,10 @@ namespace Arcade
                 foreach (string filePath in filePaths)
                 {
                     T entry = Deserialize(filePath);
-                    if (entry != null)
-                    {
-                        entry.Id = Path.GetFileNameWithoutExtension(filePath);
-                        _entries.Add(entry.Id, entry);
-                    }
+                    if (entry is null)
+                        continue;
+                    entry.Id = Path.GetFileNameWithoutExtension(filePath);
+                    _entries.Add(entry.Id, entry);
                 }
 
                 return true;

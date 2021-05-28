@@ -49,7 +49,7 @@ namespace Arcade
         {
             try
             {
-                if (_filePath == null)
+                if (_filePath is null)
                     return;
 
                 if (!File.Exists(_filePath))
@@ -60,7 +60,7 @@ namespace Arcade
                 }
 
                 GeneralConfiguration cfg = XMLUtils.Deserialize<GeneralConfiguration>(_filePath);
-                if (cfg == null)
+                if (cfg is null)
                 {
                     CreateDefaultConfiguration();
                     return;
@@ -81,7 +81,7 @@ namespace Arcade
         {
             try
             {
-                if (_filePath == null)
+                if (_filePath is null)
                 {
                     Debug.LogWarning($"[{GetType().Name}.Save] File not mapped in VirtualFileSystem, values will not be saved to disk");
                     return true;

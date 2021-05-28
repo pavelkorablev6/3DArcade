@@ -28,12 +28,12 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UIInfo : MonoBehaviour
     {
+        [SerializeField] private FloatVariable _animationDuration;
         [SerializeField] private RectTransform _leftPanel;
         [SerializeField] private RectTransform _rightPanel;
         [SerializeField] private RectTransform _topPanel;
         [SerializeField] private RectTransform _bottomPanel;
         [SerializeField] private RectTransform _closeButton;
-        [SerializeField] private float _animationSpeed = 0.6f;
 
         private RectTransform _transform;
 
@@ -59,22 +59,24 @@ namespace Arcade
             _bottomPanel.sizeDelta        = new Vector2(width, height);
             _bottomPanel.anchoredPosition = new Vector2(0f, -height);
 
-            _ = _leftPanel.DOAnchorPosX(0f, _animationSpeed);
-            _ = _rightPanel.DOAnchorPosX(0f, _animationSpeed);
-            _ = _topPanel.DOAnchorPosY(0f, _animationSpeed);
-            _ = _bottomPanel.DOAnchorPosY(0f, _animationSpeed);
-            _ = _closeButton.DOAnchorPos(Vector2.zero, _animationSpeed);
+            float animationDuration = _animationDuration.Value;
+            _ = _leftPanel.DOAnchorPosX(0f, (float)animationDuration);
+            _ = _rightPanel.DOAnchorPosX(0f, (float)animationDuration);
+            _ = _topPanel.DOAnchorPosY(0f, (float)animationDuration);
+            _ = _bottomPanel.DOAnchorPosY(0f, (float)animationDuration);
+            _ = _closeButton.DOAnchorPos(Vector2.zero, (float)animationDuration);
         }
 
         public void Hide()
         {
-            _ = _leftPanel.DOAnchorPosX(-_leftPanel.rect.width, _animationSpeed);
-            _ = _rightPanel.DOAnchorPosX(_rightPanel.rect.width, _animationSpeed);
-            _ = _topPanel.DOAnchorPosY(_topPanel.rect.height, _animationSpeed);
-            _ = _bottomPanel.DOAnchorPosY(-_bottomPanel.rect.height, _animationSpeed);
+            float animationDuration = _animationDuration.Value;
+            _ = _leftPanel.DOAnchorPosX(-_leftPanel.rect.width, (float)animationDuration);
+            _ = _rightPanel.DOAnchorPosX(_rightPanel.rect.width, (float)animationDuration);
+            _ = _topPanel.DOAnchorPosY(_topPanel.rect.height, (float)animationDuration);
+            _ = _bottomPanel.DOAnchorPosY(-_bottomPanel.rect.height, (float)animationDuration);
 
             Rect closeButtonRect = _closeButton.rect;
-            _ = _closeButton.DOAnchorPos(new Vector2(closeButtonRect.width, closeButtonRect.height), _animationSpeed);
+            _ = _closeButton.DOAnchorPos(new Vector2(closeButtonRect.width, closeButtonRect.height), (float)animationDuration);
         }
     }
 }

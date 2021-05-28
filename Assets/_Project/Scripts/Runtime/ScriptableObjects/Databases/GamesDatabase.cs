@@ -1,3 +1,25 @@
+/* MIT License
+
+ * Copyright (c) 2020 Skurdt
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE. */
+
 using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +126,11 @@ namespace Arcade
 
         public IEnumerable<string> GetGameLists() => _database.GetTables().Where(x => !x.StartsWith("_"));
 
+        public GameConfiguration[] GetGames(string gameListName)
+            => _database.GetTableEntries<GameConfiguration>(gameListName, new string[] { "*" }, new GameConfiguration())
+                       ?.OrderBy(x => x.Description)
+                        .ToArray();
+
         public bool TryGet(string gameListName, string gameName, string[] returnFields, string[] searchFields, out GameConfiguration outGame)
         {
             if (string.IsNullOrEmpty(gameListName) || string.IsNullOrEmpty(gameName))
@@ -113,7 +140,7 @@ namespace Arcade
             }
 
             outGame = _database.Get<GameConfiguration>(gameListName, returnFields, searchFields, new { Name = gameName });
-            return outGame != null;
+            return !(outGame is null);
         }
 
         public void AddGenre(string value)
@@ -144,7 +171,7 @@ namespace Arcade
 
         public void AddGenres(IReadOnlyCollection<string> values)
         {
-            if (values == null || values.Count == 0)
+            if (values is null || values.Count == 0)
                 return;
 
             _database.Insert(values.Select(x => new DBGenre { Genre = x })
@@ -154,7 +181,7 @@ namespace Arcade
 
         public void AddYears(IReadOnlyCollection<string> values)
         {
-            if (values == null || values.Count == 0)
+            if (values is null || values.Count == 0)
                 return;
 
             _database.Insert(values.Select(x => new DBYear { Year = x })
@@ -164,7 +191,7 @@ namespace Arcade
 
         public void AddManufacturers(IReadOnlyCollection<string> values)
         {
-            if (values == null || values.Count == 0)
+            if (values is null || values.Count == 0)
                 return;
 
             _database.Insert(values.Select(x => new DBManufacturer { Manufacturer = x })
@@ -174,7 +201,7 @@ namespace Arcade
 
         public void AddScreenTypes(IReadOnlyCollection<string> values)
         {
-            if (values == null || values.Count == 0)
+            if (values is null || values.Count == 0)
                 return;
 
             _database.Insert(values.Select(x => new DBScreenType { ScreenType = x })
@@ -184,7 +211,7 @@ namespace Arcade
 
         public void AddScreenRotations(IReadOnlyCollection<int> values)
         {
-            if (values == null || values.Count == 0)
+            if (values is null || values.Count == 0)
                 return;
 
             _database.Insert(values.Select(x => new DBScreenRotation { ScreenRotation = x })
@@ -196,7 +223,7 @@ namespace Arcade
 
         public void AddGame(string gameListName, GameConfiguration game)
         {
-            if (string.IsNullOrEmpty(gameListName) || game == null)
+            if (string.IsNullOrEmpty(gameListName) || game is null)
                 return;
 
             DBGame gameToInsert = GetDatabaseGame(game);
@@ -205,7 +232,7 @@ namespace Arcade
 
         public void AddGames(string gameListName, IReadOnlyCollection<GameConfiguration> games)
         {
-            if (string.IsNullOrEmpty(gameListName) || games == null || games.Count == 0)
+            if (string.IsNullOrEmpty(gameListName) || games is null || games.Count == 0)
                 return;
 
             IEnumerable<DBGame> gamesToInsert = games.Select(game => GetDatabaseGame(game)).ToArray();

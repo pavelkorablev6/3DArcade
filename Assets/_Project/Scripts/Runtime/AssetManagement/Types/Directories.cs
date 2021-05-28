@@ -42,8 +42,9 @@ namespace Arcade
         private void TryAdd(string[] paths)
         {
             string[] correctedPaths = FileSystemUtils.CorrectPaths(paths);
-            if (correctedPaths != null)
-                _paths.AddRange(correctedPaths.Where(x => Directory.Exists(x)));
+            if (correctedPaths is null)
+                return;
+            _paths.AddRange(correctedPaths.Where(x => Directory.Exists(x)));
         }
 
         public IEnumerator<string> GetEnumerator()

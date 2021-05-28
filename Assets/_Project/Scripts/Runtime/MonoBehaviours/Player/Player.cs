@@ -28,9 +28,12 @@ namespace Arcade
     public sealed class Player : MonoBehaviour
     {
         [field: SerializeField] public Camera Camera { get; private set; }
+
         [SerializeField] private PlayerControls _standardControls;
         [SerializeField] private PlayerControls _virtualRealityControls;
         [SerializeField] private PlayerContext _playerContext;
+
+        private TransformState _savedTransformState;
 
         private void Awake() => Initialize();
 
@@ -49,6 +52,23 @@ namespace Arcade
         }
 
         public void Initialize() => _playerContext.Initialize(this);
+
+        public void SaveTransformState() => _savedTransformState = new TransformState
+        {
+            Position = ActiveTransform.position,
+            Rotation = ActiveTransform.localEulerAngles,
+            Scale    = ActiveTransform.localScale
+        };
+
+        public void RestoreTransformState()
+        {
+            if (_savedTransformState is null)
+                return;
+
+            ActiveTransform.position         = _savedTransformState.Position;
+            ActiveTransform.localEulerAngles = _savedTransformState.Rotation;
+            ActiveTransform.localScale       = _savedTransformState.Scale;
+        }
 
         public void TransitionTo<T>() where T : PlayerState => _playerContext.TransitionTo<T>();
 

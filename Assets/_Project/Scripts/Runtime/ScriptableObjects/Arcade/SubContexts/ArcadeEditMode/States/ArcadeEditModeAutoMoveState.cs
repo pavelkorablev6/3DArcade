@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,6 +30,7 @@ namespace Arcade
     public sealed class ArcadeEditModeAutoMoveState : ArcadeEditModeState
     {
         [SerializeField] private LayerMask _worldRaycastLayerMask;
+        [SerializeField, Layer] private int _grabLayer;
 
         [System.NonSerialized] private Vector2 _screenPoint;
 
@@ -36,32 +38,41 @@ namespace Arcade
         {
             Debug.Log($">> <color=green>Entered</color> {GetType().Name}");
 
-            EditModeInteractionData interactionData = Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData;
-            _screenPoint = Context.ArcadeContext.Player.Camera.WorldToScreenPoint(interactionData.Current.transform.position);
-            interactionData.InitAutoMove();
+            ArcadeContext arcadeContext = Context.ArcadeContext;
+
+            InteractionData interactionData = arcadeContext.InteractionControllers.EditModeEditPositionsController.InteractionData;
+            if (!interactionData.Current.InitAutoMove(_grabLayer))
+            {
+                Context.TransitionToPrevious();
+                return;
+            }
+            _screenPoint = arcadeContext.Player.Value.Camera.WorldToScreenPoint(interactionData.Current.transform.position);
         }
 
         public override void OnExit()
         {
             Debug.Log($">> <color=orange>Exited</color> {GetType().Name}");
 
-            Context.ArcadeContext.InteractionControllers.EditModeController.InteractionData.DeInitAutoMove();
+            Context.ArcadeContext.InteractionControllers.EditModeEditPositionsController.InteractionData.Current.DeInitAutoMove();
 
             _screenPoint = Vector2.zero;
         }
 
         public override void OnUpdate(float dt)
         {
-            if (Context.ArcadeContext.InputActions.FpsEditActions.Grab.triggered)
+            ArcadeContext arcadeContext = Context.ArcadeContext;
+            InputActions inputActions   = arcadeContext.InputActions;
+
+            if (inputActions.FpsEditPositions.Grab.triggered || inputActions.Global.Quit.triggered)
             {
                 Context.TransitionToPrevious();
                 return;
             }
 
-            EditModeInteractionController editModeController = Context.ArcadeContext.InteractionControllers.EditModeController;
-            Player player                                    = Context.ArcadeContext.Player;
+            EditModeEditPositionsInteractionController editModeController = arcadeContext.InteractionControllers.EditModeEditPositionsController;
+            Player player = arcadeContext.Player.Value;
 
-            bool useMousePosition = Mouse.current != null && Cursor.lockState != CursorLockMode.Locked;
+            bool useMousePosition = !(Mouse.current is null) && Cursor.lockState != CursorLockMode.Locked;
             Vector2 rayPosition   = useMousePosition ? Mouse.current.position.ReadValue() : _screenPoint;
             Ray ray               = player.Camera.ScreenPointToRay(rayPosition);
 

@@ -30,7 +30,7 @@ namespace Arcade
 
         public AssetAddresses GetAddressesToTry(ArcadeConfiguration cfg)
         {
-            if (cfg == null || string.IsNullOrEmpty(cfg.Id))
+            if (cfg is null || string.IsNullOrEmpty(cfg.Id))
                 return null;
 
             string sceneName    = GetSceneName(cfg);

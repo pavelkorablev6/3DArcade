@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c78120524e3d6b49aaedff4d7cd59e2, type: 3}
   m_Name: NormalModeInteractionRaycaster
   m_EditorClassIdentifier: 
-  <InteractionData>k__BackingField: {fileID: 11400000, guid: f97278a6c18b12246b497b83c9443deb,
-    type: 2}
+  _raycastMaxDistance: 1.8
   _raycastMask:
     serializedVersion: 2
     m_Bits: 1920
-  _raycastMaxDistance: 1.8

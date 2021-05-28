@@ -37,7 +37,7 @@ namespace Arcade
 
         public override void OnUpdate(float dt)
         {
-            if (Context.InputActions.GlobalActions.Quit.triggered)
+            if (Context.InputActions.Global.Quit.triggered)
                 ApplicationUtils.ExitApp();
 
             Context.VideoPlayerController.Value.UpdateVideosState();

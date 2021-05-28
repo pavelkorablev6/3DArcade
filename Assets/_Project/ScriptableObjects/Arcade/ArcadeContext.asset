@@ -15,12 +15,14 @@ MonoBehaviour:
   _states:
   - {fileID: 11400000, guid: 5f6a17863bea3d142a3669a16b8a6088, type: 2}
   - {fileID: 11400000, guid: cde82171d65abdb4e8d8bae00eb08a36, type: 2}
+  - {fileID: 11400000, guid: f75431d4ee55ee744b93d6763b39a9df, type: 2}
   - {fileID: 11400000, guid: 748ac8e270a54b447b84021fe59202c0, type: 2}
   - {fileID: 11400000, guid: 608becfba4ef90c4391b69470c77bddd, type: 2}
   - {fileID: 11400000, guid: 7ced8212b1b2f434eb5f76f83ada7baf, type: 2}
   - {fileID: 11400000, guid: 1630c3d676c673f40a3a069b2ce5e438, type: 2}
   - {fileID: 11400000, guid: 548100eae7a95a64abd8897e563af7fb, type: 2}
   - {fileID: 11400000, guid: c43f1ad2c2afbb84aa2e29dc9852787d, type: 2}
+  - {fileID: 11400000, guid: d9984507257362c4ab256544fbc8413f, type: 2}
   - {fileID: 11400000, guid: b3a7fda5a8f272c43b1617ef1264ace1, type: 2}
   - {fileID: 11400000, guid: 1d771c40d586b024289214eed2baa57a, type: 2}
   - {fileID: 11400000, guid: 07850064a81e2cd42b1c2e19b1cab07e, type: 2}
@@ -29,9 +31,9 @@ MonoBehaviour:
     type: 2}
   <Scenes>k__BackingField: {fileID: 11400000, guid: 047531b08b6756a44bf09e356e93b719,
     type: 2}
-  <InteractionControllers>k__BackingField: {fileID: 11400000, guid: 7174b68e664731b459625626624ac374,
+  <Player>k__BackingField: {fileID: 11400000, guid: c6ffbff9aa57ec24f99a3e7382c3a61d,
     type: 2}
-  <MouseOverUI>k__BackingField: {fileID: 11400000, guid: 119e176c94a22d84b8ebbdc7831e3850,
+  <InteractionControllers>k__BackingField: {fileID: 11400000, guid: 7174b68e664731b459625626624ac374,
     type: 2}
   <GeneralConfiguration>k__BackingField: {fileID: 11400000, guid: e73c346bff35ea041864153f6973108b,
     type: 2}

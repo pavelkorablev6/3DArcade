@@ -37,7 +37,7 @@ namespace Arcade
 
         public string[] GetNamesToTry(ModelConfiguration cfg)
         {
-            if (cfg == null)
+            if (cfg is null)
                 return null;
 
             _ = _platformDatabase.TryGet(cfg.Platform, out PlatformConfiguration platform);
@@ -52,16 +52,17 @@ namespace Arcade
             ImageSequence imageSequence = new ImageSequence();
 
             // TODO: From files overrides
-
             // TODO: From directories overrides
 
-            imageSequence.Add(cfg.Id);
-
+            imageSequence.Add(cfg.Overrides.Game.Name);
             imageSequence.Add(cfg.Overrides.Game.CloneOf);
             imageSequence.Add(cfg.Overrides.Game.RomOf);
 
+            imageSequence.Add(game?.Name);
             imageSequence.Add(game?.CloneOf);
             imageSequence.Add(game?.RomOf);
+
+            imageSequence.Add(cfg.Id);
 
             imageSequence.Add(overrideEmulator?.Id);
 

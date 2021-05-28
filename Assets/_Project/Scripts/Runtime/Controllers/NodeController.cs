@@ -43,11 +43,11 @@ namespace Arcade
 
         public async UniTask Setup(ArcadeController arcadeController, GameObject gameObject, ModelConfiguration modelConfiguration, float emissionIntensity)
         {
-            if (gameObject == null || modelConfiguration == null)
+            if (gameObject == null || modelConfiguration is null)
                 return;
 
             Renderer[] renderers = GetNodeRenderers(gameObject);
-            if (renderers == null)
+            if (renderers is null || renderers.Length == 0)
                 return;
 
             string[] namesToTry = _fileNamesProvider.GetNamesToTry(modelConfiguration);
@@ -60,7 +60,7 @@ namespace Arcade
         private static Renderer[] GetNodeRenderers(GameObject model)
         {
             T[] nodeTags = model.GetComponentsInChildren<T>(true);
-            if (nodeTags == null || nodeTags.Length == 0)
+            if (nodeTags is null || nodeTags.Length == 0)
                 return null;
 
             List<Renderer> renderers = new List<Renderer>();

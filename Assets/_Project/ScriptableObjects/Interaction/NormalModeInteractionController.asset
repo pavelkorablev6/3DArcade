@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca67a4ebef62e1c44ad8b89038253399, type: 3}
   m_Name: NormalModeInteractionController
   m_EditorClassIdentifier: 
+  <InteractionData>k__BackingField: {fileID: 11400000, guid: 1a8211929a995f146b5e90cdc50a6ae9,
+    type: 2}
   _raycaster: {fileID: 11400000, guid: c00b68910d13c1949bfc74210add3f62, type: 2}
   _arcadeContext: {fileID: 11400000, guid: 699a2679e60a772459b83c09413cf198, type: 2}
+  _selectionlayer: 10

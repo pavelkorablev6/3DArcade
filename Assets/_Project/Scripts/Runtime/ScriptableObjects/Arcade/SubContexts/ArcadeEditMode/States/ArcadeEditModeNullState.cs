@@ -24,5 +24,6 @@ namespace Arcade
 {
     public sealed class ArcadeEditModeNullState : ArcadeEditModeState
     {
+        public override void OnEnter() => Context.ArcadeEditModeStateChangeEvent.Raise(this);
     }
 }

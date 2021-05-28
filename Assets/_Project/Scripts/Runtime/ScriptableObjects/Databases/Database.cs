@@ -20,13 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class Database<T> : ScriptableObject
+    public abstract class Database<T> : ScriptableObject, IEnumerable<T>
         where T : DatabaseEntry
     {
         [SerializeField] private VirtualFileSystem _virtualFileSystem;
@@ -35,7 +36,7 @@ namespace Arcade
 
         [field: System.NonSerialized] protected string Directory { get; private set; }
 
-        protected readonly SortedDictionary<string, T> _entries = new SortedDictionary<string, T>();
+        protected readonly SortedList<string, T> _entries = new SortedList<string, T>();
 
         public void Initialize()
         {
@@ -82,12 +83,12 @@ namespace Arcade
             }
 
             outResult = Get(id);
-            return outResult != null;
+            return !(outResult is null);
         }
 
         public T Add(T entry)
         {
-            if (entry == null)
+            if (entry is null)
             {
                 Debug.LogWarning($"[{GetType().Name}.Add] Passed null entry");
                 return null;
@@ -160,5 +161,19 @@ namespace Arcade
         protected abstract bool LoadAllFromDisk();
 
         protected abstract void DeleteAllFromDisk();
+
+        public T this[int index]
+        {
+            get => _entries.Values[index];
+            private set => _entries.Values[index] = value;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (T entry in _entries.Values)
+                yield return entry;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

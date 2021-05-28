@@ -24,22 +24,35 @@ using UnityEngine;
 
 namespace Arcade
 {
-    public abstract class InteractionData : ScriptableObject
+    [CreateAssetMenu(menuName = "3DArcade/Interaction/Data", fileName = "InteractionData")]
+    public sealed class InteractionData : ScriptableObject
     {
-        [SerializeField] protected ModelConfigurationComponentEvent _targetChangedEvent;
+        [field: System.NonSerialized] public ModelConfigurationComponent Current { get; private set; }
 
-        [field: System.NonSerialized] public ModelConfigurationComponent Current { get; protected set; }
+        [SerializeField] private ModelConfigurationComponentEvent _targetChangedEvent;
 
-        public abstract void Set(ModelConfigurationComponent target);
+        public void Set(ModelConfigurationComponent target, int layer)
+        {
+            if (Current == target)
+                return;
 
-        public void Reset()
+            if (target != null)
+                target.SetLayer(layer);
+
+            Current = target;
+            _targetChangedEvent.Raise(target);
+        }
+
+        public void Reset(bool raiseEvent = true)
         {
             if (Current == null)
                 return;
 
-            Current.RestoreOriginalLayer();
+            Current.RestoreLayerToOriginal();
             Current = null;
-            _targetChangedEvent.Raise(null);
+
+            if (raiseEvent)
+                _targetChangedEvent.Raise(null);
         }
     }
 }

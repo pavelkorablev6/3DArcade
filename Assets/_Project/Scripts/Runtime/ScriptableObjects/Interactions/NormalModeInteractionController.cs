@@ -20,22 +20,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
+using SK.Utilities.Unity;
 using System;
 using UnityEngine;
 
 namespace Arcade
 {
     [CreateAssetMenu(menuName = "3DArcade/Interaction/NormalModeController", fileName = "NormalModeInteractionController")]
-    public sealed class NormalModeInteractionController : InteractionController<NormalModeInteractionRaycaster, NormalModeInteractionData>
+    public sealed class NormalModeInteractionController : InteractionController
     {
         [SerializeField] private ArcadeContext _arcadeContext;
+        [SerializeField, Layer] private int _selectionlayer;
+
+        public override void UpdateCurrentTarget(Camera camera)
+        {
+            ModelConfigurationComponent target = _raycaster.GetCurrentTarget(camera);
+            if (target == null)
+            {
+                if (InteractionData.Current != null)
+                    InteractionData.Current.RestoreLayerToOriginal();
+            }
+
+            InteractionData.Set(target, _selectionlayer);
+        }
 
         public void HandleInteraction()
         {
-            if (_raycaster.InteractionData.Current == null)
+            if (InteractionData.Current == null)
                 return;
 
-            ModelConfiguration modelConfiguration = _raycaster.InteractionData.Current.Configuration;
+            ModelConfiguration modelConfiguration = InteractionData.Current.Configuration;
             InteractionType interactionType       = modelConfiguration.InteractionType;
 
             switch (interactionType)
@@ -57,8 +71,6 @@ namespace Arcade
                 default:
                     throw new Exception($"Unhandled switch case for InteractionType: {modelConfiguration.InteractionType}");
             }
-
-            _raycaster.InteractionData.Reset();
         }
 
         private void HandleEmulatorInteraction(ModelConfiguration modelConfiguration)
@@ -69,7 +81,7 @@ namespace Arcade
                 _ = _arcadeContext.Databases.Emulators.TryGet(platform.Emulator, out emulator);
 
             modelConfiguration.EmulatorConfiguration = emulator;
-            if (modelConfiguration.EmulatorConfiguration == null)
+            if (modelConfiguration.EmulatorConfiguration is null)
                 return;
 
             InteractionType interactionType = modelConfiguration.EmulatorConfiguration.InteractionType;

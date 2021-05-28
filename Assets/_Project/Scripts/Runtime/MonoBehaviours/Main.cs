@@ -20,10 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using SK.Utilities.Unity;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -97,55 +95,6 @@ namespace Arcade
         private void FixedUpdate() => _arcadeContext.OnFixedUpdate(Time.fixedDeltaTime);
 
         private void OnDisable() => DOTween.KillAll();
-
-        // TODO: Replace/Remove the public functions...
-        public void TEMP_ToggleInput(bool enable)
-        {
-            if (enable)
-            {
-                _arcadeContext.InputActions.FpsActions.Enable();
-                if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.FpsActions.Look.Disable();
-
-                _arcadeContext.InputActions.FpsEditActions.Enable();
-
-                _arcadeContext.InputActions.CylActions.Enable();
-                if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.CylActions.Look.Disable();
-            }
-            else
-            {
-                _arcadeContext.InputActions.FpsActions.Disable();
-                _arcadeContext.InputActions.FpsEditActions.Disable();
-                _arcadeContext.InputActions.CylActions.Disable();
-            }
-        }
-
-        public void TEMP_ToggleInteractionsInput(bool enable)
-        {
-            if (enable)
-            {
-                _arcadeContext.InputActions.FpsActions.Enable();
-                if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.FpsActions.Look.Disable();
-
-                _arcadeContext.InputActions.FpsEditActions.Enable();
-
-                _arcadeContext.InputActions.CylActions.Enable();
-                if (Cursor.lockState == CursorLockMode.None)
-                    _arcadeContext.InputActions.CylActions.Look.Disable();
-            }
-            else
-            {
-                _arcadeContext.InputActions.FpsActions.Interact.Disable();
-                _arcadeContext.InputActions.FpsActions.Look.Disable();
-
-                _arcadeContext.InputActions.FpsEditActions.Grab.Disable();
-
-                _arcadeContext.InputActions.CylActions.Interact.Disable();
-                _arcadeContext.InputActions.CylActions.Look.Disable();
-            }
-        }
 
         private void ValidateCurrentOS()
         {
