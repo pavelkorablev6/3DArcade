@@ -10,4 +10,4 @@ It can run games directly on 3D models using cores from Libretro. It also suppor
 - [3DArcade Website](https://www.mameworld.info/3darcade/index.html)
 - [3DArcade Forum](https://3darcade.000webhostapp.com/)
 - [Libretro wrapper](https://github.com/Skurdt/SK.Libretro)
-- [Video Playlist](https://www.youtube.com/playlist?list=PLMMUphXX6XhROJZc76FVRutzs7r3TSqjz)
+- [Videos](https://www.youtube.com/playlist?list=PLMMUphXX6XhROJZc76FVRutzs7r3TSqjz)
