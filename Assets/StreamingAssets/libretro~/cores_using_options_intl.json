@@ -2,6 +2,7 @@
     "Cores": [
         "vecx",
         "snes9x",
-        "genesis_plus_gx"
+        "genesis_plus_gx",
+        "nestopia"
     ]
 }

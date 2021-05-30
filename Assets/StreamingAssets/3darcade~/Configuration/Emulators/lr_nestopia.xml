@@ -1,0 +1,11 @@
+<emulator description="Libretro: Nestopia">
+  <interaction_type>GameInternal</interaction_type>
+  <directory />
+  <working_directory />
+  <executable>nestopia</executable>
+  <arguments />
+  <supported_extensions />
+  <games_directories>
+    <directory>W:/complete/roms/no-intro-rom-sets/Nintendo - Nintendo Entertainment System</directory>
+  </games_directories>
+</emulator>

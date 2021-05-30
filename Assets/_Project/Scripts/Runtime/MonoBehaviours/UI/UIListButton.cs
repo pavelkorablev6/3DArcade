@@ -29,7 +29,6 @@ namespace Arcade
     [DisallowMultipleComponent]
     public sealed class UIListButton : MonoBehaviour
     {
-        [field: SerializeField] public Image Icon { get; private set; }
         [field: SerializeField] public Button SelectButton { get; private set; }
         [field: SerializeField] public TMP_Text SelectButtonText { get; private set; }
         [field: SerializeField] public Button DeleteButton { get; private set; }

@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,12 +31,14 @@ namespace Arcade
 {
     public sealed class UIEmulatorConfiguration : UIConfiguration<EmulatorsDatabase, EmulatorConfiguration>
     {
+        [SerializeField] private GameObject[] _externalSetupObjects;
+        [SerializeField] private GameObject _coreObject;
+
         [SerializeField] private TMP_Dropdown _interactionTypeDropdown;
         [SerializeField] private Button _directoryButton;
         [SerializeField] private TMP_InputField _directoryInputField;
         [SerializeField] private Button _workingDirectoryButton;
         [SerializeField] private TMP_InputField _workingDirectoryInputField;
-        [SerializeField] private TMP_Text _executableDescriptionText;
         [SerializeField] private Button _executableButton;
         [SerializeField] private TMP_InputField _executableInputField;
         [SerializeField] private TMP_Dropdown _coreDropdown;
@@ -45,64 +46,21 @@ namespace Arcade
         [SerializeField] private TMP_InputField _supportedExtensionsInputField;
         [SerializeField] private UIDirectories _gamesDirectories;
 
+        private void Start() => _interactionTypeDropdown.onValueChanged.AddListener((index) =>
+        {
+            if ((InteractionType)index == InteractionType.GameInternal)
+            {
+                SwitchToInternalSetup();
+                return;
+            }
+            SwitchToExternalSetup();
+        });
+
         protected override void SetUIValues()
         {
-            _interactionTypeDropdown.onValueChanged.AddListener((index) =>
-            {
-                if ((InteractionType)index == InteractionType.GameInternal)
-                {
-                    SwitchToLibretroSetup();
-                    return;
-                }
-                SwitchToExternalSetup();
-            });
-
+            _interactionTypeDropdown.SetValueWithoutNotify(-1);
             int interactionType = _configuration.InteractionType <= InteractionType.URL ? (int)_configuration.InteractionType : 0;
-            _interactionTypeDropdown.SetValueWithoutNotify(interactionType);
-            if (interactionType == (int)InteractionType.GameInternal)
-                SwitchToLibretroSetup();
-            else
-                SwitchToExternalSetup();
-
-            _directoryButton.onClick.AddListener(()
-                => _fileExplorer.OpenDirectoryDialog(paths =>
-                {
-                    if (paths is null || paths.Length == 0)
-                        return;
-                    _directoryInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
-                    _directoryInputField.caretPosition = 0;
-                }));
-            _directoryInputField.text = _configuration.Directory;
-
-            _workingDirectoryButton.onClick.AddListener(()
-                => _fileExplorer.OpenDirectoryDialog(paths =>
-                {
-                    if (paths is null || paths.Length == 0)
-                        return;
-                    _workingDirectoryInputField.text          = FileSystemUtils.GetRelativePath(paths[0]);
-                    _workingDirectoryInputField.caretPosition = 0;
-                }));
-            _workingDirectoryInputField.text = _configuration.WorkingDirectory;
-
-            _executableButton.onClick.AddListener(()
-                => _fileExplorer.OpenFileDialog(paths =>
-                {
-                    if (paths is null || paths.Length == 0)
-                        return;
-                    if (string.IsNullOrEmpty(_directoryInputField.text))
-                    {
-                        _directoryInputField.text          = Path.GetDirectoryName(paths[0]);
-                        _directoryInputField.caretPosition = 0;
-                    }
-                    _executableInputField.text          = Path.GetFileName(paths[0]);
-                    _executableInputField.caretPosition = 0;
-
-                }));
-            _executableInputField.text = _configuration.Executable;
-
-            _argumentsInputField.text = _configuration.Arguments;
-
-            _supportedExtensionsInputField.text = string.Join(";", _configuration.SupportedExtensions);
+            _interactionTypeDropdown.value = interactionType;
 
             _gamesDirectories.Init(_fileExplorer, _configuration.GamesDirectories);
         }
@@ -123,70 +81,91 @@ namespace Arcade
 
         protected override void ClearUIValues()
         {
-            _interactionTypeDropdown.value = 0;
-
             _directoryButton.onClick.RemoveAllListeners();
-            _directoryInputField.text          = "";
+            _directoryInputField.SetTextWithoutNotify("");
             _directoryInputField.caretPosition = 0;
 
             _workingDirectoryButton.onClick.RemoveAllListeners();
-            _workingDirectoryInputField.text          = "";
+            _workingDirectoryInputField.SetTextWithoutNotify("");
             _workingDirectoryInputField.caretPosition = 0;
 
             _executableButton.onClick.RemoveAllListeners();
-            _executableInputField.text          = "";
+            _executableInputField.SetTextWithoutNotify("");
             _executableInputField.caretPosition = 0;
 
-            _argumentsInputField.text          = "";
+            _argumentsInputField.SetTextWithoutNotify("");
             _argumentsInputField.caretPosition = 0;
 
-            _supportedExtensionsInputField.text          = "";
+            _supportedExtensionsInputField.SetTextWithoutNotify("");
             _supportedExtensionsInputField.caretPosition = 0;
 
             _gamesDirectories.Clear();
         }
 
-        private void SwitchToLibretroSetup()
+        private void SwitchToInternalSetup()
         {
-            _directoryButton.interactable     = false;
-            _directoryInputField.interactable = false;
+            ClearUIValues();
 
-            _workingDirectoryButton.interactable     = false;
-            _workingDirectoryInputField.interactable = false;
-
-            _executableDescriptionText.SetText("Core");
-            _executableButton.gameObject.SetActive(false);
-            _executableInputField.gameObject.SetActive(false);
+            foreach (GameObject externalSetupObject in _externalSetupObjects)
+                externalSetupObject.SetActive(false);
 
             _coreDropdown.ClearOptions();
             _coreDropdown.AddOptions(new List<string> { "" });
             if (FileSystemUtils.TryGetFiles(FileSystemUtils.PathCombine(SystemUtils.GetDataPath(), "libretro~/cores"), "*.dll", false, out string[] fileNames))
                 _coreDropdown.AddOptions(fileNames.Select(x => Path.GetFileNameWithoutExtension(x).Replace("_libretro", "")).ToList());
-            _coreDropdown.value = _coreDropdown.options.FindIndex(x => x.text == _configuration.Executable);
-            _coreDropdown.gameObject.SetActive(true);
+            _coreDropdown.SetValueWithoutNotify(_coreDropdown.options.FindIndex(x => x.text == _configuration.Executable));
 
-            _argumentsInputField.interactable = false;
-
-            _supportedExtensionsInputField.interactable = false;
+            _coreObject.SetActive(true);
         }
 
         private void SwitchToExternalSetup()
         {
-            _directoryButton.interactable     = true;
-            _directoryInputField.interactable = true;
+            ClearUIValues();
 
-            _workingDirectoryButton.interactable     = true;
-            _workingDirectoryInputField.interactable = true;
+            _coreObject.SetActive(false);
 
-            _coreDropdown.gameObject.SetActive(false);
+            _directoryButton.onClick.AddListener(()
+                => _fileExplorer.OpenDirectoryDialog(paths =>
+                {
+                    if (paths is null || paths.Length == 0)
+                        return;
+                    _directoryInputField.SetTextWithoutNotify(FileSystemUtils.GetRelativePath(paths[0]));
+                    _directoryInputField.caretPosition = 0;
+                }));
+            _directoryInputField.SetTextWithoutNotify(_configuration.Directory);
 
-            _executableDescriptionText.SetText("Executable");
-            _executableButton.gameObject.SetActive(true);
-            _executableInputField.gameObject.SetActive(true);
+            _workingDirectoryButton.onClick.AddListener(()
+                => _fileExplorer.OpenDirectoryDialog(paths =>
+                {
+                    if (paths is null || paths.Length == 0)
+                        return;
+                    _workingDirectoryInputField.SetTextWithoutNotify(FileSystemUtils.GetRelativePath(paths[0]));
+                    _workingDirectoryInputField.caretPosition = 0;
+                }));
+            _workingDirectoryInputField.text = _configuration.WorkingDirectory;
 
-            _argumentsInputField.interactable = true;
+            _executableButton.onClick.AddListener(()
+                => _fileExplorer.OpenFileDialog(paths =>
+                {
+                    if (paths is null || paths.Length == 0)
+                        return;
+                    if (string.IsNullOrEmpty(_directoryInputField.text))
+                    {
+                        _directoryInputField.SetTextWithoutNotify(Path.GetDirectoryName(paths[0]));
+                        _directoryInputField.caretPosition = 0;
+                    }
+                    _executableInputField.SetTextWithoutNotify(Path.GetFileName(paths[0]));
+                    _executableInputField.caretPosition = 0;
 
-            _supportedExtensionsInputField.interactable = true;
+                }));
+            _executableInputField.SetTextWithoutNotify(_configuration.Executable);
+
+            _argumentsInputField.SetTextWithoutNotify(_configuration.Arguments);
+
+            _supportedExtensionsInputField.SetTextWithoutNotify(_configuration.SupportedExtensions);
+
+            foreach (GameObject externalSetupObject in _externalSetupObjects)
+                externalSetupObject.SetActive(true);
         }
     }
 }

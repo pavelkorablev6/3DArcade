@@ -45,6 +45,7 @@ namespace Arcade
 
         public void Init(FileExplorer fileExplorer, string[] paths)
         {
+            _addButton.onClick.RemoveAllListeners();
             _addButton.onClick.AddListener(()
                 => fileExplorer.OpenDirectoryDialog(paths =>
                 {

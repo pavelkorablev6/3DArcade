@@ -49,6 +49,7 @@ namespace Arcade
 
         public void Show()
         {
+            _addButton.onClick.RemoveAllListeners();
             _addButton.onClick.AddListener(() =>
             {
                 if (string.IsNullOrEmpty(_addInputField.text))
@@ -91,13 +92,15 @@ namespace Arcade
 
                 buttonObject.SelectButtonText.SetText(configuration.Description);
 
+                buttonObject.SelectButton.onClick.RemoveAllListeners();
                 buttonObject.SelectButton.onClick.AddListener(() =>
                 {
                     Hide();
-                    _uiConfiguration.TitleText.SetText(configuration.ToString());
+                    _uiConfiguration.TitleText.SetText(configuration.Id);
                     _uiConfiguration.Show(configuration);
                 });
 
+                buttonObject.DeleteButton.onClick.RemoveAllListeners();
                 buttonObject.DeleteButton.onClick.AddListener(() =>
                 {
                     _ = _database.Delete(configuration.Id);

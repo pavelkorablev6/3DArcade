@@ -45,8 +45,8 @@ namespace Arcade
 
         public void Show(TConfiguration configuration)
         {
-            _configuration              = configuration;
-            _descriptionInputField.text = configuration.Description;
+            _configuration = configuration;
+            _descriptionInputField.SetTextWithoutNotify(configuration.Description);
             SetUIValues();
             _ = _transform.DOAnchorPosX(0f, 0.3f);
         }
@@ -60,7 +60,7 @@ namespace Arcade
 
         public void Hide()
         {
-            _descriptionInputField.text = "";
+            _descriptionInputField.SetTextWithoutNotify("");
             ClearUIValues();
             _configuration = null;
             _ = _transform.DOAnchorPosX(-500f, 0.3f);

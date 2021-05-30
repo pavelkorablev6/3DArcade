@@ -41,6 +41,7 @@ namespace Arcade
         {
             _pathInputField.text = FileSystemUtils.GetRelativePath(path);
 
+            _browseButton.onClick.RemoveAllListeners();
             _browseButton.onClick.AddListener(()
                 => fileExplorer.OpenDirectoryDialog(paths =>
                 {
@@ -50,8 +51,13 @@ namespace Arcade
                     _pathInputField.caretPosition = 0;
                 }));
 
+            _moveUpButton.onClick.RemoveAllListeners();
             _moveUpButton.onClick.AddListener(() => uiDirectories.MoveDirectoryUp(this));
+
+            _moveDownButton.onClick.RemoveAllListeners();
             _moveDownButton.onClick.AddListener(() => uiDirectories.MoveDirectoryDown(this));
+
+            _deleteButton.onClick.RemoveAllListeners();
             _deleteButton.onClick.AddListener(() => uiDirectories.RemoveDirectory(this));
         }
     }
